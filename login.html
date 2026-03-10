@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h2>Login</h2>
+
+<form action="/login" method="POST">
+<div>
+<label>Email</label>
+<input type="email" name="email" required>
+</div>
+<div>
+<label for="Senha">Username:</label>
+<input type="password" id="myPassword" name="password" required>
+<button type="button" id="togglePassword">Show Password</button>
+
+</div>
+<button type="submit">Entrar</button>
+
+</form>
+
+</body>
+
+<script>
+    const togglePassword = document.getElementById('togglePassword');
+const passwordInput = document.getElementById('myPassword');
+
+togglePassword.addEventListener('click', function () {
+    // Toggle the type attribute
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+
+    // Toggle the button text (optional)
+    this.textContent = (type === 'password' ? 'Show' : 'Hide') + ' Password';
+});
+
+</script>
+</html>
