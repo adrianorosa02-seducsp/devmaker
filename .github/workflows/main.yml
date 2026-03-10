@@ -1,0 +1,82 @@
+name: Deploy Projeto Estatico Aluno
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      # --- NOVO PASSO: Configurar Python ---
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Gerar Index no Servidor (Raiz e Projeto)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ubuntu
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            RA_DIR="/var/inetpub/wwwroot/projetos/${{ vars.ALUNO_RA }}"
+            PROJ_DIR="$RA_DIR/${{ vars.ALUNO_PROJETO }}"
+            
+            python3 -c "
+            import os
+
+            def criar_index(path, titulo, eh_raiz):
+                if not os.path.exists(path): return
+                items = sorted([f for f in os.listdir(path) if f not in ['index.html', 'generate_index.py'] and not f.startswith('.')])
+                
+                links_html = ''
+                for i in items:
+                    is_dir = os.path.isdir(os.path.join(path, i))
+                    icon = '📁' if is_dir else '📄'
+                    suffix = '/' if is_dir else ''
+                    links_html += f'<li><a href=\"{i}{suffix}\">{icon} {i}</a></li>'
+                
+                html = f'''<html><head><meta charset=\"UTF-8\"><title>{{titulo}}</title>
+                <style>body{{font-family:sans-serif;padding:30px;background:#f4f4f4}}
+                ul{{list-style:none;padding:0}} li{{background:#fff;margin:5px;padding:15px;border-radius:5px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}}
+                a{{text-decoration:none;color:#007bff;font-weight:bold}}
+                .back{{display:inline-block;margin-bottom:20px;color:#666;text-decoration:none}}</style></head>
+                <body>
+                <a href=\"..\" class=\"back\">« Voltar</a>
+                <h1>{titulo}</h1><ul>{links_html}</ul></body></html>'''
+                
+                with open(os.path.join(path, 'index.html'), 'w', encoding='utf-8') as f:
+                    f.write(html)
+
+            # 1. Gera o index da pasta do PROJETO (arquivos do aluno)
+            criar_index('$PROJ_DIR', '🚀 Arquivos do Projeto: ${{ vars.ALUNO_PROJETO }}', False)
+            
+            # 2. Gera o index da pasta do RA (lista de projetos)
+            criar_index('$RA_DIR', '📂 Meus Projetos - RA ${{ vars.ALUNO_RA }}', True)
+            "
+
+      - name: Enviar HTML/CSS para o Servidor
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ubuntu
+          key: ${{ secrets.SSH_KEY}}
+          # O source agora inclui o index.html gerado no passo anterior
+          source: "./*" 
+          target: "/var/inetpub/wwwroot/projetos/${{ vars.ALUNO_RA }}/${{ vars.ALUNO_PROJETO }}/"
+          strip_components: 0
+
+      - name: Ajustar Permissões (Opcional)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ubuntu
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            sudo chown -R ubuntu:www-data /var/inetpub/wwwroot/projetos/${{ vars.ALUNO_RA }}
+            chmod -R 755 /var/inetpub/wwwroot/projetos/${{ vars.ALUNO_RA }}
