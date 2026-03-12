@@ -1,0 +1,184 @@
+o ideal é que o backend rode como serviço escalável e se conecte ao PostgreSQL dentro da rede dockermaster.
+
+Vou montar uma estrutura simples para alunos, mas já compatível com Swarm.
+
+Arquitetura:
+
+Frontend (HTML)
+        │
+        │ POST /login /register
+        ▼
+Backend Python API
+        │
+        ▼
+PostgreSQL
+
+O backend será feito com FastAPI, pois é simples, moderno e ótimo para ensino.
+
+1️⃣ Estrutura do projeto
+backend
+│
+├─ app.py
+├─ database.py
+├─ requirements.txt
+└─ Dockerfile
+2️⃣ Backend Python
+app.py
+from fastapi import FastAPI
+from pydantic import BaseModel
+import psycopg2
+from pwdlib import PasswordHash
+
+app = FastAPI()
+
+password_hash = PasswordHash.recommended()
+
+class UserRegister(BaseModel):
+    nome: str
+    email: str
+    senha: str
+
+class UserLogin(BaseModel):
+    email: str
+    senha: str
+
+
+def get_conn():
+    return psycopg2.connect(
+        host="postgres_app",
+        database="appdb",
+        user="appuser",
+        password="appsenha",
+        port=5432
+    )
+
+
+@app.post("/register")
+def register(user: UserRegister):
+
+    conn = get_conn()
+    cur = conn.cursor()
+
+    hash_senha = password_hash.hash(user.senha)
+
+    cur.execute(
+        "INSERT INTO usuarios (nome,email,senha) VALUES (%s,%s,%s)",
+        (user.nome, user.email, hash_senha)
+    )
+
+    conn.commit()
+
+    cur.close()
+    conn.close()
+
+    return {"status": "usuario criado"}
+
+
+@app.post("/login")
+def login(user: UserLogin):
+
+    conn = get_conn()
+    cur = conn.cursor()
+
+    cur.execute(
+        "SELECT senha FROM usuarios WHERE email=%s",
+        (user.email,)
+    )
+
+    result = cur.fetchone()
+
+    if not result:
+        return {"status": "usuario nao encontrado"}
+
+    senha_hash = result[0]
+
+    if password_hash.verify(user.senha, senha_hash):
+        return {"status": "login sucesso"}
+
+    return {"status": "senha incorreta"}
+3️⃣ Tabela PostgreSQL
+
+Execute no banco:
+
+CREATE TABLE usuarios (
+    id SERIAL PRIMARY KEY,
+    nome TEXT,
+    email TEXT UNIQUE,
+    senha TEXT
+);
+4️⃣ requirements.txt
+fastapi
+uvicorn
+psycopg2-binary
+pwdlib[argon2]
+5️⃣ Dockerfile
+FROM python:3.11
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt
+
+COPY . .
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+6️⃣ Stack Docker Swarm
+
+Arquivo stack-backend.yml
+
+version: "3.8"
+
+services:
+
+  api_auth:
+
+    image: auth_api:latest
+
+    build: .
+
+    networks:
+      - dockermaster
+
+    deploy:
+      replicas: 2
+
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.api.rule=Host(`api.inetz.com.br`)
+        - traefik.http.routers.api.entrypoints=websecure
+        - traefik.http.routers.api.tls=true
+        - traefik.http.services.api.loadbalancer.server.port=8000
+
+      placement:
+        constraints:
+          - node.role == manager
+
+networks:
+  dockermaster:
+    external: true
+7️⃣ Build da imagem
+
+No servidor:
+
+docker build -t auth_api .
+8️⃣ Deploy no Swarm
+docker stack deploy -c stack-backend.yml auth
+9️⃣ Fluxo final para os alunos
+
+Frontend envia:
+
+POST /register
+POST /login
+
+Backend:
+
+FastAPI
+
+Banco:
+
+PostgreSQL
+
+Senha:
+
+Argon2

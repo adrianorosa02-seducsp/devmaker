@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f0f0f0;
+}
+
+.container{
+    width:300px;
+    margin:auto;
+    margin-top:100px;
+    padding:20px;
+    background:white;
+    border-radius:5px;
+}
+
+input{
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+}
+
+button{
+    margin-top:10px;
+    width:100%;
+    padding:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Login</h2>
+
+<form method="POST" action="/login">
+
+<input type="email" name="email" placeholder="Email">
+
+<input type="password" name="senha" placeholder="Senha">
+
+<button type="submit">Entrar</button>
+
+</form>
+
+<br>
+
+<a href="cadastro.html">Criar conta</a>
+
+</div>
+
+</body>
+</html>
