@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROTOCOLO CENTAURI - 30 FASES</title>
+
+<style>
+:root{
+    --neon:#00f2ff;
+    --warning:#ffcc00;
+    --danger:#ff0055;
+    --bg:#050a10;
+}
+
+body{
+    background:var(--bg);
+    color:#e0e0e0;
+    font-family:'Courier New', monospace;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    margin:0;
+}
+
+#hud{
+    width:95%;
+    max-width:950px;
+    border:2px solid var(--neon);
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 20px rgba(0,242,255,.2);
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+    border-bottom:1px solid var(--neon);
+    padding-bottom:10px;
+}
+
+.progress-bg{
+    background:#111;
+    height:6px;
+    margin-bottom:20px;
+}
+
+#progress-fill{
+    background:var(--neon);
+    height:100%;
+    width:0%;
+}
+
+#display-area{
+    min-height:220px;
+    background:rgba(0,242,255,.05);
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.theory{
+    display:none;
+    background:#121820;
+    border-left:4px solid var(--warning);
+    padding:15px;
+    margin-bottom:20px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    background:transparent;
+    color:var(--neon);
+    border:1px solid var(--neon);
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button:hover{
+    background:var(--neon);
+    color:black;
+}
+</style>
+</head>
+<body>
+
+<div id="hud">
+
+<div class="header">
+<span>HP: <span id="hp">100</span>%</span>
+<span>RECURSOS: <span id="gold">5000</span></span>
+<span>FASE: <span id="fase">1/30</span></span>
+</div>
+
+<div class="progress-bg">
+<div id="progress-fill"></div>
+</div>
+
+<div id="display-area"></div>
+
+<div id="theory-box" class="theory"></div>
+
+<div id="controls"></div>
+
+</div>
+
+<script>
+
+let hp=100;
+let gold=5000;
+let fase=0;
+
+let score={
+documentacao:0,
+tempo:0,
+sustentabilidade:0,
+qualidade:0,
+colaboracao:0
+};
+
+const missions = Array.from({length:30}, (_,i)=>({
+
+title:`FASE ${i+1}`,
+
+desc:[
+"Evento de risco detectado no projeto.",
+"Equipe precisa revisar escopo.",
+"Fornecedor atrasou entrega.",
+"Mudança inesperada no cronograma.",
+"Custo extra identificado."
+][i%5],
+
+theory:[
+"Risco é condição incerta segundo PMBOK.",
+"Matriz SWOT identifica forças e ameaças.",
+"Plano de ação exige prazo e responsável.",
+"Retrospectiva melhora alinhamento.",
+"Mitigação reduz impacto."
+][i%5],
+
+axis:[
+"documentacao",
+"tempo",
+"sustentabilidade",
+"qualidade",
+"colaboracao"
+][i%5],
+
+options:[
+{text:"Tomar decisão correta",ok:true},
+{text:"Ignorar situação",ok:false}
+]
+
+}));
+
+function updateHUD(){
+document.getElementById("hp").textContent=hp;
+document.getElementById("gold").textContent=gold;
+document.getElementById("fase").textContent=`${fase+1}/30`;
+document.getElementById("progress-fill").style.width=((fase+1)/30*100)+"%";
+}
+
+function start(){
+fase=0;
+hp=100;
+gold=5000;
+
+score={
+documentacao:0,
+tempo:0,
+sustentabilidade:0,
+qualidade:0,
+colaboracao:0
+};
+
+render();
+}
+
+function render(){
+
+if(fase>=missions.length){
+finalScore();
+return;
+}
+
+let m=missions[fase];
+
+document.getElementById("display-area").innerHTML=`
+<h2>${m.title}</h2>
+<p>${m.desc}</p>
+`;
+
+document.getElementById("theory-box").style.display="none";
+
+document.getElementById("controls").innerHTML=`
+<button onclick="showTheory()">MANUAL TÉCNICO</button>
+<button onclick="choose(0)">A) ${m.options[0].text}</button>
+<button onclick="choose(1)">B) ${m.options[1].text}</button>
+`;
+
+updateHUD();
+}
+
+function showTheory(){
+let m=missions[fase];
+document.getElementById("theory-box").style.display="block";
+document.getElementById("theory-box").innerHTML=m.theory;
+}
+
+function choose(i){
+
+let m=missions[fase];
+
+if(i===0){
+gold+=100;
+score[m.axis]+=2;
+}else{
+hp-=10;
+gold-=100;
+}
+
+fase++;
+render();
+}
+
+function finalScore(){
+
+let total =
+score.documentacao+
+score.tempo+
+score.sustentabilidade+
+score.qualidade+
+score.colaboracao;
+
+let percentual = Math.round((total/60)*100);
+
+let conceito = "";
+
+if(percentual>=90) conceito="EXCELENTE";
+else if(percentual>=70) conceito="BOM";
+else if(percentual>=50) conceito="REGULAR";
+else conceito="CRÍTICO";
+
+document.getElementById("display-area").innerHTML=`
+
+<h2>RELATÓRIO FINAL 🚀</h2>
+
+<p><strong>Documentação:</strong> ${score.documentacao}</p>
+<p><strong>Tempo:</strong> ${score.tempo}</p>
+<p><strong>Sustentabilidade:</strong> ${score.sustentabilidade}</p>
+<p><strong>Qualidade:</strong> ${score.qualidade}</p>
+<p><strong>Colaboração:</strong> ${score.colaboracao}</p>
+
+<hr>
+
+<p><strong>Total:</strong> ${total}/60</p>
+<p><strong>Percentual:</strong> ${percentual}%</p>
+<p><strong>Desempenho:</strong> ${conceito}</p>
+
+`;
+
+document.getElementById("controls").innerHTML=`
+<button onclick="start()">REINICIAR MISSÃO</button>
+`;
+}
+
+start();
+
+</script>
+
+</body>
+</html>
+

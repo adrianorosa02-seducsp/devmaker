@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROTOCOLO CENTAURI</title>
+
+<style>
+:root{
+ --neon:#00f2ff;
+ --warning:#ffcc00;
+ --danger:#ff0044;
+ --bg:#03070d;
+}
+
+body{
+ background:var(--bg);
+ color:#e0e0e0;
+ font-family:'Courier New', monospace;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ min-height:100vh;
+ margin:0;
+}
+
+#game{
+ width:95%;
+ max-width:950px;
+ border:2px solid var(--neon);
+ padding:25px;
+ box-shadow:0 0 25px rgba(0,242,255,.2);
+ border-radius:10px;
+}
+
+.header{
+ display:flex;
+ justify-content:space-between;
+ border-bottom:1px solid var(--neon);
+ padding-bottom:10px;
+ margin-bottom:20px;
+}
+
+.progress-bg{
+ background:#111;
+ height:6px;
+ margin-bottom:20px;
+}
+
+#progress{
+ background:var(--neon);
+ height:100%;
+ width:0%;
+ transition:.5s;
+}
+
+#display{
+ min-height:250px;
+ background:rgba(0,242,255,.04);
+ padding:20px;
+ margin-bottom:20px;
+ white-space:pre-line;
+ line-height:1.6;
+}
+
+button{
+ width:100%;
+ padding:14px;
+ margin-top:10px;
+ background:transparent;
+ color:var(--neon);
+ border:1px solid var(--neon);
+ cursor:pointer;
+ font-weight:bold;
+}
+
+button:hover{
+ background:var(--neon);
+ color:black;
+}
+
+.alert{
+ animation:pulse .7s infinite;
+}
+
+@keyframes pulse{
+ 0%{border-color:var(--danger);}
+ 50%{border-color:var(--warning);}
+ 100%{border-color:var(--danger);}
+}
+</style>
+</head>
+<body>
+
+<div id="game">
+
+<div class="header">
+<span>HP: <span id="hp">100</span>%</span>
+<span>RECURSOS: <span id="gold">5000</span></span>
+<span>FASE: <span id="fase">1/30</span></span>
+</div>
+
+<div class="progress-bg">
+<div id="progress"></div>
+</div>
+
+<div id="display"></div>
+
+<div id="controls"></div>
+
+</div>
+
+<script>
+
+let hp=100;
+let gold=5000;
+let fase=0;
+
+let score={
+documentacao:0,
+tempo:0,
+sustentabilidade:0,
+qualidade:0,
+colaboracao:0
+};
+
+const missions = Array.from({length:30}, (_,i)=>({
+
+title:`FASE ${i+1}`,
+
+desc:[
+"IA detecta anomalia estrutural.",
+"Tempestade solar em aproximação.",
+"Setor oculto consome energia.",
+"Engenheiro desaparecido.",
+"Comando externo desconhecido."
+][i%5],
+
+axis:[
+"documentacao",
+"tempo",
+"sustentabilidade",
+"qualidade",
+"colaboracao"
+][i%5]
+
+}));
+
+function typeText(text, callback){
+
+let display = document.getElementById("display");
+display.innerHTML="";
+let i=0;
+
+let interval=setInterval(()=>{
+
+display.innerHTML += text[i];
+i++;
+
+if(i>=text.length){
+clearInterval(interval);
+if(callback) callback();
+}
+
+},20);
+
+}
+
+function updateHUD(){
+document.getElementById("hp").textContent=hp;
+document.getElementById("gold").textContent=gold;
+document.getElementById("fase").textContent=`${fase+1}/30`;
+document.getElementById("progress").style.width=((fase+1)/30*100)+"%";
+}
+
+function render(){
+
+if(fase>=30){
+finalScreen();
+return;
+}
+
+let m=missions[fase];
+
+typeText(
+`>>> ${m.title}
+
+${m.desc}
+
+IA CENTAURI:
+"Analise antes de agir."
+`
+);
+
+document.getElementById("controls").innerHTML=`
+<button onclick="choose(true)">AÇÃO ESTRATÉGICA</button>
+<button onclick="choose(false)">AÇÃO IMPULSIVA</button>
+`;
+
+updateHUD();
+
+if(hp<40){
+document.getElementById("game").classList.add("alert");
+}else{
+document.getElementById("game").classList.remove("alert");
+}
+
+}
+
+function choose(ok){
+
+let axis = missions[fase].axis;
+
+if(ok){
+gold+=120;
+score[axis]+=2;
+}else{
+hp-=10;
+gold-=80;
+}
+
+fase++;
+render();
+
+}
+
+function finalScreen(){
+
+let total=
+score.documentacao+
+score.tempo+
+score.sustentabilidade+
+score.qualidade+
+score.colaboracao;
+
+let perc=Math.round((total/60)*100);
+
+let final="";
+
+if(perc>=90){
+final=`A IA CENTRAL TRANSFERE O COMANDO.\n\n"HUMANIDADE APROVADA."`;
+}
+else if(perc>=70){
+final=`CENTAURI PERMANECE SOB SUPERVISÃO COMPARTILHADA.`;
+}
+else if(perc>=50){
+final=`A IA ASSUME SETORES CRÍTICOS.`;
+}
+else{
+final=`SISTEMA ENCERRA OPERAÇÃO.\n\n"FALHA OPERACIONAL."`;
+}
+
+typeText(
+`RELATÓRIO FINAL
+
+Documentação: ${score.documentacao}
+Tempo: ${score.tempo}
+Sustentabilidade: ${score.sustentabilidade}
+Qualidade: ${score.qualidade}
+Colaboração: ${score.colaboracao}
+
+TOTAL: ${total}/60
+DESEMPENHO: ${perc}%
+
+${final}`
+);
+
+document.getElementById("controls").innerHTML=`
+<button onclick="restart()">REINICIAR MISSÃO</button>
+`;
+
+}
+
+function restart(){
+
+hp=100;
+gold=5000;
+fase=0;
+
+score={
+documentacao:0,
+tempo:0,
+sustentabilidade:0,
+qualidade:0,
+colaboracao:0
+};
+
+render();
+
+}
+
+render();
+
+</script>
+
+</body>
+</html>
+

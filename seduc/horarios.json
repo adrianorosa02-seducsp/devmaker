@@ -1,0 +1,21 @@
+[
+{ "Escola": "Bicudo", "Aulas": "3ª", "Hora Inicio": "09:25", "Hora Fim": "10:15", "Num_semana": 3, "Dia_Semana": "TER", "Disciplina": "Versionamento e mensageria", "Bimestre": "1" },
+{ "Escola": "Bicudo", "Aulas": "4ª", "Hora Inicio": "10:15", "Hora Fim": "11:05", "Num_semana": 3, "Dia_Semana": "TER", "Disciplina": "Proj. Mult Disciplinar", "Bimestre": "1" },
+{ "Escola": "Bicudo", "Aulas": "5ª", "Hora Inicio": "11:05", "Hora Fim": "11:55", "Num_semana": 3, "Dia_Semana": "TER", "Disciplina": "Proj. Mult Disciplinar", "Bimestre": "1" },
+{ "Escola": "Amilcare", "Aulas": "8ª", "Hora Inicio": "14:50", "Hora Fim": "15:40", "Num_semana": 3, "Dia_Semana": "TER", "Disciplina": "Front-End", "Bimestre": "1" },
+{ "Escola": "Amilcare", "Aulas": "9ª", "Hora Inicio": "15:40", "Hora Fim": "16:30", "Num_semana": 3, "Dia_Semana": "TER", "Disciplina": "Back-End", "Bimestre": "1" },
+{ "Escola": "Reginato", "Aulas": "10ª", "Hora Inicio": "18:00", "Hora Fim": "19:40", "Num_semana": 3, "Dia_Semana": "TER", "Disciplina": "ATPC", "Bimestre": "1" },
+{ "Escola": "Bicudo", "Aulas": "2ª", "Hora Inicio": "08:20", "Hora Fim": "09:10", "Num_semana": 4, "Dia_Semana": "QUA", "Disciplina": "Versionamento e mensageria", "Bimestre": "1" },
+{ "Escola": "Bicudo", "Aulas": "3ª", "Hora Inicio": "09:25", "Hora Fim": "10:15", "Num_semana": 4, "Dia_Semana": "QUA", "Disciplina": "Versionamento e mensageria", "Bimestre": "1" },
+{ "Escola": "Bicudo", "Aulas": "5ª", "Hora Inicio": "10:15", "Hora Fim": "11:05", "Num_semana": 4, "Dia_Semana": "QUA", "Disciplina": "Proj. Mult Disciplinar", "Bimestre": "1" },
+{ "Escola": "Reginato", "Aulas": "1ª", "Hora Inicio": "07:00", "Hora Fim": "07:50", "Num_semana": 5, "Dia_Semana": "QUI", "Disciplina": "Back-End", "Bimestre": "1" },
+{ "Escola": "Reginato", "Aulas": "2ª", "Hora Inicio": "07:50", "Hora Fim": "08:40", "Num_semana": 5, "Dia_Semana": "QUI", "Disciplina": "Back-End", "Bimestre": "1" },
+{ "Escola": "Reginato", "Aulas": "3ª ", "Hora Inicio": "08:40", "Hora Fim": "09:30", "Num_semana": 5, "Dia_Semana": "QUI", "Disciplina": "Inteligencia Artificial", "Bimestre": "1" },
+{ "Escola": "Amilcare", "Aulas": "8ª", "Hora Inicio": "14:50", "Hora Fim": "15:40", "Num_semana": 5, "Dia_Semana": "QUI", "Disciplina": "Front-End", "Bimestre": "1" },
+{ "Escola": "Amilcare", "Aulas": "9ª", "Hora Inicio": "15:40", "Hora Fim": "16:30", "Num_semana": 5, "Dia_Semana": "QUI", "Disciplina": "Front-End", "Bimestre": "1" },
+{ "Escola": "Reginato", "Aulas": "1ª", "Hora Inicio": "07:00", "Hora Fim": "07:50", "Num_semana": 6, "Dia_Semana": "SEX", "Disciplina": "Inteligencia Artificial", "Bimestre": "1" },
+{ "Escola": "Reginato", "Aulas": "2ª", "Hora Inicio": "07:50", "Hora Fim": "08:40", "Num_semana": 6, "Dia_Semana": "SEX", "Disciplina": "Inteligencia Artificial", "Bimestre": "1" },
+{ "Escola": "Reginato", "Aulas": "3ª ", "Hora Inicio": "08:40", "Hora Fim": "09:30", "Num_semana": 6, "Dia_Semana": "SEX", "Disciplina": "Back-End", "Bimestre": "1" },
+{ "Escola": "Amilcare", "Aulas": "6ª", "Hora Inicio": "12:55", "Hora Fim": "13:45", "Num_semana": 6, "Dia_Semana": "SEX", "Disciplina": "Front-Back", "Bimestre": "1" },
+{ "Escola": "Amilcare", "Aulas": "7ª", "Hora Inicio": "13:45", "Hora Fim": "14:35", "Num_semana": 6, "Dia_Semana": "SEX", "Disciplina": "Front-Back", "Bimestre": "1" }
+]  

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocolo Centauri</title>
+
+<style>
+:root{
+    --neon:#00f2ff;
+    --warning:#ffcc00;
+    --danger:#ff0055;
+    --bg:#050a10;
+}
+
+body{
+    background:var(--bg);
+    color:#e0e0e0;
+    font-family:'Courier New', monospace;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    margin:0;
+}
+
+#hud{
+    width:95%;
+    max-width:900px;
+    border:2px solid var(--neon);
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 20px rgba(0,242,255,.2);
+    background:rgba(5,10,16,.98);
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    border-bottom:1px solid var(--neon);
+    padding-bottom:10px;
+    margin-bottom:20px;
+}
+
+.progress-bar-bg{
+    background:#111;
+    height:6px;
+    margin-bottom:20px;
+}
+
+#progress-fill{
+    background:var(--neon);
+    height:100%;
+    width:0%;
+    transition:.4s;
+}
+
+#display-area{
+    min-height:220px;
+    background:rgba(0,242,255,.05);
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.theory-section{
+    display:none;
+    background:#121820;
+    border-left:4px solid var(--warning);
+    padding:15px;
+    margin-bottom:20px;
+    line-height:1.6;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    background:transparent;
+    color:var(--neon);
+    border:1px solid var(--neon);
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button:hover:not(:disabled){
+    background:var(--neon);
+    color:black;
+}
+
+button:disabled{
+    opacity:.4;
+}
+
+.btn-theory{
+    color:var(--warning);
+    border-color:var(--warning);
+}
+</style>
+</head>
+<body>
+
+<div id="hud">
+
+<div class="header">
+    <span>HP: <span id="hp-val">100</span>%</span>
+    <span>RECURSOS: <span id="gold-val">5000</span></span>
+    <span>FASE: <span id="lvl-txt">1/9</span></span>
+</div>
+
+<div class="progress-bar-bg">
+    <div id="progress-fill"></div>
+</div>
+
+<div id="display-area">
+    <h2>PROTOCOLO CENTAURI</h2>
+    <p>Aguardando missão.</p>
+</div>
+
+<div id="theory-box" class="theory-section">
+    <span id="theory-content"></span>
+</div>
+
+<div id="controls">
+    <button onclick="startGame()">INICIAR MISSÃO</button>
+</div>
+
+</div>
+
+<script>
+
+let hp = 100;
+let gold = 5000;
+let currentIdx = 0;
+
+const missions = [
+
+{
+title:"01: TEMPESTADE SOLAR",
+desc:"Sensores detectam interferência externa ameaçando os servidores orbitais.",
+theory:`<strong>MATRIZ SWOT</strong><br><br>
+Threats são ameaças externas negativas.<br><br>
+Exemplos reais:<br>
+• falha de fornecedor<br>
+• aumento de custos<br>
+• ataque externo<br>
+• mudança legal`,
+options:[
+{text:"Classificar como fator interno",correct:false,hp:-10,gold:0,feedback:"Erro de análise."},
+{text:"Classificar como ameaça externa",correct:true,hp:0,gold:0,feedback:"Análise correta."}
+]
+},
+
+{
+title:"02: FALHA INTERNA",
+desc:"Um módulo de memória apresenta defeito no núcleo principal.",
+theory:`<strong>FRAQUEZA</strong><br><br>
+Weaknesses são fatores internos negativos.<br><br>
+São elementos que dependem da estrutura da equipe ou sistema.`,
+options:[
+{text:"Fraqueza interna",correct:true,hp:0,gold:0,feedback:"Classificação correta."},
+{text:"Oportunidade externa",correct:false,hp:-10,gold:0,feedback:"Classificação incorreta."}
+]
+},
+
+{
+title:"03: NOVA TECNOLOGIA",
+desc:"Uma empresa oferece novo software de navegação orbital.",
+theory:`<strong>OPORTUNIDADE</strong><br><br>
+Opportunities são fatores externos positivos que podem melhorar o projeto.`,
+options:[
+{text:"Oportunidade",correct:true,hp:0,gold:200,feedback:"Boa decisão."},
+{text:"Ameaça",correct:false,hp:-10,gold:0,feedback:"Perda estratégica."}
+]
+},
+
+{
+title:"04: RISCO ENERGÉTICO",
+desc:"Sistema vital pode falhar em 12 horas.",
+theory:`<strong>MITIGAÇÃO</strong><br><br>
+Mitigar significa reduzir impacto ou probabilidade.<br><br>
+Todo risco exige ação preventiva.`,
+options:[
+{text:"Ignorar risco",correct:false,hp:-25,gold:0,feedback:"Falha crítica."},
+{text:"Acionar protocolo preventivo",correct:true,hp:0,gold:-500,feedback:"Risco reduzido."}
+]
+},
+
+{
+title:"05: ATRASO DE ENTREGA",
+desc:"Fornecedor lunar atrasou módulos.",
+theory:`<strong>PLANO DE AÇÃO</strong><br><br>
+Plano exige:<br>
+• ação<br>
+• responsável<br>
+• prazo`,
+options:[
+{text:"Redistribuir cronograma",correct:true,hp:0,gold:-300,feedback:"Mitigação aplicada."},
+{text:"Esperar sem agir",correct:false,hp:-15,gold:0,feedback:"Risco ampliado."}
+]
+},
+
+{
+title:"06: CUSTO EXTRA",
+desc:"Combustível aumentou 30%.",
+theory:`<strong>RISCO ORÇAMENTÁRIO</strong><br><br>
+Custos inesperados exigem revisão financeira.`,
+options:[
+{text:"Replanejar orçamento",correct:true,hp:0,gold:-700,feedback:"Controle mantido."},
+{text:"Ignorar orçamento",correct:false,hp:-20,gold:0,feedback:"Déficit gerado."}
+]
+},
+
+{
+title:"07: RETROSPECTIVA",
+desc:"A equipe precisa revisar entregas parciais.",
+theory:`<strong>RETROSPECTIVA</strong><br><br>
+Avalia:<br>
+• documentação<br>
+• prazo<br>
+• cooperação`,
+options:[
+{text:"Realizar revisão",correct:true,hp:0,gold:0,feedback:"Equipe alinhada."},
+{text:"Pular revisão",correct:false,hp:-10,gold:0,feedback:"Problemas ocultos."}
+]
+},
+
+{
+title:"08: CONFLITO DE EQUIPE",
+desc:"Dois setores divergem sobre prioridade.",
+theory:`<strong>COLABORAÇÃO</strong><br><br>
+Projetos exigem comunicação ativa e resolução de conflitos.`,
+options:[
+{text:"Medir prioridades e negociar",correct:true,hp:0,gold:0,feedback:"Conflito resolvido."},
+{text:"Ignorar conflito",correct:false,hp:-15,gold:0,feedback:"Equipe fragilizada."}
+]
+},
+
+{
+title:"09: RELATÓRIO FINAL",
+desc:"Conselho orbital avalia desempenho final.",
+theory:`<strong>AVALIAÇÃO FINAL</strong><br><br>
+São avaliados:<br>
+• qualidade<br>
+• inovação<br>
+• sustentabilidade`,
+options:[
+{text:"Entregar relatório completo",correct:true,hp:0,gold:500,feedback:"Missão concluída."},
+{text:"Entregar incompleto",correct:false,hp:-20,gold:0,feedback:"Falha final."}
+]
+}
+
+];
+
+function updateHUD(){
+    hp = Math.max(0,hp);
+    document.getElementById("hp-val").textContent = hp;
+    document.getElementById("gold-val").textContent = gold;
+    document.getElementById("lvl-txt").textContent = `${currentIdx+1}/${missions.length}`;
+    document.getElementById("progress-fill").style.width =
+        ((currentIdx+1)/missions.length*100)+"%";
+}
+
+function startGame(){
+    hp=100;
+    gold=5000;
+    currentIdx=0;
+    renderMission();
+}
+
+function renderMission(){
+
+    if(currentIdx>=missions.length){
+        victory();
+        return;
+    }
+
+    const m = missions[currentIdx];
+
+    document.getElementById("display-area").innerHTML=`
+        <h2>${m.title}</h2>
+        <p>${m.desc}</p>
+    `;
+
+    document.getElementById("theory-box").style.display="none";
+
+    document.getElementById("controls").innerHTML=`
+        <button class="btn-theory" onclick="openTheory()">MANUAL TÉCNICO</button>
+        <button id="opt0" onclick="choose(0)" disabled>${m.options[0].text}</button>
+        <button id="opt1" onclick="choose(1)" disabled>${m.options[1].text}</button>
+    `;
+
+    updateHUD();
+}
+
+function openTheory(){
+    document.getElementById("theory-content").innerHTML = missions[currentIdx].theory;
+    document.getElementById("theory-box").style.display="block";
+    document.getElementById("opt0").disabled=false;
+    document.getElementById("opt1").disabled=false;
+}
+
+function choose(i){
+
+    const c = missions[currentIdx].options[i];
+
+    hp += c.hp;
+    gold += c.gold;
+
+    updateHUD();
+
+    document.getElementById("display-area").innerHTML=`
+        <h2>${c.correct ? "SUCESSO" : "FALHA"}</h2>
+        <p>${c.feedback}</p>
+    `;
+
+    if(hp<=0){
+        gameOver();
+        return;
+    }
+
+    document.getElementById("controls").innerHTML=`
+        <button onclick="advance()">AVANÇAR</button>
+    `;
+}
+
+function advance(){
+    currentIdx++;
+    renderMission();
+}
+
+function gameOver(){
+    document.getElementById("display-area").innerHTML=`
+        <h2>MISSÃO ENCERRADA</h2>
+        <p>O projeto colapsou.</p>
+    `;
+    document.getElementById("controls").innerHTML=`
+        <button onclick="startGame()">REINICIAR</button>
+    `;
+}
+
+function victory(){
+    document.getElementById("display-area").innerHTML=`
+        <h2>MISSÃO CONCLUÍDA 🚀</h2>
+        <p>Você concluiu o protocolo de gestão de riscos com sucesso.</p>
+    `;
+    document.getElementById("controls").innerHTML=`
+        <button onclick="startGame()">JOGAR NOVAMENTE</button>
+    `;
+}
+
+</script>
+
+</body>
+</html>
