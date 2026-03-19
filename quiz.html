@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Inetz - Detalhada</title>
+    <style>
+        :root { --primary: #2563eb; --success: #16a34a; --wrong: #dc2626; --bg: #f1f5f9; --text: #1e293b; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: var(--text); }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        #quiz-screen, #final-screen { display: none; }
+        .login-box { text-align: center; padding: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
+        .question { margin-bottom: 40px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; }
+        .options { list-style: none; padding: 0; }
+        .options li { margin: 10px 0; padding: 12px; border: 2px solid #cbd5e1; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .options li.selected { border-color: var(--primary); background: #eff6ff; }
+        .options li.correct-reveal { background: #dcfce7; border-color: var(--success); font-weight: bold; }
+        .options li.wrong-reveal { background: #fee2e2; border-color: var(--wrong); }
+        button { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        .verify-btn { background: #64748b; width: auto; margin-bottom: 10px; }
+        #final-submit-btn { background: #0f172a; font-size: 1.2em; margin-top: 30px; display: none; }
+        .explanation { display: none; margin-top: 15px; padding: 15px; background: #f8fafc; border-left: 5px solid var(--primary); font-size: 0.95em; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="login-screen" class="login-box">
+        <h1>Avaliação Inetz</h1>
+        <input type="text" id="nome" placeholder="Nome Completo" required>
+        <input type="text" id="ra" placeholder="Seu RA" required>
+        <button onclick="startQuiz()">Iniciar Avaliação</button>
+    </div>
+
+    <div id="quiz-screen">
+        <h3 id="user-display"></h3>
+
+        <div class="question" id="q1" data-correct="[1,2]">
+            <p><strong>1. Sobre o modelo cliente servidor, podemos afirmar que:</strong></p>
+            <ul class="options"><li onclick="sel(this)">A comunicação é iniciada pelo servidor</li><li onclick="sel(this)">O servidor é responsável por servir dados aos clientes</li><li onclick="sel(this)">O cliente é quem consome recursos do servidor</li><li onclick="sel(this)">As respostas são originadas pelo cliente</li></ul>
+            <button class="verify-btn" onclick="check('q1')">Verificar</button>
+            <div class="explanation"><strong>Palavra:</strong> O cliente solicita e o servidor provê o recurso.</div>
+        </div>
+
+        <div class="question" id="q2" data-correct="[1,2]">
+            <p><strong>2. Um servidor de aplicação como uvicorn:</strong></p>
+            <ul class="options"><li onclick="sel(this)">Somente em produção</li><li onclick="sel(this)">Pode servir em loopback</li><li onclick="sel(this)">Pode servir em rede local</li></ul>
+            <button class="verify-btn" onclick="check('q2')">Verificar</button>
+            <div class="explanation"><strong>Palavra:</strong> Suporta interfaces locais e externas.</div>
+        </div>
+
+        <div class="question" id="q3" data-correct="[1]">
+            <p><strong>3. O que significa URL?</strong></p>
+            <ul class="options"><li onclick="sel(this)">Localizador de Recursos Locais</li><li onclick="sel(this)">Localizador Uniforme de Recursos</li><li onclick="sel(this)">Rotas Locais Unidas</li><li onclick="sel(this)">Uma Rota Local</li></ul>
+            <button class="verify-btn" onclick="check('q3')">Verificar</button>
+            <div class="explanation"><strong>Palavra:</strong> Uniform Resource Locator.</div>
+        </div>
+
+        <div class="question" id="q4" data-correct="[0,1,2,5]">
+            <p><strong>4. Qual dessas opções faz parte da URL:</strong></p>
+            <ul class="options"><li onclick="sel(this)">Caminho</li><li onclick="sel(this)">Protocolo</li><li onclick="sel(this)">Porta</li><li onclick="sel(this)">HTML</li><li onclick="sel(this)">Verbo</li><li onclick="sel(this)">Endereço</li></ul>
+            <button class="verify-btn" onclick="check('q4')">Verificar</button>
+            <div class="explanation"><strong>Palavra:</strong> Protocolo, Endereço, Porta e Caminho.</div>
+        </div>
+
+        <div class="question" id="q5" data-correct="[2]">
+            <p><strong>5. Qual desses campos NÃO faz parte do cabeçalho HTTP?</strong></p>
+            <ul class="options"><li onclick="sel(this)">Accept</li><li onclick="sel(this)">Content-Type</li><li onclick="sel(this)">Corpo</li><li onclick="sel(this)">Server</li></ul>
+            <button class="verify-btn" onclick="check('q5')">Verificar</button>
+            <div class="explanation"><strong>Palavra:</strong> O Corpo é separado do cabeçalho.</div>
+        </div>
+
+        <div class="question" id="q6" data-correct="[0]">
+            <p><strong>6. O verbo PUT tem a função de:</strong></p>
+            <ul class="options"><li onclick="sel(this)">Atualizar um recurso existente</li><li onclick="sel(this)">Solicitar um recurso</li><li onclick="sel(this)">Todas as anteriores</li><li onclick="sel(this)">Deletar um recurso</li></ul>
+            <button class="verify-btn" onclick="check('q6')">Verificar</button>
+            <div class="explanation"><strong>Palavra:</strong> PUT serve para atualizações completas.</div>
+        </div>
+
+        <div class="question" id="q7" data-correct="[2]">
+            <p><strong>7. Respostas com códigos da classe 500, significam:</strong></p>
+            <ul class="options"><li onclick="sel(this)">Erro no cliente</li><li onclick="sel(this)">Informacionais</li><li onclick="sel(this)">Erro no servidor</li><li onclick="sel(this)">Sucesso</li></ul>
+            <button class="verify-btn" onclick="check('q7')">Verificar</button>
+            <div class="explanation"><strong>Palavra:</strong> Erro interno do servidor.</div>
+        </div>
+
+        <div class="question" id="q8" data-correct="[0]">
+            <p><strong>8. O código 200 de resposta significa:</strong></p>
+            <ul class="options"><li onclick="sel(this)">OK</li><li onclick="sel(this)">Created</li><li onclick="sel(this)">Found</li><li onclick="sel(this)">Accepted</li></ul>
+            <button class="verify-btn" onclick="check('q8')">Verificar</button>
+            <div class="explanation"><strong>Palavra:</strong> Requisição processada com sucesso.</div>
+        </div>
+
+        <div class="question" id="q9" data-correct="[3]">
+            <p><strong>9. O código 422 de resposta significa:</strong></p>
+            <ul class="options"><li onclick="sel(this)">Bad Request</li><li onclick="sel(this)">Forbidden</li><li onclick="sel(this)">Not Found</li><li onclick="sel(this)">Unprocessable Entity</li><li onclick="sel(this)">OK</li></ul>
+            <button class="verify-btn" onclick="check('q9')">Verificar</button>
+            <div class="explanation"><strong>Palavra:</strong> Erro de validação de dados.</div>
+        </div>
+
+        <div class="question" id="q10" data-correct="[1,2]">
+            <p><strong>10. Qual a função do pydantic?</strong></p>
+            <ul class="options"><li onclick="sel(this)">Documentação</li><li onclick="sel(this)">Validar saída</li><li onclick="sel(this)">Validar entrada</li></ul>
+            <button class="verify-btn" onclick="check('q10')">Verificar</button>
+            <div class="explanation"><strong>Palavra:</strong> Validação rigorosa de dados.</div>
+        </div>
+
+        <button id="final-submit-btn" onclick="enviarTudo()">Enviar Avaliação</button>
+    </div>
+
+    <div id="final-screen" style="text-align: center;">
+        <h2 id="final-msg">Enviando dados...</h2>
+    </div>
+</div>
+
+<script>
+    let dadosFinal = { nome: "", ra: "", acertos: 0, respostas_aluno: {} };
+    let totalRespondidas = 0;
+
+    function startQuiz() {
+        dadosFinal.nome = document.getElementById('nome').value;
+        dadosFinal.ra = document.getElementById('ra').value;
+        if(!dadosFinal.nome || !dadosFinal.ra) return alert("Preencha os campos!");
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('quiz-screen').style.display = 'block';
+        document.getElementById('user-display').innerText = `Aluno: ${dadosFinal.nome}`;
+    }
+
+    function sel(el) {
+        if(el.parentElement.dataset.locked) return;
+        el.classList.toggle('selected');
+    }
+
+    function check(id) {
+        const qDiv = document.getElementById(id);
+        const opts = qDiv.querySelectorAll('li');
+        const correct = JSON.parse(qDiv.dataset.correct);
+        let marcadas = [];
+
+        opts.forEach((opt, i) => { if(opt.classList.contains('selected')) marcadas.push(i); });
+
+        // Salva exatamente o que o aluno marcou para enviar ao n8n
+        dadosFinal.respostas_aluno[id] = marcadas;
+
+        qDiv.dataset.locked = "true";
+        qDiv.querySelector('.verify-btn').disabled = true;
+
+        const acertouTudo = marcadas.length === correct.length && marcadas.every(v => correct.includes(v));
+        if(acertouTudo) dadosFinal.acertos++;
+
+        opts.forEach((opt, i) => {
+            if(correct.includes(i)) opt.classList.add('correct-reveal');
+            else if(opt.classList.contains('selected')) opt.classList.add('wrong-reveal');
+            opt.classList.remove('selected');
+        });
+
+        qDiv.querySelector('.explanation').style.display = 'block';
+        totalRespondidas++;
+        if(totalRespondidas === 10) document.getElementById('final-submit-btn').style.display = 'block';
+    }
+
+    async function enviarTudo() {
+        const btn = document.getElementById('final-submit-btn');
+        btn.disabled = true;
+        btn.innerText = "Registrando no n8n...";
+
+        const payload = {
+            ...dadosFinal,
+            key_alunos: "key_alunos",
+            timestamp: new Date().toISOString()
+        };
+
+        try {
+            await fetch('https://n8n.inetz.com.br/webhook-test/avalia', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            document.getElementById('quiz-screen').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'block';
+            document.getElementById('final-msg').innerHTML = `✅ Sucesso!<br>Acertos: ${payload.acertos}/10`;
+        } catch (e) {
+            alert("Erro de conexão.");
+            btn.disabled = false;
+        }
+    }
+</script>
+</body>
+</html>
