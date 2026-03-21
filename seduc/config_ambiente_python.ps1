@@ -33,7 +33,8 @@ $GH_PATH     = "C:\Users\Docker\AppData\Local\github\" # Onde você descompactou
 
 # Copia o arquivo gh_2.88.1_windows_amd64.zip do git para posterior descompactação
 # .zip é obrigatorio pelas politicas de segurança do github/wget
-wget -O $env:USERPROFILE+"/ghzip.zip"+ "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip"
+#wget -O $env:USERPROFILE+"/ghzip.zip"+ "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip"
+Invoke-WebRequest -Uri "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip" -OutFile "$env:USERPROFILE\ghzip.zip"
 #Expand-Archive -Path $env:USERPROFILE+"/ghzip.zip  -DestinationPath "+ .$env:USERPROFILE+"/gh/"
 #cd ..
 #rm *.zip
