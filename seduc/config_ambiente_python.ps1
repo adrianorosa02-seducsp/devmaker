@@ -1,4 +1,4 @@
-Write-Host "`n🚀 Iniciando definicoes de Variaveis" -ForegroundColor Cyan
+Write-Host "`Iniciando definicoes de Variaveis" -ForegroundColor Cyan
 # 1. Defina os caminhos das suas ferramentas (Ajuste conforme sua realidade)
 
 $PYTHON_PATH = "C:\Users\Docker\AppData\Local\Python\pythoncore-3.14-64\"
