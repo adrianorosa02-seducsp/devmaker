@@ -27,15 +27,22 @@ Write-Host "`n🚀 Ambiente configurado! Reinicie o terminal para aplicar." -For
 ## Laboratorio realizado em sala de aula: Reginado juntamnete com o
 ## Aluno Straitto
 # Variavel onde estará o python (Deve ser ajustada conforme infraestrutura)
-$PYTHON_PATH = "C:\Users\Docker\AppData\Local\Python\pythoncore-3.14-64\"
+#$PYTHON_PATH = "C:\Users\Docker\AppData\Local\Python\pythoncore-3.14-64\"
 # Variavel onde estará o GH (Deve ser ajustada conforme infraestrutura)
-$GH_PATH     = "C:\Users\Docker\AppData\Local\github\" # Onde você descompactou o gh.exe
+#$GH_PATH     = "C:\Users\Docker\AppData\Local\github\" # Onde você descompactou o gh.exe
 
 # Copia o arquivo gh_2.88.1_windows_amd64.zip do git para posterior descompactação
 # .zip é obrigatorio pelas politicas de segurança do github/wget
 #wget -O $env:USERPROFILE+"/ghzip.zip"+ "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip"
-Invoke-WebRequest -Uri "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip" -OutFile "$env:USERPROFILE\ghzip.zip"
-#Expand-Archive -Path $env:USERPROFILE+"/ghzip.zip  -DestinationPath "+ .$env:USERPROFILE+"/gh/"
+# 1. Define o caminho do arquivo
+$zipPath = "$env:USERPROFILE\ghzip.zip"
+$destPath = "$env:USERPROFILE\gh\"
+#Invoke-WebRequest -Uri "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip" -OutFile "$env:USERPROFILE\ghzip.zip"
+Invoke-WebRequest -Uri "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip" -OutFile $zipPath
+Expand-Archive -Path $zipPath -DestinationPath $destPath -Force
+Remove-Item -Path $zipPath -Force
+
+Write-Host "Instalação concluída e arquivos temporários removidos!" -ForegroundColor Green
 #cd ..
 #rm *.zip
 #[Environment]::GetEnvironmentVariable("Path", "User") + ";C:\Program Files\Python313"
