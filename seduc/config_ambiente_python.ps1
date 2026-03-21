@@ -37,12 +37,29 @@ Write-Host "`n🚀 Ambiente configurado! Reinicie o terminal para aplicar." -For
 # 1. Define o caminho do arquivo
 $zipPath = "$env:USERPROFILE\ghzip.zip"
 $destPath = "$env:USERPROFILE\gh\"
-Invoke-WebRequest -Uri "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip" -OutFile "$env:USERPROFILE\ghzip.zip"
-#Invoke-WebRequest -Uri "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip" -OutFile $zipPath
-Expand-Archive -Path $zipPath -DestinationPath $destPath -Force
-Remove-Item -Path $zipPath -Force
+#Invoke-WebRequest -Uri "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip" -OutFile "$env:USERPROFILE\ghzip.zip"
+
+#Expand-Archive -Path $zipPath -DestinationPath $destPath -Force
+#Remove-Item -Path $zipPath -Force
 
 Write-Host "Instalação concluída e arquivos temporários removidos!" -ForegroundColor Green
+# 1. Define o caminho da pasta bin
+$ghBinPath = "$env:USERPROFILE\gh\bin"
+
+# 2. Captura o PATH atual do Usuário (não o do Sistema, por segurança)
+$oldPath = [Environment]::GetEnvironmentVariable("Path", "User")
+
+# 3. Verifica se o caminho já existe no PATH para não duplicar
+if ($oldPath -notlike "*$ghBinPath*") {
+    $newPath = "$oldPath;$ghBinPath"
+    [Environment]::SetEnvironmentVariable("Path", $newPath, "User")
+    Write-Host "Sucesso! O PATH foi atualizado." -ForegroundColor Green
+} else {
+    Write-Host "O caminho já consta no PATH." -ForegroundColor Yellow
+}
+
+# 4. Atualiza a sessão atual do terminal para reconhecer o comando IMEDIATAMENTE
+$env:Path = [Environment]::GetEnvironmentVariable("Path", "User")
 #cd ..
 #rm *.zip
 #[Environment]::GetEnvironmentVariable("Path", "User") + ";C:\Program Files\Python313"
