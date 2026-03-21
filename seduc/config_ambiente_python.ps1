@@ -37,8 +37,8 @@ Write-Host "`n🚀 Ambiente configurado! Reinicie o terminal para aplicar." -For
 # 1. Define o caminho do arquivo
 $zipPath = "$env:USERPROFILE\ghzip.zip"
 $destPath = "$env:USERPROFILE\gh\"
-#Invoke-WebRequest -Uri "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip" -OutFile "$env:USERPROFILE\ghzip.zip"
-Invoke-WebRequest -Uri "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip" -OutFile $zipPath
+Invoke-WebRequest -Uri "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip" -OutFile "$env:USERPROFILE\ghzip.zip"
+#Invoke-WebRequest -Uri "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip" -OutFile $zipPath
 Expand-Archive -Path $zipPath -DestinationPath $destPath -Force
 Remove-Item -Path $zipPath -Force
 
