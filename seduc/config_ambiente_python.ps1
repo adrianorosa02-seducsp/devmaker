@@ -58,7 +58,26 @@ if ($oldPath -notlike "*$ghBinPath*") {
     Write-Host "O caminho já consta no PATH." -ForegroundColor Yellow
 }
 
-# 4. Atualiza a sessão atual do terminal para reconhecer o comando IMEDIATAMENTE
+# Define os caminhos reais (Base e Scripts)
+$pythonHome = "C:\Users\Docker\AppData\Local\Python\pythoncore-3.14-64"
+$pythonScripts = "$pythonHome\Scripts"
+
+# Captura o PATH atual do Usuário
+$oldPath = [Environment]::GetEnvironmentVariable("Path", "User")
+
+# Monta o novo PATH colocando o Python NO INÍCIO (Prioridade total)
+# Isso garante que o Windows encontre este Python antes dos links da AppData/Local/Microsoft/WindowsApps
+$newPath = "$pythonHome;$pythonScripts;$oldPath"
+
+# Aplica permanentemente no Registro do Windows
+[Environment]::SetEnvironmentVariable("Path", $newPath, "User")
+
+# Atualiza a sessão atual do terminal
+$env:Path = [Environment]::GetEnvironmentVariable("Path", "User")
+
+Write-Host "Sucesso! Python 3.14 e Scripts priorizados no PATH." -ForegroundColor Green
+
+
 $env:Path = [Environment]::GetEnvironmentVariable("Path", "User")
 #cd ..
 #rm *.zip
