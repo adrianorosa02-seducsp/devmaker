@@ -1,4 +1,4 @@
-Write-Host "`n🚀 Iniciando definições de Variaveis" -ForegroundColor Cyan
+Write-Host "`n🚀 Iniciando definicoes de Variaveis" -ForegroundColor Cyan
 # 1. Defina os caminhos das suas ferramentas (Ajuste conforme sua realidade)
 
 $PYTHON_PATH = "C:\Users\Docker\AppData\Local\Python\pythoncore-3.14-64\"
@@ -33,8 +33,8 @@ $GH_PATH     = "C:\Users\Docker\AppData\Local\github\" # Onde você descompactou
 
 # Copia o arquivo gh_2.88.1_windows_amd64.zip do git para posterior descompactação
 # .zip é obrigatorio pelas politicas de segurança do github/wget
-wget -O $env:USERPROFILE+"/ghzip.zip https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip"
-Expand-Archive -Path $env:USERPROFILE+"/ghzip.zip  -DestinationPath "+ .$env:USERPROFILE+"/gh/"
+wget -O $env:USERPROFILE+"/ghzip.zip"+ "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip"
+#Expand-Archive -Path $env:USERPROFILE+"/ghzip.zip  -DestinationPath "+ .$env:USERPROFILE+"/gh/"
 #cd ..
 #rm *.zip
 #[Environment]::GetEnvironmentVariable("Path", "User") + ";C:\Program Files\Python313"
