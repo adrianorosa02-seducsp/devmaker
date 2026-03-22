@@ -1,0 +1,15 @@
+name: Deploy Estático
+on: [push]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publicar via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "."
+          target: "/var/inetpub/wwwroot/projetos/${{ vars.ALUNO_RA }}/${{ github.event.repository.name }}"
