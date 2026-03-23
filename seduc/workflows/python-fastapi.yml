@@ -1,34 +1,40 @@
-name: Deploy Inetz Lab
-on: [push]
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # Silencia os avisos de Node.js 20 para o futuro (Junho/2026)
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Código
+        uses: actions/checkout@v4
 
-      - name: 📂 Sincronizar Arquivos (SCP)
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ vars.SSH_HOST }}
-          username: ${{ vars.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ vars.SSH_PORT }}
-          source: "."
-          target: "/var/inetpub/wwwroot/projetos/lab${{ vars.ALUNO_NUM }}"
-
-      - name: 🚀 Refresh no Docker Swarm
-        uses: appleboy/ssh-action@v1.0.3
+      # --- PASSO 1: Criar a pasta se não existir ---
+      - name: Preparar Servidor (Pasta do Lab)
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ vars.SSH_HOST }}
           username: ${{ vars.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ vars.SSH_PORT }}
           script: |
-            # Força o Swarm a reiniciar o serviço com os novos arquivos mapeados
-            # O nome do serviço segue o padrão: NomeDaStack_NomeDoServico
-            docker service update --force inetz-labs_lab${{ vars.ALUNO_NUM }}
+            sudo mkdir -p /var/inetpub/wwwroot/lab${{ vars.ALUNO_NUM }}
+            sudo chown -R ${{ vars.SSH_USER }}:${{ vars.SSH_USER }} /var/inetpub/wwwroot/lab${{ vars.ALUNO_NUM }}
+
+      # --- PASSO 2: Enviar os arquivos ---
+      - name: Deploy via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ vars.SSH_PORT }}
+          source: "."
+          target: "/var/inetpub/wwwroot/lab${{ vars.ALUNO_NUM }}"
+
+      # --- PASSO 3: Reiniciar o Serviço ---
+      - name: Atualizar Docker Service
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ vars.SSH_PORT }}
+          script: |
+            docker service update --force labs_lab${{ vars.ALUNO_NUM }}

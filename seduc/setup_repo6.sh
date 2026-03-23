@@ -20,6 +20,30 @@ NC='\033[0m'
 clear
 echo -e "${CYAN}🚀 INETZ - CONFIGURADOR DE AMBIENTE 2026${NC}"
 
+# --- NOVO BLOCO DE DECISÃO ---
+echo -e "${YELLOW}🛠️  MODO DE OPERAÇÃO:${NC}"
+echo "1) Setup de Aluno (Novo Projeto/RA)"
+echo "2) Manutenção/Troca de Máquina (Configurar Ambiente Base)"
+read -p "Escolha [1-2]: " MODO_OPT </dev/tty
+
+if [ "$MODO_OPT" == "2" ]; then
+    echo -e "\n${CYAN}🔄 Configurando Ambiente Base...${NC}"
+    # Garante que a pasta de projetos do sistema existe
+    sudo mkdir -p /var/inetpub/wwwroot/projetos
+    sudo chown -R $USER:$USER /var/inetpub/wwwroot/projetos
+    
+    # Verifica se o GH CLI está logado
+    if ! gh auth status &>/dev/null; then
+        echo -e "${RED}❌ Erro: Você precisa estar logado no GitHub (gh auth login)${NC}"
+        exit 1
+    fi
+    echo -e "${GREEN}✅ Ambiente base validado!${NC}"
+    # Se for só manutenção, você pode decidir se encerra ou segue
+    read -p "Deseja prosseguir para o setup de um aluno específico? (s/n): " PROSSEGUIR </dev/tty
+    [[ "$PROSSEGUIR" != "s" ]] && exit 0
+fi
+# --- FIM DO BLOCO DE DECISÃO ---
+
 # 1. Identidade e Slot do Lab
 read -p "👉 Digite seu RA: " RAW_RA </dev/tty
 ALUNO_RA=$(echo "$RAW_RA" | tr -d ' ')
