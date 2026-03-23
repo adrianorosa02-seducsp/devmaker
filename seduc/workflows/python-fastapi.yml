@@ -46,4 +46,4 @@ jobs:
           port: ${{ vars.SSH_PORT }}
           script: |
             # Aqui usamos o nome da stack (ajuste para 'labs' ou o nome que definiu)
-            docker service update --force labs_lab${{ vars.ALUNO_NUM }}
+            docker service update --force labs_python_lab${{ vars.ALUNO_NUM }}
