@@ -1,0 +1,726 @@
+version: '3.8'
+
+services:
+  lab01:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab01:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab01.rule=Host(`lab01.inetz.com.br`)"
+        - "traefik.http.routers.lab01.entrypoints=web"
+        - "traefik.http.services.lab01.loadbalancer.server.port=8000"
+
+  lab02:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab02:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab02.rule=Host(`lab02.inetz.com.br`)"
+        - "traefik.http.routers.lab02.entrypoints=web"
+        - "traefik.http.services.lab02.loadbalancer.server.port=8000"
+
+  lab03:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab03:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab03.rule=Host(`lab03.inetz.com.br`)"
+        - "traefik.http.routers.lab03.entrypoints=web"
+        - "traefik.http.services.lab03.loadbalancer.server.port=8000"
+
+  lab04:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab04:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab04.rule=Host(`lab04.inetz.com.br`)"
+        - "traefik.http.routers.lab04.entrypoints=web"
+        - "traefik.http.services.lab04.loadbalancer.server.port=8000"
+
+  lab05:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab05:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab05.rule=Host(`lab05.inetz.com.br`)"
+        - "traefik.http.routers.lab05.entrypoints=web"
+        - "traefik.http.services.lab05.loadbalancer.server.port=8000"
+
+  lab06:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab06:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab06.rule=Host(`lab06.inetz.com.br`)"
+        - "traefik.http.routers.lab06.entrypoints=web"
+        - "traefik.http.services.lab06.loadbalancer.server.port=8000"
+
+  lab07:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab07:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab07.rule=Host(`lab07.inetz.com.br`)"
+        - "traefik.http.routers.lab07.entrypoints=web"
+        - "traefik.http.services.lab07.loadbalancer.server.port=8000"
+
+  lab08:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab08:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab08.rule=Host(`lab08.inetz.com.br`)"
+        - "traefik.http.routers.lab08.entrypoints=web"
+        - "traefik.http.services.lab08.loadbalancer.server.port=8000"
+
+  lab09:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab09:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab09.rule=Host(`lab09.inetz.com.br`)"
+        - "traefik.http.routers.lab09.entrypoints=web"
+        - "traefik.http.services.lab09.loadbalancer.server.port=8000"
+
+  lab10:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab10:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab10.rule=Host(`lab10.inetz.com.br`)"
+        - "traefik.http.routers.lab10.entrypoints=web"
+        - "traefik.http.services.lab10.loadbalancer.server.port=8000"
+
+  lab11:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab11:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab11.rule=Host(`lab11.inetz.com.br`)"
+        - "traefik.http.routers.lab11.entrypoints=web"
+        - "traefik.http.services.lab11.loadbalancer.server.port=8000"
+
+  lab12:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab12:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab12.rule=Host(`lab12.inetz.com.br`)"
+        - "traefik.http.routers.lab12.entrypoints=web"
+        - "traefik.http.services.lab12.loadbalancer.server.port=8000"
+
+  lab13:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab13:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab13.rule=Host(`lab13.inetz.com.br`)"
+        - "traefik.http.routers.lab13.entrypoints=web"
+        - "traefik.http.services.lab13.loadbalancer.server.port=8000"
+
+  lab14:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab14:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab14.rule=Host(`lab14.inetz.com.br`)"
+        - "traefik.http.routers.lab14.entrypoints=web"
+        - "traefik.http.services.lab14.loadbalancer.server.port=8000"
+
+  lab15:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab15:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab15.rule=Host(`lab15.inetz.com.br`)"
+        - "traefik.http.routers.lab15.entrypoints=web"
+        - "traefik.http.services.lab15.loadbalancer.server.port=8000"
+
+  lab16:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab16:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab16.rule=Host(`lab16.inetz.com.br`)"
+        - "traefik.http.routers.lab16.entrypoints=web"
+        - "traefik.http.services.lab16.loadbalancer.server.port=8000"
+
+  lab17:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab17:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab17.rule=Host(`lab17.inetz.com.br`)"
+        - "traefik.http.routers.lab17.entrypoints=web"
+        - "traefik.http.services.lab17.loadbalancer.server.port=8000"
+
+  lab18:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab18:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab18.rule=Host(`lab18.inetz.com.br`)"
+        - "traefik.http.routers.lab18.entrypoints=web"
+        - "traefik.http.services.lab18.loadbalancer.server.port=8000"
+
+  lab19:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab19:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab19.rule=Host(`lab19.inetz.com.br`)"
+        - "traefik.http.routers.lab19.entrypoints=web"
+        - "traefik.http.services.lab19.loadbalancer.server.port=8000"
+
+  lab20:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab20:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab20.rule=Host(`lab20.inetz.com.br`)"
+        - "traefik.http.routers.lab20.entrypoints=web"
+        - "traefik.http.services.lab20.loadbalancer.server.port=8000"
+
+  lab21:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab21:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab21.rule=Host(`lab21.inetz.com.br`)"
+        - "traefik.http.routers.lab21.entrypoints=web"
+        - "traefik.http.services.lab21.loadbalancer.server.port=8000"
+
+  lab22:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab22:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab22.rule=Host(`lab22.inetz.com.br`)"
+        - "traefik.http.routers.lab22.entrypoints=web"
+        - "traefik.http.services.lab22.loadbalancer.server.port=8000"
+
+  lab23:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab23:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab23.rule=Host(`lab23.inetz.com.br`)"
+        - "traefik.http.routers.lab23.entrypoints=web"
+        - "traefik.http.services.lab23.loadbalancer.server.port=8000"
+
+  lab24:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab24:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab24.rule=Host(`lab24.inetz.com.br`)"
+        - "traefik.http.routers.lab24.entrypoints=web"
+        - "traefik.http.services.lab24.loadbalancer.server.port=8000"
+
+  lab25:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab25:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab25.rule=Host(`lab25.inetz.com.br`)"
+        - "traefik.http.routers.lab25.entrypoints=web"
+        - "traefik.http.services.lab25.loadbalancer.server.port=8000"
+
+  lab26:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab26:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab26.rule=Host(`lab26.inetz.com.br`)"
+        - "traefik.http.routers.lab26.entrypoints=web"
+        - "traefik.http.services.lab26.loadbalancer.server.port=8000"
+
+  lab27:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab27:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab27.rule=Host(`lab27.inetz.com.br`)"
+        - "traefik.http.routers.lab27.entrypoints=web"
+        - "traefik.http.services.lab27.loadbalancer.server.port=8000"
+
+  lab28:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab28:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab28.rule=Host(`lab28.inetz.com.br`)"
+        - "traefik.http.routers.lab28.entrypoints=web"
+        - "traefik.http.services.lab28.loadbalancer.server.port=8000"
+
+  lab29:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab29:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab29.rule=Host(`lab29.inetz.com.br`)"
+        - "traefik.http.routers.lab29.entrypoints=web"
+        - "traefik.http.services.lab29.loadbalancer.server.port=8000"
+
+  lab30:
+    image: python:3.11-slim
+    command: >
+      sh -c "pip install poetry gunicorn flask && 
+             cd /app && 
+             poetry install --no-root || true &&
+             gunicorn -b 0.0.0.0:8000 main:app"
+    volumes:
+      - /var/inetpub/wwwroot/projetos/lab30:/app
+    networks:
+      - dockermaster
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.lab30.rule=Host(`lab30.inetz.com.br`)"
+        - "traefik.http.routers.lab30.entrypoints=web"
+        - "traefik.http.services.lab30.loadbalancer.server.port=8000"
+
+networks:
+  dockermaster:
+    external: true

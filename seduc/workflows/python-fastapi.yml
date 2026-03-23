@@ -1,38 +1,34 @@
-name: Deploy Python Web
+name: Deploy Inetz Lab
 on: [push]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Silencia os avisos de Node.js 20 para o futuro (Junho/2026)
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Enviar Código via SCP
+      - name: 📂 Sincronizar Arquivos (SCP)
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ vars.SSH_HOST }}
           username: ${{ vars.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          port: ${{ vars.SSH_PORT }}
           source: "."
-          # Ajustado para cair direto na pasta labXX que o Nginx está monitorando
           target: "/var/inetpub/wwwroot/projetos/lab${{ vars.ALUNO_NUM }}"
 
-      - name: Poetry & PM2 Restart via SSH
+      - name: 🚀 Refresh no Docker Swarm
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ vars.SSH_HOST }}
           username: ${{ vars.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          port: ${{ vars.SSH_PORT }}
           script: |
-            # 1. Entrar na pasta do Lab
-            cd /var/inetpub/wwwroot/projetos/lab${{ vars.ALUNO_NUM }}
-            
-            # 2. Configurar Path e Instalar dependências
-            export PATH="$HOME/.local/bin:$PATH"
-            poetry install --only main
-            
-            # 3. Restart Inteligente no PM2
-            # Usamos a porta 80XX baseada no número do lab
-            pm2 delete "lab-${{ vars.ALUNO_NUM }}" || true
-            pm2 start "poetry run gunicorn -b 0.0.0.0:80${{ vars.ALUNO_NUM }} main:app" --name "lab-${{ vars.ALUNO_NUM }}"
-            pm2 save
+            # Força o Swarm a reiniciar o serviço com os novos arquivos mapeados
+            # O nome do serviço segue o padrão: NomeDaStack_NomeDoServico
+            docker service update --force inetz-labs_lab${{ vars.ALUNO_NUM }}

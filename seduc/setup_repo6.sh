@@ -28,7 +28,7 @@ read -p "👉 Seu número na chamada (01-30): " RAW_NUM </dev/tty
 ALUNO_NUM=$(printf "%02d" $((10#$RAW_NUM)))
 
 # 2. Garantia de Diretório Local
-BASE_DIR="$HOME/projetos_inetz"
+BASE_DIR="$HOME/projetos"
 mkdir -p "$BASE_DIR" && cd "$BASE_DIR" || exit
 
 # 3. Configuração SSH Personalizada por RA
