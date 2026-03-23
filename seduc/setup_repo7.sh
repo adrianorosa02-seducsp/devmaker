@@ -73,7 +73,7 @@ case $MODO_PRINCIPAL in
         esac
 
         read -p "👉 Nome do Repositório: " REPO_NAME </dev/tty
-        ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "sudo mkdir -p /var/inetpub/wwwroot/lab$ALUNO_NUM && sudo chown -R $SSH_USER:$SSH_USER /var/inetpub/wwwroot/lab$ALUNO_NUM"
+        
         gh repo create "$REPO_NAME" --private --clone
         cd "$REPO_NAME" || exit
         

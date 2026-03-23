@@ -1,3 +1,10 @@
+name: Deploy Inetz Lab
+
+# --- O GATILHO QUE ESTAVA FALTANDO ---
+on:
+  push:
+    branches: [ main ]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -5,8 +12,8 @@ jobs:
       - name: Checkout Código
         uses: actions/checkout@v4
 
-      # --- PASSO 1: Criar a pasta se não existir ---
-      - name: Preparar Servidor (Pasta do Lab)
+      # 1. PREPARAR SERVIDOR (O segredo do mkdir -p)
+      - name: Preparar Diretorio no Servidor
         uses: appleboy/ssh-action@master
         with:
           host: ${{ vars.SSH_HOST }}
@@ -14,11 +21,12 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ vars.SSH_PORT }}
           script: |
+            # Cria a pasta se não existir, sem dar erro se já existir
             sudo mkdir -p /var/inetpub/wwwroot/lab${{ vars.ALUNO_NUM }}
             sudo chown -R ${{ vars.SSH_USER }}:${{ vars.SSH_USER }} /var/inetpub/wwwroot/lab${{ vars.ALUNO_NUM }}
 
-      # --- PASSO 2: Enviar os arquivos ---
-      - name: Deploy via SCP
+      # 2. ENVIAR ARQUIVOS VIA SCP
+      - name: Copiar arquivos para o Lab
         uses: appleboy/scp-action@master
         with:
           host: ${{ vars.SSH_HOST }}
@@ -28,8 +36,8 @@ jobs:
           source: "."
           target: "/var/inetpub/wwwroot/lab${{ vars.ALUNO_NUM }}"
 
-      # --- PASSO 3: Reiniciar o Serviço ---
-      - name: Atualizar Docker Service
+      # 3. REINICIAR O SERVIÇO NO SWARM
+      - name: Atualizar Servico Docker
         uses: appleboy/ssh-action@master
         with:
           host: ${{ vars.SSH_HOST }}
@@ -37,4 +45,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ vars.SSH_PORT }}
           script: |
+            # Aqui usamos o nome da stack (ajuste para 'labs' ou o nome que definiu)
             docker service update --force labs_lab${{ vars.ALUNO_NUM }}
