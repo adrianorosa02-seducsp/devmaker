@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Inetz - Versionamento de Código</title>
+    <style>
+        :root { --primary: #2563eb; --success: #16a34a; --wrong: #dc2626; --bg: #f1f5f9; --text: #1e293b; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: var(--text); }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        #quiz-screen, #final-screen { display: none; }
+        .login-box { text-align: center; padding: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
+        .question { margin-bottom: 30px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; transition: 0.3s; }
+        .options { list-style: none; padding: 0; }
+        .options li { margin: 8px 0; padding: 12px; border: 2px solid #cbd5e1; border-radius: 6px; cursor: pointer; }
+        .options li.selected { border-color: var(--primary); background: #eff6ff; }
+        .options li.correct-reveal { background: #dcfce7; border-color: var(--success); font-weight: bold; }
+        .options li.wrong-reveal { background: #fee2e2; border-color: var(--wrong); }
+        button { background: var(--primary); color: white; border: none; padding: 15px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
+        button:disabled { background: #cbd5e1; cursor: not-allowed; }
+        .verify-btn { background: #64748b; width: auto; margin-top: 10px; }
+        .explanation { display: none; margin-top: 15px; padding: 15px; background: #f8fafc; border-left: 5px solid var(--primary); }
+        .week-ref { color: var(--wrong); font-weight: bold; }
+        .progresso-bar { font-weight: bold; color: var(--primary); margin-bottom: 20px; display: block; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="login-screen" class="login-box">
+        <h1>Avaliação: Versionamento de Código</h1>
+        <p>Fundamentos, Ferramentas e GitHub</p>
+        <input type="text" id="nome" placeholder="Nome Completo">
+        <input type="text" id="ra" placeholder="RA">
+        <button onclick="startQuiz()">Iniciar Prova (30 Questões)</button>
+    </div>
+
+    <div id="quiz-screen">
+        <span class="progresso-bar" id="progresso">Respondidas: 0/30</span>
+        <div id="questions-container"></div>
+        <button id="final-submit-btn" disabled onclick="enviarTudo()" style="margin-top:20px; background:#0f172a;">FINALIZAR E ENVIAR RESULTADOS</button>
+    </div>
+
+    <div id="final-screen" style="text-align: center;">
+        <h2 id="final-msg">Processando envio...</h2>
+    </div>
+</div>
+
+<script>
+    const questionsData = [
+        // SEMANA 1 (S1) - Fundamentos
+        { id: "q1", week: "S1", q: "O que é versionamento de código?", opts: ["Salvar arquivos em pastas numeradas manualmente", "Sistema que registra mudanças em arquivos ao longo do tempo", "Um antivírus para códigos-fonte"], correct: [1] },
+        { id: "q2", week: "S1", q: "Qual a importância do histórico no versionamento?", opts: ["Apenas para ocupar espaço no servidor", "Permite rastrear quem fez o que e reverter erros", "Nenhuma, o importante é a versão atual"], correct: [1] },
+        { id: "q3", week: "S1", q: "O que é um repositório?", opts: ["Local onde o código e seu histórico ficam armazenados", "O navegador usado para programar", "Um tipo de erro de compilação"], correct: [0] },
+        { id: "q4", week: "S1", q: "O que caracteriza o trabalho colaborativo no Git?", opts: ["Várias pessoas editando o mesmo arquivo físico via TeamViewer", "Múltiplos desenvolvedores trabalhando em ramos (branches) diferentes", "Apenas uma pessoa pode mexer no código por vez"], correct: [1] },
+        { id: "q5", week: "S1", q: "O que acontece ao 'Reverter' uma alteração?", opts: ["O arquivo é deletado permanentemente", "O sistema volta para um estado anterior preservando o histórico", "O computador é formatado"], correct: [1] },
+        { id: "q6", week: "S1", q: "Versionamento ajuda na manutenção de software?", opts: ["Sim, facilita encontrar bugs introduzidos recentemente", "Não, apenas atrapalha a entrega rápida", "Somente em projetos de uma pessoa só"], correct: [0] },
+        { id: "q7", week: "S1", q: "O que é um 'Commit'?", opts: ["Um comentário no código", "Um registro fotográfico (snapshot) do código num momento", "Uma mensagem de erro"], correct: [1] },
+        { id: "q8", week: "S1", q: "Sem versionamento, como as equipes costumam sofrer?", opts: ["Com excesso de café", "Com perda de código e conflitos de arquivos", "Com excesso de velocidade na internet"], correct: [1] },
+        { id: "q9", week: "S1", q: "O rastreamento de modificações permite saber:", opts: ["O CPF do programador", "Data, autor e o que foi alterado", "O preço do software"], correct: [1] },
+        { id: "q10", week: "S1", q: "O Git é um sistema de versionamento:", opts: ["Centralizado", "Distribuído", "Sequencial"], correct: [1] },
+
+        // SEMANA 2 (S2) - Ferramentas
+        { id: "q11", week: "S2", q: "Qual a principal diferença entre Git e GitHub?", opts: ["São a mesma coisa", "Git é a ferramenta local, GitHub é o serviço de hospedagem web", "Git é para Windows e GitHub para Linux"], correct: [1] },
+        { id: "q12", week: "S2", q: "Qual ferramenta é conhecida pela maior comunidade Open Source?", opts: ["Bitbucket", "GitLab", "GitHub"], correct: [2] },
+        { id: "q13", week: "S2", q: "Sobre repositórios PRIVADOS, é correto afirmar:", opts: ["Qualquer pessoa na internet pode ver", "Apenas usuários autorizados têm acesso ao código", "São usados apenas para projetos ilegais"], correct: [1] },
+        { id: "q14", week: "S2", q: "O GitLab se destaca por:", opts: ["Não ter interface gráfica", "Fortes ferramentas integradas de CI/CD", "Ser a única ferramenta paga do mercado"], correct: [1] },
+        { id: "q15", week: "S2", q: "Qual o limite de usuários gratuitos no plano standard do Bitbucket?", opts: ["Ilimitado", "5 usuários", "100 usuários"], correct: [1] },
+        { id: "q16", week: "S2", q: "O que deve ser evitado em um repositório PÚBLICO?", opts: ["Comentários em português", "Senhas e chaves de API", "Arquivos .html"], correct: [1] },
+        { id: "q17", week: "S2", q: "Qual ferramenta pertence à Atlassian?", opts: ["GitHub", "GitLab", "Bitbucket"], correct: [2] },
+        { id: "q18", week: "S2", q: "O arquivo .gitignore serve para:", opts: ["Deletar o projeto", "Ignorar arquivos que não devem subir para o servidor", "Mudar a cor do terminal"], correct: [1] },
+        { id: "q19", week: "S2", q: "Qual ferramenta é preferível para empresas que buscam 'Self-hosting' fácil?", opts: ["GitLab", "GitHub", "Cloudflare"], correct: [0] },
+        { id: "q20", week: "S2", q: "O que é 'Code Review'?", opts: ["Um software que escreve código sozinho", "Revisão do código por outro colega antes do merge", "Formatação automática de texto"], correct: [1] },
+
+        // SEMANA 3 (S3) - GitHub na Prática
+        { id: "q21", week: "S3", q: "Como se chama o arquivo de apresentação do projeto no GitHub?", opts: ["INDEX.txt", "README.md", "START.exe"], correct: [1] },
+        { id: "q22", week: "S3", q: "Para que serve o botão 'Commit changes' na interface web?", opts: ["Para cancelar as mudanças", "Para salvar as alterações no histórico do repositório", "Para baixar o projeto"], correct: [1] },
+        { id: "q23", week: "S3", q: "O que é o 'Branch main'?", opts: ["Um erro do sistema", "A ramificação principal do projeto", "Um usuário administrador"], correct: [1] },
+        { id: "q24", week: "S3", q: "Para desfazer um commit específico de forma segura no GitHub, usamos:", opts: ["Delete", "Revert", "Format"], correct: [1] },
+        { id: "q25", week: "S3", q: "O que significa o prefixo 'feat:' em uma mensagem de commit?", opts: ["Erro corrigido", "Nova funcionalidade (feature)", "Remoção de código"], correct: [1] },
+        { id: "q26", week: "S3", q: "Onde visualizamos a lista de todas as versões salvas no GitHub?", opts: ["Na aba Settings", "No link 'Commits'", "Na aba Issues"], correct: [1] },
+        { id: "q27", week: "S3", q: "O que acontece ao clicar em 'History' em um arquivo?", opts: ["O arquivo é excluído", "Vemos todas as edições feitas naquele arquivo específico", "O arquivo é traduzido"], correct: [1] },
+        { id: "q28", week: "S3", q: "Mensagens de commit devem ser:", opts: ["Longas e confusas", "Claras e descrever o que foi feito", "Apenas números"], correct: [1] },
+        { id: "q29", week: "S3", q: "O que é um 'Initial Commit'?", opts: ["O último commit do projeto", "O primeiro registro feito ao criar o repositório", "Um commit de erro"], correct: [1] },
+        { id: "q30", week: "S3", q: "É possível editar arquivos diretamente pelo navegador no GitHub?", opts: ["Sim, usando o ícone de lápis (Edit)", "Não, só via linha de comando", "Sim, mas apaga o histórico"], correct: [0] }
+    ];
+
+    let userState = { nome: "", ra: "", acertos: 0, respostas_aluno: {} };
+    let respondidasCount = 0;
+
+    function startQuiz() {
+        userState.nome = document.getElementById('nome').value;
+        userState.ra = document.getElementById('ra').value;
+        if(!userState.nome || !userState.ra) return alert("Preencha Nome e RA!");
+        
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('quiz-screen').style.display = 'block';
+        
+        const container = document.getElementById('questions-container');
+        questionsData.forEach((item, index) => {
+            const html = `
+                <div class="question" id="${item.id}" data-correct="${JSON.stringify(item.correct)}">
+                    <p><strong>${index+1}. ${item.q}</strong></p>
+                    <ul class="options">
+                        ${item.opts.map((o, i) => `<li onclick="sel(this, ${i})">${o}</li>`).join('')}
+                    </ul>
+                    <button class="verify-btn" onclick="check('${item.id}', '${item.week}')">Verificar Resposta</button>
+                    <div class="explanation" id="exp-${item.id}"></div>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+    }
+
+    function sel(el, idx) {
+        if(el.parentElement.dataset.locked) return;
+        Array.from(el.parentElement.children).forEach(li => li.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    function check(id, week) {
+        const qDiv = document.getElementById(id);
+        if(qDiv.dataset.locked) return;
+
+        const selectedEl = qDiv.querySelector('.selected');
+        if(!selectedEl) return alert("Selecione uma opção!");
+
+        const marcadas = [Array.from(qDiv.querySelectorAll('li')).indexOf(selectedEl)];
+        const correct = JSON.parse(qDiv.dataset.correct);
+        const isCorrect = marcadas[0] === correct[0];
+
+        userState.respostas_aluno[id] = marcadas;
+        qDiv.dataset.locked = "true";
+        qDiv.querySelector('.verify-btn').disabled = true;
+
+        const expDiv = document.getElementById(`exp-${id}`);
+        expDiv.style.display = 'block';
+
+        if(isCorrect) {
+            userState.acertos++;
+            selectedEl.classList.add('correct-reveal');
+            expDiv.innerHTML = "✅ <strong>Correto!</strong> Muito bem.";
+        } else {
+            selectedEl.classList.add('wrong-reveal');
+            qDiv.querySelectorAll('li')[correct[0]].classList.add('correct-reveal');
+            expDiv.innerHTML = `❌ <strong>Incorreto.</strong> <span class="week-ref">Consulte o material da semana ${week}.</span>`;
+        }
+
+        respondidasCount++;
+        document.getElementById('progresso').innerText = `Respondidas: ${respondidasCount}/30`;
+        if(respondidasCount === 30) document.getElementById('final-submit-btn').disabled = false;
+    }
+
+    async function enviarTudo() {
+        const btn = document.getElementById('final-submit-btn');
+        btn.disabled = true;
+        btn.innerText = "Enviando...";
+
+        const payload = { ...userState, key_alunos: "key_alunos", disciplina: "Versionamento", timestamp: new Date().toISOString() };
+
+        try {
+            await fetch('https://n8n.inetz.com.br/webhook-test/avalia', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            document.getElementById('quiz-screen').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'block';
+            document.getElementById('final-msg').innerHTML = `Fim da Avaliação!<br>Você acertou ${userState.acertos} de 30.`;
+        } catch (e) {
+            alert("Erro ao enviar. Tente novamente.");
+            btn.disabled = false;
+        }
+    }
+</script>
+</body>
+</html>
