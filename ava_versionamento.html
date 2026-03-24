@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avaliação Inetz - Versionamento de Código</title>
+    <title>Avaliação Versionamento de Códigos S1-3</title>
     <style>
         :root { --primary: #2563eb; --success: #16a34a; --wrong: #dc2626; --bg: #f1f5f9; --text: #1e293b; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: var(--text); }
@@ -11,109 +11,119 @@
         #quiz-screen, #final-screen { display: none; }
         .login-box { text-align: center; padding: 20px; }
         input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
-        .question { margin-bottom: 30px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; transition: 0.3s; }
+        .question { margin-bottom: 30px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; }
         .options { list-style: none; padding: 0; }
         .options li { margin: 8px 0; padding: 12px; border: 2px solid #cbd5e1; border-radius: 6px; cursor: pointer; }
         .options li.selected { border-color: var(--primary); background: #eff6ff; }
-        .options li.correct-reveal { background: #dcfce7; border-color: var(--success); font-weight: bold; }
-        .options li.wrong-reveal { background: #fee2e2; border-color: var(--wrong); }
+        .options li.wrong-reveal { background: #fee2e2; border-color: var(--wrong); color: var(--wrong); font-weight: bold; }
+        .options li.correct-hide { background: #dcfce7; border-color: var(--success); color: var(--success); font-weight: bold; }
         button { background: var(--primary); color: white; border: none; padding: 15px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
         button:disabled { background: #cbd5e1; cursor: not-allowed; }
         .verify-btn { background: #64748b; width: auto; margin-top: 10px; }
-        .explanation { display: none; margin-top: 15px; padding: 15px; background: #f8fafc; border-left: 5px solid var(--primary); }
-        .week-ref { color: var(--wrong); font-weight: bold; }
-        .progresso-bar { font-weight: bold; color: var(--primary); margin-bottom: 20px; display: block; }
+        .explanation { display: none; margin-top: 15px; padding: 15px; border-left: 5px solid #ccc; }
+        .progresso-bar { font-weight: bold; color: var(--primary); margin-bottom: 20px; display: block; font-size: 1.2em; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div id="login-screen" class="login-box">
-        <h1>Avaliação: Versionamento de Código</h1>
-        <p>Fundamentos, Ferramentas e GitHub</p>
+        <h1>Avaliação: Versionamento de Códigos (S1-3)</h1>
+        <p>Não chute, vodê pode consultar o material digital</p>
         <input type="text" id="nome" placeholder="Nome Completo">
-        <input type="text" id="ra" placeholder="RA">
-        <button onclick="startQuiz()">Iniciar Prova (30 Questões)</button>
+        <input type="text" id="ra" placeholder="Digite seu RA (Apenas números)">
+        <button onclick="startQuiz()">Gerar Minha Prova</button>
     </div>
 
     <div id="quiz-screen">
-        <span class="progresso-bar" id="progresso">Respondidas: 0/30</span>
+        <span class="progresso-bar" id="progresso">Progresso: 0/30</span>
         <div id="questions-container"></div>
-        <button id="final-submit-btn" disabled onclick="enviarTudo()" style="margin-top:20px; background:#0f172a;">FINALIZAR E ENVIAR RESULTADOS</button>
+        <button id="final-submit-btn" disabled onclick="enviarTudo()" style="margin-top:20px; background:#0f172a;">ENVIAR RESULTADOS FINAIS</button>
     </div>
 
     <div id="final-screen" style="text-align: center;">
-        <h2 id="final-msg">Processando envio...</h2>
+        <h2 id="final-msg">Enviando...</h2>
     </div>
 </div>
 
 <script>
-    const questionsData = [
-        // SEMANA 1 (S1) - Fundamentos
-        { id: "q1", week: "S1", q: "O que é versionamento de código?", opts: ["Salvar arquivos em pastas numeradas manualmente", "Sistema que registra mudanças em arquivos ao longo do tempo", "Um antivírus para códigos-fonte"], correct: [1] },
-        { id: "q2", week: "S1", q: "Qual a importância do histórico no versionamento?", opts: ["Apenas para ocupar espaço no servidor", "Permite rastrear quem fez o que e reverter erros", "Nenhuma, o importante é a versão atual"], correct: [1] },
-        { id: "q3", week: "S1", q: "O que é um repositório?", opts: ["Local onde o código e seu histórico ficam armazenados", "O navegador usado para programar", "Um tipo de erro de compilação"], correct: [0] },
-        { id: "q4", week: "S1", q: "O que caracteriza o trabalho colaborativo no Git?", opts: ["Várias pessoas editando o mesmo arquivo físico via TeamViewer", "Múltiplos desenvolvedores trabalhando em ramos (branches) diferentes", "Apenas uma pessoa pode mexer no código por vez"], correct: [1] },
-        { id: "q5", week: "S1", q: "O que acontece ao 'Reverter' uma alteração?", opts: ["O arquivo é deletado permanentemente", "O sistema volta para um estado anterior preservando o histórico", "O computador é formatado"], correct: [1] },
-        { id: "q6", week: "S1", q: "Versionamento ajuda na manutenção de software?", opts: ["Sim, facilita encontrar bugs introduzidos recentemente", "Não, apenas atrapalha a entrega rápida", "Somente em projetos de uma pessoa só"], correct: [0] },
-        { id: "q7", week: "S1", q: "O que é um 'Commit'?", opts: ["Um comentário no código", "Um registro fotográfico (snapshot) do código num momento", "Uma mensagem de erro"], correct: [1] },
-        { id: "q8", week: "S1", q: "Sem versionamento, como as equipes costumam sofrer?", opts: ["Com excesso de café", "Com perda de código e conflitos de arquivos", "Com excesso de velocidade na internet"], correct: [1] },
-        { id: "q9", week: "S1", q: "O rastreamento de modificações permite saber:", opts: ["O CPF do programador", "Data, autor e o que foi alterado", "O preço do software"], correct: [1] },
-        { id: "q10", week: "S1", q: "O Git é um sistema de versionamento:", opts: ["Centralizado", "Distribuído", "Sequencial"], correct: [1] },
-
-        // SEMANA 2 (S2) - Ferramentas
-        { id: "q11", week: "S2", q: "Qual a principal diferença entre Git e GitHub?", opts: ["São a mesma coisa", "Git é a ferramenta local, GitHub é o serviço de hospedagem web", "Git é para Windows e GitHub para Linux"], correct: [1] },
-        { id: "q12", week: "S2", q: "Qual ferramenta é conhecida pela maior comunidade Open Source?", opts: ["Bitbucket", "GitLab", "GitHub"], correct: [2] },
-        { id: "q13", week: "S2", q: "Sobre repositórios PRIVADOS, é correto afirmar:", opts: ["Qualquer pessoa na internet pode ver", "Apenas usuários autorizados têm acesso ao código", "São usados apenas para projetos ilegais"], correct: [1] },
-        { id: "q14", week: "S2", q: "O GitLab se destaca por:", opts: ["Não ter interface gráfica", "Fortes ferramentas integradas de CI/CD", "Ser a única ferramenta paga do mercado"], correct: [1] },
-        { id: "q15", week: "S2", q: "Qual o limite de usuários gratuitos no plano standard do Bitbucket?", opts: ["Ilimitado", "5 usuários", "100 usuários"], correct: [1] },
-        { id: "q16", week: "S2", q: "O que deve ser evitado em um repositório PÚBLICO?", opts: ["Comentários em português", "Senhas e chaves de API", "Arquivos .html"], correct: [1] },
-        { id: "q17", week: "S2", q: "Qual ferramenta pertence à Atlassian?", opts: ["GitHub", "GitLab", "Bitbucket"], correct: [2] },
-        { id: "q18", week: "S2", q: "O arquivo .gitignore serve para:", opts: ["Deletar o projeto", "Ignorar arquivos que não devem subir para o servidor", "Mudar a cor do terminal"], correct: [1] },
-        { id: "q19", week: "S2", q: "Qual ferramenta é preferível para empresas que buscam 'Self-hosting' fácil?", opts: ["GitLab", "GitHub", "Cloudflare"], correct: [0] },
-        { id: "q20", week: "S2", q: "O que é 'Code Review'?", opts: ["Um software que escreve código sozinho", "Revisão do código por outro colega antes do merge", "Formatação automática de texto"], correct: [1] },
-
-        // SEMANA 3 (S3) - GitHub na Prática
-        { id: "q21", week: "S3", q: "Como se chama o arquivo de apresentação do projeto no GitHub?", opts: ["INDEX.txt", "README.md", "START.exe"], correct: [1] },
-        { id: "q22", week: "S3", q: "Para que serve o botão 'Commit changes' na interface web?", opts: ["Para cancelar as mudanças", "Para salvar as alterações no histórico do repositório", "Para baixar o projeto"], correct: [1] },
-        { id: "q23", week: "S3", q: "O que é o 'Branch main'?", opts: ["Um erro do sistema", "A ramificação principal do projeto", "Um usuário administrador"], correct: [1] },
-        { id: "q24", week: "S3", q: "Para desfazer um commit específico de forma segura no GitHub, usamos:", opts: ["Delete", "Revert", "Format"], correct: [1] },
-        { id: "q25", week: "S3", q: "O que significa o prefixo 'feat:' em uma mensagem de commit?", opts: ["Erro corrigido", "Nova funcionalidade (feature)", "Remoção de código"], correct: [1] },
-        { id: "q26", week: "S3", q: "Onde visualizamos a lista de todas as versões salvas no GitHub?", opts: ["Na aba Settings", "No link 'Commits'", "Na aba Issues"], correct: [1] },
-        { id: "q27", week: "S3", q: "O que acontece ao clicar em 'History' em um arquivo?", opts: ["O arquivo é excluído", "Vemos todas as edições feitas naquele arquivo específico", "O arquivo é traduzido"], correct: [1] },
-        { id: "q28", week: "S3", q: "Mensagens de commit devem ser:", opts: ["Longas e confusas", "Claras e descrever o que foi feito", "Apenas números"], correct: [1] },
-        { id: "q29", week: "S3", q: "O que é um 'Initial Commit'?", opts: ["O último commit do projeto", "O primeiro registro feito ao criar o repositório", "Um commit de erro"], correct: [1] },
-        { id: "q30", week: "S3", q: "É possível editar arquivos diretamente pelo navegador no GitHub?", opts: ["Sim, usando o ícone de lápis (Edit)", "Não, só via linha de comando", "Sim, mas apaga o histórico"], correct: [0] }
+    // Base de dados original (A primeira opção sempre será considerada a correta aqui para facilitar a lógica de embaralhamento)
+    const rawQuestions = [
+        { id: "q1", week: "S1", q: "O que é versionamento de código?", correctText: "Sistema que registra mudanças em arquivos ao longo do tempo", wrong: ["Salvar arquivos com nomes diferentes", "Um tipo de compilador"] },
+        { id: "q2", week: "S1", q: "Qual o benefício de ter um histórico de alterações?", correctText: "Poder reverter para estados anteriores em caso de erro", wrong: ["Aumentar o tamanho do projeto", "Esconder falhas do programador"] },
+        { id: "q3", week: "S1", q: "Definição de Repositório no contexto Git:", correctText: "Local de armazenamento de códigos e seu histórico", wrong: ["Pasta de downloads do computador", "Um servidor de e-mail"] },
+        { id: "q4", week: "S1", q: "O que o rastreamento de modificações permite identificar?", correctText: "Quem alterou, o que foi alterado e quando", wrong: ["O preço do hardware", "A velocidade da internet"] },
+        { id: "q5", week: "S1", q: "No versionamento, o termo 'Snapshot' refere-se a:", correctText: "Um registro do estado dos arquivos em um momento específico", wrong: ["Uma foto da tela do computador", "Um tipo de vírus"] },
+        { id: "q6", week: "S1", q: "Por que o versionamento é crucial para equipes?", correctText: "Para gerenciar conflitos quando dois editam o mesmo arquivo", wrong: ["Para impedir que outros vejam o código", "Para obrigar todos a usarem o mesmo teclado"] },
+        { id: "q7", week: "S1", q: "O que acontece ao 'reverter' um arquivo no Git?", correctText: "O conteúdo volta a uma versão salva anteriormente", wrong: ["O arquivo é excluído permanentemente", "O sistema operacional reinicia"] },
+        { id: "q8", week: "S1", q: "Qual o papel do 'Autor' em um commit?", correctText: "Identificar quem foi o responsável pela mudança", wrong: ["Vender o software", "Testar o código"] },
+        { id: "q9", week: "S1", q: "Git é considerado um sistema:", correctText: "Distribuído", wrong: ["Centralizado", "Manual"] },
+        { id: "q10", week: "S1", q: "O versionamento substitui o backup manual?", correctText: "Sim, e é muito mais eficiente por guardar o histórico", wrong: ["Não, são coisas opostas", "Apenas se o computador for da Apple"] },
+        { id: "q11", week: "S2", q: "Diferença fundamental entre Git e GitHub:", correctText: "Git é a ferramenta local; GitHub é a plataforma de hospedagem", wrong: ["Nenhuma", "GitHub é o motor; Git é a rede social"] },
+        { id: "q12", week: "S2", q: "Qual plataforma hospeda a maioria dos projetos Open Source?", correctText: "GitHub", wrong: ["Bitbucket", "GitLab"] },
+        { id: "q13", week: "S2", q: "Uma característica forte do GitLab é:", correctText: "Ferramentas integradas de CI/CD", wrong: ["Não ter interface web", "Ser exclusivo para Windows"] },
+        { id: "q14", week: "S2", q: "No Bitbucket, qual o limite de usuários no plano gratuito?", correctText: "Até 5 usuários", wrong: ["Ilimitado", "Até 50 usuários"] },
+        { id: "q15", week: "S2", q: "O que é um Repositório Privado?", correctText: "Acesso restrito apenas a pessoas autorizadas", wrong: ["Um repositório que ninguém pode ver", "Um repositório público com senha"] },
+        { id: "q16", week: "S2", q: "Qual ferramenta é da empresa Atlassian?", correctText: "Bitbucket", wrong: ["GitHub", "GitLab"] },
+        { id: "q17", week: "S2", q: "O que é Code Review?", correctText: "Revisão do código por outros desenvolvedores", wrong: ["Digitar o código mais rápido", "Formatação de texto"] },
+        { id: "q18", week: "S2", q: "O plano 'Sponsors' é funcionalidade de qual plataforma?", correctText: "GitHub", wrong: ["GitLab", "Bitbucket"] },
+        { id: "q19", week: "S2", q: "Onde é mais comum encontrar repositórios integrados ao Jira?", correctText: "Bitbucket", wrong: ["GitHub", "SourceForge"] },
+        { id: "q20", week: "S2", q: "Qual o perigo de um repositório Público?", correctText: "Exposição de dados sensíveis ou senhas", wrong: ["O código rodar mais devagar", "Aumento do tráfego de rede"] },
+        { id: "q21", week: "S3", q: "Qual arquivo descreve o projeto no GitHub?", correctText: "README.md", wrong: ["CONFIG.sys", "INDEX.php"] },
+        { id: "q22", week: "S3", q: "O comando 'Commit changes' via web serve para:", correctText: "Salvar as alterações no histórico", wrong: ["Apagar o projeto", "Baixar os arquivos"] },
+        { id: "q23", week: "S3", q: "Como identificar a ramificação principal de um projeto?", correctText: "Pelo nome 'main' ou 'master'", wrong: ["Pelo nome 'Secondary'", "Pelo nome 'Draft'"] },
+        { id: "q24", week: "S3", q: "Para desfazer um commit de forma segura no GitHub, clicamos em:", correctText: "Revert", wrong: ["Delete commit", "Format"] },
+        { id: "q25", week: "S3", q: "Mensagens de commit como 'feat: algo' indicam:", correctText: "Nova funcionalidade", wrong: ["Erro corrigido", "Documentação"] },
+        { id: "q26", week: "S3", q: "Onde vemos a lista cronológica de alterações no GitHub?", correctText: "Link de Commits", wrong: ["Aba Issues", "Aba Pull Requests"] },
+        { id: "q27", week: "S3", q: "O que o botão 'Edit' (lápis) permite fazer no GitHub Web?", correctText: "Editar o conteúdo do arquivo no navegador", wrong: ["Mudar a senha", "Deletar o repositório"] },
+        { id: "q28", week: "S3", q: "Uma boa mensagem de commit deve ser:", correctText: "Curta e descrever o que mudou", wrong: ["Longa e técnica", "Apenas a data"] },
+        { id: "q29", week: "S3", q: "O que é o 'Initial Commit'?", correctText: "O primeiro registro de criação do projeto", wrong: ["O erro inicial", "O commit final"] },
+        { id: "q30", week: "S3", q: "Ao reverter um commit, o Git:", correctText: "Cria um novo commit desfazendo a ação e mantendo rastro", wrong: ["Apaga o histórico anterior", "Trava o repositório"] }
     ];
 
     let userState = { nome: "", ra: "", acertos: 0, respostas_aluno: {} };
     let respondidasCount = 0;
 
+    // Função de embaralhamento baseada em semente (RA)
+    function seededShuffle(array, seed) {
+        let m = array.length, t, i;
+        let s = parseInt(seed.toString().replace(/\D/g, '')) || 123;
+        while (m) {
+            i = Math.floor((Math.abs(Math.sin(s++)) * 10000) % m--);
+            t = array[m];
+            array[m] = array[i];
+            array[i] = t;
+        }
+        return array;
+    }
+
     function startQuiz() {
         userState.nome = document.getElementById('nome').value;
         userState.ra = document.getElementById('ra').value;
-        if(!userState.nome || !userState.ra) return alert("Preencha Nome e RA!");
-        
+        if(!userState.nome || !userState.ra) return alert("Identifique-se com Nome e RA.");
+
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('quiz-screen').style.display = 'block';
         
         const container = document.getElementById('questions-container');
-        questionsData.forEach((item, index) => {
-            const html = `
-                <div class="question" id="${item.id}" data-correct="${JSON.stringify(item.correct)}">
+        
+        rawQuestions.forEach((item, index) => {
+            // Unir a correta com as erradas e embaralhar usando o RA como semente
+            let options = seededShuffle([item.correctText, ...item.wrong], userState.ra + index);
+
+            container.innerHTML += `
+                <div class="question" id="${item.id}" data-correct-text="${item.correctText}">
                     <p><strong>${index+1}. ${item.q}</strong></p>
                     <ul class="options">
-                        ${item.opts.map((o, i) => `<li onclick="sel(this, ${i})">${o}</li>`).join('')}
+                        ${options.map(opt => `<li onclick="sel(this)">${opt}</li>`).join('')}
                     </ul>
-                    <button class="verify-btn" onclick="check('${item.id}', '${item.week}')">Verificar Resposta</button>
+                    <button class="verify-btn" onclick="check('${item.id}', '${item.week}')">Verificar</button>
                     <div class="explanation" id="exp-${item.id}"></div>
-                </div>
-            `;
-            container.innerHTML += html;
+                </div>`;
         });
     }
 
-    function sel(el, idx) {
+    function sel(el) {
         if(el.parentElement.dataset.locked) return;
         Array.from(el.parentElement.children).forEach(li => li.classList.remove('selected'));
         el.classList.add('selected');
@@ -126,11 +136,11 @@
         const selectedEl = qDiv.querySelector('.selected');
         if(!selectedEl) return alert("Selecione uma opção!");
 
-        const marcadas = [Array.from(qDiv.querySelectorAll('li')).indexOf(selectedEl)];
-        const correct = JSON.parse(qDiv.dataset.correct);
-        const isCorrect = marcadas[0] === correct[0];
+        const chosenText = selectedEl.innerText;
+        const correctText = qDiv.dataset.correctText;
+        const isCorrect = (chosenText === correctText);
 
-        userState.respostas_aluno[id] = marcadas;
+        userState.respostas_aluno[id] = chosenText;
         qDiv.dataset.locked = "true";
         qDiv.querySelector('.verify-btn').disabled = true;
 
@@ -139,25 +149,25 @@
 
         if(isCorrect) {
             userState.acertos++;
-            selectedEl.classList.add('correct-reveal');
-            expDiv.innerHTML = "✅ <strong>Correto!</strong> Muito bem.";
+            selectedEl.classList.add('correct-hide');
+            expDiv.innerHTML = "<span style='color:var(--success)'>✅ Resposta Correta!</span>";
         } else {
             selectedEl.classList.add('wrong-reveal');
-            qDiv.querySelectorAll('li')[correct[0]].classList.add('correct-reveal');
-            expDiv.innerHTML = `❌ <strong>Incorreto.</strong> <span class="week-ref">Consulte o material da semana ${week}.</span>`;
+            // NÃO REVELA A CORRETA: Força a leitura do material
+            expDiv.innerHTML = `<span style='color:var(--wrong)'>❌ INCORRETO. Consulte o material da <strong>SEMANA ${week.replace('S','')}</strong> para encontrar a resposta.</span>`;
         }
 
         respondidasCount++;
-        document.getElementById('progresso').innerText = `Respondidas: ${respondidasCount}/30`;
+        document.getElementById('progresso').innerText = `Progresso: ${respondidasCount}/30`;
         if(respondidasCount === 30) document.getElementById('final-submit-btn').disabled = false;
     }
 
     async function enviarTudo() {
         const btn = document.getElementById('final-submit-btn');
         btn.disabled = true;
-        btn.innerText = "Enviando...";
+        btn.innerText = "Sincronizando...";
 
-        const payload = { ...userState, key_alunos: "key_alunos", disciplina: "Versionamento", timestamp: new Date().toISOString() };
+        const payload = { ...userState, key_alunos: "key_alunos", modulo: "Versionamento_AntiCola", timestamp: new Date().toISOString() };
 
         try {
             await fetch('https://n8n.inetz.com.br/webhook-test/avalia', {
@@ -167,9 +177,9 @@
             });
             document.getElementById('quiz-screen').style.display = 'none';
             document.getElementById('final-screen').style.display = 'block';
-            document.getElementById('final-msg').innerHTML = `Fim da Avaliação!<br>Você acertou ${userState.acertos} de 30.`;
+            document.getElementById('final-msg').innerHTML = `Processo Concluído!<br>Sua nota foi registrada.`;
         } catch (e) {
-            alert("Erro ao enviar. Tente novamente.");
+            alert("Erro de conexão.");
             btn.disabled = false;
         }
     }
