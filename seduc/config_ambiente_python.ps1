@@ -1,7 +1,7 @@
 Write-Host "`Iniciando definicoes de Variaveis" -ForegroundColor Cyan
 # 1. Defina os caminhos das suas ferramentas (Ajuste conforme sua realidade)
 
-$PYTHON_PATH = "C:\Users\Docker\AppData\Local\Python\pythoncore-3.14-64\"
+$PYTHON_PATH = "C:\Program Files\Python313\python.exe"
 $GH_PATH     = "C:\Users\Docker\AppData\Local\github\" # Onde você descompactou o gh.exe
 
 # 2. Captura o PATH atual para não apagar o que já existe
