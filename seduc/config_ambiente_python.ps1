@@ -37,10 +37,10 @@ Write-Host "`n🚀 Ambiente configurado! Reinicie o terminal para aplicar." -For
 # 1. Define o caminho do arquivo
 $zipPath = "$env:USERPROFILE\ghzip.zip"
 $destPath = "$env:USERPROFILE\gh\"
-#Invoke-WebRequest -Uri "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip" -OutFile "$env:USERPROFILE\ghzip.zip"
+Invoke-WebRequest -Uri "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip" -OutFile "$env:USERPROFILE\ghzip.zip"
 
-#Expand-Archive -Path $zipPath -DestinationPath $destPath -Force
-#Remove-Item -Path $zipPath -Force
+Expand-Archive -Path $zipPath -DestinationPath $destPath -Force
+Remove-Item -Path $zipPath -Force
 
 Write-Host "Instalação concluída e arquivos temporários removidos!" -ForegroundColor Green
 # 1. Define o caminho da pasta bin
@@ -59,7 +59,7 @@ if ($oldPath -notlike "*$ghBinPath*") {
 }
 
 # Define os caminhos reais (Base e Scripts)
-$pythonHome = "C:\Users\Docker\AppData\Local\Python\pythoncore-3.14-64"
+$pythonHome = "C:\Program Files\Python313\"
 $pythonScripts = "$pythonHome\Scripts"
 
 # Captura o PATH atual do Usuário
