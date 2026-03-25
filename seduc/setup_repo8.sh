@@ -113,37 +113,14 @@ EOF
 
     2) # MODO: CLONAR PROJETO (Troca de Máquina)
         echo -e "${CYAN}🔍 Buscando seus repositórios no GitHub...${NC}"
+        # Lista repositórios e permite que o usuário veja os nomes
+        gh repo list --limit 15
         
-        # 1. Captura a lista de repositórios em um array
-        # Filtra apenas o nome (dono/repositorio)
-        mapfile -t REPOS < <(gh repo list --limit 20 --json fullName --template '{{range .}}{{ .fullName }}{{"\n"}}{{end}}')
-
-        if [ ${#REPOS[@]} -eq 0 ]; then
-            echo -e "${RED}❌ Nenhum repositório encontrado nesta conta.${NC}"
-            exit 1
-        fi
-
-        echo -e "${YELLOW}Escolha o repositório para clonar:${NC}"
-        
-        # 2. Cria o menu de seleção numerado
-        PS3="👉 Digite o número desejado: "
-        select REPO_ESCOLHIDO in "${REPOS[@]}" "Sair"; do
-            if [ "$REPO_ESCOLHIDO" == "Sair" ]; then
-                echo "Operação cancelada."
-                exit 0
-            elif [ -n "$REPO_ESCOLHIDO" ]; then
-                break
-            else
-                echo -e "${RED}Opção inválida.${NC}"
-            fi
-        done
-
-        # 3. Executa a clonagem
+        read -p "👉 Digite o NOME do repositório para clonar: " REPO_TO_CLONE </dev/tty
         mkdir -p "$HOME/projetos" && cd "$HOME/projetos" || exit
-        echo -e "${YELLOW}📦 Clonando $REPO_ESCOLHIDO em ~/projetos/...${NC}"
-        gh repo clone "$REPO_ESCOLHIDO"
+        gh repo clone "$REPO_TO_CLONE"
         
-        echo -e "${GREEN}✅ Repositório clonado com sucesso!${NC}"
+        echo -e "${GREEN}✅ Repositório clonado com sucesso em ~/projetos/$REPO_TO_CLONE${NC}"
         ;;
 
     3) # MODO: MANUTENÇÃO BASE
