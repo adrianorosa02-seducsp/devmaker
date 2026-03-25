@@ -1,25 +1,26 @@
 Write-Host "`Iniciando definicoes de Variaveis" -ForegroundColor Cyan
 # 1. Defina os caminhos das suas ferramentas (Ajuste conforme sua realidade)
 
-$PYTHON_PATH = "C:\Program Files\Python313\python.exe"
-$GH_PATH     = "C:\Users\Docker\AppData\Local\github\" # Onde você descompactou o gh.exe
-
+$PYTHON_PATH = "C:\Program Files\Python313\python.exe"  #Para produção
+#$PYTHON_PATH = "C:\Users\Docker\AppData\Local\Python\pythoncore-3.14-64\"
+$#GH_PATH     = "C:\Users\Docker\AppData\Local\github\" # Onde você descompactou o gh.exe
+$GH_PATH     ="$env:USERPROFILE\gh\"                  # rm produção
 # 2. Captura o PATH atual para não apagar o que já existe
 $CURRENT_PATH = [Environment]::GetEnvironmentVariable("Path", "User")
 echo $CURRENT_PATH
 $env:CURRENT_PATH
 ## 3. Adiciona os novos caminhos se eles ainda não estiverem lá
-#$NEW_PATHS = @($PYTHON_PATH, "$PYTHON_PATH\Scripts", $GH_PATH)
+$NEW_PATHS = @($PYTHON_PATH, "$PYTHON_PATH\Scripts", $GH_PATH)
 
-#foreach ($PATH in $NEW_PATHS) {
-#    if ($CURRENT_PATH -notlike "*$PATH*") {
-#        $CURRENT_PATH = "$PATH;$CURRENT_PATH"
-#        Write-Host "✅ Adicionando ao PATH: $PATH" -ForegroundColor Green
-#    }
-#}
+foreach ($PATH in $NEW_PATHS) {
+    if ($CURRENT_PATH -notlike "*$PATH*") {
+        $CURRENT_PATH = "$PATH;$CURRENT_PATH"
+        Write-Host "✅ Adicionando ao PATH: $PATH" -ForegroundColor Green
+    }
+}
 
 ## 4. Tenta salvar permanentemente no nível de USUÁRIO (Não precisa de Admin)
-#[Environment]::SetEnvironmentVariable("Path", $CURRENT_PATH, "User")
+[Environment]::SetEnvironmentVariable("Path", $CURRENT_PATH, "User")
 
 Write-Host "`n🚀 Ambiente configurado! Reinicie o terminal para aplicar." -ForegroundColor Cyan
 
@@ -33,7 +34,7 @@ Write-Host "`n🚀 Ambiente configurado! Reinicie o terminal para aplicar." -For
 
 # Copia o arquivo gh_2.88.1_windows_amd64.zip do git para posterior descompactação
 # .zip é obrigatorio pelas politicas de segurança do github/wget
-#wget -O $env:USERPROFILE+"/ghzip.zip"+ "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip"
+wget -O $env:USERPROFILE+"/ghzip.zip"+ "https://github.com/adrianorosa02-seducsp/versionamento/raw/refs/heads/main/gh_2.88.1_windows_amd64.zip"
 # 1. Define o caminho do arquivo
 $zipPath = "$env:USERPROFILE\ghzip.zip"
 $destPath = "$env:USERPROFILE\gh\"
@@ -79,11 +80,11 @@ Write-Host "Sucesso! Python 3.14 e Scripts priorizados no PATH." -ForegroundColo
 
 
 $env:Path = [Environment]::GetEnvironmentVariable("Path", "User")
-#cd ..
-#rm *.zip
-#[Environment]::GetEnvironmentVariable("Path", "User") + ";C:\Program Files\Python313"
-#[Environment]::SetEnvironmentVariable(
-#    "Path", 
-#    $env:Path +  ";C:\Program Files\Python313", 
-#    [EnvironmentVariableTarget]::User
-#)
+cd ..
+rm *.zip
+[Environment]::GetEnvironmentVariable("Path", "User") + ";C:\Program Files\Python313"
+[Environment]::SetEnvironmentVariable(
+    "Path", 
+    $env:Path +  ";C:\Program Files\Python313", 
+    [EnvironmentVariableTarget]::User
+)
