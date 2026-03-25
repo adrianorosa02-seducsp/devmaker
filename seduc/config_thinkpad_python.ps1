@@ -10,7 +10,7 @@ $pythonUrl = "https://www.python.org/ftp/python/$pythonVersion/python-$pythonVer
 
 # Pasta de destino no perfil do usuário
 $installDir = "$env:USERPROFILE\Python$pythonVersion"
-$installDir = "C:\Program Files\Python$pythonVersion" 
+$installDir = "C:\Program Files\Python313" 
 
 # Criar pasta de instalação
 if (-Not (Test-Path $installDir)) {

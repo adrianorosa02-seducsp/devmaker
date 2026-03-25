@@ -2,8 +2,6 @@ Write-Host "`Iniciando definicoes de Variaveis" -ForegroundColor Cyan
 # 1. Defina os caminhos das suas ferramentas (Ajuste conforme sua realidade)
 
 $PYTHON_PATH = "C:\Program Files\Python313\python.exe"  #Para produção
-#$PYTHON_PATH = "C:\Users\Docker\AppData\Local\Python\pythoncore-3.14-64\"
-$#GH_PATH     = "C:\Users\Docker\AppData\Local\github\" # Onde você descompactou o gh.exe
 $GH_PATH     ="$env:USERPROFILE\gh\"                  # rm produção
 # 2. Captura o PATH atual para não apagar o que já existe
 $CURRENT_PATH = [Environment]::GetEnvironmentVariable("Path", "User")
