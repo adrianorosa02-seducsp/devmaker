@@ -3,7 +3,7 @@
 # ================================
 
 # Defina a versão desejada do Python
-$pythonVersion = "3.12.2"
+$pythonVersion = "3.13.0"
 
 # URL da versão embutida (embeddable) do Python para Windows 64 bits
 $pythonUrl = "https://www.python.org/ftp/python/$pythonVersion/python-$pythonVersion-embed-amd64.zip"
