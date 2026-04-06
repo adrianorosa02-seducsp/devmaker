@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Inetz - Redes e Topologias</title>
+    <style>
+        :root { --primary: #2563eb; --success: #16a34a; --wrong: #dc2626; --bg: #f1f5f9; --text: #1e293b; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: var(--text); }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        #quiz-screen, #final-screen { display: none; }
+        .login-box { text-align: center; padding: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
+        .question { margin-bottom: 30px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; }
+        .options { list-style: none; padding: 0; }
+        .options li { margin: 8px 0; padding: 12px; border: 2px solid #cbd5e1; border-radius: 6px; cursor: pointer; }
+        .options li.selected { border-color: var(--primary); background: #eff6ff; }
+        .options li.wrong-reveal { background: #fee2e2; border-color: var(--wrong); color: var(--wrong); font-weight: bold; }
+        .options li.correct-hide { background: #dcfce7; border-color: var(--success); color: var(--success); font-weight: bold; }
+        button { background: var(--primary); color: white; border: none; padding: 15px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
+        button:disabled { background: #cbd5e1; cursor: not-allowed; }
+        .verify-btn { background: #64748b; width: auto; margin-top: 10px; }
+        .explanation { display: none; margin-top: 15px; padding: 15px; border-left: 5px solid #ccc; }
+        .progresso-bar { font-weight: bold; color: var(--primary); margin-bottom: 20px; display: block; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="login-screen" class="login-box">
+        <h1>Avaliação: Redes e Topologias 2B-DS</h1>
+        <p>A ordem das alternativas é gerada exclusivamente pelo seu RA.</p>
+        <input type="text" id="nome" placeholder="Nome Completo">
+        <input type="text" id="ra" placeholder="Digite seu RA (Apenas números)">
+        <button onclick="startQuiz()">Gerar Minha Prova</button>
+    </div>
+
+    <div id="quiz-screen">
+        <span class="progresso-bar" id="progresso">Progresso: 0/10</span>
+        <div id="questions-container"></div>
+        <button id="final-submit-btn" disabled onclick="enviarTudo()" style="margin-top:20px; background:#0f172a;">ENVIAR RESULTADOS FINAIS</button>
+    </div>
+
+    <div id="final-screen" style="text-align: center;">
+        <h2 id="final-msg">Enviando...</h2>
+    </div>
+</div>
+
+<script>
+    // Base de dados extraída dos PDFs anexados
+    const rawQuestions = [
+        { id: "r1", week: "S1", q: "Qual a definição fundamental de uma Rede de Computadores?", correctText: "Conjunto de dispositivos interconectados para compartilhar recursos e informações", wrong: ["Apenas a conexão Wi-Fi de um celular", "Um computador isolado sem cabos", "Obrigariamente um sistema que depende da internet"] },
+        { id: "r2", week: "S1", q: "As redes de computadores necessitam obrigatoriamente de Internet para existir?", correctText: "Não, podem ser locais e independentes da conexão externa", wrong: ["Sim, sem internet não há rede", "Apenas se forem redes de empresas", "Sim, pois 4G e 5G são as únicas formas de rede"] },
+        { id: "r3", week: "S1", q: "O que define a 'topologia' de uma rede?", correctText: "A forma como os computadores e dispositivos estão interligados fisicamente", wrong: ["A velocidade máxima da internet", "O preço total dos equipamentos", "A marca do roteador utilizado"] },
+        { id: "r4", week: "S1", q: "Na topologia Estrela, qual o papel do nó central (Switch ou Hub)?", correctText: "Atuar como ponto comum de conexão para todos os nós", wrong: ["Armazenar todos os arquivos dos alunos", "Proteger contra vírus de pendrive", "Aumentar a velocidade do processador das máquinas"] },
+        { id: "r5", week: "S1", q: "Qual a principal vantagem da topologia Estrela?", correctText: "A falha em um nó periférico não afeta o restante da rede", wrong: ["É a que gasta menos cabo de todas", "Não precisa de nenhum equipamento central", "Se o cabo central romper, todos continuam navegando"] },
+        { id: "r6", week: "S4", q: "Como se caracteriza a estrutura da topologia em Barramento?", correctText: "Todos os dispositivos são conectados a um único cabo central (backbone)", wrong: ["Cada computador se liga em círculo", "Conexão exclusiva via Bluetooth", "Os nós são ligados em formato de árvore hierárquica"] },
+        { id: "r7", week: "S4", q: "Qual a maior fragilidade da topologia em Barramento?", correctText: "O rompimento do cabo central compromete toda a rede", wrong: ["O alto custo dos switches", "A dificuldade em conectar apenas 2 máquinas", "O excesso de cabos individuais"] },
+        { id: "r8", week: "S7", q: "Na topologia em Anel, como a informação circula?", correctText: "Os dados passam por cada estação de trabalho em uma direção até o destino", wrong: ["A informação vai direto para o satélite", "Os dados são transmitidos para todos os cabos ao mesmo tempo", "O sinal é enviado apenas para o servidor central"] },
+        { id: "r9", week: "S7", q: "Onde a topologia em Anel ainda é amplamente utilizada hoje?", correctText: "Em redes de fibra óptica (MANs) para garantir redundância", wrong: ["Em todas as casas populares", "Apenas em mouses e teclados sem fio", "Não é mais usada em nenhum lugar do mundo"] },
+        { id: "r10", week: "S4", q: "Qual a função do 'Terminador' na topologia em barramento?", correctText: "Evitar que o sinal reflita e cause interferência nas pontas do cabo", wrong: ["Aumentar a voltagem da tomada", "Desligar o computador automaticamente", "Conectar a rede ao Wi-Fi"] }
+    ];
+
+    let userState = { nome: "", ra: "", acertos: 0, respostas_aluno: {} };
+    let respondidasCount = 0;
+
+    // Função de embaralhamento baseada em semente (RA)
+    function seededShuffle(array, seed) {
+        let m = array.length, t, i;
+        let s = parseInt(seed.toString().replace(/\D/g, '')) || 123;
+        while (m) {
+            i = Math.floor((Math.abs(Math.sin(s++)) * 10000) % m--);
+            t = array[m];
+            array[m] = array[i];
+            array[i] = t;
+        }
+        return array;
+    }
+
+    function startQuiz() {
+        userState.nome = document.getElementById('nome').value;
+        userState.ra = document.getElementById('ra').value;
+        if(!userState.nome || !userState.ra) return alert("Identifique-se com Nome e RA.");
+
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('quiz-screen').style.display = 'block';
+        
+        const container = document.getElementById('questions-container');
+        
+        rawQuestions.forEach((item, index) => {
+            // Embaralha alternativas usando RA + índice da questão para garantir unicidade por aluno
+            let options = seededShuffle([item.correctText, ...item.wrong], userState.ra + index);
+
+            container.innerHTML += `
+                <div class="question" id="${item.id}" data-correct-text="${item.correctText}">
+                    <p><strong>${index+1}. ${item.q}</strong></p>
+                    <ul class="options">
+                        ${options.map(opt => `<li onclick="sel(this)">${opt}</li>`).join('')}
+                    </ul>
+                    <button class="verify-btn" onclick="check('${item.id}', '${item.week}')">Verificar Resposta</button>
+                    <div class="explanation" id="exp-${item.id}"></div>
+                </div>`;
+        });
+    }
+
+    function sel(el) {
+        if(el.parentElement.dataset.locked) return;
+        Array.from(el.parentElement.children).forEach(li => li.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    function check(id, week) {
+        const qDiv = document.getElementById(id);
+        if(qDiv.dataset.locked) return;
+
+        const selectedEl = qDiv.querySelector('.selected');
+        if(!selectedEl) return alert("Por favor, selecione uma alternativa.");
+
+        const chosenText = selectedEl.innerText;
+        const correctText = qDiv.dataset.correctText;
+        const isCorrect = (chosenText === correctText);
+
+        userState.respostas_aluno[id] = chosenText;
+        qDiv.dataset.locked = "true";
+        qDiv.querySelector('.verify-btn').disabled = true;
+
+        const expDiv = document.getElementById(`exp-${id}`);
+        expDiv.style.display = 'block';
+
+        if(isCorrect) {
+            userState.acertos++;
+            selectedEl.classList.add('correct-hide');
+            expDiv.innerHTML = "<span style='color:var(--success)'>✅ Excelente! Você acertou.</span>";
+        } else {
+            selectedEl.classList.add('wrong-reveal');
+            // Mantém o padrão pedagógico de não dar a resposta pronta, forçando a revisão do material
+            let semanaNum = week.replace('S','');
+            expDiv.innerHTML = `<span style='color:var(--wrong)'>❌ Não foi desta vez. Para revisar este conceito, consulte o material da <strong>Semana ${semanaNum}</strong>.</span>`;
+        }
+
+        respondidasCount++;
+        document.getElementById('progresso').innerText = `Progresso: ${respondidasCount}/10`;
+        if(respondidasCount === 10) document.getElementById('final-submit-btn').disabled = false;
+    }
+
+    async function enviarTudo() {
+        const btn = document.getElementById('final-submit-btn');
+        btn.disabled = true;
+        btn.innerText = "Sincronizando com Servidor...";
+
+        const payload = { 
+            ...userState, 
+            key_alunos: "key_alunos", 
+            modulo: "Redes_Topologias_AntiCola", 
+            timestamp: new Date().toISOString() 
+        };
+
+        try {
+            // Envia para o seu n8n configurado
+            await fetch('https://n8n.inetz.com.br/webhook/avalia', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            document.getElementById('quiz-screen').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'block';
+            document.getElementById('final-msg').innerHTML = `Sua Palavra foi concluída!<br>Resultados enviados com sucesso para a coordenação.`;
+        } catch (e) {
+            alert("Erro ao conectar com o n8n. Verifique sua rede.");
+            btn.disabled = false;
+            btn.innerText = "TENTAR REENVIAR AGORA";
+        }
+    }
+</script>
+</body>
+</html>

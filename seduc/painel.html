@@ -20,7 +20,20 @@
         
         /* Grid de Disciplinas */
         .grid-disciplinas { display: grid; grid-template-columns: repeat(2, 1-fr); gap: 15px; margin: 30px 0; }
-        .btn-disciplina { background: #334155; border: none; padding: 20px; color: white; border-radius: 8px; transition: 0.3s; cursor: pointer; }
+        .btn-disciplina { 
+            background: #334155; 
+            border: none; 
+            padding: 20px; 
+            color: white; 
+            border-radius: 8px; 
+            transition: 0.3s; 
+            cursor: pointer; 
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+        }
         .btn-disciplina:hover { background: var(--secondary); transform: translateY(-3px); }
 
         /* Botões de Ação */
@@ -47,10 +60,10 @@
         </div>
         <hr style="border: 0.5px solid #334155; margin: 40px 0;">
 
-        <h2>Disciplinas Ministradas</h2>
+        <h2>Aulas Programadas</h2>
         <div class="grid-disciplinas">
-            <button class="btn-disciplina">Sistemas Operacionais</button>
-            <button class="btn-disciplina">Desenvolvimento Web</button>
+            <a href="https://github.com/adrianorosa02-seducsp/back-template-fastapi/tree/main/Aulas" target="_blank" class="btn-disciplina">Back-End/Front-End </a>
+            <a href="https://github.com/adrianorosa02-seducsp/back-template-fastapi/tree/main/Aulas" target="_blank" class="btn-disciplina">Redes Computadores </a>
             <button class="btn-disciplina">Automação e Integração</button>
             <button class="btn-disciplina">Banco de Dados</button>
         </div>
