@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Inetz - Redes e Topologias</title>
+    <style>
+        :root { --primary: #2563eb; --success: #16a34a; --wrong: #dc2626; --bg: #f1f5f9; --text: #1e293b; --timer-color: #f59e0b; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: var(--text); }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        #quiz-screen, #final-screen { display: none; }
+        .login-box { text-align: center; padding: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
+        .question { margin-bottom: 30px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; display: none; }
+        .question.active { display: block; border-left: 6px solid var(--primary); }
+        .options { list-style: none; padding: 0; }
+        .options li { margin: 8px 0; padding: 12px; border: 2px solid #cbd5e1; border-radius: 6px; cursor: pointer; transition: 0.3s; }
+        .options li.selected { border-color: var(--primary); background: #eff6ff; }
+        .options li.wrong-reveal { background: #fee2e2; border-color: var(--wrong); color: var(--wrong); font-weight: bold; }
+        .options li.correct-hide { background: #dcfce7; border-color: var(--success); color: var(--success); font-weight: bold; }
+        button { background: var(--primary); color: white; border: none; padding: 15px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; }
+        button:disabled { background: #cbd5e1; cursor: not-allowed; }
+        .verify-btn { background: #64748b; margin-top: 10px; }
+        .next-btn { background: var(--success); margin-top: 15px; display: none; }
+        .explanation { display: none; margin-top: 15px; padding: 15px; border-radius: 4px; background: #f8fafc; border-left: 5px solid #ccc; }
+        .timer-msg { color: var(--timer-color); font-weight: bold; margin-top: 10px; display: none; text-align: center; border: 1px solid var(--timer-color); padding: 5px; border-radius: 4px; }
+        .header-quiz { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #eee; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="login-screen" class="login-box">
+        <h1 style="color:var(--primary)">Inetz Soluções Inteligentes</h1>
+        <h3>Avaliação de Redes e Topologias</h3>
+        <p>Atenção: Cada questão possui um tempo obrigatório de 3 minutos para revisão antes de avançar.</p>
+        <input type="text" id="nome" placeholder="Nome Completo">
+        <input type="text" id="ra" placeholder="Digite seu RA (Apenas números)">
+        <button onclick="startQuiz()">INICIAR AVALIAÇÃO</button>
+    </div>
+
+    <div id="quiz-screen">
+        <div class="header-quiz">
+            <span id="progresso" style="font-weight:bold;">Questão 1 de 10</span>
+            <span id="aluno-ra" style="font-size: 0.9em; color: #666;"></span>
+        </div>
+        
+        <div id="questions-container"></div>
+
+        <div id="timer-box" class="timer-msg">
+            Aguarde <span id="countdown">180</span>s para liberar a próxima questão.
+        </div>
+
+        <button id="final-submit-btn" style="display:none; margin-top:30px; background:#0f172a;" onclick="enviarTudo()">FINALIZAR E ENVIAR MINHA PALAVRA</button>
+    </div>
+
+    <div id="final-screen" style="text-align: center; padding: 40px;">
+        <h2 id="final-msg">Enviando dados...</h2>
+    </div>
+</div>
+
+<script>
+    const rawQuestions = [
+        { id: "q1", q: "Qual a definição fundamental de uma Rede de Computadores?", correct: "Conjunto de dispositivos interconectados para compartilhar recursos e informações", wrong: ["Apenas a conexão Wi-Fi de um celular", "Um computador isolado sem cabos", "Obrigariamente um sistema que depende da internet"], ref: "Semana 1" },
+        { id: "q2", q: "As redes de computadores necessitam obrigatoriamente de Internet?", correct: "Não, podem ser locais e independentes da conexão externa", wrong: ["Sim, sem internet não há rede", "Apenas se forem redes de empresas", "Sim, pois 4G e 5G são as únicas formas de rede"], ref: "Semana 1" },
+        { id: "q3", q: "O que define a 'topologia' de uma rede?", correct: "A forma como os computadores e dispositivos estão interligados fisicamente", wrong: ["A velocidade máxima da internet", "O preço total dos equipamentos", "A marca do roteador utilizado"], ref: "Semana 1" },
+        { id: "q4", q: "Na topologia Estrela, qual o papel do nó central (Switch ou Hub)?", correct: "Atuar como ponto comum de conexão para todos os nós", wrong: ["Armazenar todos os arquivos dos alunos", "Proteger contra vírus de pendrive", "Aumentar a velocidade do processador das máquinas"], ref: "Semana 1" },
+        { id: "q5", q: "Qual a principal vantagem da topologia Estrela?", correct: "A falha em um nó periférico não afeta o restante da rede", wrong: ["É a que gasta menos cabo de todas", "Não precisa de nenhum equipamento central", "Se o cabo central romper, todos continuam navegando"], ref: "Semana 1" },
+        { id: "q6", q: "Como se caracteriza a estrutura da topologia em Barramento?", correct: "Todos os dispositivos são conectados a um único cabo central (backbone)", wrong: ["Cada computador se liga em círculo", "Conexão exclusiva via Bluetooth", "Os nós são ligados em formato de árvore hierárquica"], ref: "Semana 4" },
+        { id: "q7", q: "Qual a maior fragilidade da topologia em Barramento?", correct: "O rompimento do cabo central compromete toda a rede", wrong: ["O alto custo dos switches", "A dificuldade em conectar apenas 2 máquinas", "O excesso de cabos individuais"], ref: "Semana 4" },
+        { id: "q8", q: "Na topologia em Anel, como a informação circula?", correct: "Os dados passam por cada estação de trabalho em uma direção até o destino", wrong: ["A informação vai direto para o satélite", "Os dados são transmitidos para todos os cabos ao mesmo tempo", "O sinal é enviado apenas para o servidor central"], ref: "Semana 7" },
+        { id: "q9", q: "Onde a topologia em Anel ainda é amplamente utilizada hoje?", correct: "Em redes de fibra óptica (MANs) para garantir redundância", wrong: ["Em todas as casas populares", "Apenas em mouses e teclados sem fio", "Não é mais usada em nenhum lugar do mundo"], ref: "Semana 7" },
+        { id: "q10", q: "Qual a função do 'Terminador' na topologia em barramento?", correct: "Evitar que o sinal reflita e cause interferência nas pontas do cabo", wrong: ["Aumentar a voltagem da tomada", "Desligar o computador automaticamente", "Conectar a rede ao Wi-Fi"], ref: "Semana 4" }
+    ];
+
+    let currentIdx = 0;
+    let userState = { nome: "", ra: "", acertos: 0, respostas: {} };
+    const COOLDOWN_TIME = 180; // 3 minutos em segundos
+
+    function seededShuffle(array, seed) {
+        let m = array.length, t, i;
+        let s = parseInt(seed.toString().replace(/\D/g, '')) || 123;
+        while (m) {
+            i = Math.floor((Math.abs(Math.sin(s++)) * 10000) % m--);
+            t = array[m]; array[m] = array[i]; array[i] = t;
+        }
+        return array;
+    }
+
+    function startQuiz() {
+        userState.nome = document.getElementById('nome').value;
+        userState.ra = document.getElementById('ra').value;
+        if(!userState.nome || !userState.ra) return alert("Preencha Nome e RA.");
+
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('quiz-screen').style.display = 'block';
+        document.getElementById('aluno-ra').innerText = `RA: ${userState.ra}`;
+        
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        const container = document.getElementById('questions-container');
+        const item = rawQuestions[currentIdx];
+        container.innerHTML = "";
+
+        let options = seededShuffle([item.correct, ...item.wrong], userState.ra + currentIdx);
+
+        const html = `
+            <div class="question active" id="${item.id}">
+                <p><strong>${currentIdx + 1}. ${item.q}</strong></p>
+                <ul class="options">
+                    ${options.map(opt => `<li onclick="sel(this)">${opt}</li>`).join('')}
+                </ul>
+                <button id="btn-verificar" class="verify-btn" onclick="verify('${item.id}', '${item.correct}', '${item.ref}')">Verificar Resposta</button>
+                <div class="explanation" id="exp-${item.id}"></div>
+                <button id="btn-proxima" class="next-btn" onclick="next()">Próxima Questão</button>
+            </div>
+        `;
+        container.innerHTML = html;
+        document.getElementById('progresso').innerText = `Questão ${currentIdx + 1} de 10`;
+    }
+
+    function sel(el) {
+        if(el.parentElement.classList.contains('locked')) return;
+        Array.from(el.parentElement.children).forEach(li => li.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    function verify(id, correct, ref) {
+        const selected = document.querySelector('.selected');
+        if(!selected) return alert("Selecione uma opção.");
+
+        const chosen = selected.innerText;
+        const isCorrect = (chosen === correct);
+        
+        userState.respostas[id] = chosen;
+        if(isCorrect) userState.acertos++;
+
+        document.querySelector('.options').classList.add('locked');
+        document.getElementById('btn-verificar').style.display = 'none';
+        
+        const exp = document.getElementById(`exp-${id}`);
+        exp.style.display = 'block';
+        
+        if(isCorrect) {
+            selected.classList.add('correct-hide');
+            exp.innerHTML = "✅ <strong>Correto!</strong> Continue assim.";
+        } else {
+            selected.classList.add('wrong-reveal');
+            exp.innerHTML = `❌ <strong>Incorreto.</strong> Revise o conteúdo da <strong>${ref}</strong> nos PDFs anexados.`;
+        }
+
+        if (currentIdx < rawQuestions.length - 1) {
+            startCooldown();
+        } else {
+            document.getElementById('final-submit-btn').style.display = 'block';
+        }
+    }
+
+    function startCooldown() {
+        const timerBox = document.getElementById('timer-box');
+        const countdownEl = document.getElementById('countdown');
+        const nextBtn = document.getElementById('btn-proxima');
+        let timeLeft = COOLDOWN_TIME;
+
+        timerBox.style.display = 'block';
+        nextBtn.style.display = 'block';
+        nextBtn.disabled = true;
+
+        const interval = setInterval(() => {
+            timeLeft--;
+            countdownEl.innerText = timeLeft;
+            if(timeLeft <= 0) {
+                clearInterval(interval);
+                timerBox.style.display = 'none';
+                nextBtn.disabled = false;
+                nextBtn.innerText = "AVANÇAR AGORA";
+            }
+        }, 1000);
+    }
+
+    function next() {
+        currentIdx++;
+        renderQuestion();
+    }
+
+    async function enviarTudo() {
+        document.getElementById('quiz-screen').style.display = 'none';
+        document.getElementById('final-screen').style.display = 'block';
+
+        const payload = { ...userState, modulo: "Redes_Topologias_V2_Timer", key_alunos: "key_alunos" };
+
+        try {
+            await fetch('https://n8n.inetz.com.br/webhook-test/avalia', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            document.getElementById('final-msg').innerHTML = "Sua <strong>Palavra</strong> foi entregue!<br>Resultados sincronizados com sucesso.";
+        } catch (e) {
+            document.getElementById('final-msg').innerHTML = "Erro na conexão. Informe ao professor Rosa.";
+        }
+    }
+</script>
+</body>
+</html>
