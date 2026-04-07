@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Autorização Escolar</title>
+</head>
+<body>
+
+<h2>Autorização Escolar</h2>
+
+<form id="formulario">
+
+<label>Nome do Responsável:</label><br>
+<input type="text" name="nome_responsavel" required><br><br>
+
+<label>Email:</label><br>
+<input type="email" name="email" required><br><br>
+
+<label>RG:</label><br>
+<input type="text" name="rg" required><br><br>
+
+<label>Nome do Aluno:</label><br>
+<input type="text" name="nome_aluno" required><br><br>
+
+<label>Turma:</label><br>
+<input type="text" name="turma" required><br><br>
+
+<button type="submit">Enviar</button>
+
+</form>
+
+<p id="resultado"></p>
+
+<script>
+document.getElementById('formulario').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const dados = {
+        nome_responsavel: this.nome_responsavel.value,
+        email: this.email.value,
+        rg: this.rg.value,
+        nome_aluno: this.nome_aluno.value,
+        turma: this.turma.value
+    };
+
+    const resposta = await fetch('https://n8n.inetz.com.br/webhook-test/visita', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dados)
+    });
+
+    const json = await resposta.json();
+
+    document.getElementById('resultado').innerText =
+        'Código enviado para: ' + json.email;
+});
+</script>
+
+</body>
+</html>

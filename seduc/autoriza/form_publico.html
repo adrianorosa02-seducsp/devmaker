@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Visita - SEDUC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h2 {
+            color: #004a99;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ff6d5a;
+        }
+        button {
+            width: 100%;
+            background-color: #ff6d5a;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #e85a49;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>Confirmação de Visita</h2>
+        <p>Preencha os dados do responsável para gerar a autorização.</p>
+    </div>
+
+    <form id="visitaForm" action="https://n8n.inetz.com.br/webhook/b0c4e44e-0332-4d73-a545-a3144fe4a33a" method="post">
+        <!-- O e-mail do aluno será preenchido via URL para o n8n saber quem é -->
+        <input type="hidden" name="Email_Google" id="Email_Google">
+
+        <div class="form-group">
+            <label>Nome do Responsável:</label>
+            <input type="text" name="nome_responsavel" required placeholder="Nome completo">
+        </div>
+
+        <div class="form-group">
+            <label>RG ou CPF do Responsável:</label>
+            <input type="text" name="documento" required placeholder="000.000.000-00">
+        </div>
+
+        <div class="form-group">
+            <label>Telefone/WhatsApp:</label>
+            <input type="tel" name="telefone" required placeholder="(00) 00000-0000">
+        </div>
+
+        <div class="form-group">
+            <label>E-mail do Responsável:</label>
+            <input type="email" name="email_responsavel" required placeholder="email@exemplo.com">
+        </div>
+
+        <div class="form-group">
+            <label>Tamanho da Camiseta do Aluno:</label>
+            <select name="tamanho_camiseta" required>
+                <option value="" disabled selected>Selecione o tamanho</option>
+                <option value="PP">PP</option>
+                <option value="P">P</option>
+                <option value="M">M</option>
+                <option value="G">G</option>
+                <option value="GG">GG</option>
+                <option value="XG">XG</option>
+            </select>
+        </div>
+
+        <button type="submit">Enviar e Gerar Autorização</button>
+    </form>
+</div>
+
+<script>
+    // Captura o parâmetro 'email' da URL e coloca no campo oculto
+    const urlParams = new URLSearchParams(window.location.search);
+    const emailAluno = urlParams.get('email');
+    if (emailAluno) {
+        document.getElementById('Email_Google').value = emailAluno;
+    }
+</script>
+
+</body>
+</html>
