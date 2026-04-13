@@ -58,6 +58,18 @@
                 INSTALAR PYTHON no THINKPAD (Python 3.13, pip e GH)
             </button>
         </div>
+        <div class="step-box">
+            <p class="instruction">1. Clique abaixo para configurar o path do NVM no <strong>Git Bash</strong>:</p>
+            <button class="btn-copy" onclick="copyNVMPath()">
+                Configurar path inicial para intalação de node e NVM
+            </button>
+        </div>
+        <div class="step-box">
+            <p class="instruction">1. Clique abaixo para instalar o NVM no <strong>Git Bash</strong>:</p>
+            <button class="btn-copy" onclick="copyToClipboard('curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash')">
+                Install Node/NVM para (React/Vue/Angular)
+            </button>
+        </div>
         <hr style="border: 0.5px solid #334155; margin: 40px 0;">
 
         <h2>Aulas Programadas</h2>
@@ -81,6 +93,11 @@
             navigator.clipboard.writeText(text).then(() => {
                 alert("Comando copiado! Agora cole no seu terminal.");
             });
+        }
+
+        function copyNVMPath() {
+            const text = `export NVM_DIR="$HOME/.nvm"\n[ -s "$NVM_DIR/nvm.sh" ] && \\. "$NVM_DIR/nvm.sh"  # This loads nvm\n[ -s "$NVM_DIR/bash_completion" ] && \\. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion`;
+            copyToClipboard(text);
         }
     </script>
 </body>
