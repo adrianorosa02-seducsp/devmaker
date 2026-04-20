@@ -1,15 +1,23 @@
-name: Deploy Estático
-on: [push]
+name: Deploy Estático para (HTML/CSS/Javascript)
+on: 
+  push:
+    branches: [ main, master ]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
       - name: Publicar via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ vars.SSH_HOST }}
           username: ${{ vars.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          port: ${{ vars.SSH_PORT }}
           source: "."
-          target: "/var/inetpub/wwwroot/projetos/${{ vars.ALUNO_RA }}/${{ github.event.repository.name }}"
+          # Estrutura: /projetos/adriano/meu-site-novo
+          target: "/var/inetpub/wwwroot/projetos/${{ vars.ALIAS_NAME }}/${{ vars.PROJETO_NAME }}"
+          strip_components: 0
