@@ -100,7 +100,7 @@ if [[ "$START_MODE" == "NEW" ]]; then
     echo -e "${CYAN}📥 Baixando Workflow Inetz: $STACK_FILE...${NC}"
     curl -sL "$URL_WORKFLOWS/$STACK_FILE" -o .github/workflows/deploy.yml
     echo -e "${YELLOW}⚙️  Criando index.html de apresentação...${NC}"
-    curl -sL "https://lab.inetz.com.br/devmaker/ava/seduc/index_estatico.html" -o index.html
+    curl -sL "https://lab.inetz.com.br/devmaker/ava/seduc/estatico.html" -o index.html
     
     
 fi

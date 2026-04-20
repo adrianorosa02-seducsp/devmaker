@@ -9,6 +9,19 @@ jobs:
     steps:
       - name: Checkout do Código
         uses: actions/checkout@v4
+        # --- NOVO PASSO: GERAR METADADOS DO DEPLOY ---
+      - name: Gerar JSON de Identidade
+        run: |
+          echo '{
+            "alias": "${{ vars.ALIAS_NAME }}",
+            "projeto": "${{ vars.PROJETO_NAME }}",
+            "data_deploy": "$(date +'%d/%m/%Y %H:%M')",
+            "infra": "Inetz Swarm Cluster"
+          }' > info.json
+
+
+
+
 
       - name: Publicar via SCP
         uses: appleboy/scp-action@v0.1.7

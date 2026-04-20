@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deploy Sucesso | Inetz Private Cloud</title>
+    <title>Inetz Cloud | Deploy Sucesso</title>
     <style>
         :root {
             --primary: #00d2ff;
@@ -34,7 +34,6 @@
             border-radius: 24px;
             padding: 3rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            position: relative;
         }
 
         .status-pill {
@@ -95,13 +94,6 @@
             color: var(--primary);
             font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .card p {
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #cbd5e1;
         }
 
         .highlight-box {
@@ -111,8 +103,6 @@
             border-radius: 16px;
             margin-top: 2rem;
         }
-
-        .highlight-box h4 { margin: 0 0 0.5rem 0; color: #fff; }
 
         footer {
             margin-top: 3rem;
@@ -134,53 +124,57 @@
             border: 1px solid rgba(0, 210, 255, 0.1);
         }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
-        }
-
-        @media (max-width: 600px) {
-            .grid { grid-template-columns: 1fr; }
-            .container { padding: 1.5rem; }
-        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div class="status-pill">SISTEMA ONLINE 7/24</div>
-        <h1>Projeto: $REPO_NAME</h1>
-        <p class="hero-text">Aplicação publicada com sucesso no ecossistema de alta disponibilidade <strong>Inetz Cloud</strong>.</p>
+        <h1>Projeto: <span id="proj-name">Carregando...</span></h1>
+        <p class="hero-text">Aplicação publicada com sucesso no cluster de alta disponibilidade <strong>Inetz Private Cloud</strong>.</p>
 
         <div class="grid">
             <div class="card">
-                <h3>🌩️ Private Cloud Swarm</h3>
-                <p>Seu código não está apenas em um servidor, mas em um <strong>Cluster Docker Swarm</strong> de nível empresarial. Isso garante que seu projeto permaneça no ar 24 horas por dia, 7 dias por semana, com resiliência automática.</p>
+                <h3>🌩️ Cluster Swarm</h3>
+                <p>Este projeto não reside em um servidor comum, mas em um ambiente de nuvem privada resiliente, garantindo disponibilidade contínua.</p>
             </div>
             <div class="card">
-                <h3>⚙️ Pipeline CI/CD</h3>
-                <p>Este deploy foi realizado via <strong>GitHub Actions</strong>. Você acaba de dominar o fluxo moderno de DevOps: o código flui do seu Git diretamente para o nosso cluster de forma automatizada e segura.</p>
+                <h3>⚙️ Deploy Automatizado</h3>
+                <p>Publicação via <strong>GitHub Actions</strong> diretamente para o cluster. Ciclo completo de DevOps integrado ao ensino médio.</p>
             </div>
         </div>
 
         <div class="highlight-box">
-            <h4>🎯 A importância do seu Portfólio</h4>
-            <p style="font-size: 0.95rem; margin: 0;">Para você, estudante de <strong>Desenvolvimento de Sistemas (SEDUC-SP)</strong>, este link é a prova real de sua competência técnica. Iniciar sua carreira com projetos hospedados em infraestrutura robusta demonstra ao mercado que você não apenas programa, mas entende como o software é entregue e mantido no mundo real.</p>
+            <h4>🎯 Recurso Integrador SEDUC/SP</h4>
+            <p style="font-size: 0.95rem; margin: 0;">O desenvolvimento deste portfólio é parte essencial da sua jornada como Desenvolvedor de Sistemas. Ter seus projetos online demonstra prontidão para os desafios reais do mercado de tecnologia.</p>
         </div>
 
         <footer>
-            <div>
-                ALUNO: <span class="badge">$ALIAS_NAME</span>
-            </div>
-            <div>
-                REPO: <span class="badge">$REPO_NAME</span>
-            </div>
-            <div style="text-align: right;">
-                <small>Infra: SEDUC/SP & Inetz Lab</small>
-            </div>
+            <div>DESENVOLVEDOR: <span class="badge" id="user-alias">Aguardando...</span></div>
+            <div>STATUS: <span class="badge">PRODUÇÃO</span></div>
+            <div style="text-align: right;"><small>Infra: Swarm Cluster 01</small></div>
         </footer>
     </div>
 
+    <script>
+        // Lógica inteligente: consome o JSON gerado dinamicamente no deploy
+        async function loadConfig() {
+            try {
+                const response = await fetch('./info.json');
+                if (!response.ok) throw new Error();
+                const data = await response.json();
+                
+                document.getElementById('proj-name').textContent = data.projeto || "Indefinido";
+                document.getElementById('user-alias').textContent = data.alias || "Desconhecido";
+            } catch (err) {
+                // Caso o JSON ainda não exista (ex: rodando localmente)
+                document.getElementById('proj-name').textContent = "Local Host";
+                document.getElementById('user-alias').textContent = "Desenvolvedor Local";
+            }
+        }
+        loadConfig();
+    </script>
 </body>
 </html>
