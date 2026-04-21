@@ -1,0 +1,43 @@
+name: Deploy React Inetz (Vite)
+on: [push]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install & Build
+        run: |
+          npm install
+          npm run build # Gera a pasta dist
+
+      - name: Publicar via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ vars.SSH_PORT }}
+          source: "dist/*"
+          strip_components: 1
+          # O target usa o APP_NUM para isolar o laboratório
+          target: "/var/inetpub/wwwroot/react/lab${{ vars.APP_NUM }}"
+
+      # Opcional: Comando SSH para garantir que o container/serviço Swarm 
+      # do aluno seja reiniciado ou que o Traefik perceba a mudança
+      - name: Refresh Traefik Route
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ vars.SSH_PORT }}
+          script: |
+            echo "Deploy realizado em lab${{ vars.APP_NUM }}.react.inetz.com.br"

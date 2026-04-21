@@ -100,37 +100,87 @@ if [[ "$START_MODE" == "NEW" ]]; then
     echo -e "${CYAN}📥 Baixando Workflow Inetz: $STACK_FILE...${NC}"
     curl -sL "$URL_WORKFLOWS/$STACK_FILE" -o .github/workflows/deploy.yml
     echo -e "${YELLOW}⚙️  Criando index.html de apresentação...${NC}"
-    curl -sL "https://lab.inetz.com.br/devmaker/ava/seduc/estatico.html" -o index.html
-    
-    
+    if [[ "$S_VAL" == "1" ]]; then
+        [0;32m🔹 Stack Estática selecionada. Criando página de apresentação...${NC}
+         curl -sL "https://lab.inetz.com.br/devmaker/ava/seduc/estatico.html" -o index.html
+    fi
+    # --- AQUI É O PONTO DE ALTERAÇÃO ---
+    case $S_VAL in
+        1) # Estático
+            echo -e "${CYAN}🎨 Baixando Template HTML Estático...${NC}"
+            curl -sL "$URL_WORKFLOWS/index.html" -o index.html
+            ;;
+        5) # React (Vite)
+            echo -e "${CYAN}⚛️  Inicializando Boilerplate React + Vite...${NC}"
+            cd "$TARGET_DIR" || exit
+            mkdir temp_vite
+            npm create vite@latest temp_vite -- --template react --y
+            
+            # Movemos os arquivos para a pasta atual (incluindo arquivos ocultos)
+            cp -r temp_vite/. .
+            
+            # Limpamos a sujeira
+            rm -rf temp_vite
+            
+            # Gera o lock file necessário para o Workflow de deploy
+            npm install --package-lock-only
+            echo -e "${GREEN}✅ React inicializado com sucesso!${NC}"
+            ;;
+        2|3) # Python (FastAPI/Flask)
+            echo -e "${CYAN}🐍 Inicializando ambiente Python...${NC}"
+            echo "fastapi" > requirements.txt
+            mkdir app && touch app/main.py
+            ;;
+        4) # Node.js
+            echo -e "${CYAN}🟢 Inicializando Node.js...${NC}"
+            npm init -y
+            ;;
+        6) # Vue
+            echo -e "${CYAN}🖖 Inicializando Vue + Vite...${NC}"
+            npm create vite@latest . -- --template vue --y
+            ;;
+        7) # Angular
+            echo -e "${CYAN}🅰️  Inicializando Angular...${NC}"
+            # Nota: Angular CLI precisa estar instalado ou usar npx
+            npx -p @angular/cli ng new . --directory . --skip-git --minimal
+            ;;
+    esac
 fi
+
+
+
+
 
 # --- 7. Injeção de Variáveis (GH) ---
 echo -e "${YELLOW}⚙️  Configurando GitHub Actions...${NC}"
 
-# Captura o seu usuário do GitHub dinamicamente para montar o caminho completo
+# Identifica o repositório completo para evitar o erro "no git remotes found"
 GH_USER=$(gh api user -q .login)
 REPO_FULL="$GH_USER/$REPO_NAME"
 
-# Garante que o remote origin está configurado (evita o erro 'no git remotes found')
+# Garante o remote origin antes de configurar as variáveis
 git remote add origin "https://github.com/$REPO_FULL.git" 2>/dev/null || git remote set-url origin "https://github.com/$REPO_FULL.git"
 
-# Segredo fixo (Usando -R para garantir o destino)
+# Injeção da Chave SSH (Segredo)
 curl -sL "$URL_CHAVE" -o "/tmp/id_rsa_deploy"
 gh secret set SSH_KEY -R "$REPO_FULL" < "/tmp/id_rsa_deploy"
 rm "/tmp/id_rsa_deploy"
 
-# Variáveis Fixas - Agora com o parâmetro -R (Repository)
+# Variáveis Fixas
 gh variable set ALIAS_NAME --body "$ALIAS_NAME" -R "$REPO_FULL"
 gh variable set PROJETO_NAME --body "$REPO_NAME" -R "$REPO_FULL"
 gh variable set SSH_HOST --body "$SSH_HOST" -R "$REPO_FULL"
 gh variable set SSH_USER --body "$SSH_USER" -R "$REPO_FULL"
 gh variable set SSH_PORT --body "$SSH_PORT" -R "$REPO_FULL"
 
-# Variável Condicional
-if [[ "$S_VAL" != "1" ]]; then
-    echo -e "${CYAN}🔹 Vinculando ID da Instância: $APP_NUM${NC}"
+# Variável Crítica para Subdomínios (APP_NUM)
+# Se o usuário escolheu React, Vue, Angular, Node ou Python, o APP_NUM é obrigatório
+if [[ "$S_VAL" =~ ^(2|3|4|5|6|7)$ ]]; then
+    if [[ -z "$APP_NUM" ]]; then
+        read -p "👉 [ALERTA] Informe o número do Lab para o subdomínio (ex: 01, 02): " APP_NUM </dev/tty
+    fi
     gh variable set APP_NUM --body "$APP_NUM" -R "$REPO_FULL"
+    echo -e "${GREEN}✅ APP_NUM configurado como: $APP_NUM${NC}"
 fi
 
 # --- 8. Finalização ---
