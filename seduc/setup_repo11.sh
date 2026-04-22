@@ -99,28 +99,29 @@ if [[ "$START_MODE" == "NEW" ]]; then
     mkdir -p .github/workflows
     echo -e "${CYAN}📥 Baixando Workflow Inetz: $STACK_FILE...${NC}"
     curl -sL "$URL_WORKFLOWS/$STACK_FILE" -o .github/workflows/deploy.yml
-    echo -e "${YELLOW}⚙️  Criando index.html de apresentação...${NC}"
-    if [[ "$S_VAL" == "1" ]]; then
-        [0;32m🔹 Stack Estática selecionada. Criando página de apresentação...${NC}
-         curl -sL "https://lab.inetz.com.br/devmaker/ava/seduc/estatico.html" -o index.html
-    fi
+    
     # --- AQUI É O PONTO DE ALTERAÇÃO ---
     case $S_VAL in
         1) # Estático
-            echo -e "${CYAN}🎨 Baixando Template HTML Estático...${NC}"
-            curl -sL "$URL_WORKFLOWS/index.html" -o index.html
+            echo -e "${GREEN}🔹 Stack Estática selecionada. Criando página de apresentação...${NC}"
+            curl -sL "https://lab.inetz.com.br/devmaker/ava/seduc/estatico.html" -o index.html
             ;;
         5) # React (Vite)
             echo -e "${CYAN}⚛️  Inicializando Boilerplate React + Vite...${NC}"
-            cd "$TARGET_DIR" || exit
-            mkdir temp_vite
-            npm create vite@latest temp_vite -- --template react --y
+            # Usamos --no-interactive para evitar que inicie o servidor dev automaticamente
+            npm create vite@latest temp_vite -- --template react --no-interactive
+            
+            # Removemos o .git da pasta temporária se existir para evitar conflitos
+            rm -rf temp_vite/.git
             
             # Movemos os arquivos para a pasta atual (incluindo arquivos ocultos)
             cp -r temp_vite/. .
             
             # Limpamos a sujeira
             rm -rf temp_vite
+            
+            # Ajustamos o nome no package.json para o nome do repositório
+            sed -i "s/\"name\": \"temp_vite\"/\"name\": \"$REPO_NAME\"/" package.json
             
             # Gera o lock file necessário para o Workflow de deploy
             npm install --package-lock-only
@@ -137,12 +138,13 @@ if [[ "$START_MODE" == "NEW" ]]; then
             ;;
         6) # Vue
             echo -e "${CYAN}🖖 Inicializando Vue + Vite...${NC}"
-            npm create vite@latest . -- --template vue --y
+            # Usamos --no-interactive e --overwrite para evitar prompts e início automático
+            npm create vite@latest . -- --template vue --no-interactive --overwrite
             ;;
         7) # Angular
             echo -e "${CYAN}🅰️  Inicializando Angular...${NC}"
-            # Nota: Angular CLI precisa estar instalado ou usar npx
-            npx -p @angular/cli ng new . --directory . --skip-git --minimal
+            # Nota: Angular CLI precisa estar instalado ou usar npx. Usamos --defaults para evitar prompts.
+            npx -p @angular/cli ng new . --directory . --skip-git --minimal --defaults
             ;;
     esac
 fi
@@ -152,21 +154,39 @@ fi
 
 
 # --- 7. Injeção de Variáveis (GH) ---
-echo -e "${YELLOW}⚙️  Configurando GitHub Actions...${NC}"
+echo -e "${YELLOW}⚙️  Configurando GitHub Actions e Variáveis...${NC}"
 
-# Identifica o repositório completo para evitar o erro "no git remotes found"
-GH_USER=$(gh api user -q .login)
+# Identifica o usuário de forma robusta
+GH_USER=$(gh api user -q .login 2>/dev/null)
+if [[ -z "$GH_USER" ]]; then
+    echo -e "${YELLOW}⚠️  Aviso: Não foi possível obter usuário via API. Tentando via config local...${NC}"
+    GH_USER=$(gh config get -h github.com user 2>/dev/null)
+fi
+
+if [[ -z "$GH_USER" ]]; then
+    echo -e "${RED}❌ Erro Fatal: Não foi possível identificar seu usuário do GitHub.${NC}"
+    echo -e "Por favor, execute: gh auth login"
+    exit 1
+fi
+
 REPO_FULL="$GH_USER/$REPO_NAME"
+echo -e "${CYAN}📦 Repositório Alvo: $REPO_FULL${NC}"
 
-# Garante o remote origin antes de configurar as variáveis
+# Garante o remote origin (necessário para o push posterior)
 git remote add origin "https://github.com/$REPO_FULL.git" 2>/dev/null || git remote set-url origin "https://github.com/$REPO_FULL.git"
 
 # Injeção da Chave SSH (Segredo)
+echo -e "${CYAN}🔑 Configurando Segredo SSH_KEY...${NC}"
 curl -sL "$URL_CHAVE" -o "/tmp/id_rsa_deploy"
-gh secret set SSH_KEY -R "$REPO_FULL" < "/tmp/id_rsa_deploy"
+if gh secret set SSH_KEY -R "$REPO_FULL" < "/tmp/id_rsa_deploy"; then
+    echo -e "${GREEN}✅ SSH_KEY configurada.${NC}"
+else
+    echo -e "${RED}❌ Erro ao configurar SSH_KEY no GitHub.${NC}"
+fi
 rm "/tmp/id_rsa_deploy"
 
 # Variáveis Fixas
+echo -e "${CYAN}📝 Configurando variáveis de ambiente...${NC}"
 gh variable set ALIAS_NAME --body "$ALIAS_NAME" -R "$REPO_FULL"
 gh variable set PROJETO_NAME --body "$REPO_NAME" -R "$REPO_FULL"
 gh variable set SSH_HOST --body "$SSH_HOST" -R "$REPO_FULL"
@@ -174,20 +194,38 @@ gh variable set SSH_USER --body "$SSH_USER" -R "$REPO_FULL"
 gh variable set SSH_PORT --body "$SSH_PORT" -R "$REPO_FULL"
 
 # Variável Crítica para Subdomínios (APP_NUM)
-# Se o usuário escolheu React, Vue, Angular, Node ou Python, o APP_NUM é obrigatório
 if [[ "$S_VAL" =~ ^(2|3|4|5|6|7)$ ]]; then
     if [[ -z "$APP_NUM" ]]; then
         read -p "👉 [ALERTA] Informe o número do Lab para o subdomínio (ex: 01, 02): " APP_NUM </dev/tty
     fi
     gh variable set APP_NUM --body "$APP_NUM" -R "$REPO_FULL"
-    echo -e "${GREEN}✅ APP_NUM configurado como: $APP_NUM${NC}"
+    echo -e "${GREEN}✅ APP_NUM ($APP_NUM) configurado.${NC}"
 fi
 
 # --- 8. Finalização ---
-git add .
-git commit -m "chore: initial setup inetz" 2>/dev/null
-git branch -M main
-git push -u origin main 2>/dev/null
+echo -e "\n${YELLOW}📤 Iniciando publicação no GitHub...${NC}"
 
-echo -e "\n${GREEN}✅ SUCESSO!${NC}"
-echo -e "🌐 URL: ${CYAN}https://lab.inetz.com.br/$ALIAS_NAME/$REPO_NAME${NC}"
+# Adiciona todos os arquivos (respeitando .gitignore)
+git add .
+
+# Tenta fazer o commit inicial
+if git commit -m "chore: initial setup inetz" &>/dev/null; then
+    echo -e "${GREEN}📦 Arquivos preparados e commit realizado.${NC}"
+else
+    echo -e "${YELLOW}⚠️  Nada para commit (repositório já estava atualizado).${NC}"
+fi
+
+# Define a branch principal
+git branch -M main
+
+# Faz o push e captura o status
+echo -e "${CYAN}🚀 Enviando para o GitHub...${NC}"
+if git push -u origin main; then
+    echo -e "\n${GREEN}✅ SUCESSO! Repositório configurado e publicado.${NC}"
+    echo -e "🌐 URL do Projeto: ${CYAN}https://lab.inetz.com.br/$ALIAS_NAME/$REPO_NAME${NC}"
+    echo -e "⚙️  Acompanhe o Deploy: ${CYAN}https://github.com/$REPO_FULL/actions${NC}"
+else
+    echo -e "\n${RED}❌ ERRO: Falha ao publicar no GitHub.${NC}"
+    echo -e "Dica: Verifique sua conexão e permissões do token (gh auth status).${NC}"
+    exit 1
+fi

@@ -1,0 +1,54 @@
+name: Deploy Angular Inetz
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Instalar Dependências
+        run: npm install
+
+      - name: Build do Projeto (Realidade Angular)
+        # O Angular por padrão gera os arquivos em dist/NOME_DO_PROJETO
+        run: npm run build -- --configuration production --base-href /
+
+      - name: Publicar via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ vars.SSH_PORT }}
+          # Usamos a variável do projeto para localizar a subpasta correta no dist
+          source: "dist/${{ vars.PROJETO_NAME }}/*"
+          # strip_components: 2 remove 'dist/' e 'nome-do-projeto/' 
+          # para que os arquivos caiam direto na raiz do laboratório
+          strip_components: 2
+          target: "/var/inetpub/wwwroot/angular/lab${{ vars.APP_NUM }}"
+          rm: false # Mantém o vínculo do volume do Docker Swarm intacto
+
+      - name: Refresh e Permissões no Servidor
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ vars.SSH_PORT }}
+          script: |
+            echo "Deploy Angular concluído: lab${{ vars.APP_NUM }}.angular.inetz.com.br"
+            # Garante que o Nginx tenha permissão de leitura nos arquivos novos
+            sudo chown -R ubuntu:ubuntu /var/inetpub/wwwroot/angular/lab${{ vars.APP_NUM }}
+            # Opcional: Força o reload do serviço se necessário
+            # sudo docker service update --force inetz-infra_lab${{ vars.APP_NUM }}-angular

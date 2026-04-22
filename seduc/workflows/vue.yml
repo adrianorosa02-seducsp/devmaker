@@ -1,0 +1,51 @@
+name: Deploy Vue Inetz
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Instalar Dependências
+        run: npm install
+
+      - name: Build do Projeto (Vite/Vue)
+        # Assim como no React, o Vue gera os arquivos direto em dist/
+        run: npm run build
+
+      - name: Publicar via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ vars.SSH_PORT }}
+          # No Vue/Vite, os arquivos estão na raiz do dist
+          source: "dist/*"
+          # strip_components: 1 remove apenas a pasta 'dist/'
+          strip_components: 1
+          target: "/var/inetpub/wwwroot/vue/lab${{ vars.APP_NUM }}"
+          rm: false 
+
+      - name: Refresh e Permissões no Servidor
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ vars.SSH_PORT }}
+          script: |
+            echo "Deploy Vue concluído: lab${{ vars.APP_NUM }}.vue.inetz.com.br"
+            # Garante que o Nginx tenha permissão de leitura nos arquivos
+            sudo chown -R ubuntu:ubuntu /var/inetpub/wwwroot/vue/lab${{ vars.APP_NUM }}

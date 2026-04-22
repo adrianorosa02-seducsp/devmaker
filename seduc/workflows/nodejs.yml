@@ -1,0 +1,55 @@
+name: Deploy Node.js Inetz
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Instalar Dependências
+        run: npm install
+
+      # Opcional: Se o aluno usar TypeScript, o build gera a pasta 'dist' ou 'build'
+      - name: Build do Projeto (se aplicável)
+        run: npm run build --if-present
+
+      - name: Publicar via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ vars.SSH_PORT }}
+          # No Node, enviamos o código fonte (ou a pasta build) e o package.json
+          # Omitimos node_modules pois o container fará a instalação ou terá as dependências
+          source: "./*, !node_modules"
+          target: "/var/inetpub/wwwroot/node/lab${{ vars.APP_NUM }}"
+          rm: false
+
+      - name: Refresh e Permissões no Servidor
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ vars.SSH_PORT }}
+          script: |
+            echo "Deploy Node.js concluído: lab${{ vars.APP_NUM }}.node.inetz.com.br"
+            
+            # Ajusta permissões
+            sudo chown -R ubuntu:ubuntu /var/inetpub/wwwroot/node/lab${{ vars.APP_NUM }}
+            
+            # Reinicia o serviço no Docker Swarm para ler o código novo
+            # Como é uma API, o container precisa dar 'restart' para atualizar o processo em memória
+            sudo docker service update --force inetz-node-runtime_lab${{ vars.APP_NUM }}-node
