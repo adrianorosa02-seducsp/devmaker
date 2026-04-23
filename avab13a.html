@@ -157,108 +157,145 @@
 
 <script>
     const questionsData = [
-        { q: "Segundo o PMBOK, em qual fase do ciclo de vida do projeto é realizada a atividade de 'definir cronograma e orçamento'?", options: ["Iniciação", "Execução", "Planejamento", "Monitoramento e controle", "Encerramento"], correct: "C" },
-        { q: "No Design Thinking, qual etapa é responsável por organizar e analisar as informações coletadas para definir o problema principal?", options: ["Empatia", "Ideação", "Definição", "Prototipagem", "Teste"], correct: "C" },
-        { q: "Qual prática do framework Scrum foca na entrega de valor incremental e feedbacks frequentes?", options: ["Planejamento inicial detalhado", "Entregas em ciclos curtos (Sprints)", "Minimização de reuniões de feedback", "Documentação exaustiva antes do desenvolvimento", "Escopo fechado no início do projeto"], correct: "B" },
-        { q: "Na matriz MoSCoW, as funcionalidades classificadas como 'Must Have' representam:", options: ["Requisitos críticos essenciais", "Requisitos importantes, mas não vitais", "Desejos futuros", "Funcionalidades que não serão implementadas", "Itens de baixo impacto"], correct: "A" },
-        { q: "Qual o objetivo principal do termo de abertura do projeto (Project Charter)?", options: ["Finalizar o cronograma", "Autorizar formalmente o início do projeto", "Contratar todos os fornecedores", "Realizar o encerramento financeiro", "Definir o layout do produto"], correct: "B" },
-        { q: "A fase de 'Empatia' no Design Thinking busca:", options: ["Criar protótipos", "Programar a interface", "Compreender as necessidades e sentimentos dos usuários", "Testar a escalabilidade", "Definir o orçamento"], correct: "C" },
-        { q: "No Scrum, quem é o responsável por representar os interesses dos stakeholders?", options: ["Scrum Master", "Time de Desenvolvimento", "Product Owner", "Gerente de Projetos", "CEO"], correct: "C" },
-        { q: "Qual técnica é utilizada para priorizar requisitos com base em 'Tem que ter' e 'Deveria ter'?", options: ["Gráfico de Gantt", "Matriz SWOT", "Matriz MoSCoW", "Diagrama de Ishikawa", "Método Kanban"], correct: "C" },
-        { q: "O encerramento do projeto no PMBOK inclui qual destas atividades?", options: ["Definição do escopo inicial", "Execução das tarefas", "Documentação das lições aprendidas", "Monitoramento de riscos", "Criação da EAP"], correct: "C" },
-        { q: "A 'Ideação' no Design Thinking é caracterizada por:", options: ["Restringir ideias", "Geração de um grande volume de soluções criativas", "Implementação imediata", "Coleta de dados demográficos", "Manutenção do status quo"], correct: "B" },
-        { q: "Qual evento é considerado um marco na história moderna do desenvolvimento móvel em 2007?", options: ["Lançamento do Windows Mobile", "Criação do primeiro jogo de Snake", "Lançamento do iPhone com interface touch", "Desenvolvimento do Symbian", "Lançamento do IBM Simon"], correct: "C" },
-        { q: "Qual componente do Android permite a modularidade de interface dentro de uma Activity?", options: ["Services", "Broadcast Receivers", "Fragments", "Content Providers", "Intents"], correct: "C" },
-        { q: "Por que o uso de comentários claros no código é considerado uma boa prática?", options: ["Aumenta o tamanho do executável", "Facilita a colaboração e manutenção futura", "Substitui o código funcional", "Impede que outros programadores alterem o código", "É obrigatório para o compilador"], correct: "B" },
-        { q: "Em HTML, qual atributo da tag <a> define o destino de um link?", options: ["src", "class", "id", "href", "alt"], correct: "D" },
-        { q: "Para alterar o conteúdo de texto de um elemento via JavaScript com segurança, usa-se:", options: ["text", "textContent", "content", "innerStyle", "value"], correct: "B" },
-        { q: "Qual tag HTML é utilizada para inserir uma imagem?", options: ["<picture>", "<graphic>", "<img>", "<media>", "<src>"], correct: "C" },
-        { q: "No CSS, qual seletor aplica estilos a um elemento com um 'id' específico?", options: [".", "#", "*", "@", "&"], correct: "B" },
-        { q: "Qual método JavaScript é usado para escutar eventos, como um clique?", options: ["listen()", "onClick()", "addEventListener()", "trigger()", "watch()"], correct: "C" },
-        { q: "O arquivo AndroidManifest.xml serve principalmente para:", options: ["Escrever o código Java", "Declarar permissões e componentes da aplicação", "Definir apenas o CSS", "Gerenciar o banco SQL", "Compilar o código"], correct: "B" },
-        { q: "No Box Model do CSS, o espaço interno entre o conteúdo e a borda é:", options: ["Margin", "Border", "Padding", "Outline", "Gap"], correct: "C" },
-        { q: "Qual a diferença entre 'let' e 'const' no JavaScript?", options: ["Nenhuma", "let permite reatribuição, const não", "const permite reatribuição, let não", "let é apenas para números", "const é apenas para funções"], correct: "B" },
-        { q: "Qual tag HTML define o título da página na aba do navegador?", options: ["<h1>", "<header>", "<title>", "<meta>", "<head>"], correct: "C" },
-        { q: "No desenvolvimento Mobile, o que significa a sigla APK?", options: ["Android Private Key", "Android Package Kit", "Application Process Kernel", "Advanced Programming Kit", "Automated Policy Key"], correct: "B" },
-        { q: "Qual propriedade CSS muda a cor de fundo de um elemento?", options: ["color", "font-color", "background-color", "border-color", "fill"], correct: "C" },
-        { q: "Como se declara uma função básica em JavaScript?", options: ["function:minhaFuncao()", "def minhaFuncao()", "function minhaFuncao()", "func minhaFuncao()", "minhaFuncao: function()"], correct: "C" },
-        { q: "O que é o DOM no desenvolvimento web?", options: ["Data Object Model", "Document Object Model", "Digital Office Management", "Direct Output Method", "Dynamic Object Maker"], correct: "B" },
-        { q: "No Scrum, qual a duração máxima de uma Daily?", options: ["5 minutos", "15 minutos", "30 minutos", "1 hora", "Sem limite"], correct: "B" },
-        { q: "Qual atributo HTML fornece um texto alternativo para imagens?", options: ["title", "description", "alt", "longdesc", "info"], correct: "C" },
-        { q: "Qual linguagem define a estrutura e o conteúdo de uma página web?", options: ["CSS", "JavaScript", "HTML", "PHP", "Python"], correct: "C" },
-        { q: "No ciclo de vida Android, qual método é chamado quando a atividade se torna visível?", options: ["onCreate()", "onStart()", "onResume()", "onPause()", "onDestroy()"], correct: "B" }
+        { q: "Segundo o PMBOK, em qual fase do ciclo de vida do projeto é realizada a atividade de 'definir cronograma e orçamento'?", options: ["Iniciação", "Execução", "Planejamento", "Monitoramento e controle", "Encerramento"] },
+        { q: "No Design Thinking, qual etapa é responsável por organizar e analisar as informações coletadas para definir o problema principal?", options: ["Empatia", "Ideação", "Definição", "Prototipagem", "Teste"] },
+        { q: "Qual prática do framework Scrum foca na entrega de valor incremental e feedbacks frequentes?", options: ["Planejamento inicial detalhado", "Entregas em ciclos curtos (Sprints)", "Minimização de reuniões de feedback", "Documentação exaustiva antes do desenvolvimento", "Escopo fechado no início do projeto"] },
+        { q: "Na matriz MoSCoW, as funcionalidades classificadas como 'Must Have' representam:", options: ["Requisitos críticos essenciais", "Requisitos importantes, mas não vitais", "Desejos futuros", "Funcionalidades que não serão implementadas", "Itens de baixo impacto"] },
+        { q: "Qual o objetivo principal do termo de abertura do projeto (Project Charter)?", options: ["Finalizar o cronograma", "Autorizar formalmente o início do projeto", "Contratar todos os fornecedores", "Realizar o encerramento financeiro", "Definir o layout do produto"] },
+        { q: "A fase de 'Empatia' no Design Thinking busca:", options: ["Criar protótipos", "Programar a interface", "Compreender as necessidades e sentimentos dos usuários", "Testar a escalabilidade", "Definir o orçamento"] },
+        { q: "No Scrum, quem é o responsável por representar os interesses dos stakeholders?", options: ["Scrum Master", "Time de Desenvolvimento", "Product Owner", "Gerente de Projetos", "CEO"] },
+        { q: "Qual técnica é utilizada para priorizar requisitos com base em 'Tem que ter' e 'Deveria ter'?", options: ["Gráfico de Gantt", "Matriz SWOT", "Matriz MoSCoW", "Diagrama de Ishikawa", "Método Kanban"] },
+        { q: "O encerramento do projeto no PMBOK inclui qual destas atividades?", options: ["Definição do escopo inicial", "Execução das tarefas", "Documentação das lições aprendidas", "Monitoramento de riscos", "Criação da EAP"] },
+        { q: "A 'Ideação' no Design Thinking é caracterizada por:", options: ["Restringir ideias", "Geração de um grande volume de soluções criativas", "Implementação imediata", "Coleta de dados demográficos", "Manutenção do status quo"] },
+        { q: "Qual evento é considerado um marco na história moderna do desenvolvimento móvel em 2007?", options: ["Lançamento do Windows Mobile", "Criação do primeiro jogo de Snake", "Lançamento do iPhone com interface touch", "Desenvolvimento do Symbian", "Lançamento do IBM Simon"] },
+        { q: "Qual componente do Android permite a modularidade de interface dentro de uma Activity?", options: ["Services", "Broadcast Receivers", "Fragments", "Content Providers", "Intents"] },
+        { q: "Por que o uso de comentários claros no código é considerado uma boa prática?", options: ["Aumenta o tamanho do executável", "Facilita a colaboração e manutenção futura", "Substitui o código funcional", "Impede que outros programadores alterem o código", "É obrigatório para o compilador"] },
+        { q: "Em HTML, qual atributo da tag <a> define o destino de um link?", options: ["src", "class", "id", "href", "alt"] },
+        { q: "Para alterar o conteúdo de texto de um elemento via JavaScript com segurança, usa-se:", options: ["text", "textContent", "content", "innerStyle", "value"] },
+        { q: "Qual tag HTML é utilizada para inserir uma imagem?", options: ["<picture>", "<graphic>", "<img>", "<media>", "<src>"] },
+        { q: "No CSS, qual seletor aplica estilos a um elemento com um 'id' específico?", options: [".", "#", "*", "@", "&"] },
+        { q: "Qual método JavaScript é usado para escutar eventos, como um clique?", options: ["listen()", "onClick()", "addEventListener()", "trigger()", "watch()"] },
+        { q: "O arquivo AndroidManifest.xml serve principalmente para:", options: ["Escrever o código Java", "Declarar permissões e componentes da aplicação", "Definir apenas o CSS", "Gerenciar o banco SQL", "Compilar o código"] },
+        { q: "No Box Model do CSS, o espaço interno entre o conteúdo e a borda é:", options: ["Margin", "Border", "Padding", "Outline", "Gap"] },
+        { q: "Qual a diferença entre 'let' e 'const' no JavaScript?", options: ["Nenhuma", "let permite reatribuição, const não", "const permite reatribuição, let não", "let é apenas para números", "const é apenas para funções"] },
+        { q: "Qual tag HTML define o título da página na aba do navegador?", options: ["<h1>", "<header>", "<title>", "<meta>", "<head>"] },
+        { q: "No desenvolvimento Mobile, o que significa a sigla APK?", options: ["Android Private Key", "Android Package Kit", "Application Process Kernel", "Advanced Programming Kit", "Automated Policy Key"] },
+        { q: "Qual propriedade CSS muda a cor de fundo de um elemento?", options: ["color", "font-color", "background-color", "border-color", "fill"] },
+        { q: "Como se declara uma função básica em JavaScript?", options: ["function:minhaFuncao()", "def minhaFuncao()", "function minhaFuncao()", "func minhaFuncao()", "minhaFuncao: function()"] },
+        { q: "O que é o DOM no desenvolvimento web?", options: ["Data Object Model", "Document Object Model", "Digital Office Management", "Direct Output Method", "Dynamic Object Maker"] },
+        { q: "No Scrum, qual a duração máxima de uma Daily?", options: ["5 minutos", "15 minutos", "30 minutos", "1 hora", "Sem limite"] },
+        { q: "Qual atributo HTML fornece um texto alternativo para imagens?", options: ["title", "description", "alt", "longdesc", "info"] },
+        { q: "Qual linguagem define a estrutura e o conteúdo de uma página web?", options: ["CSS", "JavaScript", "HTML", "PHP", "Python"] },
+        { q: "No ciclo de vida Android, qual método é chamado quando a atividade se torna visível?", options: ["onCreate()", "onStart()", "onResume()", "onPause()", "onDestroy()"] }
     ];
 
+    const form = document.getElementById('exam-form');
     const container = document.getElementById('questions-container');
+    const status = document.getElementById('status-message');
+    const submitButton = form.querySelector('button[type="submit"]');
 
-    questionsData.forEach((data, index) => {
-        const qNum = index + 1;
-        const qDiv = document.createElement('div');
-        qDiv.className = 'question';
-        
-        let optionsHtml = '';
-        data.options.forEach((opt, i) => {
-            const letter = String.fromCharCode(65 + i);
-            optionsHtml += `
-                <li>
-                    <label>
-                        <input type="radio" name="q${qNum}" value="${letter}" required>
-                        ${letter}) ${opt}
-                    </label>
-                </li>
-            `;
+    function renderQuestions() {
+        container.innerHTML = '';
+
+        questionsData.forEach((data, index) => {
+            const qNum = index + 1;
+
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question';
+
+            const p = document.createElement('p');
+            p.textContent = `${qNum}. ${data.q}`;
+            qDiv.appendChild(p);
+
+            const ul = document.createElement('ul');
+            ul.className = 'options';
+
+            data.options.forEach((opt, i) => {
+                const letter = String.fromCharCode(65 + i);
+
+                const li = document.createElement('li');
+                const label = document.createElement('label');
+                const input = document.createElement('input');
+
+                input.type = 'radio';
+                input.name = `q${qNum}`;
+                input.value = letter;
+
+                // Basta um radio do grupo ter required
+                if (i === 0) input.required = true;
+
+                label.appendChild(input);
+                label.appendChild(document.createTextNode(` ${letter}) ${opt}`));
+
+                li.appendChild(label);
+                ul.appendChild(li);
+            });
+
+            qDiv.appendChild(ul);
+            container.appendChild(qDiv);
         });
+    }
 
-        qDiv.innerHTML = `
-            <p>${qNum}. ${data.q}</p>
-            <ul class="options">
-                ${optionsHtml}
-            </ul>
-        `;
-        container.appendChild(qDiv);
-    });
-
-    document.getElementById('exam-form').addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function (e) {
         e.preventDefault();
-        
-        const status = document.getElementById('status-message');
-        status.innerText = "Enviando...";
-        status.style.color = "blue";
 
-        const formData = new FormData(this);
+        const nome = form.nome.value.trim();
+        const ra = form.ra.value.trim();
+
+        if (!nome || !ra) {
+            status.textContent = 'Preencha nome e RA.';
+            status.style.color = 'red';
+            return;
+        }
+
+        const formData = new FormData(form);
         const payload = {
-            nome: formData.get('nome'),
-            ra: formData.get('ra'),
+            nome,
+            ra,
             respostas: {}
         };
 
-        for (let i = 1; i <= 30; i++) {
-            payload.respostas[`q${i}`] = formData.get(`q${i}`);
-        }
-
-        fetch('https://webhook.inetz.com.br/webhook/avalia', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => {
-            if (response.ok) {
-                status.innerText = "Avaliação enviada com sucesso!";
-                status.style.color = "green";
-                this.reset();
-                window.scrollTo(0, 0);
-            } else {
-                throw new Error('Falha no envio');
-            }
-        })
-        .catch(error => {
-            status.innerText = "Erro ao enviar. Tente novamente.";
-            status.style.color = "red";
-            console.error('Erro:', error);
+        questionsData.forEach((_, index) => {
+            const qNum = index + 1;
+            payload.respostas[`q${qNum}`] = formData.get(`q${qNum}`);
         });
+
+        const originalButtonText = submitButton.textContent;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Enviando...';
+
+        status.textContent = 'Enviando...';
+        status.style.color = 'blue';
+
+        try {
+            const response = await fetch('https://webhook.inetz.com.br/webhook/avalia', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Falha no envio. Status: ${response.status}`);
+            }
+
+            status.textContent = 'Avaliação enviada com sucesso!';
+            status.style.color = 'green';
+            form.reset();
+            status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        } catch (error) {
+            status.textContent = 'Erro ao enviar. Tente novamente.';
+            status.style.color = 'red';
+            console.error('Erro:', error);
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonText;
+        }
     });
+
+    renderQuestions();
 </script>
 
 </body>
