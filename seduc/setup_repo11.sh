@@ -63,6 +63,18 @@ if [[ "$OPTION" == "0" ]]; then
     if [[ "$S_VAL" != "1" ]]; then
         read -p "👉 Informe o Número da APP/Instância (01-30) [Padrão: $USER]: " INPUT_VAL </dev/tty
         APP_NUM="${INPUT_VAL:-$USER}"
+        echo -e "${CYAN}🚀 Configuração do Projeto Inetz${NC}"
+        # Solicita o nome do projeto e garante que não seja vazio
+        while [[ -z "$PROJETO_NAME" ]]; do
+            read -p "📝 Digite o nome do projeto (ex: meu-app-angular): " PROJETO_NAME
+            # Remove espaços ou caracteres especiais se o aluno digitar errado
+            PROJETO_NAME=$(echo "$PROJETO_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]//g')
+    
+            if [[ -z "$PROJETO_NAME" ]]; then
+                echo -e "${RED}⚠️ O nome não pode ser vazio e deve conter apenas letras, números e hifens.${NC}"
+            fi
+        done
+        export PROJETO_NAME
     fi
 
 elif [[ "$OPTION" =~ ^[Ff]$ ]]; then
@@ -143,8 +155,12 @@ if [[ "$START_MODE" == "NEW" ]]; then
             ;;
         7) # Angular
             echo -e "${CYAN}🅰️  Inicializando Angular...${NC}"
-            # Nota: Angular CLI precisa estar instalado ou usar npx. Usamos --defaults para evitar prompts.
-            npx -p @angular/cli ng new . --directory . --skip-git --minimal --defaults
+            # Desativa analytics para evitar interrupções
+            export NG_CLI_ANALYTICS=false
+
+            # Usamos a variável PROJETO_NAME para o nome e '.' para o diretório
+            # Isso satisfaz a Regex do Angular e mantém os arquivos onde você quer
+            npx -p @angular/cli ng new "${PROJETO_NAME}" --directory . --skip-git --minimal --defaults --style css --routing true
             ;;
     esac
 fi

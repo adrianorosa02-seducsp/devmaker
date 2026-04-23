@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Integrada - 2026</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        .student-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+            background: #eef2f3;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question p {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .options li {
+            margin-bottom: 10px;
+            padding: 10px;
+            transition: background 0.2s;
+            border-radius: 4px;
+        }
+
+        .options li:hover {
+            background-color: #f0f8ff;
+        }
+
+        .options label {
+            font-weight: normal;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #status-message {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Avaliação Integrada</h1>
+    
+    <form id="exam-form">
+        <div class="student-info">
+            <div class="form-group">
+                <label for="nome">Nome Completo:</label>
+                <input type="text" id="nome" name="nome" required placeholder="Digite seu nome">
+            </div>
+            <div class="form-group">
+                <label for="ra">RA (Registro Acadêmico):</label>
+                <input type="text" id="ra" name="ra" required placeholder="Digite seu RA">
+            </div>
+        </div>
+
+        <div id="questions-container">
+            <!-- As 30 questões serão inseridas aqui via JS -->
+        </div>
+
+        <button type="submit">Enviar Avaliação</button>
+        <div id="status-message"></div>
+    </form>
+</div>
+
+<script>
+    const questionsData = [
+        { q: "Segundo o PMBOK, em qual fase do ciclo de vida do projeto é realizada a atividade de 'definir cronograma e orçamento'?", options: ["Iniciação", "Execução", "Planejamento", "Monitoramento e controle", "Encerramento"], correct: "C" },
+        { q: "No Design Thinking, qual etapa é responsável por organizar e analisar as informações coletadas para definir o problema principal?", options: ["Empatia", "Ideação", "Definição", "Prototipagem", "Teste"], correct: "C" },
+        { q: "Qual prática do framework Scrum foca na entrega de valor incremental e feedbacks frequentes?", options: ["Planejamento inicial detalhado", "Entregas em ciclos curtos (Sprints)", "Minimização de reuniões de feedback", "Documentação exaustiva antes do desenvolvimento", "Escopo fechado no início do projeto"], correct: "B" },
+        { q: "Na matriz MoSCoW, as funcionalidades classificadas como 'Must Have' representam:", options: ["Requisitos críticos essenciais", "Requisitos importantes, mas não vitais", "Desejos futuros", "Funcionalidades que não serão implementadas", "Itens de baixo impacto"], correct: "A" },
+        { q: "Qual o objetivo principal do termo de abertura do projeto (Project Charter)?", options: ["Finalizar o cronograma", "Autorizar formalmente o início do projeto", "Contratar todos os fornecedores", "Realizar o encerramento financeiro", "Definir o layout do produto"], correct: "B" },
+        { q: "A fase de 'Empatia' no Design Thinking busca:", options: ["Criar protótipos", "Programar a interface", "Compreender as necessidades e sentimentos dos usuários", "Testar a escalabilidade", "Definir o orçamento"], correct: "C" },
+        { q: "No Scrum, quem é o responsável por representar os interesses dos stakeholders?", options: ["Scrum Master", "Time de Desenvolvimento", "Product Owner", "Gerente de Projetos", "CEO"], correct: "C" },
+        { q: "Qual técnica é utilizada para priorizar requisitos com base em 'Tem que ter' e 'Deveria ter'?", options: ["Gráfico de Gantt", "Matriz SWOT", "Matriz MoSCoW", "Diagrama de Ishikawa", "Método Kanban"], correct: "C" },
+        { q: "O encerramento do projeto no PMBOK inclui qual destas atividades?", options: ["Definição do escopo inicial", "Execução das tarefas", "Documentação das lições aprendidas", "Monitoramento de riscos", "Criação da EAP"], correct: "C" },
+        { q: "A 'Ideação' no Design Thinking é caracterizada por:", options: ["Restringir ideias", "Geração de um grande volume de soluções criativas", "Implementação imediata", "Coleta de dados demográficos", "Manutenção do status quo"], correct: "B" },
+        { q: "Qual evento é considerado um marco na história moderna do desenvolvimento móvel em 2007?", options: ["Lançamento do Windows Mobile", "Criação do primeiro jogo de Snake", "Lançamento do iPhone com interface touch", "Desenvolvimento do Symbian", "Lançamento do IBM Simon"], correct: "C" },
+        { q: "Qual componente do Android permite a modularidade de interface dentro de uma Activity?", options: ["Services", "Broadcast Receivers", "Fragments", "Content Providers", "Intents"], correct: "C" },
+        { q: "Por que o uso de comentários claros no código é considerado uma boa prática?", options: ["Aumenta o tamanho do executável", "Facilita a colaboração e manutenção futura", "Substitui o código funcional", "Impede que outros programadores alterem o código", "É obrigatório para o compilador"], correct: "B" },
+        { q: "Em HTML, qual atributo da tag <a> define o destino de um link?", options: ["src", "class", "id", "href", "alt"], correct: "D" },
+        { q: "Para alterar o conteúdo de texto de um elemento via JavaScript com segurança, usa-se:", options: ["text", "textContent", "content", "innerStyle", "value"], correct: "B" },
+        { q: "Qual tag HTML é utilizada para inserir uma imagem?", options: ["<picture>", "<graphic>", "<img>", "<media>", "<src>"], correct: "C" },
+        { q: "No CSS, qual seletor aplica estilos a um elemento com um 'id' específico?", options: [".", "#", "*", "@", "&"], correct: "B" },
+        { q: "Qual método JavaScript é usado para escutar eventos, como um clique?", options: ["listen()", "onClick()", "addEventListener()", "trigger()", "watch()"], correct: "C" },
+        { q: "O arquivo AndroidManifest.xml serve principalmente para:", options: ["Escrever o código Java", "Declarar permissões e componentes da aplicação", "Definir apenas o CSS", "Gerenciar o banco SQL", "Compilar o código"], correct: "B" },
+        { q: "No Box Model do CSS, o espaço interno entre o conteúdo e a borda é:", options: ["Margin", "Border", "Padding", "Outline", "Gap"], correct: "C" },
+        { q: "Qual a diferença entre 'let' e 'const' no JavaScript?", options: ["Nenhuma", "let permite reatribuição, const não", "const permite reatribuição, let não", "let é apenas para números", "const é apenas para funções"], correct: "B" },
+        { q: "Qual tag HTML define o título da página na aba do navegador?", options: ["<h1>", "<header>", "<title>", "<meta>", "<head>"], correct: "C" },
+        { q: "No desenvolvimento Mobile, o que significa a sigla APK?", options: ["Android Private Key", "Android Package Kit", "Application Process Kernel", "Advanced Programming Kit", "Automated Policy Key"], correct: "B" },
+        { q: "Qual propriedade CSS muda a cor de fundo de um elemento?", options: ["color", "font-color", "background-color", "border-color", "fill"], correct: "C" },
+        { q: "Como se declara uma função básica em JavaScript?", options: ["function:minhaFuncao()", "def minhaFuncao()", "function minhaFuncao()", "func minhaFuncao()", "minhaFuncao: function()"], correct: "C" },
+        { q: "O que é o DOM no desenvolvimento web?", options: ["Data Object Model", "Document Object Model", "Digital Office Management", "Direct Output Method", "Dynamic Object Maker"], correct: "B" },
+        { q: "No Scrum, qual a duração máxima de uma Daily?", options: ["5 minutos", "15 minutos", "30 minutos", "1 hora", "Sem limite"], correct: "B" },
+        { q: "Qual atributo HTML fornece um texto alternativo para imagens?", options: ["title", "description", "alt", "longdesc", "info"], correct: "C" },
+        { q: "Qual linguagem define a estrutura e o conteúdo de uma página web?", options: ["CSS", "JavaScript", "HTML", "PHP", "Python"], correct: "C" },
+        { q: "No ciclo de vida Android, qual método é chamado quando a atividade se torna visível?", options: ["onCreate()", "onStart()", "onResume()", "onPause()", "onDestroy()"], correct: "B" }
+    ];
+
+    const container = document.getElementById('questions-container');
+
+    questionsData.forEach((data, index) => {
+        const qNum = index + 1;
+        const qDiv = document.createElement('div');
+        qDiv.className = 'question';
+        
+        let optionsHtml = '';
+        data.options.forEach((opt, i) => {
+            const letter = String.fromCharCode(65 + i);
+            optionsHtml += `
+                <li>
+                    <label>
+                        <input type="radio" name="q${qNum}" value="${letter}" required>
+                        ${letter}) ${opt}
+                    </label>
+                </li>
+            `;
+        });
+
+        qDiv.innerHTML = `
+            <p>${qNum}. ${data.q}</p>
+            <ul class="options">
+                ${optionsHtml}
+            </ul>
+        `;
+        container.appendChild(qDiv);
+    });
+
+    document.getElementById('exam-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const status = document.getElementById('status-message');
+        status.innerText = "Enviando...";
+        status.style.color = "blue";
+
+        const formData = new FormData(this);
+        const payload = {
+            nome: formData.get('nome'),
+            ra: formData.get('ra'),
+            respostas: {}
+        };
+
+        for (let i = 1; i <= 30; i++) {
+            payload.respostas[`q${i}`] = formData.get(`q${i}`);
+        }
+
+        fetch('https://webhook.inetz.com.br/webhook/avalia', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            if (response.ok) {
+                status.innerText = "Avaliação enviada com sucesso!";
+                status.style.color = "green";
+                this.reset();
+                window.scrollTo(0, 0);
+            } else {
+                throw new Error('Falha no envio');
+            }
+        })
+        .catch(error => {
+            status.innerText = "Erro ao enviar. Tente novamente.";
+            status.style.color = "red";
+            console.error('Erro:', error);
+        });
+    });
+</script>
+
+</body>
+</html>
