@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova Interativa - Redes de Computadores</title>
+    <style>
+        :root { 
+            --primary: #2563eb; 
+            --secondary: #0f172a; 
+            --bg: #f1f5f9; 
+            --text: #1e293b; 
+            --success: #16a34a; 
+            --error: #dc2626;
+            --accent: #2E8B57;
+            --warning: #f59e0b;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            padding: 20px; 
+            line-height: 1.6; 
+        }
+        .container { 
+            max-width: 800px; 
+            margin: auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
+        }
+        .header { 
+            text-align: center; 
+            margin-bottom: 30px; 
+            border-bottom: 2px solid var(--accent); 
+            padding-bottom: 20px; 
+        }
+        .header h1 { color: var(--secondary); margin: 0; font-size: 24px; }
+        .header p { color: var(--accent); font-weight: bold; margin: 5px 0 0 0; }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        #progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .identification { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-bottom: 30px; 
+            background: #f8fafc; 
+            padding: 20px; 
+            border-radius: 8px;
+        }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-size: 14px; font-weight: 600; margin-bottom: 5px; padding: 0; }
+        .form-group input { 
+            padding: 10px; 
+            border: 2px solid #cbd5e1; 
+            border-radius: 6px; 
+            font-size: 16px; 
+        }
+
+        #quiz-engine { display: none; }
+        .question-card { animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .question-text { font-size: 1.2em; font-weight: 600; margin-bottom: 20px; display: block; }
+        .answers { list-style: none; padding: 0; margin-bottom: 25px; }
+        .answers li { margin-bottom: 12px; }
+        
+        .answer-label { 
+            display: flex; 
+            align-items: center; 
+            cursor: pointer; 
+            padding: 12px; 
+            border: 2px solid #e2e8f0;
+            border-radius: 8px; 
+            transition: all 0.2s;
+        }
+        .answer-label:hover { background: #f8fafc; border-color: var(--primary); }
+        input[type="radio"] { margin-right: 15px; width: 20px; height: 20px; cursor: pointer; }
+        
+        input[type="radio"]:checked + span { font-weight: bold; color: var(--primary); }
+        .answer-label.selected { border-color: var(--primary); background: #eff6ff; }
+
+        .actions { display: flex; gap: 15px; }
+        button { 
+            border: none; 
+            padding: 15px 25px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 16px; 
+            transition: all 0.3s;
+            flex: 1;
+        }
+        .btn-check { background: var(--secondary); color: white; }
+        .btn-next { background: var(--success); color: white; display: none; }
+        .btn-start { background: var(--accent); color: white; width: 100%; margin-top: 20px; }
+        
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+        button:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            animation: modalIn 0.3s;
+        }
+        @keyframes modalIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .modal-status { font-size: 24px; font-weight: bold; margin-bottom: 15px; }
+        .status-success { color: var(--success); }
+        .status-error { color: var(--error); }
+        .modal-theory { background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px; text-align: left; font-size: 15px; border-left: 4px solid var(--primary); }
+        .btn-close-modal { background: var(--primary); color: white; width: 100%; }
+
+        #success-screen { display: none; text-align: center; padding: 40px; }
+        .score-box { font-size: 48px; font-weight: bold; color: var(--accent); margin: 20px 0; }
+        
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div id="loading" class="loading-overlay">Carregando questões...</div>
+
+<div class="container">
+    <div id="setup-screen">
+        <div class="header">
+            <h1>Prova de Conhecimentos</h1>
+            <p>Redes de Computadores e Segurança na Nuvem</p>
+        </div>
+        <div class="identification">
+            <div class="form-group">
+                <label for="nome">Nome Completo</label>
+                <input type="text" id="nome" placeholder="Seu nome" required>
+            </div>
+            <div class="form-group">
+                <label for="ra">RA</label>
+                <input type="text" id="ra" placeholder="Seu RA" required>
+            </div>
+            <div class="form-group">
+                <label for="turma">Turma</label>
+                <input type="text" id="turma" placeholder="Ex: 2º Ano B" required>
+            </div>
+            <div class="form-group">
+                <label for="professor">Professor</label>
+                <input type="text" id="professor" value="Adriano Rosa" readonly>
+            </div>
+        </div>
+        <button class="btn-start" id="btn-start" onclick="startQuiz()">INICIAR AVALIAÇÃO</button>
+    </div>
+
+    <div id="quiz-engine">
+        <div class="progress-bar"><div id="progress-fill"></div></div>
+        <div id="question-container"></div>
+    </div>
+
+    <div id="success-screen">
+        <div style="font-size: 60px; color: var(--success);">✓</div>
+        <h2>Avaliação Finalizada!</h2>
+        <p>Sua pontuação final foi:</p>
+        <div class="score-box" id="final-score">0.0</div>
+        <p id="msg-sucesso"></p>
+        <button class="btn-start" onclick="window.location.reload()">RECOMEÇAR</button>
+    </div>
+</div>
+
+<div id="feedbackModal" class="modal">
+    <div class="modal-content">
+        <div id="modal-status" class="modal-status"></div>
+        <div class="modal-theory" id="modal-theory"></div>
+        <button class="btn-close-modal" id="btnCloseModal">ENTENDI</button>
+    </div>
+</div>
+
+<script>
+    let questions = [];
+    let currentQuestionIndex = 0;
+    let totalScore = 0;
+    let attemptsOnCurrentQuestion = 0;
+    let userData = {};
+    let userAnswers = {}; // Armazena as respostas q1, q2...
+
+    // Função para carregar as questões do arquivo dados.json
+    async function loadQuestions() {
+        const loading = document.getElementById('loading');
+        loading.style.display = 'flex';
+        try {
+            const response = await fetch('dados.json');
+            if (!response.ok) throw new Error('Falha ao carregar dados.json');
+            
+            const rawData = await response.json();
+            
+            questions = rawData.map(item => ({
+                questao: item.QUESTAO,
+                alternativas: {
+                    a: item.ALT_A,
+                    b: item.ALT_B,
+                    c: item.ALT_C,
+                    d: item.ALT_D,
+                    e: item.ALT_E
+                },
+                correta: item.CORRETA.toLowerCase(),//
+                teoria: item.TEORIA,
+                aula: item.AULA
+            }));
+            
+            console.log("Questões carregadas:", questions.length);
+        } catch (error) {
+            console.error(error);
+            alert("Erro ao carregar as questões.");
+        } finally {
+            loading.style.display = 'none';
+        }
+    }
+
+    window.onload = loadQuestions;
+
+    function startQuiz() {
+        const nome = document.getElementById('nome').value;
+        const ra = document.getElementById('ra').value;
+        const turma = document.getElementById('turma').value;
+
+        if (!nome || !ra || !turma) {
+            alert("Por favor, preencha todos os campos de identificação.");
+            return;
+        }
+
+        if (questions.length === 0) {
+            alert("Aguarde o carregamento das questões.");
+            return;
+        }
+
+        userData = { nome, ra, turma, professor: "Adriano Rosa" };
+        userAnswers = {}; // Limpa respostas anteriores
+        
+        // Inicializa q1 até q30 com vazio
+        for (let i = 1; i <= 30; i++) {
+            userAnswers[`q${i}`] = "";
+        }
+
+        document.getElementById('setup-screen').style.display = 'none';
+        document.getElementById('quiz-engine').style.display = 'block';
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        const q = questions[currentQuestionIndex];
+        attemptsOnCurrentQuestion = 0;
+        
+        const container = document.getElementById('question-container');
+        let optionsHtml = '';
+        
+        for (let key in q.alternativas) {
+            optionsHtml += `
+                <li>
+                    <label class="answer-label" id="label-${key}">
+                        <input type="radio" name="quiz-opt" value="${key}">
+                        <span>${key.toUpperCase()}) ${q.alternativas[key]}</span>
+                    </label>
+                </li>
+            `;
+        }
+
+        container.innerHTML = `
+            <div class="question-card">
+                <p style="color: var(--accent); font-weight: bold; font-size: 0.9em;">${q.aula}</p>
+                <span class="question-text">${currentQuestionIndex + 1}. ${q.questao}</span>
+                <ul class="answers">${optionsHtml}</ul>
+                <div class="actions">
+                    <button class="btn-check" id="btn-check" onclick="checkAnswer()">VERIFICAR RESPOSTA</button>
+                    <button class="btn-next" id="btn-next" onclick="nextQuestion()">PRÓXIMA QUESTÃO</button>
+                </div>
+            </div>
+        `;
+
+        document.querySelectorAll('input[name="quiz-opt"]').forEach(input => {
+            input.addEventListener('change', (e) => {
+                document.querySelectorAll('.answer-label').forEach(l => l.classList.remove('selected'));
+                document.getElementById(`label-${e.target.value}`).classList.add('selected');
+            });
+        });
+
+        updateProgress();
+    }
+
+    function checkAnswer() {
+        const selected = document.querySelector('input[name="quiz-opt"]:checked');
+        if (!selected) {
+            alert("Selecione uma alternativa!");
+            return;
+        }
+
+        const q = questions[currentQuestionIndex];
+        const selectedValue = selected.value;
+        const isCorrect = selectedValue === q.correta;
+        
+        // Registra a resposta no objeto userAnswers (apenas na primeira tentativa de verificação ou se mudou?)
+        // O pedido é gravar a resposta final enviada. 
+        userAnswers[`q${currentQuestionIndex + 1}`] = selectedValue.toUpperCase();
+
+        const modal = document.getElementById('feedbackModal');
+        const statusEl = document.getElementById('modal-status');
+        const theoryEl = document.getElementById('modal-theory');
+
+        if (isCorrect) {
+            statusEl.innerText = "⭐ PARABÉNS! ⭐";
+            statusEl.className = "modal-status status-success";
+            
+            const pointsGained = attemptsOnCurrentQuestion === 0 ? 1 : 0.5;
+            totalScore += pointsGained;
+            
+            document.getElementById('btn-check').style.display = 'none';
+            document.getElementById('btn-next').style.display = 'block';
+            document.querySelectorAll('input[name="quiz-opt"]').forEach(i => i.disabled = true);
+        } else {
+            statusEl.innerText = "❌ NÃO ESTÁ CORRETO ❌";
+            statusEl.className = "modal-status status-error";
+            attemptsOnCurrentQuestion++;
+        }
+
+        theoryEl.innerText = q.teoria;
+        modal.style.display = 'block';
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            renderQuestion();
+        } else {
+            finishQuiz();
+        }
+    }
+
+    function updateProgress() {
+        const progress = (currentQuestionIndex / questions.length) * 100;
+        document.getElementById('progress-fill').style.width = `${progress}%`;
+    }
+
+    async function finishQuiz() {
+        document.getElementById('quiz-engine').style.display = 'none';
+        document.getElementById('success-screen').style.display = 'block';
+        document.getElementById('final-score').innerText = totalScore.toFixed(1);
+        document.getElementById('msg-sucesso').innerText = `Obrigado, ${userData.nome}! Sua avaliação foi enviada.`;
+
+        // Payload estruturado conforme solicitado pelo backend
+        const payload = {
+            nome: userData.nome,
+            ra: userData.ra,
+            acertos: totalScore.toFixed(1),
+            ...userAnswers,
+            timestamp: new Date().toISOString()
+        };
+
+        try {
+            await fetch('https://webhook.inetz.com.br/webhook/avalia', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+        } catch (e) {
+            console.error("Erro ao reportar nota final:", e);
+        }
+    }
+
+    document.getElementById('btnCloseModal').onclick = () => {
+        document.getElementById('feedbackModal').style.display = 'none';
+    };
+
+    window.onclick = (e) => {
+        if (e.target == document.getElementById('feedbackModal')) {
+            document.getElementById('feedbackModal').style.display = 'none';
+        }
+    };
+</script>
+
+</body>
+</html>
