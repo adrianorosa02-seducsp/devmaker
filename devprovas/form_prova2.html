@@ -5,112 +5,213 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prova Interativa - Redes de Computadores</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
         :root { 
-            --primary: #2563eb; 
-            --secondary: #0f172a; 
-            --bg: #f1f5f9; 
-            --text: #1e293b; 
-            --success: #16a34a; 
-            --error: #dc2626;
-            --accent: #2E8B57;
+            --primary: #3b82f6; 
+            --secondary: #1e293b; 
+            --bg: #f8fafc; 
+            --text: #0f172a; 
+            --success: #10b981; 
+            --error: #ef4444;
+            --accent: #059669;
             --warning: #f59e0b;
+            --border: #e2e8f0;
+            --card-bg: #ffffff;
         }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
             background: var(--bg); 
             color: var(--text); 
-            padding: 20px; 
+            padding: 16px; 
             line-height: 1.6; 
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
         .container { 
-            max-width: 800px; 
-            margin: auto; 
-            background: white; 
-            padding: 40px; 
-            border-radius: 12px; 
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
+            width: 100%;
+            max-width: 680px; 
+            background: var(--card-bg); 
+            padding: 24px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.05); 
+            border: 1px solid var(--border);
         }
+
         .header { 
             text-align: center; 
-            margin-bottom: 30px; 
-            border-bottom: 2px solid var(--accent); 
+            margin-bottom: 24px; 
+            border-bottom: 2px solid var(--border); 
             padding-bottom: 20px; 
         }
-        .header h1 { color: var(--secondary); margin: 0; font-size: 24px; }
-        .header p { color: var(--accent); font-weight: bold; margin: 5px 0 0 0; }
+        .header h1 { 
+            color: var(--secondary); 
+            margin: 0; 
+            font-size: 22px; 
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        .header p { 
+            color: var(--accent); 
+            font-weight: 600; 
+            margin: 6px 0 0 0; 
+            font-size: 14px;
+        }
         
         .progress-bar {
-            height: 10px;
-            background: #e2e8f0;
-            border-radius: 5px;
-            margin-bottom: 30px;
+            height: 8px;
+            background: var(--border);
+            border-radius: 9999px;
+            margin-bottom: 24px;
             overflow: hidden;
         }
         #progress-fill {
             height: 100%;
             background: var(--accent);
             width: 0%;
-            transition: width 0.3s;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .identification { 
             display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 15px; 
-            margin-bottom: 30px; 
-            background: #f8fafc; 
+            grid-template-columns: 1fr; 
+            gap: 16px; 
+            margin-bottom: 24px; 
+            background: #f1f5f9; 
             padding: 20px; 
-            border-radius: 8px;
+            border-radius: 12px;
         }
-        .form-group { display: flex; flex-direction: column; }
-        .form-group label { font-size: 14px; font-weight: 600; margin-bottom: 5px; padding: 0; }
-        .form-group input { 
-            padding: 10px; 
-            border: 2px solid #cbd5e1; 
-            border-radius: 6px; 
-            font-size: 16px; 
+        .form-group { 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .form-group label { 
+            font-size: 13px; 
+            font-weight: 600; 
+            margin-bottom: 6px; 
+            color: var(--secondary);
+        }
+        .form-group input, 
+        .form-group select { 
+            padding: 12px; 
+            border: 1.5px solid var(--border); 
+            border-radius: 8px; 
+            font-size: 15px; 
+            font-family: inherit;
+            color: var(--text);
+            background-color: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            width: 100%;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+        .grid-span-2 {
+            grid-column: 1 / -1;
         }
 
         #quiz-engine { display: none; }
-        .question-card { animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .question-card { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(8px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
 
-        .question-text { font-size: 1.2em; font-weight: 600; margin-bottom: 20px; display: block; }
-        .answers { list-style: none; padding: 0; margin-bottom: 25px; }
-        .answers li { margin-bottom: 12px; }
+        .question-text { 
+            font-size: 16px; 
+            font-weight: 600; 
+            margin-bottom: 20px; 
+            display: block; 
+            color: var(--secondary);
+            line-height: 1.5;
+        }
+        .answers { list-style: none; padding: 0; margin-bottom: 24px; }
+        .answers li { margin-bottom: 10px; }
         
         .answer-label { 
             display: flex; 
             align-items: center; 
             cursor: pointer; 
-            padding: 12px; 
-            border: 2px solid #e2e8f0;
-            border-radius: 8px; 
-            transition: all 0.2s;
+            padding: 14px 16px; 
+            border: 1.5px solid var(--border);
+            border-radius: 10px; 
+            transition: all 0.2s ease;
+            background: white;
         }
-        .answer-label:hover { background: #f8fafc; border-color: var(--primary); }
-        input[type="radio"] { margin-right: 15px; width: 20px; height: 20px; cursor: pointer; }
+        .answer-label:hover { 
+            background: #f8fafc; 
+            border-color: var(--primary); 
+        }
+        input[type="radio"] { 
+            margin-right: 12px; 
+            width: 20px; 
+            height: 20px; 
+            cursor: pointer; 
+            accent-color: var(--primary);
+            flex-shrink: 0;
+        }
         
-        input[type="radio"]:checked + span { font-weight: bold; color: var(--primary); }
-        .answer-label.selected { border-color: var(--primary); background: #eff6ff; }
+        input[type="radio"]:checked + span { 
+            font-weight: 600; 
+            color: var(--primary); 
+        }
+        .answer-label.selected { 
+            border-color: var(--primary); 
+            background: #eff6ff; 
+            box-shadow: 0 0 0 1px var(--primary);
+        }
 
-        .actions { display: flex; gap: 15px; }
+        .actions { 
+            display: flex; 
+            flex-direction: column;
+            gap: 12px; 
+        }
+        
         button { 
             border: none; 
-            padding: 15px 25px; 
-            border-radius: 8px; 
+            padding: 14px 24px; 
+            border-radius: 10px; 
             cursor: pointer; 
-            font-weight: bold; 
-            font-size: 16px; 
-            transition: all 0.3s;
-            flex: 1;
+            font-weight: 600; 
+            font-size: 15px; 
+            font-family: inherit;
+            transition: all 0.2s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .btn-check { background: var(--secondary); color: white; }
         .btn-next { background: var(--success); color: white; display: none; }
-        .btn-start { background: var(--accent); color: white; width: 100%; margin-top: 20px; }
+        .btn-start { background: var(--accent); color: white; margin-top: 10px; }
         
-        button:hover { opacity: 0.9; transform: translateY(-2px); }
-        button:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
+        button:hover { 
+            filter: brightness(1.05);
+            transform: translateY(-1px); 
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        button:disabled { 
+            background: #cbd5e1; 
+            color: #64748b;
+            cursor: not-allowed; 
+            transform: none; 
+            filter: none;
+        }
 
         /* Modal Styles */
         .modal {
@@ -118,40 +219,93 @@
             position: fixed;
             z-index: 1000;
             left: 0; top: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
+            background: rgba(15, 23, 42, 0.60);
             backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
         }
         .modal-content {
             background: white;
-            margin: 10% auto;
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
+            padding: 24px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 440px;
             text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-            animation: modalIn 0.3s;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+            animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        @keyframes modalIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes modalIn { 
+            from { transform: scale(0.95); opacity: 0; } 
+            to { transform: scale(1); opacity: 1; } 
+        }
 
-        .modal-status { font-size: 24px; font-weight: bold; margin-bottom: 15px; }
+        .modal-status { font-size: 20px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.01em; }
         .status-success { color: var(--success); }
         .status-error { color: var(--error); }
-        .modal-theory { background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px; text-align: left; font-size: 15px; border-left: 4px solid var(--primary); }
-        .btn-close-modal { background: var(--primary); color: white; width: 100%; }
+        .modal-theory { 
+            background: #f8fafc; 
+            padding: 16px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+            text-align: left; 
+            font-size: 14px; 
+            border-left: 4px solid var(--primary); 
+            max-height: 250px;
+            overflow-y: auto;
+            color: #475569;
+        }
+        .btn-close-modal { background: var(--primary); color: white; }
 
-        #success-screen { display: none; text-align: center; padding: 40px; }
-        .score-box { font-size: 48px; font-weight: bold; color: var(--accent); margin: 20px 0; }
+        #success-screen { display: none; text-align: center; padding: 24px 8px; }
+        .score-box { font-size: 44px; font-weight: 800; color: var(--accent); margin: 16px 0; }
         
         .loading-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.8);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
-            font-weight: bold;
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 16px;
+        }
+
+        /* Desktop specific styling overrides using media queries */
+        @media (min-width: 768px) {
+            body {
+                padding: 40px 20px;
+            }
+            .container {
+                padding: 40px;
+            }
+            .header h1 {
+                font-size: 26px;
+            }
+            .identification { 
+                grid-template-columns: 1fr 1fr; 
+                gap: 20px; 
+                padding: 24px;
+            }
+            .actions { 
+                flex-direction: row; 
+                gap: 16px; 
+            }
+            .actions button {
+                flex: 1;
+            }
+            .question-text {
+                font-size: 18px;
+            }
+            #success-screen {
+                padding: 40px;
+            }
+            .modal-content {
+                padding: 32px;
+            }
         }
     </style>
 </head>
@@ -196,12 +350,12 @@
                 <option value="3B">3B</option>
             </select>
         </div>
-        <div class="form-group" style="grid-column: span 2;">
+        <div class="form-group grid-span-2">
             <label for="disciplina">Disciplina</label>
             <select id="disciplina" required>
                 <option value="">Selecione a disciplina...</option>
                 <option value="Lógica e Linguagem de Programação">Lógica e Linguagem de Programação</option>
-                <option value="redes.json">Redes de Computadores e Segurança na Nuvem</option>
+                <option value="Redes de Computadores e Segurança na Nuvem">Redes de Computadores e Segurança na Nuvem</option>
                 <option value="Processos de Desenvolvimento de Software e Metodologias ágeis">Processos de Desenvolvimento de Software e Metodologias ágeis</option>
                 <option value="Carreira e Competências para o Mercado de Trabalho">Carreira e Competências para o Mercado de Trabalho</option>
                 <option value="Versionamento de Código e Sistemas de Mensageria">Versionamento de Código e Sistemas de Mensageria</option>
@@ -213,7 +367,7 @@
                 <option value="Projeto Multidisciplinar">Projeto Multidisciplinar</option>
             </select>
         </div>
-        <div class="form-group" style="grid-column: span 2;">
+        <div class="form-group grid-span-2">
             <label for="professor">Professor</label>
             <select id="professor" required>
                 <option value="">Selecione...</option>
@@ -256,13 +410,58 @@
     let userData = {};
     let userAnswers = {}; // Armazena as respostas q1, q2...
 
-    // Função para carregar as questões do arquivo dados.json
-    async function loadQuestions() {
+    // Mapeamento das disciplinas para os respectivos arquivos JSON
+    function getJsonFileName(disciplina) {
+        switch (disciplina) {
+            case "Lógica e Linguagem de Programação":
+                return "logica.json";
+            case "Redes de Computadores e Segurança na Nuvem":
+                return "redes.json";
+            case "Processos de Desenvolvimento de Software e Metodologias ágeis":
+                return "processos.json";
+            case "Carreira e Competências para o Mercado de Trabalho":
+                return "carreira.json";
+            case "Versionamento de Código e Sistemas de Mensageria":
+                return "versionamento.json";
+            case "Inteligência Artificial":
+                return "ia.json";
+            case "Programação Mobile":
+                return "mobile.json";
+            case "Programação Back-End":
+                return "backend.json";
+            case "Programação Front-End":
+                return "frontend.json";
+            case "Modelagem e Desenvolvimento de Banco de Dados":
+                return "banco_dados.json";
+            case "Projeto Multidisciplinar":
+                return "projeto.json";
+            default:
+                return "dados.json";
+        }
+    }
+
+    // Função para carregar as questões do arquivo JSON correspondente
+    async function loadQuestions(disciplina) {
         const loading = document.getElementById('loading');
         loading.style.display = 'flex';
+        loading.innerText = 'Carregando questões da disciplina...';
+        
+        const jsonFile = getJsonFileName(disciplina);
+        
         try {
-            const response = await fetch('dados.json');
-            if (!response.ok) throw new Error('Falha ao carregar dados.json');
+            let response = await fetch(jsonFile);
+            
+            // Fallback para dados.json caso o redes.json falhe ou não exista (para compatibilidade local)
+            if (!response.ok) {
+                if (jsonFile === 'redes.json') {
+                    console.log('redes.json não encontrado, tentando dados.json...');
+                    response = await fetch('dados.json');
+                }
+                
+                if (!response || !response.ok) {
+                    throw new Error(`Falha ao carregar o arquivo ${jsonFile}`);
+                }
+            }
             
             const rawData = await response.json();
             
@@ -275,25 +474,25 @@
                     d: item.ALT_D,
                     e: item.ALT_E
                 },
-                correta: item.CORRETA.toLowerCase(),//
+                correta: item.CORRETA.toLowerCase(),
                 teoria: item.TEORIA,
                 aula: item.AULA
             }));
             
-            console.log("Questões carregadas:", questions.length);
+            console.log("Questões carregadas com sucesso:", questions.length);
+            return true;
         } catch (error) {
             console.error(error);
-            alert("Erro ao carregar as questões.");
+            alert(`Erro ao carregar as questões da disciplina "${disciplina}".\nCertifique-se de que o arquivo "${jsonFile}" está presente na pasta do projeto.`);
+            return false;
         } finally {
             loading.style.display = 'none';
         }
     }
 
-    window.onload = loadQuestions;
-
-    function startQuiz() {
-        const nome = document.getElementById('nome').value;
-        const ra = document.getElementById('ra').value;
+    async function startQuiz() {
+        const nome = document.getElementById('nome').value.trim();
+        const ra = document.getElementById('ra').value.trim();
         const escola = document.getElementById('escola').value;
         const serie = document.getElementById('serie').value;
         const disciplina = document.getElementById('disciplina').value;
@@ -304,8 +503,14 @@
             return;
         }
 
+        // Carrega as questões da disciplina selecionada
+        const success = await loadQuestions(disciplina);
+        if (!success) {
+            return;
+        }
+
         if (questions.length === 0) {
-            alert("Aguarde o carregamento das questões.");
+            alert("Nenhuma questão disponível para esta disciplina.");
             return;
         }
 
@@ -342,7 +547,7 @@
 
         container.innerHTML = `
             <div class="question-card">
-                <p style="color: var(--accent); font-weight: bold; font-size: 0.9em;">${q.aula}</p>
+                <p style="color: var(--accent); font-weight: 600; font-size: 0.9em; margin-bottom: 8px;">${q.aula}</p>
                 <span class="question-text">${currentQuestionIndex + 1}. ${q.questao}</span>
                 <ul class="answers">${optionsHtml}</ul>
                 <div class="actions">
@@ -373,8 +578,6 @@
         const selectedValue = selected.value;
         const isCorrect = selectedValue === q.correta;
         
-        // Registra a resposta no objeto userAnswers (apenas na primeira tentativa de verificação ou se mudou?)
-        // O pedido é gravar a resposta final enviada. 
         userAnswers[`q${currentQuestionIndex + 1}`] = selectedValue.toUpperCase();
 
         const modal = document.getElementById('feedbackModal');
@@ -398,7 +601,7 @@
         }
 
         theoryEl.innerText = q.teoria;
-        modal.style.display = 'block';
+        modal.style.display = 'flex';
     }
 
     function nextQuestion() {
@@ -427,7 +630,6 @@
         btn.disabled = true;
         btn.innerText = "ENVIANDO...";
 
-        // Cria o gabarito (g1, g2...) com as respostas corretas
         const gabarito = {};
         questions.forEach((q, index) => {
             gabarito[`g${index + 1}`] = q.correta.toUpperCase();
