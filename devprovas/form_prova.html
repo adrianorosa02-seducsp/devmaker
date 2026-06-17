@@ -161,30 +161,69 @@
 
 <div class="container">
     <div id="setup-screen">
-        <div class="header">
-            <h1>Prova de Conhecimentos</h1>
-            <p>Redes de Computadores e Segurança na Nuvem</p>
-        </div>
-        <div class="identification">
-            <div class="form-group">
-                <label for="nome">Nome Completo</label>
-                <input type="text" id="nome" placeholder="Seu nome" required>
-            </div>
-            <div class="form-group">
-                <label for="ra">RA</label>
-                <input type="text" id="ra" placeholder="Seu RA" required>
-            </div>
-            <div class="form-group">
-                <label for="turma">Turma</label>
-                <input type="text" id="turma" placeholder="Ex: 2º Ano B" required>
-            </div>
-            <div class="form-group">
-                <label for="professor">Professor</label>
-                <input type="text" id="professor" value="Adriano Rosa" readonly>
-            </div>
-        </div>
-        <button class="btn-start" id="btn-start" onclick="startQuiz()">INICIAR AVALIAÇÃO</button>
+    <div class="header">
+        <h1>Prova de Conhecimentos</h1>
+        <p>Redes de Computadores e Segurança na Nuvem</p>
     </div>
+    <div class="identification">
+        <!-- Campos de Texto -->
+        <div class="form-group">
+            <label for="nome">Nome Completo</label>
+            <input type="text" id="nome" placeholder="Seu nome" required>
+        </div>
+        <div class="form-group">
+            <label for="ra">RA</label>
+            <input type="text" id="ra" placeholder="Seu RA" required>
+        </div>
+
+        <!-- Picklists -->
+        <div class="form-group">
+            <label for="escola">Escola</label>
+            <select id="escola" required>
+                <option value="">Selecione...</option>
+                <option value="Antonio Reginato">Antonio Reginato</option>
+                <option value="Amilcate Mattei">Amilcate Mattei</option>
+                <option value="Monsenhor Bicudo">Monsenhor Bicudo</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="serie">Série</label>
+            <select id="serie" required>
+                <option value="">Selecione...</option>
+                <option value="2A">2A</option>
+                <option value="2B">2B</option>
+                <option value="3A">3A</option>
+                <option value="3B">3B</option>
+            </select>
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+            <label for="disciplina">Disciplina</label>
+            <select id="disciplina" required>
+                <option value="">Selecione a disciplina...</option>
+                <option value="Lógica e Linguagem de Programação">Lógica e Linguagem de Programação</option>
+                <option value="redes.json">Redes de Computadores e Segurança na Nuvem</option>
+                <option value="Processos de Desenvolvimento de Software e Metodologias ágeis">Processos de Desenvolvimento de Software e Metodologias ágeis</option>
+                <option value="Carreira e Competências para o Mercado de Trabalho">Carreira e Competências para o Mercado de Trabalho</option>
+                <option value="Versionamento de Código e Sistemas de Mensageria">Versionamento de Código e Sistemas de Mensageria</option>
+                <option value="Inteligência Artificial">Inteligência Artificial</option>
+                <option value="Programação Mobile">Programação Mobile</option>
+                <option value="Programação Back-End">Programação Back-End</option>
+                <option value="Programação Front-End">Programação Front-End</option>
+                <option value="Modelagem e Desenvolvimento de Banco de Dados">Modelagem e Desenvolvimento de Banco de Dados</option>
+                <option value="Projeto Multidisciplinar">Projeto Multidisciplinar</option>
+            </select>
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+            <label for="professor">Professor</label>
+            <select id="professor" required>
+                <option value="">Selecione...</option>
+                <option value="Adriano Justino Rosa">Adriano Justino Rosa</option>
+                <option value="Eduardo Lazaro">Eduardo Lazaro</option>
+            </select>
+        </div>
+    </div>
+    <button class="btn-start" id="btn-start" onclick="startQuiz()">INICIAR AVALIAÇÃO</button>
+</div>
 
     <div id="quiz-engine">
         <div class="progress-bar"><div id="progress-fill"></div></div>
@@ -197,7 +236,7 @@
         <p>Sua pontuação final foi:</p>
         <div class="score-box" id="final-score">0.0</div>
         <p id="msg-sucesso"></p>
-        <button class="btn-start" onclick="window.location.reload()">RECOMEÇAR</button>
+        <button id="btn-enviar" class="btn-start" onclick="enviarDados()">ENVIAR AVALIAÇÃO</button>
     </div>
 </div>
 
@@ -255,9 +294,12 @@
     function startQuiz() {
         const nome = document.getElementById('nome').value;
         const ra = document.getElementById('ra').value;
-        const turma = document.getElementById('turma').value;
+        const escola = document.getElementById('escola').value;
+        const serie = document.getElementById('serie').value;
+        const disciplina = document.getElementById('disciplina').value;
+        const professor = document.getElementById('professor').value;
 
-        if (!nome || !ra || !turma) {
+        if (!nome || !ra || !escola || !serie || !disciplina || !professor) {
             alert("Por favor, preencha todos os campos de identificação.");
             return;
         }
@@ -267,7 +309,7 @@
             return;
         }
 
-        userData = { nome, ra, turma, professor: "Adriano Rosa" };
+        userData = { nome, ra, escola, serie, disciplina, professor };
         userAnswers = {}; // Limpa respostas anteriores
         
         // Inicializa q1 até q30 com vazio
@@ -373,29 +415,50 @@
         document.getElementById('progress-fill').style.width = `${progress}%`;
     }
 
-    async function finishQuiz() {
+    function finishQuiz() {
         document.getElementById('quiz-engine').style.display = 'none';
         document.getElementById('success-screen').style.display = 'block';
         document.getElementById('final-score').innerText = totalScore.toFixed(1);
-        document.getElementById('msg-sucesso').innerText = `Obrigado, ${userData.nome}! Sua avaliação foi enviada.`;
+        document.getElementById('msg-sucesso').innerText = `Obrigado, ${userData.nome}! Clique no botão abaixo para enviar sua avaliação.`;
+    }
 
-        // Payload estruturado conforme solicitado pelo backend
+    async function enviarDados() {
+        const btn = document.getElementById('btn-enviar');
+        btn.disabled = true;
+        btn.innerText = "ENVIANDO...";
+
+        // Cria o gabarito (g1, g2...) com as respostas corretas
+        const gabarito = {};
+        questions.forEach((q, index) => {
+            gabarito[`g${index + 1}`] = q.correta.toUpperCase();
+        });
+
         const payload = {
-            nome: userData.nome,
-            ra: userData.ra,
+            ...userData,
             acertos: totalScore.toFixed(1),
             ...userAnswers,
+            ...gabarito,
             timestamp: new Date().toISOString()
         };
 
         try {
-            await fetch('https://webhook.inetz.com.br/webhook/avalia', {
+            const response = await fetch('https://n8n.inetz.com.br/webhook-test/avalia', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
+            
+            if (response.ok) {
+                btn.innerText = "AVALIAÇÃO ENVIADA COM SUCESSO!";
+                btn.style.background = "var(--success)";
+                document.getElementById('msg-sucesso').innerText = `Sua avaliação foi recebida pelo professor ${userData.professor}.`;
+            } else {
+                throw new Error('Erro ao enviar');
+            }
         } catch (e) {
             console.error("Erro ao reportar nota final:", e);
+            btn.innerText = "ERRO AO ENVIAR - TENTAR NOVAMENTE";
+            btn.disabled = false;
         }
     }
 
