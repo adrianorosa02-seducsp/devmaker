@@ -22,53 +22,5 @@
     "CORRETA": "b",
     "TEORIA": "CONCEITO DO ENUNCIADO: O campo \"Tipo\" no quadro Ethernet indica qual protocolo de camada superior está encapsulado, permitindo que o destinatário saiba como interpretar os dados recebidos. \nA) Indicar o tamanho do quadro: Não é sua função principal, pois o tamanho é controlado pelo campo de comprimento.\nB) Especificar o protocolo de camada superior: Sua função é indicar o protocolo, como IPv4 (0x0800) ou ARP (0x0806), que deve ser utilizado na camada superior.\nC) Identificar o endereço MAC do remetente: Essa função é do campo MAC Origem.\nD) Soma de verificação: Essa é a função do campo FCS, não do Tipo.\nE) Endereço IP do destino: Esse dado é transportado dentro do campo de Dados, não no campo Tipo.\nConforme o padrão IEEE 802.3, o campo Tipo é essencial para a correta interpretação do conteúdo do quadro na camada de rede.",
     "REFERENCIA": "IEEE 802.3 – Ethernet Frame Protocol Types"
-  },
-  {
-    "AULA": "Aula 1: Formato do Quadro Ethernet",
-    "QUESTAO": "Por que o campo \"FCS\" (Frame Check Sequence) é considerado fundamental na transmissão dos quadros Ethernet?",
-    "ALT_A": "Porque indica o tamanho do quadro, ajudando na fragmentação de dados.",
-    "ALT_B": "Porque contém o endereço IP de destino, auxiliando no roteamento.",
-    "ALT_C": "Porque armazena a carga útil do protocolo de transporte.",
-    "ALT_D": "Porque serve como um mecanismo de verificação para detectar erros de transmissão.",
-    "ALT_E": "Porque sincroniza o início de cada quadro na transmissão física.",
-    "CORRETA": "d",
-    "TEORIA": "CONCEITO DO ENUNCIADO: O campo FCS (Frame Check Sequence) é uma sequência de bits, geralmente gerada a partir de um algoritmo CRC, que garante a detecção de erros na transmissão do quadro Ethernet. \nA) Tamanho do quadro: Funciona dentro do campo de comprimento, não do FCS.\nB) Endereço IP de destino: Essa informação é contida nos campos MAC Destino/Destino.\nC) Carga útil: Transportada nos Dados do quadro.\nD) Verificação de erros: O FCS realiza testes de integridade, detectando possíveis erros causados por interferências ou falhas físicas.\nE) Sincronização: Essa função é do Preâmbulo, não do FCS.\nSegundo a norma IEEE 802.3, o campo FCS é crucial para assegurar que o quadro recebido esteja íntegro, confirmando a confiabilidade da transmissão de dados na rede local.",
-    "REFERENCIA": "IEEE 802.3 – CRC Frame Check Sequence"
-  },
-  {
-    "AULA": "Aula 2: CSMA/CD e CSMA/CA – acesso ao meio",
-    "QUESTAO": "Qual a principal diferença entre os métodos de acesso ao meio CSMA/CD e CSMA/CA, considerando o controle de colisões?",
-    "ALT_A": "CSMA/CD busca evitar colisões antes que elas ocorram, enquanto CSMA/CA detecta colisões durante a transmissão.",
-    "ALT_B": "CSMA/CD detecta colisões durante a transmissão e tenta retransmitir após uma pausa, ao passo que CSMA/CA tenta evitar colisões antes de transmitirem, usando sinais de RTS/CTS.",
-    "ALT_C": "CSMA/CD é utilizado apenas em redes wireless, enquanto CSMA/CA é exclusivo para redes cabeadas.",
-    "ALT_D": "CSMA/CD emprega ais métodos de token passing, enquanto CSMA/CA usa multiplexação por divisão de tempo.",
-    "ALT_E": "Não há diferença; ambos métodos funcionam da mesma forma, apenas com nomes diferentes.",
-    "CORRETA": "b",
-    "TEORIA": "CONCEITO DO ENUNCIADO: CSMA/CD (Carrier Sense Multiple Access with Collision Detection) detecta colisões durante a envio de dados, pausing a transmissão ao detectar conflito e tentando retransmitir após um tempo de back-off. Por outro lado, CSMA/CA (Collision Avoidance) tenta evitar colisões ao escutar o meio antes de transmitir e usar o mecanismo RTS/CTS para reservar o canal.\nA) CSMA/CD tenta evitar colisões: Incorreto, ele detecta após ocorrerem.\nB) CSMA/CD detecta colisões na transmissão enquanto CSMA/CA as evita antecipadamente usando sinais de requisição e confirmação.\nC) CSMA/CD é usado para redes cabeadas e CSMA/CA para wireless apenas por razões de padrão de comunicação, não pela função de controle.\nD) Ambos não empregam token passing ou multiplexação TDM; essas são tecnologias distintas.\nE) A principal diferença é sim a do método de gerenciamento de acesso ao meio, o que está corretamente descrito na alternativa B.\nSegundo RFC 2365, a detecção e prevenção de colisões variam no Ethernet por meio desses métodos, adequando-se ao meio físico utilizado.",
-    "REFERENCIA": "RFC 2365 - Carrier Sense Multiple Access with Collision Avoidance"
-  },
-  {
-    "AULA": "Aula 2: CSMA/CD e CSMA/CA – acesso ao meio",
-    "QUESTAO": "Por que o método CSMA/CA, utilizado em redes Wi-Fi, é considerado mais eficiente na prevenção de colisões do que o CSMA/CD em redes cabeadas?",
-    "ALT_A": "Porque CSMA/CA utiliza o método de token passing, que elimina a possibilidade de colisões.",
-    "ALT_B": "Porque na wireless, a detecção de colisões é inviável devido às condições do meio; portanto, o CSMA/CA tenta evitá-las usando sinais RTS/CTS antes de transmitir.",
-    "ALT_C": "Porque CSMA/CA é baseado em multiplexação por divisão de frequência, que divide o canal para evitar conflitos.",
-    "ALT_D": "Porque o CSMA/CA detecta colisões após ocorrerem, processando os sinais de jam automaticamente.",
-    "ALT_E": "Porque o CSMA/CA usa back-off exponencial, uma técnica que reduz automaticamente o tamanho do pacote para evitar colisões.",
-    "CORRETA": "b",
-    "TEORIA": "CONCEITO DO ENUNCIADO: O método CSMA/CA é adotado em redes sem fio como a Wi-Fi devido à dificuldade de detectar colisões no ambiente radioelétrico, conhecido como problema do terminal oculto. Para mitigar isso, utiliza o handshake RTS/CTS antes de transmitir dados, reservando o canal e evitando colisões.\nA) Utiliza token passing: Incorreto, o método não emprega token.\nB) Detectar colisões na wireless é inviável: Por causa do meio radiofreqüência, a transmissão simultânea não pode ser detectada por todos os dispositivos, assim o método evita colisões preventivamente.\nC) Usa multiplexação por frequência: Essa é uma técnica diferente, típica do OFDM.\nD) Detectar colisões após ocorrerem: Essa é a estratégia do CSMA/CD, não do CSMA/CA.\nE) O back-off reduz o tamanho do pacote, mas ele é uma técnica auxiliar à prevenção de colisões, não sua causa primária.\nDe acordo com as recomendações da IEEE 802.11, o handshake RTS/CTS é uma estratégia que melhora a coordenação das transmissões sem fio.",
-    "REFERENCIA": "IEEE 802.11 - CSMA/CA Protocol"
-  },
-  {
-    "AULA": "Aula 3: Prática com Sniffer – analisando tramas no Wireshark",
-    "QUESTAO": "Qual filtro de exibição deve ser aplicado no Wireshark para visualizar especificamente o tráfego relacionado às consultas DNS?",
-    "ALT_A": "eth.type == 0x0806",
-    "ALT_B": "ip.addr == 8.8.8.8",
-    "ALT_C": "tcp.port == 80",
-    "ALT_D": "dns",
-    "ALT_E": "icmp",
-    "CORRETA": "d",
-    "TEORIA": "CONCEITO DO ENUNCIADO: Para filtrar o tráfego DNS no Wireshark, deve-se aplicar o filtro 'dns', que exibe somente os pacotes relacionados às consultas e respostas do Sistema de Nomes de Domínio (DNS). \nA) eth.type == 0x0806 apresenta somente tráfego ARP, não DNS.\nB) ip.addr == 8.8.8.8 filtra pacotes com endereço IP de destino ou origem 8.8.8.8.\nC) tcp.port == 80 mostra tráfego HTTP, não DNS.\nD) dns filtra especificamente pacotes DNS, os quais contêm perguntas e respostas de resolução de nomes.\nE) icmp filtra os protocolos ICMP, como o ping, não DNS.\nSegundo a RFC 1035, o protocolos DNS opera sobre UDP na maioria das vezes, e o filtro 'dns' no Wireshark facilita a análise desse tráfego específico, promovendo uma investigação eficiente.",
-    "REFERENCIA": "RFC 1035 - Domain Names - Implementation and Specification"
   }
 ]
