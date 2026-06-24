@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Login Externo</title>
+</head>
+<body>
+  <form id="loginForm">
+    <input type="text" id="usuario" placeholder="Usuário" required>
+    <input type="password" id="senha" placeholder="Senha" required>
+    <button type="submit">Entrar</button>
+  </form>
+
+  <script>
+    const URL_API =
+      'https://script.google.com/macros/s/AKfycbwIwOTDe265gu0Uyg7J_XA9Ia-sMxyjiVlhWtjEhRIfnqyEJySve0BfocKhp0fviz8eRA/exec';
+
+    document
+      .getElementById('loginForm')
+      .addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const usuario =
+          document.getElementById('usuario').value;
+
+        const senha =
+          document.getElementById('senha').value;
+
+        const resposta = await fetch(URL_API, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            usuario,
+            senha
+          })
+        });
+
+        const resultado = await resposta.json();
+
+        if (resultado.sucesso) {
+          alert('Login realizado com sucesso!');
+          console.log(resultado.usuario);
+        } else {
+          alert(resultado.mensagem);
+        }
+      });
+  </script>
+</body>
+</html>

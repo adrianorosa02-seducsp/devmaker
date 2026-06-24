@@ -235,8 +235,9 @@
         for (let i = 1; i <= 30; i++) {
             payload.respostas[`q${i}`] = formData.get(`q${i}`);
         }
-
-        fetch('https://webhook.inetz.com.br/webhook/avalia', {
+        //
+        //fetch('https://webhook.inetz.com.br/webhook/avalia', {
+            fetch('https://n8n.inetz.com.br/webhook-test/avalia', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
