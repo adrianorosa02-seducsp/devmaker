@@ -1,0 +1,26 @@
+[
+  {
+    "AULA": "Aula 1: Formato do Quadro Ethernet",
+    "QUESTAO": "Qual campo do quadro Ethernet é responsável por verificar a integridade dos dados transmitidos, detectando possíveis erros na comunicação?",
+    "ALT_A": "Preâmbulo: Sequência de bits que sincroniza a comunicação entre os dispositivos na rede.",
+    "ALT_B": "MAC Destino: Endereço MAC do dispositivo receptor, que direciona o quadro ao destinatário correto.",
+    "ALT_C": "FCS: Campo de redundância cíclica utilizado para verificar se o quadro chegou sem erros.",
+    "ALT_D": "Tipo: Indica o protocolo de camada superior encapsulado no quadro Ethernet.",
+    "ALT_E": "Dados: Carrega a carga útil da transmissão, contendo os dados propriamente ditos.",
+    "CORRETA": "c",
+    "TEORIA": "CONCEITO DO ENUNCIADO: O campo FCS (Frame Check Sequence) é um campo de redundância cíclica que serve para detectar erros na transmissão de quadros Ethernet, verificando a integridade dos dados através de um cálculo CRC. \nA) Preâmbulo: Sequência de bits que sincroniza a comunicação entre os dispositivos na rede, permitindo que o receptor alinhe a recepção.\nB) MAC Destino: Endereço MAC do dispositivo receptor, que garante que o quadro seja entregue ao destinatário correto.\nC) FCS: Campo de redundância cíclica que, através do cálculo CRC, detecta erros na transmissão de dados.\nD) Tipo: Campo que indica qual protocolo de camada superior está encapsulado, como IPv4 ou ARP.\nE) Dados: Contém a carga útil, ou seja, os dados transmitidos de camada superior.\nO uso do FCS, conforme detalhado na norma IEEE 802.3, é fundamental para garantir a detecção de erros na integridade do quadro enviado.",
+    "REFERENCIA": "IEEE 802.3 - Ethernet Frame Format"
+  },
+  {
+    "AULA": "Aula 1: Formato do Quadro Ethernet",
+    "QUESTAO": "Na estrutura do quadro Ethernet, qual é a principal função do campo \"Tipo\"?",
+    "ALT_A": "Indicar o tamanho do quadro para controle de fluxo na transmissão.",
+    "ALT_B": "Especificar o protocolo de camada superior que o quadro Transporta, como IP ou ARP.",
+    "ALT_C": "Identificar o endereço MAC do remetente do quadro.",
+    "ALT_D": "Servir como uma soma de verificação para detectar erros na transmissão.",
+    "ALT_E": "Fornecer o endereço IP do destino do pacote.",
+    "CORRETA": "b",
+    "TEORIA": "CONCEITO DO ENUNCIADO: O campo \"Tipo\" no quadro Ethernet indica qual protocolo de camada superior está encapsulado, permitindo que o destinatário saiba como interpretar os dados recebidos. \nA) Indicar o tamanho do quadro: Não é sua função principal, pois o tamanho é controlado pelo campo de comprimento.\nB) Especificar o protocolo de camada superior: Sua função é indicar o protocolo, como IPv4 (0x0800) ou ARP (0x0806), que deve ser utilizado na camada superior.\nC) Identificar o endereço MAC do remetente: Essa função é do campo MAC Origem.\nD) Soma de verificação: Essa é a função do campo FCS, não do Tipo.\nE) Endereço IP do destino: Esse dado é transportado dentro do campo de Dados, não no campo Tipo.\nConforme o padrão IEEE 802.3, o campo Tipo é essencial para a correta interpretação do conteúdo do quadro na camada de rede.",
+    "REFERENCIA": "IEEE 802.3 – Ethernet Frame Protocol Types"
+  }
+]

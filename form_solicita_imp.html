@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitação de Impressão - Inetz</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #3498db; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 450px; }
+        h2 { color: var(--primary); margin-bottom: 1.5rem; text-align: center; border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #444; }
+        input, select { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 1rem; }
+        button { width: 100%; padding: 1rem; background-color: var(--accent); color: white; border: none; border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background 0.3s; margin-top: 1rem; }
+        button:hover { background-color: #2980b9; }
+        button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+        #status { margin-top: 1.5rem; text-align: center; font-weight: 600; padding: 10px; border-radius: 6px; display: none; }
+        .success { background: #d4edda; color: #155724; display: block !important; }
+        .error { background: #f8d7da; color: #721c24; display: block !important; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Nova Solicitação</h2>
+    <form id="formSolicitacao">
+        <div class="form-group">
+            <label>Professor:</label>
+            <input type="text" name="professor" required placeholder="Ex: Adriano Rosa">
+        </div>
+        <div class="form-group">
+            <label>E-mail:</label>
+            <input type="email" name="email" required placeholder="seu@email.com">
+        </div>
+        <div class="form-group">
+            <label>Turma:</label>
+            <input type="text" name="turma" required placeholder="Ex: 2º Ano B">
+        </div>
+        <div class="form-group">
+            <label>Data de Uso:</label>
+            <input type="date" name="dataUso" required>
+        </div>
+        <button type="submit" id="btnEnviar">ENVIAR SOLICITAÇÃO</button>
+    </form>
+    <div id="status"></div>
+</div>
+
+<script>
+    const WEB_APP_URL = "https://script.google.com/a/macros/prof.educacao.sp.gov.br/s/AKfycbxHRs_LnaTAj3mse5Tbz5X_5x2dEBY8biuxncIbpcDKdmxPHeGn8lOAxF3uwZMj9VrG/exec"; // <--- COLE A URL DO GOOGLE AQUI
+
+    document.getElementById('formSolicitacao').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btnEnviar');
+        const status = document.getElementById('status');
+        const formData = new FormData(e.target);
+        
+        // Converte FormData para objeto simples
+        const data = Object.fromEntries(formData.entries());
+
+        btn.disabled = true;
+        status.textContent = "⏳ Enviando para o Google...";
+        status.className = "";
+        status.style.display = "block";
+
+        try {
+            // No Apps Script fora do domínio, usamos o modo 'no-cors' ou 
+            // tratamos o redirecionamento. O Fetch padrão para Web Apps requer:
+            const response = await fetch(WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Necessário para evitar erros de CORS no redirecionamento do Google
+                cache: 'no-cache',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            // Como usamos 'no-cors', não conseguimos ler o JSON de resposta (vém opaco)
+            // Mas se não cair no catch, é sinal de que o envio foi aceito.
+            status.textContent = "✅ Solicitação enviada com sucesso!";
+            status.className = "success";
+            e.target.reset();
+
+        } catch (error) {
+            status.textContent = "❌ Erro na conexão: " + error.message;
+            status.className = "error";
+        } finally {
+            btn.disabled = false;
+        }
+    });
+</script>
+
+</body>
+</html>
