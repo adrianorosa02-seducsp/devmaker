@@ -465,19 +465,46 @@
             
             const rawData = await response.json();
             
-            questions = rawData.map(item => ({
-                questao: item.QUESTAO,
-                alternativas: {
-                    a: item.ALT_A,
-                    b: item.ALT_B,
-                    c: item.ALT_C,
-                    d: item.ALT_D,
-                    e: item.ALT_E
-                },
-                correta: item.CORRETA.toLowerCase(),
-                teoria: item.TEORIA,
-                aula: item.AULA
-            }));
+            questions = rawData.map(item => {
+                let corretaStr = (item.CORRETA || "").trim().toLowerCase();
+                
+                // 1. Check if it's prefixed with 'alt_'
+                if (corretaStr.startsWith("alt_")) {
+                    corretaStr = corretaStr.replace("alt_", "");
+                }
+                
+                // 2. If it's a full text match, resolve to the correct option letter
+                if (corretaStr.length > 1) {
+                    const normalizeText = (txt) => {
+                        if (!txt) return "";
+                        return txt.trim().toLowerCase().replace(/^[a-e]\s*[-)]\s*/, "").trim();
+                    };
+                    
+                    const normalizedCorreta = normalizeText(corretaStr);
+                    const alternatives = ['a', 'b', 'c', 'd', 'e'];
+                    for (const alt of alternatives) {
+                        const altText = item[`ALT_${alt.toUpperCase()}`];
+                        if (altText && normalizeText(altText) === normalizedCorreta) {
+                            corretaStr = alt;
+                            break;
+                        }
+                    }
+                }
+                
+                return {
+                    questao: item.QUESTAO,
+                    alternativas: {
+                        a: item.ALT_A,
+                        b: item.ALT_B,
+                        c: item.ALT_C,
+                        d: item.ALT_D,
+                        e: item.ALT_E
+                    },
+                    correta: corretaStr,
+                    teoria: item.TEORIA,
+                    aula: item.AULA
+                };
+            });
             
             console.log("Questões carregadas com sucesso:", questions.length);
             return true;
