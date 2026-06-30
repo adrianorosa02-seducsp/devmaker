@@ -409,6 +409,45 @@
     let attemptsOnCurrentQuestion = 0;
     let userData = {};
     let userAnswers = {}; // Armazena as respostas q1, q2...
+    let countdownInterval = null;
+
+    function startFeedbackTimer() {
+        const btnClose = document.getElementById('btnCloseModal');
+        btnClose.disabled = true;
+        let secondsRemaining = 120;
+
+        const formatTime = (secs) => {
+            const m = Math.floor(secs / 60);
+            const s = secs % 60;
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        };
+
+        btnClose.innerText = `ENTENDI (Aguarde ${formatTime(secondsRemaining)})`;
+
+        if (countdownInterval) clearInterval(countdownInterval);
+
+        countdownInterval = setInterval(() => {
+            secondsRemaining--;
+            if (secondsRemaining <= 0) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+                btnClose.disabled = false;
+                btnClose.innerText = "ENTENDI";
+            } else {
+                btnClose.innerText = `ENTENDI (Aguarde ${formatTime(secondsRemaining)})`;
+            }
+        }, 1000);
+    }
+
+    function resetFeedbackButton() {
+        if (countdownInterval) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+        }
+        const btnClose = document.getElementById('btnCloseModal');
+        btnClose.disabled = false;
+        btnClose.innerText = "ENTENDI";
+    }
 
     // Mapeamento das disciplinas para os respectivos arquivos JSON
     function getJsonFileName(disciplina) {
@@ -621,10 +660,14 @@
             document.getElementById('btn-check').style.display = 'none';
             document.getElementById('btn-next').style.display = 'block';
             document.querySelectorAll('input[name="quiz-opt"]').forEach(i => i.disabled = true);
+            
+            resetFeedbackButton();
         } else {
             statusEl.innerText = "❌ NÃO ESTÁ CORRETO ❌";
             statusEl.className = "modal-status status-error";
             attemptsOnCurrentQuestion++;
+            
+            startFeedbackTimer();
         }
 
         theoryEl.innerText = q.teoria;
@@ -692,12 +735,16 @@
     }
 
     document.getElementById('btnCloseModal').onclick = () => {
+        if (document.getElementById('btnCloseModal').disabled) return;
         document.getElementById('feedbackModal').style.display = 'none';
     };
 
     window.onclick = (e) => {
         if (e.target == document.getElementById('feedbackModal')) {
-            document.getElementById('feedbackModal').style.display = 'none';
+            const btnClose = document.getElementById('btnCloseModal');
+            if (!btnClose.disabled) {
+                document.getElementById('feedbackModal').style.display = 'none';
+            }
         }
     };
 </script>
