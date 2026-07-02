@@ -409,6 +409,45 @@
     let attemptsOnCurrentQuestion = 0;
     let userData = {};
     let userAnswers = {}; // Armazena as respostas q1, q2...
+    let countdownInterval = null;
+
+    function startFeedbackTimer() {
+        const btnClose = document.getElementById('btnCloseModal');
+        btnClose.disabled = true;
+        let secondsRemaining = 120;
+
+        const formatTime = (secs) => {
+            const m = Math.floor(secs / 60);
+            const s = secs % 60;
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        };
+
+        btnClose.innerText = `ENTENDI (Aguarde ${formatTime(secondsRemaining)})`;
+
+        if (countdownInterval) clearInterval(countdownInterval);
+
+        countdownInterval = setInterval(() => {
+            secondsRemaining--;
+            if (secondsRemaining <= 0) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+                btnClose.disabled = false;
+                btnClose.innerText = "ENTENDI";
+            } else {
+                btnClose.innerText = `ENTENDI (Aguarde ${formatTime(secondsRemaining)})`;
+            }
+        }, 1000);
+    }
+
+    function resetFeedbackButton() {
+        if (countdownInterval) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+        }
+        const btnClose = document.getElementById('btnCloseModal');
+        btnClose.disabled = false;
+        btnClose.innerText = "ENTENDI";
+    }
 
     // Mapeamento das disciplinas para os respectivos arquivos JSON
     function getJsonFileName(disciplina) {
@@ -465,19 +504,46 @@
             
             const rawData = await response.json();
             
-            questions = rawData.map(item => ({
-                questao: item.QUESTAO,
-                alternativas: {
-                    a: item.ALT_A,
-                    b: item.ALT_B,
-                    c: item.ALT_C,
-                    d: item.ALT_D,
-                    e: item.ALT_E
-                },
-                correta: item.CORRETA.toLowerCase(),
-                teoria: item.TEORIA,
-                aula: item.AULA
-            }));
+            questions = rawData.map(item => {
+                let corretaStr = (item.CORRETA || "").trim().toLowerCase();
+                
+                // 1. Check if it's prefixed with 'alt_'
+                if (corretaStr.startsWith("alt_")) {
+                    corretaStr = corretaStr.replace("alt_", "");
+                }
+                
+                // 2. If it's a full text match, resolve to the correct option letter
+                if (corretaStr.length > 1) {
+                    const normalizeText = (txt) => {
+                        if (!txt) return "";
+                        return txt.trim().toLowerCase().replace(/^[a-e]\s*[-)]\s*/, "").trim();
+                    };
+                    
+                    const normalizedCorreta = normalizeText(corretaStr);
+                    const alternatives = ['a', 'b', 'c', 'd', 'e'];
+                    for (const alt of alternatives) {
+                        const altText = item[`ALT_${alt.toUpperCase()}`];
+                        if (altText && normalizeText(altText) === normalizedCorreta) {
+                            corretaStr = alt;
+                            break;
+                        }
+                    }
+                }
+                
+                return {
+                    questao: item.QUESTAO,
+                    alternativas: {
+                        a: item.ALT_A,
+                        b: item.ALT_B,
+                        c: item.ALT_C,
+                        d: item.ALT_D,
+                        e: item.ALT_E
+                    },
+                    correta: corretaStr,
+                    teoria: item.TEORIA,
+                    aula: item.AULA
+                };
+            });
             
             console.log("Questões carregadas com sucesso:", questions.length);
             return true;
@@ -594,10 +660,14 @@
             document.getElementById('btn-check').style.display = 'none';
             document.getElementById('btn-next').style.display = 'block';
             document.querySelectorAll('input[name="quiz-opt"]').forEach(i => i.disabled = true);
+            
+            resetFeedbackButton();
         } else {
             statusEl.innerText = "❌ NÃO ESTÁ CORRETO ❌";
             statusEl.className = "modal-status status-error";
             attemptsOnCurrentQuestion++;
+            
+            startFeedbackTimer();
         }
 
         theoryEl.innerText = q.teoria;
@@ -644,7 +714,7 @@
         };
 
         try {
-            const response = await fetch('https://n8n.inetz.com.br/webhook-test/avalia', {
+            const response = await fetch('https://webhook.inetz.com.br/webhook/avalia', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -665,12 +735,16 @@
     }
 
     document.getElementById('btnCloseModal').onclick = () => {
+        if (document.getElementById('btnCloseModal').disabled) return;
         document.getElementById('feedbackModal').style.display = 'none';
     };
 
     window.onclick = (e) => {
         if (e.target == document.getElementById('feedbackModal')) {
-            document.getElementById('feedbackModal').style.display = 'none';
+            const btnClose = document.getElementById('btnCloseModal');
+            if (!btnClose.disabled) {
+                document.getElementById('feedbackModal').style.display = 'none';
+            }
         }
     };
 </script>

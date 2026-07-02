@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prova Digital - Redes de Computadores e Segurança da Informação na Nuvem</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f8;
+    margin: 20px;
+    color: #333;
+  }
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+  }
+  form {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  }
+  .question {
+    margin-bottom: 20px;
+  }
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+  }
+  select, input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    margin-top: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .quiz {
+    margin-bottom: 30px;
+  }
+  .question-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .options {
+    margin-left: 20px;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  button {
+    background-color: #2980b9;
+    color: #fff;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #3498db;
+  }
+  .help {
+    display: none;
+    background-color: #e8f0fe;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+<h1>Prova Digital - Redes de Computadores e Segurança da Informação na Nuvem</h1>
+<form id="provaForm" method="POST" action="https://webhook.inetz.com.br/webhook/avalia">
+  <div class="question">
+    <label for="ra">RA do Aluno:</label>
+    <input type="text" id="ra" name="ra" required>
+  </div>
+  <div class="question">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" required>
+  </div>
+
+  <div class="quiz">
+    <div class="question-title">Questão 1</div>
+    <div class="question-text">
+      Qual campo do quadro Ethernet é responsável por verificar se os dados chegaram sem erros? Se não for esse campo, indique o erro.
+    </div>
+    <div class="options">
+      <label><input type="radio" name="questao1" value="a"> a) MAC Destino</label>
+      <label><input type="radio" name="questao1" value="b"> b) Tipo</label>
+      <label><input type="radio" name="questao1" value="c"> c) FCS</label>
+      <label><input type="radio" name="questao1" value="d"> d) Preâmbulo</label>
+      <label><input type="radio" name="questao1" value="e"> e) Dados</label>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <div class="question-title">Questão 2</div>
+    <div class="question-text">
+      Entre os protocolos CSMA/CD e CSMA/CA, qual é utilizado em redes Wi-Fi para evitar colisões, funcionando de forma preventiva?
+    </div>
+    <div class="options">
+      <label><input type="radio" name="questao2" value="a"> a) CSMA/CD</label>
+      <label><input type="radio" name="questao2" value="b"> b) CSMA/CA</label>
+      <label><input type="radio" name="questao2" value="c"> c) Both</label>
+      <label><input type="radio" name="questao2" value="d"> d) Nenhum</label>
+      <label><input type="radio" name="questao2" value="e"> e) Ethernet</label>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <div class="question-title">Questão 3</div>
+    <div class="question-text">
+      Qual filtro do Wireshark permite visualizar apenas o tráfego de resolução de nomes de sites, traduzindo-os para endereços IP?
+    </div>
+    <div class="options">
+      <label><input type="radio" name="questao3" value="a"> a) arp</label>
+      <label><input type="radio" name="questao3" value="b"> b) icmp</label>
+      <label><input type="radio" name="questao3" value="c"> c) dns</label>
+      <label><input type="radio" name="questao3" value="d"> d) ip</label>
+      <label><input type="radio" name="questao3" value="e"> e) tcp</label>
+    </div>
+  </div>
+
+  <div style="text-align: center;">
+    <button type="submit">Enviar Respostas</button>
+  </div>
+</form>
+
+<div class="help" id="ajuda">
+  <h2>Dicas para Responder</h2>
+  <p><strong>Questão 1:</strong> O campo que verifica erros na transmissão é o FCS, que funciona como um lacre de segurança.</p>
+  <p><strong>Questão 2:</strong> O protocolo utilizado no Wi-Fi para evitar colisões é o CSMA/CA, que funciona de forma preventiva.</p>
+  <p><strong>Questão 3:</strong> Para visualizar apenas o tráfego de resolução de nomes, o filtro correto é "dns".</p>
+</div>
+
+<script>
+  const form = document.getElementById('provaForm');
+  const ajuda = document.getElementById('ajuda');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // Mostrar mensagem de ajuda após 3 tentativas erradas
+    if (!sessionStorage.getItem('tentativas')) {
+      sessionStorage.setItem('tentativas', 1);
+    } else {
+      let tentativas = parseInt(sessionStorage.getItem('tentativas'));
+      tentativas++;
+      sessionStorage.setItem('tentativas', tentativas);
+      if (tentativas >= 3) {
+        ajuda.style.display = 'block';
+        alert('Você já teve 3 tentativas erradas. Veja algumas dicas para ajudar a responder corretamente.');
+        return;
+      }
+    }
+
+    // Envia os dados do formulário para o endpoint
+    const data = new FormData(form);
+    fetch('https://webhook.inetz.com.br/webhook/avalia', {
+      method: 'POST',
+      body: data
+    }).then(response => {
+      if (response.ok) {
+        alert('Respostas enviadas com sucesso!');
+        form.reset();
+      } else {
+        alert('Erro ao enviar respostas. Por favor, tente novamente.');
+      }
+    }).catch(() => {
+      alert('Erro na conexão. Tente novamente mais tarde.');
+    });
+  });
+</script>
+</body>
+</html>
