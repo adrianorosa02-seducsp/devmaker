@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevProvas - Gestão de Disciplinas</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">DP</div>
+                <span class="brand-name">DevProvas</span>
+            </div>
+            <nav>
+                <ul class="nav-list">
+                    <li class="nav-item active">
+                        <a href="#" id="nav-disciplinas">
+                            <i class="fa-solid fa-book-open"></i>
+                            <span>Disciplinas</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" style="opacity: 0.5; pointer-events: none;">
+                            <i class="fa-solid fa-school"></i>
+                            <span>Escolas</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" style="opacity: 0.5; pointer-events: none;">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <span>Professores</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" style="opacity: 0.5; pointer-events: none;">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Turmas</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" style="opacity: 0.5; pointer-events: none;">
+                            <i class="fa-solid fa-file-invoice"></i>
+                            <span>Provas</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Dashboard Content -->
+        <main class="main-content">
+            <!-- Header Bar -->
+            <header class="header-bar">
+                <div class="title-section">
+                    <h1>Disciplinas Acadêmicas</h1>
+                    <p>Cadastre, liste, atualize e gerencie as disciplinas curriculares.</p>
+                </div>
+                <div class="system-status">
+                    <!-- API Endpoint Configurator -->
+                    <div class="api-url-config" title="Clique para editar a URL da API">
+                        <i class="fa-solid fa-link" style="color: var(--text-muted); font-size: 0.8rem;"></i>
+                        <input type="text" id="api-base-url-input" value="https://geduc.inetz.com.br" placeholder="Base URL da API">
+                    </div>
+                    <!-- Connection Status Indicator -->
+                    <div class="status-indicator" id="status-indicator">
+                        <span class="status-dot" id="status-dot"></span>
+                        <span id="status-text">Verificando...</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Control Bar (Filters, Search, Create Button) -->
+            <section class="control-bar">
+                <div class="search-filter-group">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-input" placeholder="Pesquisar por nome ou código...">
+                    </div>
+                    <select id="filter-status" class="filter-select">
+                        <option value="todos">Todos os Status</option>
+                        <option value="ativos">Apenas Ativas</option>
+                        <option value="inativos">Apenas Inativas</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" id="btn-create-discipline">
+                    <i class="fa-solid fa-plus"></i> Nova Disciplina
+                </button>
+            </section>
+
+            <!-- Disciplines Grid/List Area -->
+            <section id="disciplines-grid-wrapper">
+                <!-- Dynamic Content Will Be Rendered Here -->
+                <div class="loading-state" id="loading-state">
+                    <div class="loading-spinner"></div>
+                    <p>Carregando disciplinas...</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- CREATE & EDIT MODAL -->
+    <div class="modal-overlay" id="discipline-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Nova Disciplina</h2>
+                <button class="modal-close" id="modal-close-btn">&times;</button>
+            </div>
+            <form id="discipline-form">
+                <!-- Hidden Field for Edit Action -->
+                <input type="hidden" id="discipline-id">
+
+                <div class="form-group">
+                    <label for="discipline-nome">Nome da Disciplina *</label>
+                    <input type="text" id="discipline-nome" class="form-control" placeholder="Ex: Matemática Aplicada" required maxlength="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="discipline-codigo">Código da Disciplina</label>
+                    <input type="text" id="discipline-codigo" class="form-control" placeholder="Ex: MAT-101 (único)" maxlength="20">
+                </div>
+
+                <div class="form-group">
+                    <label for="discipline-escola">Escola Vinculada</label>
+                    <select id="discipline-escola" class="form-control">
+                        <option value="">Carregando escolas...</option>
+                    </select>
+                    <!-- Fallback manual input in case Escola dropdown needs direct entry -->
+                    <div id="manual-escola-container" style="display: none; margin-top: 0.5rem;">
+                        <input type="text" id="discipline-escola-manual" class="form-control" placeholder="Cole o UUID da Escola manualmente se necessário">
+                    </div>
+                </div>
+
+                <div class="form-row-checkbox">
+                    <input type="checkbox" id="discipline-ativo" checked>
+                    <label for="discipline-ativo">Disciplina Ativa</label>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btn-cancel-discipline">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="btn-save-discipline">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DELETE CONFIRMATION MODAL -->
+    <div class="modal-overlay" id="delete-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Excluir Disciplina</h2>
+                <button class="modal-close" id="delete-modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-confirm-text">
+                Tem certeza de que deseja excluir permanentemente a disciplina <strong id="delete-discipline-name"></strong>?
+                Esta ação não pode ser desfeita.
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btn-cancel-delete">Cancelar</button>
+                <button class="btn btn-danger" id="btn-confirm-delete">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
