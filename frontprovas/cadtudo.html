@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GEDUC - Painel Administrativo</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --border: #e2e8f0;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding: 20px; }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+    header { margin-bottom: 24px; }
+    h1 { font-size: 1.8rem; color: var(--primary); }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--border); margin-bottom: 24px; overflow-x: auto; }
+    .tab-btn {
+      padding: 10px 16px; border: none; background: none; font-weight: 600;
+      color: #64748b; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px;
+    }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+    /* Layout Content */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .card { background: var(--card-bg); border-radius: 8px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
+    .card h2 { font-size: 1.2rem; margin-bottom: 16px; }
+
+    /* Form Layout */
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    label { font-size: 0.85rem; font-weight: 600; color: #475569; }
+    input, select {
+      padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; outline: none;
+    }
+    input:focus, select:focus { border-color: var(--primary); }
+
+    /* Buttons */
+    .btn {
+      padding: 8px 16px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;
+      background-color: var(--primary); color: white; transition: background 0.2s;
+    }
+    .btn:hover { background-color: var(--primary-hover); }
+    .btn-danger { background-color: var(--danger); padding: 4px 8px; font-size: 0.8rem; }
+    .btn-danger:hover { background-color: #dc2626; }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    th { background-color: #f1f5f9; color: #475569; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>GEDUC - Sistema de Gestão Escolar</h1>
+    </header>
+
+    <!-- Navegação por Abas -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('escolas')">Escolas</button>
+      <button class="tab-btn" onclick="switchTab('usuarios')">Usuários</button>
+      <button class="tab-btn" onclick="switchTab('professores')">Professores</button>
+      <button class="tab-btn" onclick="switchTab('disciplinas')">Disciplinas</button>
+      <button class="tab-btn" onclick="switchTab('acervo')">Acervo Digital</button>
+    </div>
+
+    <!-- MÓDULO: ESCOLAS -->
+    <div id="tab-escolas" class="tab-content active">
+      <div class="card">
+        <h2>Cadastrar Escola</h2>
+        <form id="form-escola" onsubmit="salvarItem(event, 'escolas')">
+          <div class="form-grid">
+            <div class="form-group"><label>Nome</label><input type="text" id="escola-nome" required></div>
+            <div class="form-group"><label>Endereço</label><input type="text" id="escola-endereco" required></div>
+            <div class="form-group"><label>Telefone</label><input type="text" id="escola-telefone" required></div>
+            <div class="form-group"><label>E-mail</label><input type="email" id="escola-email" required></div>
+          </div>
+          <button type="submit" class="btn">Salvar Escola</button>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Escolas Cadastradas</h2>
+        <table>
+          <thead><tr><th>Nome</th><th>Endereço</th><th>Telefone</th><th>Ações</th></tr></thead>
+          <tbody id="lista-escolas"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MÓDULO: USUÁRIOS -->
+    <div id="tab-usuarios" class="tab-content">
+      <div class="card">
+        <h2>Cadastrar Usuário</h2>
+        <form id="form-usuario" onsubmit="salvarItem(event, 'usuarios')">
+          <div class="form-grid">
+            <div class="form-group"><label>Nome</label><input type="text" id="user-nome" required></div>
+            <div class="form-group"><label>E-mail</label><input type="email" id="user-email" required></div>
+            <div class="form-group"><label>Tipo</label>
+              <select id="user-tipo"><option value="admin">Admin</option><option value="professor">Professor</option><option value="aluno">Aluno</option></select>
+            </div>
+            <div class="form-group"><label>ID da Escola</label><input type="text" id="user-escola" required></div>
+            <div class="form-group"><label>Senha</label><input type="password" id="user-senha" required></div>
+          </div>
+          <button type="submit" class="btn">Salvar Usuário</button>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Usuários Cadastrados</h2>
+        <table>
+          <thead><tr><th>Nome</th><th>E-mail</th><th>Tipo</th><th>Ações</th></tr></thead>
+          <tbody id="lista-usuarios"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MÓDULO: PROFESSORES -->
+    <div id="tab-professores" class="tab-content">
+      <div class="card">
+        <h2>Cadastrar Professor</h2>
+        <form id="form-professor" onsubmit="salvarItem(event, 'professores')">
+          <div class="form-grid">
+            <div class="form-group"><label>Nome</label><input type="text" id="prof-nome" required></div>
+            <div class="form-group"><label>E-mail</label><input type="email" id="prof-email" required></div>
+            <div class="form-group"><label>ID da Escola</label><input type="text" id="prof-escola" required></div>
+          </div>
+          <button type="submit" class="btn">Salvar Professor</button>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Professores Cadastrados</h2>
+        <table>
+          <thead><tr><th>Nome</th><th>E-mail</th><th>Ações</th></tr></thead>
+          <tbody id="lista-professores"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MÓDULO: DISCIPLINAS -->
+    <div id="tab-disciplinas" class="tab-content">
+      <div class="card">
+        <h2>Cadastrar Disciplina</h2>
+        <form id="form-disciplina" onsubmit="salvarItem(event, 'disciplinas')">
+          <div class="form-grid">
+            <div class="form-group"><label>Nome</label><input type="text" id="disc-nome" required></div>
+            <div class="form-group"><label>Código</label><input type="text" id="disc-codigo" required></div>
+          </div>
+          <button type="submit" class="btn">Salvar Disciplina</button>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Disciplinas Cadastradas</h2>
+        <table>
+          <thead><tr><th>Código</th><th>Nome</th><th>Ações</th></tr></thead>
+          <tbody id="lista-disciplinas"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MÓDULO: ACERVO DIGITAL -->
+    <div id="tab-acervo" class="tab-content">
+      <div class="card">
+        <h2>Cadastrar Item no Acervo</h2>
+        <form id="form-acervo" onsubmit="salvarItem(event, 'acervo-digital')">
+          <div class="form-grid">
+            <div class="form-group"><label>Título</label><input type="text" id="acervo-titulo" required></div>
+            <div class="form-group"><label>Autor</label><input type="text" id="acervo-autor" required></div>
+            <div class="form-group"><label>Link da Mídia</label><input type="url" id="acervo-link" required></div>
+          </div>
+          <button type="submit" class="btn">Salvar Item</button>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Itens do Acervo</h2>
+        <table>
+          <thead><tr><th>Título</th><th>Autor</th><th>Link</th><th>Ações</th></tr></thead>
+          <tbody id="lista-acervo"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const API_BASE = "https://geduc.inetz.com.br";
+
+    // Controle de Abas
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById(`tab-${tabName}`).classList.add('active');
+      
+      carregarDados(tabName);
+    }
+
+    // Requisição genérica GET
+    async function carregarDados(recurso) {
+      const endpointMap = { 'acervo': 'acervo-digital' };
+      const path = endpointMap[recurso] || recurso;
+
+      try {
+        const res = await fetch(`${API_BASE}/${path}/`);
+        const dados = await res.json();
+        renderizarTabela(recurso, dados);
+      } catch (err) {
+        console.error(`Erro ao carregar ${recurso}:`, err);
+      }
+    }
+
+    // Renderização das tabelas
+    function renderizarTabela(recurso, dados) {
+      const tbody = document.getElementById(`lista-${recurso}`);
+      tbody.innerHTML = "";
+
+      dados.forEach(item => {
+        const tr = document.createElement('tr');
+        if (recurso === 'escolas') {
+          tr.innerHTML = `<td>${item.nome}</td><td>${item.endereco}</td><td>${item.telefone}</td>`;
+        } else if (recurso === 'usuarios') {
+          tr.innerHTML = `<td>${item.nome}</td><td>${item.email}</td><td>${item.tipo}</td>`;
+        } else if (recurso === 'professores') {
+          tr.innerHTML = `<td>${item.nome}</td><td>${item.email}</td>`;
+        } else if (recurso === 'disciplinas') {
+          tr.innerHTML = `<td>${item.codigo || '-'}</td><td>${item.nome}</td>`;
+        } else if (recurso === 'acervo') {
+          tr.innerHTML = `<td>${item.titulo}</td><td>${item.autor}</td><td><a href="${item.link_midia}" target="_blank">Acessar</a></td>`;
+        }
+        
+        const path = recurso === 'acervo' ? 'acervo-digital' : recurso;
+        tr.innerHTML += `<td><button class="btn btn-danger" onclick="deletarItem('${path}', '${item.id}')">Excluir</button></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Requisição genérica POST
+    async function salvarItem(event, recurso) {
+      event.preventDefault();
+      let payload = {};
+
+      if (recurso === 'escolas') {
+        payload = {
+          nome: document.getElementById('escola-nome').value,
+          endereco: document.getElementById('escola-endereco').value,
+          telefone: document.getElementById('escola-telefone').value,
+          email: document.getElementById('escola-email').value,
+        };
+      } else if (recurso === 'usuarios') {
+        payload = {
+          nome: document.getElementById('user-nome').value,
+          email: document.getElementById('user-email').value,
+          tipo: document.getElementById('user-tipo').value,
+          escola_id: document.getElementById('user-escola').value,
+          senha: document.getElementById('user-senha').value,
+          ativo: true
+        };
+      } else if (recurso === 'professores') {
+        payload = {
+          nome: document.getElementById('prof-nome').value,
+          email: document.getElementById('prof-email').value,
+          escola_id: document.getElementById('prof-escola').value
+        };
+      } else if (recurso === 'disciplinas') {
+        payload = {
+          nome: document.getElementById('disc-nome').value,
+          codigo: document.getElementById('disc-codigo').value
+        };
+      } else if (recurso === 'acervo-digital') {
+        payload = {
+          titulo: document.getElementById('acervo-titulo').value,
+          autor: document.getElementById('acervo-autor').value,
+          link_midia: document.getElementById('acervo-link').value
+        };
+      }
+
+      await fetch(`${API_BASE}/${recurso}/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'accept': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const tabKey = recurso === 'acervo-digital' ? 'acervo' : recurso;
+      event.target.reset();
+      carregarDados(tabKey);
+    }
+
+    // Requisição genérica DELETE
+    async function deletarItem(recurso, id) {
+      if (confirm("Deseja realmente excluir este registro?")) {
+        await fetch(`${API_BASE}/${recurso}/${id}`, { method: 'DELETE' });
+        const tabKey = recurso === 'acervo-digital' ? 'acervo' : recurso;
+        carregarDados(tabKey);
+      }
+    }
+
+    // Carregamento inicial da primeira aba
+    carregarDados('escolas');
+  </script>
+</body>
+</html>
