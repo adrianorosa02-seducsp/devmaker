@@ -196,6 +196,11 @@
 
   <script>
     const API_BASE = "https://geduc.inetz.com.br";
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+        throw new Error(`Erro ${response.status}`);
+    }
 
     // Controle de Abas
     function switchTab(tabName) {
