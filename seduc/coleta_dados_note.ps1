@@ -1,15 +1,33 @@
-# 1. Monta o objeto e converte para JSON com suporte a caracteres especiais
+# 1. Coleta das informações do sistema (WMI/CIM)
+$cs     = Get-CimInstance -ClassName Win32_ComputerSystem
+$bios   = Get-CimInstance -ClassName Win32_Bios
+$proc   = Get-CimInstance -ClassName Win32_Processor
+$ram    = Get-CimInstance -ClassName Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum
+
+# Converte a memória RAM total para GB
+$ramGB  = [math]::Round($ram.Sum / 1GB, 2)
+
+# 2. Monta o payload completo
 $payload = @{
+    # Dados de Auditoria
     Equipamento   = $nomeMaquina
     Auditor       = $auditorAtual
     UltimoUsuario = $ultimoUsuarioAnterior.Usuario
     DataHoraLogin = $ultimoUsuarioAnterior.DataHora
+
+    # Dados do Hardware
+    Fabricante    = $cs.Manufacturer
+    Modelo        = $cs.Model
+    Processador   = $proc.Name
+    Memoria       = "$ramGB GB"
+    RAM_GB        = $ramGB
+    NumeroSerie   = $bios.SerialNumber
 } | ConvertTo-Json -Depth 3
 
-# 2. Define a URL do Webhook
+# 3. Endpoint do Webhook
 $uriWebhook = "https://n8n.inetz.com.br/webhook-test/api_auditoria"
 
-# 3. Tenta enviar os dados com tratamento de exceção
+# 4. Envio dos dados com tratamento de erro
 try {
     Invoke-RestMethod -Uri $uriWebhook -Method Post -Body $payload -ContentType "application/json; charset=utf-8"
     Write-Host "`n[+] Dados de auditoria enviados com sucesso para o n8n!" -ForegroundColor Green
