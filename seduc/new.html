@@ -3,110 +3,408 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setup Disciplinas - Adriano J Rosa</title>
+    <title>Setup Ambiente - Adriano J Rosa</title>
     <style>
         :root {
-            --primary: #00d2ff;
-            --secondary: #3a7bd5;
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text: #f8fafc;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --primary-cyan: #00e5ff;
+            --secondary-blue: #2979ff;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success-green: #00e676;
+            --font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 40px; }
-        .container { max-width: 800px; width: 100%; text-align: center; }
-        h1 { margin-bottom: 30px; color: var(--primary); }
-        .step-box { background: var(--card); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #334155; }
-        .instruction { font-size: 0.9em; color: #94a3b8; margin-bottom: 10px; }
-        
-        /* Grid de Disciplinas */
-        .grid-disciplinas { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 30px 0; }
-        .btn-disciplina { 
-            background: #334155; 
-            border: none; 
-            padding: 20px; 
-            color: white; 
-            border-radius: 8px; 
-            transition: 0.3s; 
-            cursor: pointer; 
-            text-decoration: none;
+
+        * { box-sizing: border-radius; margin: 0; padding: 0; outline: none; }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Garante centralização vertical */
+            padding: 20px;
+            overflow: hidden; /* Tenta manter tudo na dobra */
+        }
+
+        /* Container Principal */
+        .main-wrapper {
+            max-width: 1100px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Cabeçalho */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--secondary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .version-tag {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: var(--glass-bg);
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Seção de Configuração (Grid) */
+        .setup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* Card de Configuração style "Glass" */
+        .setup-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .setup-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(0, 229, 255, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .icon-box {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 229, 255, 0.1);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9em;
+            color: var(--primary-cyan);
         }
-        .btn-disciplina:hover { background: var(--secondary); transform: translateY(-3px); }
+        
+        .icon-box svg { width: 22px; height: 22px; fill: currentColor; }
 
-        /* Botões de Ação */
-        .btn-copy { background: linear-gradient(45deg, var(--primary), var(--secondary)); border: none; padding: 15px 30px; 
-                    color: white; font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s; width: 100%; font-size: 1.1em; }
-        .btn-copy:active { transform: scale(0.98); }
+        .card-title-group h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 2px;}
+        .card-title-group p { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* Botão de Copiar Moderno */
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: auto; /* Empurra o botão para o fundo do card */
+        }
+
+        .btn-action:hover {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--secondary-blue));
+            border-color: transparent;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+        }
+
+        .btn-action:active { transform: scale(0.98); }
+        
+        /* Estado de Sucesso no Botão */
+        .btn-action.copied {
+            background: var(--success-green) !important;
+            color: #000 !important;
+            box-shadow: none !important;
+        }
+
+        /* Botão Especial (Destaque Verde) */
+        .btn-special {
+            background: rgba(0, 230, 118, 0.1);
+            border-color: rgba(0, 230, 118, 0.3);
+            color: var(--success-green);
+        }
+        .btn-special:hover {
+            background: var(--success-green);
+            color: #000;
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.4);
+        }
+
+        /* Seção de Aulas e Links Rápidos */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .class-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 15px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .class-card:hover {
+            background: var(--glass-bg);
+            border-color: var(--primary-cyan);
+            transform: translateX(5px);
+        }
+        
+        .class-card.disabled { opacity: 0.5; cursor: not-allowed; }
+        .class-card.disabled:hover { transform: none; border-color: var(--glass-border); }
+
+        .class-icon { color: var(--text-muted); transition: color 0.2s ease;}
+        .class-card:hover .class-icon { color: var(--primary-cyan); }
+        .class-info h4 { font-size: 0.9rem; font-weight: 600; }
+        .class-info p { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* Media Queries para Responsividade */
+        @media (max-width: 768px) {
+            body { overflow: auto; padding: 20px 10px; } /* Permite rolagem no mobile */
+            .setup-grid { grid-template-columns: 1fr; }
+            .quick-links { grid-template-columns: 1fr 1fr; }
+            h1 { font-size: 1.2rem; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Configurar Ambiente de Trabalho v1.08</h1>
 
-        <div class="step-box">
-            <p class="instruction">1. Clique abaixo, abra o <strong>PowerShell</strong> e cole:</p>
-            <button class="btn-copy" onclick="copyToClipboard('iex (iwr -UseBasicParsing  https://lab.inetz.com.br/devmaker/ava/seduc/config_ambiente_python2.ps1)')">
-                AJUSTAR PATH (Python, Pip, GH)
-            </button>
-        </div>
-        <div class="step-box">
-            <p class="instruction">1. Clique abaixo, abra o <strong>PowerShell</strong> e cole:</p>
-            <button class="btn-copy" onclick="copyToClipboard('iex (iwr -UseBasicParsing  https://lab.inetz.com.br/devmaker/ava/seduc/config_thinkpad_python.ps1)')">
-                INSTALAR PYTHON no THINKPAD (Python 3.13, pip e GH)
-            </button>
-        </div>
-        <div class="step-box">
-            <p class="instruction">1. Clique abaixo para configurar o path do NVM no <strong>Git Bash</strong>:</p>
-            <button class="btn-copy" onclick="copyNVMPath()">
-                Configurar path inicial para intalação de node e NVM
-            </button>
-        </div>
-        <div class="step-box">
-            <p class="instruction">1. Clique abaixo para instalar o NVM no <strong>Git Bash</strong>:</p>
-            <button class="btn-copy" onclick="copyToClipboard('curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash')">
-                Install Node/NVM para (React/Vue/Angular)
-            </button>
-        </div>
+    <div class="main-wrapper">
+        <header>
+            <h1>Setup Ambiente de Trabalho</h1>
+            <span class="version-tag">v1.08 :: Adriano J Rosa</span>
+        </header>
 
-        <!-- NOVO BOTÃO ADICIONADO -->
-        <div class="step-box">
-            <p class="instruction">1. Clique abaixo, abra o <strong>PowerShell</strong> e cole:</p>
-            <button class="btn-copy" onclick="copyToClipboard('iex (iwr -UseBasicParsing https://lab.inetz.com.br/devmaker/ava/seduc/coleta_dados_note.ps1)')">
-                COLETAR DADOS DO NOTEBOOK
-            </button>
-        </div>
+        <!-- Seção Principal de Configuração -->
+        <section class="setup-grid">
+            
+            <!-- Card 1 -->
+            <div class="setup-card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <!-- Icon: Terminal -->
+                        <svg viewBox="0 0 24 24"><path d="M20,19H4a1,1,0,0,1-1-1V6A1,1,0,0,1,4,5H20a1,1,0,0,1,1,1V18A1,1,0,0,1,20,19ZM5,17H19V7H5Zm3-5a1,1,0,0,1,0-2H10a1,1,0,0,1,0,2Zm4,2H8a1,1,0,0,1,0-2h4a1,1,0,0,1,0,2Zm4-4a1,1,0,0,1,0-2h2a1,1,0,0,1,0,2Z"/></svg>
+                    </div>
+                    <div class="card-title-group">
+                        <h3>Ajustar PATH</h3>
+                        <p>PowerShell: Python, Pip, GH</p>
+                    </div>
+                </div>
+                <button class="btn-action" onclick="copyAndFeedback(this, 'iex (iwr -UseBasicParsing https://lab.inetz.com.br/devmaker/ava/seduc/config_ambiente_python2.ps1)')">
+                    <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2,0,0,0,6,7V21A2,2,0,0,0,8,23H19A2,2,0,0,0,21,21V7A2,2,0,0,0,19,5M16,1H4A2,2,0,0,0,2,3V17H4V3H16V1Z" /></svg>
+                    Copiar Comando
+                </button>
+            </div>
 
-        <hr style="border: 0.5px solid #334155; margin: 40px 0;">
+            <!-- Card 2 -->
+            <div class="setup-card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <!-- Icon: Laptop/Thinkpad -->
+                        <svg viewBox="0 0 24 24"><path d="M20,18H4a1,1,0,0,1-1-1V7A1,1,0,0,1,4,6H20a1,1,0,0,1,1,1V17A1,1,0,0,1,20,18ZM5,16H19V8H5Zm16,1h2v1a2,2,0,0,1-2,2H3a2,2,0,0,1-2-2V17H3Zm-9-1a1,1,0,1,1,1-1A1,1,0,0,1,12,16Z"/></svg>
+                    </div>
+                    <div class="card-title-group">
+                        <h3>Instalar Python (Thinkpad)</h3>
+                        <p>PowerShell: Python 3.13, pip, GH</p>
+                    </div>
+                </div>
+                <button class="btn-action" onclick="copyAndFeedback(this, 'iex (iwr -UseBasicParsing https://lab.inetz.com.br/devmaker/ava/seduc/config_thinkpad_python.ps1)')">
+                    <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2,0,0,0,6,7V21A2,2,0,0,0,8,23H19A2,2,0,0,0,21,21V7A2,2,0,0,0,19,5M16,1H4A2,2,0,0,0,2,3V17H4V3H16V1Z" /></svg>
+                    Copiar Comando
+                </button>
+            </div>
 
-        <h2>Aulas Programadas</h2>
-        <div class="grid-disciplinas">
-            <a href="https://github.com/adrianorosa02-seducsp/back-template-fastapi/tree/main/Aulas" target="_blank" class="btn-disciplina">Back-End/Front-End </a>
-            <a href="https://lab.inetz.com.br/devmaker/ava/seduc/redes.html" target="_blank" class="btn-disciplina">Redes Computadores </a>
-            <button class="btn-disciplina">Automação e Integração</button>
-            <button class="btn-disciplina">Banco de Dados</button>
-        </div>
+            <!-- Card 3 -->
+            <div class="setup-card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <!-- Icon: Node.js -->
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    </div>
+                    <div class="card-title-group">
+                        <h3>Configurar NVM Path</h3>
+                        <p>Git Bash: Inicial para Node/NVM</p>
+                    </div>
+                </div>
+                <button class="btn-action" onclick="copyNVMPathModern(this)">
+                    <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2,0,0,0,6,7V21A2,2,0,0,0,8,23H19A2,2,0,0,0,21,21V7A2,2,0,0,0,19,5M16,1H4A2,2,0,0,0,2,3V17H4V3H16V1Z" /></svg>
+                    Copiar Config
+                </button>
+            </div>
 
-        <div class="step-box">
-            <p class="instruction">2. Clique abaixo, abra o <strong>Git Bash</strong> e cole:</p>
-            <button class="btn-copy" style="background: #22c55e;" onclick="copyToClipboard('curl -sL  https://lab.inetz.com.br/devmaker/ava/seduc/setup_repo8.sh | bash')">
-                TROQUEI DE MÁQUINA OU NOVO PROJETO
-            </button>
-        </div>
+            <!-- Card 4 -->
+            <div class="setup-card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <!-- Icon: Download -->
+                        <svg viewBox="0 0 24 24"><path d="M12,15.5a1,1,0,0,1-.71-.29l-3-3a1,1,0,0,1,1.42-1.42L11,12.09V4a1,1,0,0,1,2,0v8.09l1.29-1.3a1,1,0,0,1,1.42,1.42l-3,3A1,1,0,0,1,12,15.5Z"/><path d="M19,13.5a1,1,0,0,1,1,1v4a2,2,0,0,1-2,2H6a2,2,0,0,1-2-2v4a1,1,0,0,1,2,0Z"/></svg>
+                    </div>
+                    <div class="card-title-group">
+                        <h3>Instalar Node/NVM</h3>
+                        <p>Git Bash: Para React/Vue/Angular</p>
+                    </div>
+                </div>
+                <button class="btn-action" onclick="copyAndFeedback(this, 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash')">
+                    <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2,0,0,0,6,7V21A2,2,0,0,0,8,23H19A2,2,0,0,0,21,21V7A2,2,0,0,0,19,5M16,1H4A2,2,0,0,0,2,3V17H4V3H16V1Z" /></svg>
+                    Copiar Instalação
+                </button>
+            </div>
+
+             <!-- Card 5 (Data Collection) - Added in previous step -->
+             <div class="setup-card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <!-- Icon: Data/Analytics -->
+                        <svg viewBox="0 0 24 24"><path d="M19,3H5A2,2,0,0,0,3,5V19a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V5A2,2,0,0,0,19,3ZM7,19H5V17H7Zm0-4H5V13H7Zm0-4H5V9H7Zm0-4H5V5H7Zm4,12H9V17h2Zm0-4H9V13h2Zm0-4H9V9h2Zm0-4H9V5h2Zm4,12H13V17h2Zm0-4H13V13h2Zm0-4H13V9h2Zm0-4H13V5h2Zm4,12H17V17h2Zm0-4H17V13h2Zm0-4H17V9h2Zm0-4H17V5h2Z"/></svg>
+                    </div>
+                    <div class="card-title-group">
+                        <h3>Coletar Dados Notebook</h3>
+                        <p>PowerShell: Coleta de informações</p>
+                    </div>
+                </div>
+                <button class="btn-action" onclick="copyAndFeedback(this, 'iex (iwr -UseBasicParsing https://lab.inetz.com.br/devmaker/ava/seduc/coleta_dados_note.ps1)')">
+                    <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2,0,0,0,6,7V21A2,2,0,0,0,8,23H19A2,2,0,0,0,21,21V7A2,2,0,0,0,19,5M16,1H4A2,2,0,0,0,2,3V17H4V3H16V1Z" /></svg>
+                    Copiar Coleta
+                </button>
+            </div>
+
+            <!-- Card 6 (Special/Migration) -->
+            <div class="setup-card" style="grid-column: 1 / -1; margin-top: 10px;"> <!-- Ocupa toda a largura -->
+                <div class="card-header" style="margin-bottom: 10px;">
+                    <div class="icon-box" style="background: rgba(0, 230, 118, 0.1); color: var(--success-green);">
+                        <!-- Icon: Migration/Sync -->
+                        <svg viewBox="0 0 24 24"><path d="M19.91,15.51H15.38a1,1,0,0,0,0,2h2.4A8,8,0,0,1,4,12a1,1,0,0,0-2,0,10,10,0,0,0,16.88,7.23V21a1,1,0,0,0,2,0V16.5A1,1,0,0,0,19.91,15.51Z"/><path d="M8.62,6.49H6.22A8,8,0,0,1,20,12a1,1,0,0,0,2,0A10,10,0,0,0,7.12,4.77V3a1,1,0,0,0-2,0V7.5a1,1,0,0,0,1,1H8.62a1,1,0,0,0,0-2Z"/></svg>
+                    </div>
+                    <div class="card-title-group">
+                        <h3 style="color: var(--success-green);">Troca de Máquina ou Novo Projeto</h3>
+                        <p>Git Bash: Setup rápido de repositório</p>
+                    </div>
+                </div>
+                <button class="btn-action btn-special" onclick="copyAndFeedback(this, 'curl -sL https://lab.inetz.com.br/devmaker/ava/seduc/setup_repo8.sh | bash')">
+                    <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2,0,0,0,6,7V21A2,2,0,0,0,8,23H19A2,2,0,0,0,21,21V7A2,2,0,0,0,19,5M16,1H4A2,2,0,0,0,2,3V17H4V3H16V1Z" /></svg>
+                    Executar Setup Completo
+                </button>
+            </div>
+
+        </section>
+
+        <!-- Seção Inferior: Aulas e Links -->
+        <footer>
+            <div class="quick-links">
+                <!-- Aula 1 -->
+                <a href="https://github.com/adrianorosa02-seducsp/back-template-fastapi/tree/main/Aulas" target="_blank" class="class-card">
+                    <div class="class-icon">
+                        <!-- Icon: Code -->
+                        <svg style="width:20px;height:20px" viewBox="0 0 24 24"><path fill="currentColor" d="M14.6,16.6L19.2,12L14.6,7.4L16,6L22,12L16,18L14.6,16.6M9.4,16.6L4.8,12L9.4,7.4L8,6L2,12L8,18L9.4,16.6Z" /></svg>
+                    </div>
+                    <div class="class-info">
+                        <h4>Dev Full-Stack</h4>
+                        <p>Back/Front Aulas</p>
+                    </div>
+                </a>
+
+                <!-- Aula 2 -->
+                <a href="https://lab.inetz.com.br/devmaker/ava/seduc/redes.html" target="_blank" class="class-card">
+                    <div class="class-icon">
+                        <!-- Icon: Network -->
+                        <svg style="width:20px;height:20px" viewBox="0 0 24 24"><path fill="currentColor" d="M12,11a3,3,0,1,0,3,3A3,3,0,0,0,12,11Zm0,4a1,1,0,1,1,1-1A1,1,0,0,1,12,15Zm7-5a3,3,0,1,0,3,3A3,3,0,0,0,19,10Zm0,4a1,1,0,1,1,1-1A1,1,0,0,1,19,14ZM5,10a3,3,0,1,0,3,3A3,3,0,0,0,5,10Zm0,4a1,1,0,1,1,1-1A1,1,0,0,1,5,14Zm12-8h2V5a1,1,0,0,0-2,0V6ZM7,6H5V5A1,1,0,0,1,7,5V6ZM17,3H7V5H17V3Z" /></svg>
+                    </div>
+                    <div class="class-info">
+                        <h4>Redes de Computadores</h4>
+                        <p>Material de Apoio</p>
+                    </div>
+                </a>
+
+                <!-- Aula 3 (Disabled) -->
+                <div class="class-card disabled">
+                    <div class="class-icon">
+                        <svg style="width:20px;height:20px" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20ZM13,7H11v6h2V7Zm0,8H11v2h2V15Z" /></svg>
+                    </div>
+                    <div class="class-info">
+                        <h4>Automação</h4>
+                        <p>Em breve</p>
+                    </div>
+                </div>
+
+                <!-- Aula 4 (Disabled) -->
+                <div class="class-card disabled">
+                    <div class="class-icon">
+                        <svg style="width:20px;height:20px" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20ZM13,7H11v6h2V7Zm0,8H11v2h2V15Z" /></svg>
+                    </div>
+                    <div class="class-info">
+                        <h4>Banco de Dados</h4>
+                        <p>Em breve</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <script>
-        function copyToClipboard(text) {
+        // Função moderna para copiar e dar feedback no próprio botão
+        function copyAndFeedback(btnElement, text) {
             navigator.clipboard.writeText(text).then(() => {
-                alert("Comando copiado! Agora cole no seu terminal.");
+                // Guarda o texto original
+                const originalText = btnElement.innerHTML;
+                
+                // Muda o estilo do botão para sucesso
+                btnElement.classList.add('copied');
+                btnElement.innerHTML = `<svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" /></svg> Copiado!`;
+                
+                // Reverte após 2 segundos
+                setTimeout(() => {
+                    btnElement.classList.remove('copied');
+                    btnElement.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Erro ao copiar: ', err);
+                alert("Falha ao copiar. Verifique as permissões do navegador.");
             });
         }
 
-        function copyNVMPath() {
+        // Função específica para o NVM Path (mantendo a lógica original)
+        function copyNVMPathModern(btnElement) {
             const text = `export NVM_DIR="$HOME/.nvm"\n[ -s "$NVM_DIR/nvm.sh" ] && \\. "$NVM_DIR/nvm.sh"  # This loads nvm\n[ -s "$NVM_DIR/bash_completion" ] && \\. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion`;
-            copyToClipboard(text);
+            copyAndFeedback(btnElement, text);
         }
     </script>
 </body>
