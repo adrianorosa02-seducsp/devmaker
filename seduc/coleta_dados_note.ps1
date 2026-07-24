@@ -2,12 +2,20 @@
 $cs     = Get-CimInstance -ClassName Win32_ComputerSystem
 $bios   = Get-CimInstance -ClassName Win32_Bios
 $proc   = Get-CimInstance -ClassName Win32_Processor
-$ram    = Get-CimInstance -ClassName Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum
 
-# Converte a memória RAM total para GB
-$ramGB  = [math]::Round($ram.Sum / 1GB, 2)
+# Coleta os pentes de RAM físicos
+$ramPentes = Get-CimInstance -ClassName Win32_PhysicalMemory
 
-# Formata a Data e Hora do Login (Se for um objeto DateTime válido)
+# Garante o cálculo correto caso haja 1 ou mais pentes de RAM
+if ($ramPentes) {
+    $ramSum = ($ramPentes | Measure-Object -Property Capacity -Sum).Sum
+    $ramGB  = [math]::Round($ramSum / 1GB, 2)
+} else {
+    # Fallback usando a memória total do sistema caso a leitura dos pentes falhe
+    $ramGB  = [math]::Round($cs.TotalPhysicalMemory / 1GB, 2)
+}
+
+# Formata a Data e Hora do Login
 $dataHoraFormatada = if ($ultimoUsuarioAnterior.DataHora -is [datetime]) {
     $ultimoUsuarioAnterior.DataHora.ToString("dd/MM/yyyy HH:mm:ss")
 } else {
