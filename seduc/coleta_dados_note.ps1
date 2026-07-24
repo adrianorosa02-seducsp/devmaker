@@ -7,13 +7,20 @@ $ram    = Get-CimInstance -ClassName Win32_PhysicalMemory | Measure-Object -Prop
 # Converte a memória RAM total para GB
 $ramGB  = [math]::Round($ram.Sum / 1GB, 2)
 
+# Formata a Data e Hora do Login (Se for um objeto DateTime válido)
+$dataHoraFormatada = if ($ultimoUsuarioAnterior.DataHora -is [datetime]) {
+    $ultimoUsuarioAnterior.DataHora.ToString("dd/MM/yyyy HH:mm:ss")
+} else {
+    Get-Date $ultimoUsuarioAnterior.DataHora -Format "dd/MM/yyyy HH:mm:ss"
+}
+
 # 2. Monta o payload completo
 $payload = @{
     # Dados de Auditoria
     Equipamento   = $nomeMaquina
     Auditor       = $auditorAtual
     UltimoUsuario = $ultimoUsuarioAnterior.Usuario
-    DataHoraLogin = $ultimoUsuarioAnterior.DataHora
+    DataHoraLogin = $dataHoraFormatada
 
     # Dados do Hardware
     Fabricante    = $cs.Manufacturer
