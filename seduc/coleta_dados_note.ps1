@@ -40,7 +40,8 @@ $payload = @{
 } | ConvertTo-Json -Depth 3
 
 # 3. Endpoint do Webhook
-$uriWebhook = "https://n8n.inetz.com.br/webhook-test/api_auditoria"
+//$uriWebhook = "https://n8n.inetz.com.br/webhook-test/api_auditoria"
+$uriWebhook = "https://webhook.inetz.com.br/webhook/api_auditoria"
 
 # 4. Envio dos dados com tratamento de erro
 try {
