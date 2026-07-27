@@ -113,7 +113,11 @@
             <div class="form-group"><label for="user-tipo">Tipo</label>
               <select id="user-tipo"><option value="admin">Admin</option><option value="professor">Professor</option><option value="aluno">Aluno</option></select>
             </div>
-            <div class="form-group"><label for="user-escola">ID da Escola</label><input type="text" id="user-escola" required></div>
+            <div class="form-group"><label for="user-escola">Escola</label>
+              <select id="user-escola" class="escola-select" required>
+                <option value="">-- selecione --</option>
+              </select>
+            </div>
             <div class="form-group"><label for="user-senha">Senha</label><input type="password" id="user-senha" required></div>
           </div>
           <button type="submit" class="btn">Salvar Usuário</button>
@@ -136,7 +140,11 @@
           <div class="form-grid">
             <div class="form-group"><label for="prof-nome">Nome</label><input type="text" id="prof-nome" required></div>
             <div class="form-group"><label for="prof-email">E-mail</label><input type="email" id="prof-email" required></div>
-            <div class="form-group"><label for="prof-escola">ID da Escola</label><input type="text" id="prof-escola" required></div>
+            <div class="form-group"><label for="prof-escola">Escola</label>
+              <select id="prof-escola" class="escola-select" required>
+                <option value="">-- selecione --</option>
+              </select>
+            </div>
           </div>
           <button type="submit" class="btn">Salvar Professor</button>
         </form>
@@ -265,11 +273,31 @@
       const path = endpointMap[recurso] || recurso;
       try {
         const dados = await apiGet(path);
+        // se carregou escolas, atualiza os selects de escola
+        if (recurso === 'escolas') preencherSelectEscolas(dados);
         renderizarTabela(recurso, dados);
       } catch (err) {
         console.error(`Erro ao carregar ${recurso}:`, err);
         alert(`Erro ao carregar ${recurso}: ${err.message}`);
       }
+    }
+
+    function preencherSelectEscolas(dados) {
+      const selects = document.querySelectorAll('.escola-select');
+      selects.forEach(sel => {
+        // limpa e adiciona opção padrão
+        sel.innerHTML = '';
+        const defaultOpt = document.createElement('option');
+        defaultOpt.value = '';
+        defaultOpt.textContent = '-- selecione --';
+        sel.appendChild(defaultOpt);
+        dados.forEach(escola => {
+          const opt = document.createElement('option');
+          opt.value = escola.id;
+          opt.textContent = escola.nome;
+          sel.appendChild(opt);
+        });
+      });
     }
 
     function renderizarTabela(recurso, dados) {
