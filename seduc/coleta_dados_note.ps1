@@ -62,7 +62,8 @@ $payload = @{
 } | ConvertTo-Json -Depth 3
 
 # 6. Endpoint do Webhook
-$uriWebhook = "https://webhook.inetz.com.br/webhook/api_auditoria"
+#$uriWebhook = "https://webhook.inetz.com.br/webhook/api_auditoria"
+$uriWebhook = "https://n8n.inetz.com.br/webhook-test/api_auditoria"
 
 # 7. Envio dos dados via HTTP POST
 try {
