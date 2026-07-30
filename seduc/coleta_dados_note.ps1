@@ -1,95 +1,98 @@
 # ==============================================================================
-# SCRIPT DE AUDITORIA DE HARDWARE E LOGINS
+# SCRIPT DE AUDITORIA DE HARDWARE E ÚLTIMO USUÁRIO ANTERIOR
 # ==============================================================================
 
-# 1. Coleta das informações do sistema (WMI/CIM)
+# 1. Definição do Auditor
+if ([string]::IsNullOrWhiteSpace($auditorAtual)) {
+    $auditorAtual = if ($env:USERNAME) { $env:USERNAME } else { "Sistema/Automático" }
+}
+
+# 2. Coleta das informações do sistema (WMI/CIM)
 $cs   = Get-CimInstance -ClassName Win32_ComputerSystem
 $bios = Get-CimInstance -ClassName Win32_Bios
 $proc = Get-CimInstance -ClassName Win32_Processor
 
-# Coleta os pentes de RAM físicos
+# Coleta memória RAM
 $ramPentes = Get-CimInstance -ClassName Win32_PhysicalMemory
-
-# Garante o cálculo correto caso haja 1 ou mais pentes de RAM
 if ($ramPentes) {
     $ramSum = ($ramPentes | Measure-Object -Property Capacity -Sum).Sum
     $ramGB  = [math]::Round($ramSum / 1GB, 2)
 } else {
-    # Fallback usando a memória total do sistema caso a leitura dos pentes falhe
     $ramGB  = [math]::Round($cs.TotalPhysicalMemory / 1GB, 2)
 }
 
-# 2. Busca os últimos 3 logins no Event Log do Windows (Event ID 4624)
-$ultimosLogins = @()
+# 3. Identifica o usuário ATUAL para poder ignorá-lo na busca do anterior
+$usuarioAtual = $cs.UserName
+if ([string]::IsNullOrWhiteSpace($usuarioAtual)) {
+    $usuarioAtual = $env:USERNAME
+}
+if ($usuarioAtual -match '\\') { $usuarioAtual = $usuarioAtual.Split('\')[1] }
 
-try {
-    # Busca até 500 eventos de login no log de segurança para filtrar logins reais de usuários
-    $eventosLogin = Get-WinEvent -FilterHashtable @{
-        LogName = 'Security'
-        Id      = 4624
-    } -MaxEvents 500 -ErrorAction Stop | Where-Object {
-        $logonType = $_.Properties[8].Value
-        # Filtra por logon Interativo Local (Tipo 2) ou RDP (Tipo 10)
-        # Ignora contas do sistema, serviços e nomes de máquinas ($)
-        ($logonType -eq 2 -or $logonType -eq 10) -and 
-        ($_.Properties[5].Value -notlike '*$') -and 
-        ($_.Properties[5].Value -ne 'SYSTEM') -and
-        ($_.Properties[5].Value -ne 'UMFD-0') -and
-        ($_.Properties[5].Value -ne 'DWM-1')
-    } | Select-Object -First 3
+# 4. Busca os perfis no Registro do Windows ordenados pelo último carregamento
+$caminhoRegistro = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList"
+$perfis = Get-ChildItem -Path $caminhoRegistro | ForEach-Object {
+    $prop = Get-ItemProperty -Path $_.PsPath
+    $profilePath = $prop.ProfileImagePath
+    
+    if ($profilePath) {
+        $nomeConta = Split-Path -Path $profilePath -Leaf
+        
+        # Filtra apenas perfis de usuários reais
+        if ($nomeConta -notmatch 'Public|Publico|systemprofile|LocalService|NetworkService') {
+            
+            # Converte a data de último carregamento do perfil (se existir)
+            $dataLogin = $null
+            if ($prop.LocalProfileLoadTimeHigh -and $prop.LocalProfileLoadTimeLow) {
+                $fileTime = ([int64]$prop.LocalProfileLoadTimeHigh -shl 32) -bor [uint32]$prop.LocalProfileLoadTimeLow
+                $dataLogin = [datetime]::FromFileTime($fileTime)
+            } else {
+                # Fallback: Data de modificação da pasta do perfil no disco
+                if (Test-Path $profilePath) {
+                    $dataLogin = (Get-Item $profilePath).LastWriteTime
+                }
+            }
 
-    # Mapeia os eventos encontrados
-    $ultimosLogins = foreach ($evento in $eventosLogin) {
-        @{
-            Usuario  = $evento.Properties[5].Value
-            Dominio  = $evento.Properties[6].Value
-            Tipo     = if ($evento.Properties[8].Value -eq 2) { "Interativo (Local)" } else { "RDP (Remoto)" }
-            DataHora = $evento.TimeCreated.ToString("dd/MM/yyyy HH:mm:ss")
+            [PSCustomObject]@{
+                Usuario   = $nomeConta
+                DataLogin = $dataLogin
+            }
         }
     }
-} catch {
-    # Caso ocorra falha de permissão (script não rodando como Admin) ou Log desativado
-    Write-Warning "Não foi possível obter o histórico de logins do Event Viewer: $_"
-}
+} | Where-Object { $_.DataLogin -ne $null } | Sort-Object DataLogin -Descending
 
-# 3. Tratamento e validação do último login individual (compatibilidade retroativa)
-$dataHoraFormatada = if ([string]::IsNullOrWhiteSpace($ultimoUsuarioAnterior.DataHora)) {
-    if ($ultimosLogins.Count -gt 0) { $ultimosLogins[0].DataHora } else { "N/A" }
-} elseif ($ultimoUsuarioAnterior.DataHora -is [datetime]) {
-    $ultimoUsuarioAnterior.DataHora.ToString("dd/MM/yyyy HH:mm:ss")
+# 5. Filtra para pegar o primeiro perfil que NÃO SEJA o usuário atual
+$ultimoUsuarioAnterior = $perfis | Where-Object { $_.Usuario -ne $usuarioAtual } | Select-Object -First 1
+
+if ($ultimoUsuarioAnterior) {
+    $nomeUltimoUsuario = $ultimoUsuarioAnterior.Usuario
+    $dataUltimoLogin   = $ultimoUsuarioAnterior.DataLogin.ToString("dd/MM/yyyy HH:mm:ss")
 } else {
-    (Get-Date $ultimoUsuarioAnterior.DataHora).ToString("dd/MM/yyyy HH:mm:ss")
+    $nomeUltimoUsuario = "Nenhum usuário anterior encontrado"
+    $dataUltimoLogin   = "N/A"
 }
 
-$ultimoUsuarioNome = if ([string]::IsNullOrWhiteSpace($ultimoUsuarioAnterior.Usuario)) {
-    if ($ultimosLogins.Count -gt 0) { $ultimosLogins[0].Usuario } else { "Desconhecido" }
-} else {
-    $ultimoUsuarioAnterior.Usuario
-}
-
-# 4. Monta o payload JSON completo
+# 6. Monta o payload JSON completo
 $payload = @{
     # Dados de Auditoria
-    Equipamento   = $env:COMPUTERNAME
-    Auditor       = $auditorAtual
-    UltimoUsuario = $ultimoUsuarioNome
-    DataHoraLogin = $dataHoraFormatada
-    UltimosLogins = $ultimosLogins  # Array com os últimos 3 logins detalhados
+    Equipamento           = $env:COMPUTERNAME
+    Auditor               = $auditorAtual
+    UsuarioAtual          = $usuarioAtual
+    UltimoUsuarioAnterior = $nomeUltimoUsuario
+    DataHoraLoginAnterior = $dataUltimoLogin
 
     # Dados do Hardware
-    Fabricante    = $cs.Manufacturer
-    Modelo        = $cs.Model
-    Processador   = $proc.Name
-    Memoria       = "$ramGB GB"
-    RAM_GB        = $ramGB
-    NumeroSerie   = $bios.SerialNumber
-} | ConvertTo-Json -Depth 4
+    Fabricante            = $cs.Manufacturer
+    Modelo                = $cs.Model
+    Processador           = $proc.Name
+    Memoria               = "$ramGB GB"
+    RAM_GB                = $ramGB
+    NumeroSerie           = $bios.SerialNumber
+} | ConvertTo-Json -Depth 3
 
-# 5. Endpoint do Webhook (Comentário corrigido com #)
-# $uriWebhook = "https://n8n.inetz.com.br/webhook-test/api_auditoria"
+# 7. Endpoint do Webhook
 $uriWebhook = "https://webhook.inetz.com.br/webhook/api_auditoria"
 
-# 6. Envio dos dados via HTTP POST com tratamento de erros
+# 8. Envio dos dados via HTTP POST
 try {
     Invoke-RestMethod -Uri $uriWebhook -Method Post -Body $payload -ContentType "application/json; charset=utf-8"
     Write-Host "`n[+] Dados de auditoria enviados com sucesso para o n8n!" -ForegroundColor Green
