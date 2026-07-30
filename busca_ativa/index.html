@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envio de Fichas</title>
+    <style>
+        /* CSS Mobile-First */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px; /* Limita o tamanho em telas grandes/desktops */
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-top: 20px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            text-align: center;
+            color: #1a1a1a;
+        }
+
+        p {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 32px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background-color 0.2s;
+            background-color: #f8fafc;
+        }
+
+        .upload-area:active, .upload-area.dragover {
+            border-color: #4f46e5;
+            background-color: #eef2ff;
+        }
+
+        .upload-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .upload-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #4f46e5;
+            margin-bottom: 4px;
+        }
+
+        .upload-hint {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .preview-container {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .preview-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #e2e8f0;
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+            transition: background-color 0.2s;
+            display: none; /* Escondido até ter fotos selecionadas */
+        }
+
+        .btn-submit:active {
+            background-color: #4338ca;
+        }
+
+        .status-message {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+            display: none;
+        }
+
+        .status-success {
+            background-color: #dcfce7;
+            color: #166534;
+            display: block;
+        }
+
+        .status-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Envio de Fotos</h1>
+        <p>Tire uma foto da ficha ou selecione arquivos da sua galeria.</p>
+
+        <!-- Área de clique para upload -->
+        <div class="upload-area" id="drop-zone" onclick="document.getElementById('file-input').click()">
+            <span class="upload-icon">📸</span>
+            <span class="upload-text">Tirar ou escolher foto</span>
+            <span class="upload-hint">Aceita múltiplos arquivos</span>
+        </div>
+
+        <!-- Input escondido configurado para mobile (múltiplas fotos e câmera) -->
+        <input type="file" id="file-input" accept="image/*" multiple>
+
+        <!-- Grid para exibir as miniaturas das fotos selecionadas -->
+        <div class="preview-container" id="preview-container"></div>
+
+        <!-- Botão de envio -->
+        <button type="button" class="btn-submit" id="btn-submit">Enviar para o n8n</button>
+        
+        <!-- Mensagens de Feedback -->
+        <div class="status-message" id="status-message"></div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const previewContainer = document.getElementById('preview-container');
+        const btnSubmit = document.getElementById('btn-submit');
+        const statusMessage = document.getElementById('status-message');
+        const container = document.querySelector('.container');
+        
+        const WEBHOOK_URL = 'https://n8n.inetz.com.br/webhook-test/foto_ficha';
+        let selectedFiles = [];
+
+        // Atualiza as fotos na tela quando o usuário escolhe os arquivos
+        fileInput.addEventListener('change', (e) => {
+            selectedFiles = Array.from(e.target.files);
+            previewContainer.innerHTML = '';
+            statusMessage.className = 'status-message'; // Limpa status anterior
+
+            if (selectedFiles.length > 0) {
+                btnSubmit.style.display = 'block'; // Mostra botão de envio
+                
+                selectedFiles.forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const div = document.createElement('div');
+                        div.className = 'preview-item';
+                        div.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
+                        previewContainer.appendChild(div);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                btnSubmit.style.display = 'none';
+            }
+        });
+
+        // Evento de envio para o n8n via Multipart Form-Data
+        btnSubmit.addEventListener('click', async () => {
+            if (selectedFiles.length === 0) return;
+
+            const formData = new FormData();
+            
+            // Adiciona todas as fotos selecionadas ao FormData usando a chave 'file'
+            selectedFiles.forEach((file, index) => {
+                formData.append('file', file); 
+            });
+
+            // Interface em modo de carregamento
+            container.classList.add('loading');
+            btnSubmit.innerText = 'Enviando...';
+            statusMessage.style.display = 'none';
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    showStatus('Fotos enviadas com sucesso!', 'success');
+                    // Limpa o formulário pós-sucesso
+                    selectedFiles = [];
+                    previewContainer.innerHTML = '';
+                    btnSubmit.style.display = 'none';
+                    fileInput.value = '';
+                } else {
+                    showStatus(`Erro no servidor: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                showStatus('Erro ao conectar com o webhook do n8n.', 'error');
+                console.error(error);
+            } finally {
+                container.classList.remove('loading');
+                btnSubmit.innerText = 'Enviar para o n8n';
+            }
+        });
+
+        function showStatus(text, type) {
+            statusMessage.innerText = text;
+            statusMessage.className = `status-message status-${type}`;
+        }
+    </script>
+</body>
+</html>
+
