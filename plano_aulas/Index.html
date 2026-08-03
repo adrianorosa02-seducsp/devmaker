@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body{font-family: Arial, sans-serif; padding:16px}
+      label{display:block; margin-top:8px}
+      select,input{width:100%; padding:6px; margin-top:4px}
+      button{margin-top:12px; padding:8px 12px}
+      #result{margin-top:12px}
+    </style>
+  </head>
+  <body>
+    <h3>Gerador de Planos — Frontend</h3>
+    <label>Professor
+      <select id="professorSelect"><option>Carregando...</option></select>
+    </label>
+    <label>Pasta destino (selecione a subpasta desejada)
+      <select id="folderSelect"><option>—</option></select>
+    </label>
+
+    <label>Código do Componente
+      <input id="codigoComponente" placeholder="Ex: C2" />
+    </label>
+    <label>Módulo
+      <input id="modulo" placeholder="Ex: CCM" />
+    </label>
+    <label>Bimestre
+      <input id="bimestre" type="number" min="1" max="4" placeholder="Ex: 2" />
+    </label>
+    <label>Ano (Ex: ANO1)
+      <input id="ano" placeholder="ANO1" />
+    </label>
+
+    <button id="btnTabela">Gerar Tabela (rodarGeracaoTabela)</button>
+    <button id="btnPlanos">Gerar Planos (rodarGeracaoTabela -> gerarPlanosComDiaAulaPreenchido)</button>
+
+    <div id="result"></div>
+
+    <script>
+      const ESTRUTURA = <?!= JSON.stringify(estrutura) ?>;
+
+      function flattenFolders(node, path = ''){
+        const items = [];
+        const label = path ? path + ' / ' + node.nome : node.nome;
+        items.push({nome: node.nome, id: node.id, label: label, url: node.url});
+        if (node.subpastas && node.subpastas.length){
+          node.subpastas.forEach(sp => items.push(...flattenFolders(sp, label)));
+        }
+        return items;
+      }
+
+      function populateProfessores(){
+        const sel = document.getElementById('professorSelect');
+        sel.innerHTML = '';
+        (ESTRUTURA.subpastas || []).forEach(prof => {
+          const opt = document.createElement('option');
+          opt.value = prof.nome;
+          opt.textContent = prof.nome;
+          sel.appendChild(opt);
+        });
+        sel.addEventListener('change', onProfessorChange);
+        onProfessorChange();
+      }
+
+      function onProfessorChange(){
+        const profName = document.getElementById('professorSelect').value;
+        const prof = (ESTRUTURA.subpastas||[]).find(p=>p.nome===profName);
+        const folderSel = document.getElementById('folderSelect');
+        folderSel.innerHTML = '';
+        if (!prof){ folderSel.innerHTML = '<option>—</option>'; return; }
+        const folders = flattenFolders(prof);
+        folders.forEach(f=>{
+          const o = document.createElement('option');
+          o.value = f.id;
+          o.textContent = f.label + (f.url ? ' ('+f.id+')' : '');
+          folderSel.appendChild(o);
+        });
+      }
+
+      function showResult(r){
+        const d = document.getElementById('result');
+        d.textContent = JSON.stringify(r);
+      }
+
+      document.getElementById('btnTabela').addEventListener('click', ()=>{
+        const params = collectParams();
+        google.script.run.withSuccessHandler(showResult).webRunRodarGeracaoTabela(params);
+      });
+
+      document.getElementById('btnPlanos').addEventListener('click', ()=>{
+        const params = collectParams();
+        google.script.run.withSuccessHandler(showResult).webRunGerarPlanos(params);
+      });
+
+      function collectParams(){
+        return {
+          professor: document.getElementById('professorSelect').value,
+          pastaId: document.getElementById('folderSelect').value,
+          codigoComponente: document.getElementById('codigoComponente').value,
+          modulo: document.getElementById('modulo').value,
+          bimestre: parseInt(document.getElementById('bimestre').value,10) || undefined,
+          ano: document.getElementById('ano').value
+        };
+      }
+
+      populateProfessores();
+    </script>
+  </body>
+</html>
