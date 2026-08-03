@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro de Usuário | GEduc</title>
+  <meta name="description" content="Formulário de cadastro de usuários do sistema GEduc - plataforma educacional." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary:       #6c63ff;
+      --primary-dark:  #574fd6;
+      --primary-light: #a29bfe;
+      --accent:        #00cec9;
+      --accent-dark:   #00b5b1;
+      --success:       #00b894;
+      --danger:        #ff7675;
+      --bg:            #0f0f1a;
+      --surface:       #1a1a2e;
+      --surface2:      #22223b;
+      --border:        rgba(255,255,255,0.08);
+      --text:          #f0f0f5;
+      --muted:         #8585a8;
+      --radius:        14px;
+      --shadow:        0 8px 32px rgba(0,0,0,0.45);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before {
+      width: 600px; height: 600px;
+      background: var(--primary);
+      top: -150px; left: -150px;
+    }
+    body::after {
+      width: 500px; height: 500px;
+      background: var(--accent);
+      bottom: -100px; right: -100px;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 540px;
+      padding: 2.8rem 2.8rem 2.4rem;
+      backdrop-filter: blur(6px);
+      animation: slideUp .5s ease both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    .card-header {
+      text-align: center;
+      margin-bottom: 2.2rem;
+    }
+
+    .logo-ring {
+      width: 68px; height: 68px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+      box-shadow: 0 0 0 6px rgba(108,99,255,.15);
+    }
+    .logo-ring svg { width: 32px; height: 32px; }
+
+    .card-header h1 {
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #fff 30%, var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .card-header p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 0.45rem; }
+    .form-group.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select {
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color .25s, box-shadow .25s;
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input::placeholder { color: var(--muted); opacity: .7; }
+
+    input:focus,
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(108,99,255,.18);
+    }
+
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+      content: '';
+      position: absolute;
+      right: 1rem; top: 50%;
+      transform: translateY(-50%);
+      width: 0; height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--muted);
+      pointer-events: none;
+      transition: border-top-color .2s;
+    }
+    .select-wrap:focus-within::after { border-top-color: var(--primary-light); }
+    select option { background: var(--surface2); color: var(--text); }
+
+    /* escola select loading state */
+    .select-loading {
+      position: relative;
+    }
+    .select-loading select {
+      color: var(--muted);
+    }
+    .escola-status {
+      font-size: 0.74rem;
+      margin-top: 0.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .escola-status.fetching { color: var(--muted); }
+    .escola-status.error    { color: var(--danger); }
+    .escola-status.ok       { color: var(--success); }
+    .escola-status .mini-spin {
+      width: 12px; height: 12px;
+      border: 2px solid rgba(255,255,255,.2);
+      border-top-color: var(--primary-light);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      flex-shrink: 0;
+    }
+    .retry-link {
+      background: none; border: none;
+      color: var(--primary-light);
+      cursor: pointer; font-family: inherit;
+      font-size: 0.74rem; padding: 0;
+      text-decoration: underline;
+    }
+    .retry-link:hover { color: var(--primary); }
+
+    .input-icon-wrap { position: relative; }
+    .input-icon-wrap input { padding-right: 2.8rem; }
+    .toggle-pass {
+      position: absolute;
+      right: 0.85rem; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      cursor: pointer;
+      color: var(--muted);
+      display: flex; align-items: center;
+      transition: color .2s;
+      padding: 0;
+    }
+    .toggle-pass:hover { color: var(--primary-light); }
+    .toggle-pass svg { width: 18px; height: 18px; }
+
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+    }
+    .switch-info { display: flex; flex-direction: column; gap: 2px; }
+    .switch-info span { font-size: 0.93rem; font-weight: 500; color: var(--text); }
+    .switch-info small { font-size: 0.76rem; color: var(--muted); }
+
+    .switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; inset: 0;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .3s, border-color .3s;
+    }
+    .slider::before {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--muted);
+      left: 3px; top: 50%;
+      transform: translateY(-50%);
+      transition: transform .3s, background .3s;
+    }
+    .switch input:checked + .slider { background: var(--primary); border-color: var(--primary-dark); }
+    .switch input:checked + .slider::before { transform: translate(20px,-50%); background: #fff; }
+
+    .divider {
+      grid-column: 1 / -1;
+      display: flex; align-items: center; gap: 0.8rem;
+      color: var(--muted); font-size: 0.78rem;
+    }
+    .divider::before,
+    .divider::after {
+      content: ''; flex: 1;
+      height: 1px; background: var(--border);
+    }
+
+    .btn-submit {
+      grid-column: 1 / -1;
+      width: 100%;
+      padding: 0.9rem;
+      border: none;
+      border-radius: var(--radius);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(108,99,255,.35);
+      transition: transform .2s, box-shadow .2s, filter .2s;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(108,99,255,.45); filter: brightness(1.08); }
+    .btn-submit:active { transform: translateY(0); filter: brightness(.96); }
+    .btn-submit svg { width: 18px; height: 18px; }
+
+    .btn-submit.loading { pointer-events: none; filter: brightness(.85); }
+    .spinner {
+      display: none;
+      width: 18px; height: 18px;
+      border: 2.5px solid rgba(255,255,255,.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn-submit.loading .spinner { display: block; }
+    .btn-submit.loading .btn-text,
+    .btn-submit.loading .btn-icon { display: none; }
+
+    .toast-container {
+      position: fixed; top: 1.2rem; right: 1.2rem;
+      display: flex; flex-direction: column; gap: 0.6rem;
+      z-index: 9999;
+    }
+    .toast {
+      min-width: 280px;
+      padding: 1rem 1.2rem;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      display: flex; align-items: flex-start; gap: 0.7rem;
+      box-shadow: 0 6px 24px rgba(0,0,0,.4);
+      animation: toastIn .4s ease both;
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(60px); }
+      to   { opacity: 1; transform: translateX(0);    }
+    }
+    .toast.success { background: #0d3b30; border: 1px solid var(--success); color: #a7ffdf; }
+    .toast.error   { background: #3b1c1c; border: 1px solid var(--danger);  color: #ffd5d5; }
+    .toast svg { flex-shrink: 0; width: 18px; height: 18px; margin-top: 1px; }
+
+    input.invalid, select.invalid {
+      border-color: var(--danger) !important;
+      box-shadow: 0 0 0 4px rgba(255,118,117,.15) !important;
+    }
+    .field-error {
+      font-size: 0.74rem;
+      color: var(--danger);
+      margin-top: -0.2rem;
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .field-error::before { content: '⚠ '; }
+
+    .footer-note {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+    .footer-note a { color: var(--primary-light); text-decoration: none; }
+    .footer-note a:hover { text-decoration: underline; }
+
+    @media (max-width: 560px) {
+      .card { padding: 2rem 1.4rem 1.8rem; border-radius: 18px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full,
+      .btn-submit,
+      .divider,
+      .footer-note { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <div class="card" role="main">
+    <div class="card-header">
+      <div class="logo-ring" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+          <path d="M6 12v5c3.33 2 8.67 2 12 0v-5"/>
+        </svg>
+      </div>
+      <h1>Cadastro de Usuário</h1>
+      <p>Preencha os dados para criar uma nova conta no GEduc</p>
+    </div>
+
+    <form id="userForm" novalidate autocomplete="off">
+      <div class="form-grid">
+
+        <div class="form-group full">
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" name="nome" placeholder="Ex.: Maria Silva" autocomplete="name" maxlength="150" required />
+        </div>
+
+        <div class="form-group full">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" placeholder="usuario@exemplo.com.br" autocomplete="email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="tipo">Tipo de usuário</label>
+          <div class="select-wrap">
+            <select id="tipo" name="tipo" required>
+              <option value="" disabled selected>Selecione…</option>
+              <option value="admin">Administrador</option>
+              <option value="gestor">Gestor</option>
+              <option value="professor">Professor</option>
+              <option value="aluno">Aluno</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="escola_id">Escola</label>
+          <div class="select-wrap select-loading" id="escolaSelectWrap">
+            <select id="escola_id" name="escola_id" required disabled>
+              <option value="">Carregando escolas…</option>
+            </select>
+          </div>
+          <span class="escola-status fetching" id="escolaStatus">
+            <span class="mini-spin"></span> Buscando escolas na API…
+          </span>
+        </div>
+
+        <div class="divider">segurança</div>
+
+        <div class="form-group full">
+          <label for="senha">Senha</label>
+          <div class="input-icon-wrap">
+            <input type="password" id="senha" name="senha" placeholder="Mínimo 8 caracteres" minlength="8" autocomplete="new-password" required />
+            <button type="button" class="toggle-pass" id="toggleSenha" aria-label="Mostrar ou ocultar senha">
+              <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="divider">configurações</div>
+
+        <div class="form-group full">
+          <div class="switch-row">
+            <div class="switch-info">
+              <span>Usuário ativo</span>
+              <small>Permite que o usuário acesse o sistema</small>
+            </div>
+            <label class="switch" aria-label="Ativar usuário">
+              <input type="checkbox" id="ativo" name="ativo" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnSubmit">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <line x1="19" y1="8" x2="19" y2="14"/>
+            <line x1="22" y1="11" x2="16" y2="11"/>
+          </svg>
+          <span class="btn-text">Cadastrar Usuário</span>
+          <div class="spinner" aria-hidden="true"></div>
+        </button>
+
+        <p class="footer-note">
+          Ao cadastrar, você concorda com os
+          <a href="#">Termos de Uso</a> e a
+          <a href="#">Política de Privacidade</a>.
+        </p>
+
+      </div>
+    </form>
+  </div>
+
+  <script>
+    /* ── load schools from API ── */
+    const API_ESCOLAS = 'https://geduc.inetz.com.br/escolas/';
+    /* CORS proxy used as fallback when the direct call is blocked by the browser */
+    const PROXY       = 'https://corsproxy.io/?url=';
+
+    async function fetchEscolas(useProxy) {
+      const url = useProxy ? PROXY + encodeURIComponent(API_ESCOLAS) : API_ESCOLAS;
+      const res = await fetch(url, { headers: { 'accept': 'application/json' } });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    }
+
+    async function loadEscolas() {
+      const sel    = document.getElementById('escola_id');
+      const status = document.getElementById('escolaStatus');
+      const wrap   = document.getElementById('escolaSelectWrap');
+
+      status.style.display = 'flex';
+      status.className   = 'escola-status fetching';
+      status.innerHTML   = '<span class="mini-spin"></span> Buscando escolas na API…';
+      sel.disabled       = true;
+      sel.innerHTML      = '<option value="">Carregando escolas…</option>';
+      wrap.classList.add('select-loading');
+
+      let escolas = null;
+
+      /* 1ª tentativa: chamada direta (funciona quando HTML está hospedado
+         no mesmo domínio ou quando o servidor envia CORS headers) */
+      try {
+        escolas = await fetchEscolas(false);
+      } catch (_) {
+        /* 2ª tentativa: via proxy CORS público (funciona em localhost / file://) */
+        try {
+          escolas = await fetchEscolas(true);
+        } catch (err) {
+          /* Ambas falharam */
+          sel.innerHTML    = '<option value="">Falha ao carregar</option>';
+          status.className = 'escola-status error';
+          status.innerHTML =
+            '⚠ Não foi possível carregar as escolas (provável bloqueio CORS). ' +
+            '<button class="retry-link" id="retryEscolas">Tentar novamente</button>';
+          document.getElementById('retryEscolas').addEventListener('click', loadEscolas);
+          return;
+        }
+      }
+
+      /* Preenche o select com os dados recebidos */
+      sel.innerHTML = '<option value="" disabled selected>Selecione uma escola…</option>';
+      escolas.forEach(e => {
+        const opt       = document.createElement('option');
+        opt.value       = e.id;
+        opt.title       = e.endereco || '';
+        opt.textContent = e.nome;
+        sel.appendChild(opt);
+      });
+
+      sel.disabled = false;
+      wrap.classList.remove('select-loading');
+      status.className = 'escola-status ok';
+      status.innerHTML = `✓ ${escolas.length} escola${escolas.length !== 1 ? 's' : ''} carregada${escolas.length !== 1 ? 's' : ''}`;
+      setTimeout(() => { status.style.display = 'none'; }, 2500);
+    }
+
+    loadEscolas();
+
+    /* toggle password */
+    const toggleBtn  = document.getElementById('toggleSenha');
+    const senhaInput = document.getElementById('senha');
+    const eyeIcon    = document.getElementById('eyeIcon');
+    const eyeOpen  = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+    const eyeSlash = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+    toggleBtn.addEventListener('click', () => {
+      const show = senhaInput.type === 'password';
+      senhaInput.type   = show ? 'text' : 'password';
+      eyeIcon.innerHTML = show ? eyeSlash : eyeOpen;
+    });
+
+    /* validation */
+    function setError(input, msg) {
+      input.classList.add('invalid');
+      const wrap = input.closest('.form-group') || input.parentElement;
+      const existing = wrap.querySelector('.field-error');
+      if (existing) existing.remove();
+      const err = document.createElement('span');
+      err.className   = 'field-error';
+      err.textContent = msg;
+      wrap.appendChild(err);
+    }
+
+    function clearError(input) {
+      input.classList.remove('invalid');
+      const wrap = input.closest('.form-group') || input.parentElement;
+      const err = wrap.querySelector('.field-error');
+      if (err) err.remove();
+    }
+
+    function validateForm() {
+      let valid = true;
+      const nome     = document.getElementById('nome');
+      const email    = document.getElementById('email');
+      const tipo     = document.getElementById('tipo');
+      const escolaId = document.getElementById('escola_id');
+      const senha    = document.getElementById('senha');
+
+      if (!nome.value.trim()) { setError(nome, 'Informe o nome completo.'); valid = false; }
+      else clearError(nome);
+
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRe.test(email.value.trim())) { setError(email, 'Informe um e-mail válido.'); valid = false; }
+      else clearError(email);
+
+      if (!tipo.value) { setError(tipo, 'Selecione o tipo de usuário.'); valid = false; }
+      else clearError(tipo);
+
+      if (!escolaId.value) { setError(escolaId, 'Selecione uma escola.'); valid = false; }
+      else clearError(escolaId);
+
+      if (senha.value.length < 8) { setError(senha, 'A senha deve ter no mínimo 8 caracteres.'); valid = false; }
+      else clearError(senha);
+
+      return valid;
+    }
+
+    /* toast */
+    function showToast(type, message) {
+      const container = document.getElementById('toastContainer');
+      const icons = {
+        success: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+        error:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`
+      };
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = icons[type] + `<span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.transition = 'opacity .4s, transform .4s';
+        toast.style.opacity    = '0';
+        toast.style.transform  = 'translateX(60px)';
+        setTimeout(() => toast.remove(), 400);
+      }, 4000);
+    }
+
+    /* inline validation on blur */
+    ['nome','email','tipo','escola_id','senha'].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener('blur', validateForm);
+      el.addEventListener('change', () => { if (el.classList.contains('invalid')) clearError(el); });
+      el.addEventListener('input',  () => { if (el.classList.contains('invalid')) clearError(el); });
+    });
+
+    /* submit */
+    document.getElementById('userForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!validateForm()) return;
+
+      const btn = document.getElementById('btnSubmit');
+      btn.classList.add('loading');
+
+      const payload = {
+        nome:      document.getElementById('nome').value.trim(),
+        email:     document.getElementById('email').value.trim(),
+        tipo:      document.getElementById('tipo').value,
+        escola_id: document.getElementById('escola_id').value.trim(),
+        ativo:     document.getElementById('ativo').checked,
+        senha:     document.getElementById('senha').value
+      };
+
+      try {
+        const res = await fetch('https://geduc.inetz.com.br/usuarios/', {
+          method: 'POST',
+          headers: { 'accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          showToast('success', 'Usuário cadastrado com sucesso!');
+          document.getElementById('userForm').reset();
+          document.getElementById('ativo').checked = true;
+        } else {
+          let errMsg = `Erro ${res.status}: `;
+          try {
+            const data = await res.json();
+            errMsg += data.detail || data.message || JSON.stringify(data);
+          } catch { errMsg += res.statusText; }
+          showToast('error', errMsg);
+        }
+      } catch {
+        showToast('error', 'Falha na conexão. Verifique sua internet e tente novamente.');
+      } finally {
+        btn.classList.remove('loading');
+      }
+    });
+  </script>
+</body>
+</html>
