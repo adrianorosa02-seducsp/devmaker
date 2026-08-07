@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Envio de Ficha - Foto</title>
     <style>
-        /* CSS Mobile-First Design */
+        /* CSS Mobile-First Design System */
         :root {
             --primary: #4f46e5;
             --primary-hover: #4338ca;
@@ -45,7 +45,7 @@
             background: var(--card-bg);
             border-radius: var(--radius);
             padding: 24px 20px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
             margin-top: 12px;
         }
 
@@ -80,7 +80,7 @@
             line-height: 1.4;
         }
 
-        /* Botões de Ação Visual Mobile */
+        /* Botões de Ação Mobile */
         .action-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -116,7 +116,7 @@
             fill: currentColor;
         }
 
-        /* Inputs de Arquivo Escondidos */
+        /* Inputs nativos escondidos */
         input[type="file"] {
             display: none;
         }
@@ -175,7 +175,7 @@
             backdrop-filter: blur(4px);
         }
 
-        /* Campos Adicionais */
+        /* Campos do Formulário */
         .form-group {
             margin-top: 16px;
         }
@@ -235,7 +235,90 @@
             background-color: var(--primary-hover);
         }
 
-        /* Caixa de Alerta / Status */
+        /* Modal da Câmera em Tempo Real (Live Stream) */
+        .camera-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 16px 40px 16px;
+        }
+
+        .camera-modal.active {
+            display: flex;
+        }
+
+        .camera-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+            z-index: 2;
+        }
+
+        .camera-close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .camera-viewfinder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .camera-controls {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            z-index: 2;
+        }
+
+        .snap-btn {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .snap-btn:active {
+            transform: scale(0.9);
+        }
+
+        .snap-inner {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #fff;
+        }
+
+        /* Status Toast / Alert */
         .status-box {
             margin-top: 16px;
             padding: 12px 16px;
@@ -244,7 +327,6 @@
             font-weight: 500;
             text-align: center;
             display: none;
-            animation: fadeIn 0.3s ease;
         }
 
         .status-box.success {
@@ -269,14 +351,7 @@
             display: none;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -285,36 +360,36 @@
         <div class="header">
             <div class="header-icon">📸</div>
             <h1>Envio de Foto de Ficha</h1>
-            <p class="subtitle">Tire uma foto ou selecione da galeria para enviar diretamente para a análise.</p>
+            <p class="subtitle">Tire uma foto diretamente ou escolha imagens da sua galeria.</p>
         </div>
 
         <form id="photo-form">
             <!-- Botões de Ação Mobile -->
             <div class="action-buttons">
-                <!-- Disparo direto da câmera no celular -->
-                <button type="button" class="btn-action" onclick="document.getElementById('camera-input').click()">
+                <!-- Direct Live Camera Access -->
+                <button type="button" class="btn-action" id="open-camera-btn">
                     <svg viewBox="0 0 24 24"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2m8 3a5 5 0 0 0-5 5a5 5 0 0 0 5 5a5 5 0 0 0 5-5a5 5 0 0 0-5-5m0 2a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3Z"/></svg>
                     Tirar Foto
                 </button>
 
-                <!-- Seleção na Galeria -->
+                <!-- Gallery Upload -->
                 <button type="button" class="btn-action" onclick="document.getElementById('gallery-input').click()">
                     <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54l-1.96-2.36L6.5 17h11l-3.54-4.71z"/></svg>
                     Galeria
                 </button>
             </div>
 
-            <!-- Inputs nativos HTML5 -->
-            <input type="file" id="camera-input" accept="image/*" capture="environment">
+            <!-- Fallback Input de Câmera e Input de Galeria -->
+            <input type="file" id="camera-fallback" accept="image/*" capture="environment">
             <input type="file" id="gallery-input" accept="image/*" multiple>
 
-            <!-- Campo de Observação opcional -->
+            <!-- Campo Opcional -->
             <div class="form-group">
                 <label class="form-label" for="obs">Observações / Identificação (Opcional)</label>
                 <input type="text" id="obs" name="observacao" class="form-input" placeholder="Ex: Ficha 102 - João Silva">
             </div>
 
-            <!-- Área de Pré-visualização -->
+            <!-- Seção de Pré-visualização -->
             <div class="preview-section">
                 <div class="preview-title" id="preview-title">Fotos selecionadas (<span id="photo-count">0</span>)</div>
                 <div class="preview-grid" id="preview-grid"></div>
@@ -326,15 +401,33 @@
                 <span id="btn-text">Enviar para o n8n</span>
             </button>
 
-            <!-- Alerta de Status -->
+            <!-- Status Box -->
             <div class="status-box" id="status-box"></div>
         </form>
     </div>
 
+    <!-- Modal de Câmera ao Vivo (HTML5 MediaDevices) -->
+    <div class="camera-modal" id="camera-modal">
+        <div class="camera-header">
+            <span>Câmera ao vivo</span>
+            <button type="button" class="camera-close-btn" id="close-camera-btn">&times;</button>
+        </div>
+        <video class="camera-viewfinder" id="camera-video" autoplay playsinline></video>
+        <div class="camera-controls">
+            <button type="button" class="snap-btn" id="snap-photo-btn">
+                <div class="snap-inner"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Canvas oculto para captura da imagem -->
+    <canvas id="camera-canvas" style="display: none;"></canvas>
+
     <script>
         const WEBHOOK_URL = 'https://n8n.inetz.com.br/webhook-test/foto_ficha';
 
-        const cameraInput = document.getElementById('camera-input');
+        const openCameraBtn = document.getElementById('open-camera-btn');
+        const cameraFallback = document.getElementById('camera-fallback');
         const galleryInput = document.getElementById('gallery-input');
         const previewGrid = document.getElementById('preview-grid');
         const previewTitle = document.getElementById('preview-title');
@@ -345,23 +438,78 @@
         const statusBox = document.getElementById('status-box');
         const photoForm = document.getElementById('photo-form');
 
-        let selectedFiles = [];
+        // Modal Camera Elements
+        const cameraModal = document.getElementById('camera-modal');
+        const cameraVideo = document.getElementById('camera-video');
+        const closeCameraBtn = document.getElementById('close-camera-btn');
+        const snapPhotoBtn = document.getElementById('snap-photo-btn');
+        const cameraCanvas = document.getElementById('camera-canvas');
 
-        function handleFiles(files) {
-            const newFiles = Array.from(files);
-            selectedFiles = [...selectedFiles, ...newFiles];
-            updatePreview();
+        let selectedFiles = [];
+        let mediaStream = null;
+
+        // Abrir Câmera (Tenta WebRTC getUserMedia live, se não suportado/bloqueado usa input fallback)
+        openCameraBtn.addEventListener('click', async () => {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                try {
+                    // Tenta acessar a câmera traseira (facingMode: environment)
+                    mediaStream = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode: { ideal: "environment" }, width: { ideal: 1920 }, height: { ideal: 1080 } }
+                    });
+                    cameraVideo.srcObject = mediaStream;
+                    cameraModal.classList.add('active');
+                    return;
+                } catch (err) {
+                    console.warn('Câmera ao vivo não autorizada ou indisponível. Usando seletor nativo.', err);
+                }
+            }
+            // Fallback para o input nativo de câmera
+            cameraFallback.click();
+        });
+
+        // Fechar Câmera ao Vivo
+        function stopCameraStream() {
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+            }
+            cameraModal.classList.remove('active');
         }
 
-        cameraInput.addEventListener('change', (e) => {
+        closeCameraBtn.addEventListener('click', stopCameraStream);
+
+        // Tirar Foto na Câmera ao Vivo
+        snapPhotoBtn.addEventListener('click', () => {
+            if (!cameraVideo.videoWidth) return;
+
+            cameraCanvas.width = cameraVideo.videoWidth;
+            cameraCanvas.height = cameraVideo.videoHeight;
+            const ctx = cameraCanvas.getContext('2d');
+            ctx.drawImage(cameraVideo, 0, 0, cameraCanvas.width, cameraCanvas.height);
+
+            cameraCanvas.toBlob((blob) => {
+                const capturedFile = new File([blob], `foto_${Date.now()}.jpg`, { type: 'image/jpeg' });
+                selectedFiles.push(capturedFile);
+                updatePreview();
+                stopCameraStream();
+            }, 'image/jpeg', 0.9);
+        });
+
+        // Captura via Input Fallback ou Galeria
+        cameraFallback.addEventListener('change', (e) => {
             if (e.target.files.length) handleFiles(e.target.files);
-            cameraInput.value = '';
+            cameraFallback.value = '';
         });
 
         galleryInput.addEventListener('change', (e) => {
             if (e.target.files.length) handleFiles(e.target.files);
             galleryInput.value = '';
         });
+
+        function handleFiles(files) {
+            selectedFiles = [...selectedFiles, ...Array.from(files)];
+            updatePreview();
+        }
 
         function removeFile(index) {
             selectedFiles.splice(index, 1);
@@ -397,27 +545,19 @@
             }
         }
 
-        // Envio via fetch POST para o n8n (Multipart Form-Data)
+        // Submeter formulário via POST com Multipart Form-Data
         photoForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            if (selectedFiles.length === 0) {
-                showStatus('Por favor, tire ou escolha ao menos uma foto.', 'error');
-                return;
-            }
+            if (selectedFiles.length === 0) return;
 
             const formData = new FormData();
-            
-            // Adiciona todas as fotos selecionadas ao FormData com a chave 'foto'
             selectedFiles.forEach((file, index) => {
                 formData.append('foto', file, file.name || `foto_${index + 1}.jpg`);
             });
 
-            // Campo extra opcional
             const obsValue = document.getElementById('obs').value;
-            if (obsValue) {
-                formData.append('observacao', obsValue);
-            }
+            if (obsValue) formData.append('observacao', obsValue);
 
             setLoading(true);
             hideStatus();
@@ -435,11 +575,11 @@
                     photoForm.reset();
                 } else {
                     const errText = await response.text().catch(() => '');
-                    showStatus(`Erro no envio (${response.status}): ${errText || 'Resposta do servidor'}`, 'error');
+                    showStatus(`Erro ao enviar (${response.status}): ${errText || 'Resposta do servidor'}`, 'error');
                 }
             } catch (err) {
                 console.error(err);
-                showStatus('Falha ao conectar com o n8n. Verifique sua conexão.', 'error');
+                showStatus('Falha ao conectar com o webhook do n8n.', 'error');
             } finally {
                 setLoading(false);
             }
@@ -447,13 +587,8 @@
 
         function setLoading(isLoading) {
             btnSubmit.disabled = isLoading;
-            if (isLoading) {
-                spinner.style.display = 'inline-block';
-                btnText.innerText = 'Enviando...';
-            } else {
-                spinner.style.display = 'none';
-                btnText.innerText = 'Enviar para o n8n';
-            }
+            spinner.style.display = isLoading ? 'inline-block' : 'none';
+            btnText.innerText = isLoading ? 'Enviando...' : 'Enviar para o n8n';
         }
 
         function showStatus(message, type) {
