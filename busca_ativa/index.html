@@ -1,605 +1,233 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Envio de Ficha - Foto</title>
-    <style>
-        /* CSS Mobile-First Design System */
-        :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --success-bg: #dcfce7;
-            --success-text: #15803d;
-            --error-bg: #fee2e2;
-            --error-text: #b91c1c;
-            --radius: 16px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 16px;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 440px;
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 24px 20px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            margin-top: 12px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .header-icon {
-            width: 56px;
-            height: 56px;
-            background: #eef2ff;
-            color: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px auto;
-            font-size: 1.75rem;
-        }
-
-        h1 {
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 6px;
-        }
-
-        p.subtitle {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        /* Botões de Ação Mobile */
-        .action-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .btn-action {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 16px 12px;
-            background: #f1f5f9;
-            border: 2px dashed #cbd5e1;
-            border-radius: 12px;
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-action:active {
-            transform: scale(0.98);
-            background: #e2e8f0;
-        }
-
-        .btn-action svg {
-            width: 28px;
-            height: 28px;
-            fill: currentColor;
-        }
-
-        /* Inputs nativos escondidos */
-        input[type="file"] {
-            display: none;
-        }
-
-        /* Seção de Pré-visualização */
-        .preview-section {
-            margin-top: 16px;
-        }
-
-        .preview-title {
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-            display: none;
-        }
-
-        .preview-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .preview-card {
-            position: relative;
-            aspect-ratio: 1;
-            border-radius: 10px;
-            overflow: hidden;
-            background-color: #e2e8f0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .preview-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .remove-btn {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            background: rgba(0, 0, 0, 0.6);
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            cursor: pointer;
-            backdrop-filter: blur(4px);
-        }
-
-        /* Campos do Formulário */
-        .form-group {
-            margin-top: 16px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 6px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s;
-            background: #fff;
-        }
-
-        .form-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-
-        /* Botão de Envio */
-        .btn-submit {
-            width: 100%;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-top: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-            transition: background-color 0.2s, transform 0.1s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-submit:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .btn-submit:not(:disabled):active {
-            transform: scale(0.99);
-            background-color: var(--primary-hover);
-        }
-
-        /* Modal da Câmera em Tempo Real (Live Stream) */
-        .camera-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #000;
-            z-index: 9999;
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 16px 40px 16px;
-        }
-
-        .camera-modal.active {
-            display: flex;
-        }
-
-        .camera-header {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #fff;
-            z-index: 2;
-        }
-
-        .camera-close-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .camera-viewfinder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 1;
-        }
-
-        .camera-controls {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 24px;
-            z-index: 2;
-        }
-
-        .snap-btn {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            border: 4px solid #fff;
-            background: rgba(255, 255, 255, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.1s;
-        }
-
-        .snap-btn:active {
-            transform: scale(0.9);
-        }
-
-        .snap-inner {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: #fff;
-        }
-
-        /* Status Toast / Alert */
-        .status-box {
-            margin-top: 16px;
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            text-align: center;
-            display: none;
-        }
-
-        .status-box.success {
-            display: block;
-            background-color: var(--success-bg);
-            color: var(--success-text);
-        }
-
-        .status-box.error {
-            display: block;
-            background-color: var(--error-bg);
-            color: var(--error-text);
-        }
-
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 0.8s linear infinite;
-            display: none;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Tokens para Avaliações e Provas</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="app-container">
-        <div class="header">
-            <div class="header-icon">📸</div>
-            <h1>Envio de Foto de Ficha</h1>
-            <p class="subtitle">Tire uma foto diretamente ou escolha imagens da sua galeria.</p>
+  <header>
+    <div class="header-container">
+      <div class="logo-area">
+        <div class="logo-icon">🔑</div>
+        <div class="logo-text">
+          <h1>Token Exam Access</h1>
+          <p>Plataforma de Liberação e Controle de Provas</p>
         </div>
+      </div>
+      <nav class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('prof-panel')">👨‍🏫 Painel do Aplicador</button>
+        <button class="tab-btn" onclick="switchTab('student-panel')">🎓 Portal do Aluno</button>
+        <button class="tab-btn" onclick="switchTab('docs-panel')">📄 Documentação & Arquitetura</button>
+      </nav>
+    </div>
+  </header>
 
-        <form id="photo-form">
-            <!-- Botões de Ação Mobile -->
-            <div class="action-buttons">
-                <!-- Direct Live Camera Access -->
-                <button type="button" class="btn-action" id="open-camera-btn">
-                    <svg viewBox="0 0 24 24"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2m8 3a5 5 0 0 0-5 5a5 5 0 0 0 5 5a5 5 0 0 0 5-5a5 5 0 0 0-5-5m0 2a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3Z"/></svg>
-                    Tirar Foto
-                </button>
+  <main class="content-container">
 
-                <!-- Gallery Upload -->
-                <button type="button" class="btn-action" onclick="document.getElementById('gallery-input').click()">
-                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54l-1.96-2.36L6.5 17h11l-3.54-4.71z"/></svg>
-                    Galeria
-                </button>
-            </div>
+    <!-- ABAS 1: PAINEL DO PROFESSOR / APLICADOR -->
+    <div id="prof-panel" class="tab-panel active">
+      <div class="grid-2">
 
-            <!-- Fallback Input de Câmera e Input de Galeria -->
-            <input type="file" id="camera-fallback" accept="image/*" capture="environment">
-            <input type="file" id="gallery-input" accept="image/*" multiple>
+        <!-- LADO ESQUERDO: FORMULÁRIO DE GERAÇÃO -->
+        <div class="card">
+          <div class="card-title">
+            <span>⚡ Gerar Novo Token</span>
+            <span style="font-size: 0.8rem; font-weight: normal; color: var(--accent-cyan);">Segurança Ativa</span>
+          </div>
 
-            <!-- Campo Opcional -->
+          <form id="token-form" onsubmit="handleGenerateToken(event)">
             <div class="form-group">
-                <label class="form-label" for="obs">Observações / Identificação (Opcional)</label>
-                <input type="text" id="obs" name="observacao" class="form-input" placeholder="Ex: Ficha 102 - João Silva">
+              <label for="exam_id">Avaliação / Prova</label>
+              <select id="exam_id" class="form-control" required>
+                <option value="EXAM-101">Matemática Discreta - P1</option>
+                <option value="EXAM-102">Estrutura de Dados II - Prova Prática</option>
+                <option value="EXAM-103">Engenharia de Software - Avaliação Geral</option>
+              </select>
             </div>
 
-            <!-- Seção de Pré-visualização -->
-            <div class="preview-section">
-                <div class="preview-title" id="preview-title">Fotos selecionadas (<span id="photo-count">0</span>)</div>
-                <div class="preview-grid" id="preview-grid"></div>
+            <div class="form-group">
+              <label for="user_id">Aluno Matriculado</label>
+              <select id="user_id" class="form-control" required>
+                <option value="ALUNO-202601">Adriano Justino (RA: 202601)</option>
+                <option value="ALUNO-202602">Maria Silva (RA: 202602)</option>
+                <option value="ALUNO-202603">Carlos Eduardo (RA: 202603)</option>
+                <option value="TURMA-TODOS">-- Todos da Turma (Token Coletivo) --</option>
+              </select>
             </div>
 
-            <!-- Botão de Envio -->
-            <button type="submit" class="btn-submit" id="btn-submit" disabled>
-                <span class="spinner" id="spinner"></span>
-                <span id="btn-text">Enviar para o n8n</span>
-            </button>
+            <div class="form-group">
+              <label for="expiration_time">Tempo de Expiração do Token</label>
+              <select id="expiration_time" class="form-control">
+                <option value="15" selected>15 Minutos (Padrão de Segurança)</option>
+                <option value="30">30 Minutos</option>
+                <option value="60">60 Minutos</option>
+                <option value="5">5 Minutos (Alta Segurança)</option>
+              </select>
+            </div>
 
-            <!-- Status Box -->
-            <div class="status-box" id="status-box"></div>
-        </form>
+            <button type="submit" class="btn btn-primary">
+              🔒 Criar Token Temporário
+            </button>
+          </form>
+
+          <!-- DISPLAY DO TOKEN GERADO AGORA -->
+          <div id="latest-token-box" class="token-display-box" style="display: none;">
+            <p style="font-size: 0.8rem; color: var(--text-muted);">TOKEN GERADO COM SUCESSO</p>
+            <div class="token-code" id="display-token-code">----</div>
+            <div class="token-timer" id="display-token-timer">Expira em 15:00</div>
+            <button class="btn btn-secondary" style="margin-top: 10px; width: 100%;" onclick="copyLatestToken()">
+              📋 Copiar Código do Token
+            </button>
+          </div>
+        </div>
+
+        <!-- LADO DIREITO: LISTA E STATUS DOS TOKENS -->
+        <div class="card">
+          <div class="card-title">
+            <span>📊 Monitoramento de Tokens em Tempo Real</span>
+            <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;" onclick="renderTokenTable()">🔄 Atualizar</button>
+          </div>
+
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Token</th>
+                  <th>Aluno / Turma</th>
+                  <th>Prova</th>
+                  <th>Status</th>
+                  <th>Validade</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tokens-table-body">
+                <!-- Inserido dinamicamente via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <!-- Modal de Câmera ao Vivo (HTML5 MediaDevices) -->
-    <div class="camera-modal" id="camera-modal">
-        <div class="camera-header">
-            <span>Câmera ao vivo</span>
-            <button type="button" class="camera-close-btn" id="close-camera-btn">&times;</button>
-        </div>
-        <video class="camera-viewfinder" id="camera-video" autoplay playsinline></video>
-        <div class="camera-controls">
-            <button type="button" class="snap-btn" id="snap-photo-btn">
-                <div class="snap-inner"></div>
+    <!-- ABAS 2: PORTAL DO ALUNO -->
+    <div id="student-panel" class="tab-panel">
+      <div class="student-portal">
+        <div class="card" id="student-login-card">
+          <div class="card-title" style="justify-content: center;">
+            <h2 style="font-size: 1.3rem;">🎓 Acesso à Avaliação</h2>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.875rem; text-align: center; margin-bottom: 1.5rem;">
+            Informe o token de liberação fornecido pelo seu professor para liberar o caderno de questões.
+          </p>
+
+          <form id="student-token-form" onsubmit="handleValidateStudentToken(event)">
+            <div class="form-group">
+              <label for="student_input_token">Código do Token</label>
+              <input type="text" id="student_input_token" class="form-control" placeholder="Ex: A1B2C3D4" style="text-align: center; font-size: 1.2rem; letter-spacing: 2px; font-family: monospace;" required>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              🚀 Validar Token e Iniciar Prova
             </button>
+          </form>
+
+          <div id="student-feedback" style="margin-top: 1rem; display: none; padding: 10px; border-radius: var(--radius-md); font-size: 0.875rem; text-align: center;"></div>
         </div>
+
+        <!-- CADERNO DE PROVA SIMULADO -->
+        <div id="exam-paper-card" class="exam-paper">
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1rem;">
+            <div>
+              <h3 id="paper-exam-title">Matemática Discreta - P1</h3>
+              <p style="font-size: 0.8rem; color: var(--accent-cyan);" id="paper-student-name">Aluno: Adriano Justino</p>
+            </div>
+            <span class="badge badge-em_uso" id="paper-status-badge">EM USO</span>
+          </div>
+
+          <div class="question-box">
+            <p><strong>Questão 1:</strong> Qual é o objetivo principal do uso de um Token com tempo de expiração curto (ex: 15 minutos) em sistemas de avaliação digitais?</p>
+            <label class="option-item">
+              <input type="radio" name="q1" value="A"> A) Reduzir o consumo de banco de dados.
+            </label>
+            <label class="option-item">
+              <input type="radio" name="q1" value="B" checked> B) Garantir que alunos só iniciem a prova simultaneamente e evitar acessos prévios não autorizados.
+            </label>
+            <label class="option-item">
+              <input type="radio" name="q1" value="C"> C) Substituir a senha do professor.
+            </label>
+          </div>
+
+          <button class="btn btn-primary" onclick="handleSubmitExam()" style="background: linear-gradient(135deg, var(--accent-emerald), #059669);">
+            ✅ Finalizar e Enviar Prova
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Canvas oculto para captura da imagem -->
-    <canvas id="camera-canvas" style="display: none;"></canvas>
+    <!-- ABAS 3: DOCUMENTAÇÃO & CÓDIGO DA ARQUITETURA -->
+    <div id="docs-panel" class="tab-panel">
+      <div class="card">
+        <div class="card-title">📖 Arquitetura e Implementação Backend</div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+          Conforme estruturado no <code style="color: var(--accent-cyan);">instrucoes.md</code>, o backend lida com a geração criptográfica, o armazenamento e o ciclo de vida do token:
+        </p>
 
-    <script>
-        const WEBHOOK_URL = 'https://n8n.inetz.com.br/webhook-test/foto_ficha';
+        <h4 style="margin: 1rem 0 0.5rem 0; color: var(--accent-amber);">1. Modelo em Python (Secrets & Datetime)</h4>
+        <pre class="code-snippet"><code>import secrets
+import datetime
 
-        const openCameraBtn = document.getElementById('open-camera-btn');
-        const cameraFallback = document.getElementById('camera-fallback');
-        const galleryInput = document.getElementById('gallery-input');
-        const previewGrid = document.getElementById('preview-grid');
-        const previewTitle = document.getElementById('preview-title');
-        const photoCount = document.getElementById('photo-count');
-        const btnSubmit = document.getElementById('btn-submit');
-        const btnText = document.getElementById('btn-text');
-        const spinner = document.getElementById('spinner');
-        const statusBox = document.getElementById('status-box');
-        const photoForm = document.getElementById('photo-form');
+def criar_token_prova(usuario_id, prova_id, minutos_validade=15):
+    # Gera um token hexadecimal de alta entropia
+    token_seguro = secrets.token_hex(8).upper()
+    
+    # Define a expiração exata
+    expiracao = datetime.datetime.now() + datetime.timedelta(minutes=minutos_validade)
+    
+    # Modelo do registro no BD
+    token_data = {
+        "user_id": usuario_id,
+        "exam_id": prova_id,
+        "token": token_seguro,
+        "status": "pode_usar", # pode_usar | em_uso | utilizado | expirado
+        "expires_at": expiracao
+    }
+    
+    return token_data</code></pre>
 
-        // Modal Camera Elements
-        const cameraModal = document.getElementById('camera-modal');
-        const cameraVideo = document.getElementById('camera-video');
-        const closeCameraBtn = document.getElementById('close-camera-btn');
-        const snapPhotoBtn = document.getElementById('snap-photo-btn');
-        const cameraCanvas = document.getElementById('camera-canvas');
+        <h4 style="margin: 1.5rem 0 0.5rem 0; color: var(--accent-amber);">2. Estados do Ciclo de Vida do Token</h4>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+          <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; flex: 1; min-width: 200px;">
+            <strong style="color: var(--accent-emerald);">🟢 pode_usar</strong>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Gerado pelo aplicador e aguardando entrada do aluno dentro da janela de validade.</p>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; flex: 1; min-width: 200px;">
+            <strong style="color: var(--accent-cyan);">🔵 em_uso</strong>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">O aluno iniciou a prova. Bloqueia múltiplos logins em outros dispositivos.</p>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; flex: 1; min-width: 200px;">
+            <strong style="color: var(--text-muted);">⚪ utilizado</strong>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">A prova foi entregue com sucesso. O token é inativado permanentemente.</p>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; flex: 1; min-width: 200px;">
+            <strong style="color: var(--accent-rose);">🔴 expirado</strong>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">A janela de tempo (ex: 15min) encerrou antes da validação pelo aluno.</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        let selectedFiles = [];
-        let mediaStream = null;
+  </main>
 
-        // Abrir Câmera (Tenta WebRTC getUserMedia live, se não suportado/bloqueado usa input fallback)
-        openCameraBtn.addEventListener('click', async () => {
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                try {
-                    // Tenta acessar a câmera traseira (facingMode: environment)
-                    mediaStream = await navigator.mediaDevices.getUserMedia({
-                        video: { facingMode: { ideal: "environment" }, width: { ideal: 1920 }, height: { ideal: 1080 } }
-                    });
-                    cameraVideo.srcObject = mediaStream;
-                    cameraModal.classList.add('active');
-                    return;
-                } catch (err) {
-                    console.warn('Câmera ao vivo não autorizada ou indisponível. Usando seletor nativo.', err);
-                }
-            }
-            // Fallback para o input nativo de câmera
-            cameraFallback.click();
-        });
+  <footer>
+    Sistema de Gestão de Tokens de Provas &copy; 2026 - Desenvolvido para Busca Ativa / Sala do Futuro
+  </footer>
 
-        // Fechar Câmera ao Vivo
-        function stopCameraStream() {
-            if (mediaStream) {
-                mediaStream.getTracks().forEach(track => track.stop());
-                mediaStream = null;
-            }
-            cameraModal.classList.remove('active');
-        }
-
-        closeCameraBtn.addEventListener('click', stopCameraStream);
-
-        // Tirar Foto na Câmera ao Vivo
-        snapPhotoBtn.addEventListener('click', () => {
-            if (!cameraVideo.videoWidth) return;
-
-            cameraCanvas.width = cameraVideo.videoWidth;
-            cameraCanvas.height = cameraVideo.videoHeight;
-            const ctx = cameraCanvas.getContext('2d');
-            ctx.drawImage(cameraVideo, 0, 0, cameraCanvas.width, cameraCanvas.height);
-
-            cameraCanvas.toBlob((blob) => {
-                const capturedFile = new File([blob], `foto_${Date.now()}.jpg`, { type: 'image/jpeg' });
-                selectedFiles.push(capturedFile);
-                updatePreview();
-                stopCameraStream();
-            }, 'image/jpeg', 0.9);
-        });
-
-        // Captura via Input Fallback ou Galeria
-        cameraFallback.addEventListener('change', (e) => {
-            if (e.target.files.length) handleFiles(e.target.files);
-            cameraFallback.value = '';
-        });
-
-        galleryInput.addEventListener('change', (e) => {
-            if (e.target.files.length) handleFiles(e.target.files);
-            galleryInput.value = '';
-        });
-
-        function handleFiles(files) {
-            selectedFiles = [...selectedFiles, ...Array.from(files)];
-            updatePreview();
-        }
-
-        function removeFile(index) {
-            selectedFiles.splice(index, 1);
-            updatePreview();
-        }
-
-        function updatePreview() {
-            previewGrid.innerHTML = '';
-            hideStatus();
-
-            if (selectedFiles.length > 0) {
-                previewTitle.style.display = 'block';
-                photoCount.innerText = selectedFiles.length;
-                btnSubmit.disabled = false;
-
-                selectedFiles.forEach((file, index) => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const card = document.createElement('div');
-                        card.className = 'preview-card';
-                        card.innerHTML = `
-                            <img src="${e.target.result}" alt="Foto ${index + 1}">
-                            <button type="button" class="remove-btn" onclick="removeFile(${index})" title="Remover">&times;</button>
-                        `;
-                        previewGrid.appendChild(card);
-                    };
-                    reader.readAsDataURL(file);
-                });
-            } else {
-                previewTitle.style.display = 'none';
-                photoCount.innerText = '0';
-                btnSubmit.disabled = true;
-            }
-        }
-
-        // Submeter formulário via POST com Multipart Form-Data
-        photoForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            if (selectedFiles.length === 0) return;
-
-            const formData = new FormData();
-            selectedFiles.forEach((file, index) => {
-                formData.append('foto', file, file.name || `foto_${index + 1}.jpg`);
-            });
-
-            const obsValue = document.getElementById('obs').value;
-            if (obsValue) formData.append('observacao', obsValue);
-
-            setLoading(true);
-            hideStatus();
-
-            try {
-                const response = await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.ok) {
-                    showStatus('Foto(s) enviada(s) com sucesso para o n8n!', 'success');
-                    selectedFiles = [];
-                    updatePreview();
-                    photoForm.reset();
-                } else {
-                    const errText = await response.text().catch(() => '');
-                    showStatus(`Erro ao enviar (${response.status}): ${errText || 'Resposta do servidor'}`, 'error');
-                }
-            } catch (err) {
-                console.error(err);
-                showStatus('Falha ao conectar com o webhook do n8n.', 'error');
-            } finally {
-                setLoading(false);
-            }
-        });
-
-        function setLoading(isLoading) {
-            btnSubmit.disabled = isLoading;
-            spinner.style.display = isLoading ? 'inline-block' : 'none';
-            btnText.innerText = isLoading ? 'Enviando...' : 'Enviar para o n8n';
-        }
-
-        function showStatus(message, type) {
-            statusBox.innerText = message;
-            statusBox.className = `status-box ${type}`;
-        }
-
-        function hideStatus() {
-            statusBox.className = 'status-box';
-            statusBox.innerText = '';
-        }
-    </script>
+  <script src="app.js"></script>
 </body>
 </html>
