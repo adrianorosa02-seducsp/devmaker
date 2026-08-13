@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula Prática de IA: Entendendo e Criando Agent Skills</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header>
+            <div class="logo-section">
+                <h1>Agent Skills</h1>
+                <p>Aprendizado prático sobre Habilidades de Agentes de IA</p>
+            </div>
+            <nav class="nav-tabs">
+                <button class="tab-btn active" onclick="switchTab('conceitos')">
+                    <span>💡</span> Conceitos
+                </button>
+                <button class="tab-btn" onclick="switchTab('videos')">
+                    <span>🎥</span> Vídeos & Materiais
+                </button>
+                <button class="tab-btn" onclick="switchTab('laboratorio')">
+                    <span>🛠️</span> Laboratório
+                </button>
+                <button class="tab-btn" onclick="switchTab('simulador')">
+                    <span>🎮</span> Simulador
+                </button>
+                <button class="tab-btn" onclick="switchTab('quiz')">
+                    <span>📝</span> Quiz
+                </button>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content-wrapper">
+
+            <!-- TAB: CONCEITOS -->
+            <section id="conceitos" class="tab-content active">
+                <div class="glass-card">
+                    <h2 class="card-title">O que são Agent Skills?</h2>
+                    <p>
+                        No ecossistema de Agentes de IA, as <strong>Skills (Habilidades)</strong> são pacotes modulares de instruções e scripts que estendem as capacidades do agente. Em vez de dar ao agente um prompt gigantesco com todas as tarefas possíveis do mundo, nós fornecemos a ele a capacidade de "aprender" e ativar habilidades específicas dinamicamente apenas quando necessário.
+                    </p>
+                    
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <div class="concept-icon">⚙️</div>
+                            <h3>Estrutura Modular</h3>
+                            <p>Uma Skill é encapsulada em uma pasta contendo instruções em Markdown (YAML frontmatter) e arquivos/scripts de suporte opcionais.</p>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-icon">🎯</div>
+                            <h3>Ativação Dinâmica</h3>
+                            <p>A IA analisa a intenção do usuário e decide se alguma de suas Skills cadastradas deve ser acionada para resolver a tarefa.</p>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-icon">🔌</div>
+                            <h3>Scripts de Suporte</h3>
+                            <p>Habilidades podem executar scripts (Python, JS) em segundo plano para interagir com APIs, bancos de dados ou o sistema de arquivos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h2 class="card-title cyan">Fluxo de Execução de uma Skill</h2>
+                    <p>Veja abaixo como um Agente de IA processa e executa uma Skill quando recebe uma instrução do usuário:</p>
+                    
+                    <div class="mermaid-container">
+                        <!-- SVG Representando o Fluxo de Execução de forma linda e responsiva -->
+                        <svg viewBox="0 0 800 200" width="100%" height="auto" style="display: block; margin: auto;">
+                            <!-- Defs para Gradientes -->
+                            <defs>
+                                <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#a855f7" />
+                                    <stop offset="100%" stop-color="#7c3aed" />
+                                </linearGradient>
+                                <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#06b6d4" />
+                                    <stop offset="100%" stop-color="#0891b2" />
+                                </linearGradient>
+                                <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#10b981" />
+                                    <stop offset="100%" stop-color="#059669" />
+                                </linearGradient>
+                            </defs>
+                            
+                            <!-- Conexões (Linhas e Setas) -->
+                            <path d="M150,100 L200,100" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#arrow)" />
+                            <path d="M330,100 L380,100" stroke="#475569" stroke-width="3" fill="none" />
+                            <path d="M510,100 L560,100" stroke="#475569" stroke-width="3" fill="none" />
+                            
+                            <!-- Marcador de Seta -->
+                            <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569" />
+                            </marker>
+                            
+                            <!-- Node 1: Input do Usuário -->
+                            <rect x="20" y="60" width="130" height="80" rx="10" fill="url(#cyanGrad)" />
+                            <text x="85" y="95" fill="white" font-family="'Outfit', sans-serif" font-weight="bold" font-size="14" text-anchor="middle">Mensagem do</text>
+                            <text x="85" y="115" fill="white" font-family="'Outfit', sans-serif" font-weight="bold" font-size="14" text-anchor="middle">Usuário</text>
+                            
+                            <!-- Node 2: Seleção/Match da Skill -->
+                            <rect x="200" y="60" width="130" height="80" rx="10" fill="url(#purpleGrad)" />
+                            <text x="265" y="95" fill="white" font-family="'Outfit', sans-serif" font-weight="bold" font-size="14" text-anchor="middle">Match da Skill</text>
+                            <text x="265" y="115" fill="#e9d5ff" font-family="'Outfit', sans-serif" font-size="11" text-anchor="middle">(Frontmatter YAML)</text>
+                            
+                            <!-- Node 3: Execução de Scripts -->
+                            <rect x="380" y="60" width="130" height="80" rx="10" fill="url(#purpleGrad)" />
+                            <text x="445" y="95" fill="white" font-family="'Outfit', sans-serif" font-weight="bold" font-size="14" text-anchor="middle">Executa Scripts</text>
+                            <text x="445" y="115" fill="#e9d5ff" font-family="'Outfit', sans-serif" font-size="11" text-anchor="middle">(Se aplicável)</text>
+                            
+                            <!-- Node 4: Resposta do Agente -->
+                            <rect x="560" y="60" width="130" height="80" rx="10" fill="url(#greenGrad)" />
+                            <text x="625" y="95" fill="white" font-family="'Outfit', sans-serif" font-weight="bold" font-size="14" text-anchor="middle">Geração da</text>
+                            <text x="625" y="115" fill="white" font-family="'Outfit', sans-serif" font-weight="bold" font-size="14" text-anchor="middle">Resposta</text>
+                        </svg>
+                    </div>
+                    
+                    <div class="alert-info">
+                        <p><strong>💡 Nota Teórica:</strong> O processo de "Match" da Skill se baseia nos metadados definidos no arquivo principal. O sistema lê as descrições de todas as habilidades instaladas e escolhe a que melhor atende à intenção do usuário.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB: VÍDEOS -->
+            <section id="videos" class="tab-content">
+                <div class="glass-card">
+                    <h2 class="card-title">Materiais e Introdução Visual</h2>
+                    <p>Use os vídeos e recursos abaixo para introduzir os conceitos de inteligência de agentes autônomos e criação de extensões/skills:</p>
+                    
+                    <div class="grid-2">
+                        <div>
+                            <h3>1. Conceitos de Customização e Skills</h3>
+                            <p style="margin-bottom: 1rem; color: var(--text-secondary);">
+                                Veja este vídeo sobre como a IA utiliza habilidades customizadas (Custom Skills) para automatizar fluxos complexos, ler o sistema de arquivos e executar rotinas de código específicas.
+                            </p>
+                            <div class="video-container">
+                                <div class="video-placeholder">
+                                    <div class="video-placeholder-icon">▶️</div>
+                                    <h3>Vídeo Conceitual: AI Agent Customizations</h3>
+                                    <p>Simulação Educativa (Embed de Vídeo)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>2. Como Agentes Planejam Tarefas</h3>
+                            <p style="margin-bottom: 1rem; color: var(--text-secondary);">
+                                Descubra como grandes modelos de linguagem decidem a ordem das ferramentas a serem chamadas, gerando planos e executando sub-tarefas por meio de skills estruturadas.
+                            </p>
+                            <div class="video-container">
+                                <div class="video-placeholder" style="background: linear-gradient(135deg, #181324 0%, #0d0f14 100%);">
+                                    <div class="video-placeholder-icon" style="color: var(--secondary);">🔬</div>
+                                    <h3>Funcionamento Interno do Agent Loop</h3>
+                                    <p>Frameworks LangChain & Custom Agents</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB: LABORATORIO -->
+            <section id="laboratorio" class="tab-content">
+                <div class="glass-card">
+                    <h2 class="card-title">Laboratório Prático: Validador de Commits</h2>
+                    <p style="margin-bottom: 2rem;">
+                        Neste laboratório, os alunos aprenderão a implementar uma Skill para o agente chamada <code>git-commit-helper</code>. Essa skill ajudará o desenvolvedor a escrever mensagens de commits padronizadas segundo o <strong>Conventional Commits</strong> e executará um script para validar a mensagem.
+                    </p>
+
+                    <div class="lab-layout">
+                        <!-- Left Steps Nav -->
+                        <div class="lab-steps">
+                            <button class="step-nav-btn active" onclick="switchLabStep(1)">
+                                <span class="num">Passo 1</span>
+                                <span class="title">Estrutura de Pastas</span>
+                            </button>
+                            <button class="step-nav-btn" onclick="switchLabStep(2)">
+                                <span class="num">Passo 2</span>
+                                <span class="title">Escrevendo a SKILL.md</span>
+                            </button>
+                            <button class="step-nav-btn" onclick="switchLabStep(3)">
+                                <span class="num">Passo 3</span>
+                                <span class="title">Criando o Script</span>
+                            </button>
+                            <button class="step-nav-btn" onclick="switchLabStep(4)">
+                                <span class="num">Passo 4</span>
+                                <span class="title">Ativação e Testes</span>
+                            </button>
+                        </div>
+
+                        <!-- Right Steps Content -->
+                        <div class="lab-content-area">
+                            <!-- Passo 1 -->
+                            <div id="step-1" class="step-content active">
+                                <h3>Crie a Estrutura de Pastas</h3>
+                                <p style="margin-bottom: 1rem; color: var(--text-secondary);">
+                                    Skills de IA seguem uma convenção rígida de diretórios. Para a nossa skill funcionar, precisamos criar uma pasta com o nome da skill dentro do diretório de customizações (geralmente sob a pasta <code>skills/</code>):
+                                </p>
+                                <div class="code-header">
+                                    <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+                                    <span>Estrutura de Arquivos</span>
+                                </div>
+                                <div class="code-block">
+meu-projeto/
+└── .agents/
+    └── <span class="keyword">skills/</span>
+        └── <span class="property">git-commit-helper/</span>
+            ├── <span class="string">SKILL.md</span>              <span class="comment"># Instruções e metadados</span>
+            └── <span class="property">scripts/</span>
+                └── <span class="string">validate_commit.js</span>    <span class="comment"># Script validador</span>
+                                </div>
+                                <div class="alert-tip">
+                                    <p><strong>💡 Dica do Instrutor:</strong> O arquivo <code>SKILL.md</code> é o coração da nossa Skill. É dele que o agente lê a descrição para saber se deve ou não ativar a habilidade.</p>
+                                </div>
+                            </div>
+
+                            <!-- Passo 2 -->
+                            <div id="step-2" class="step-content">
+                                <h3>Defina as Instruções em SKILL.md</h3>
+                                <p style="margin-bottom: 1rem; color: var(--text-secondary);">
+                                    Escreva o arquivo <code>SKILL.md</code>. Ele deve começar com o frontmatter YAML contendo <code>name</code> e <code>description</code>, seguido pelas instruções que guiarão a IA no comportamento desejado.
+                                </p>
+                                <div class="code-header">
+                                    <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+                                    <span>SKILL.md</span>
+                                </div>
+                                <div class="code-block">
+---
+<span class="property">name:</span> <span class="string">"git-commit-helper"</span>
+<span class="property">description:</span> <span class="string">"Auxilia na geração de mensagens de commit padronizadas e valida o formato final"</span>
+---
+
+<span class="keyword"># Instruções de Comportamento</span>
+
+Quando o usuário solicitar ajuda para fazer um commit ou salvar alterações no git:
+1. Pergunte quais alterações foram feitas (se você não conseguir deduzi-las do contexto).
+2. Escreva uma mensagem de commit de acordo com as regras do Conventional Commits.
+3. Chame o script de validação de commit em <span class="property">scripts/validate_commit.js</span> para verificar se está correto.
+4. Apresente a mensagem formatada para o usuário.
+                                </div>
+                            </div>
+
+                            <!-- Passo 3 -->
+                            <div id="step-3" class="step-content">
+                                <h3>Crie o Script de Validação</h3>
+                                <p style="margin-bottom: 1rem; color: var(--text-secondary);">
+                                    Agora criaremos o arquivo <code>scripts/validate_commit.js</code> que fará a validação técnica da string do commit via regex no Node.js.
+                                </p>
+                                <div class="code-header">
+                                    <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+                                    <span>scripts/validate_commit.js</span>
+                                </div>
+                                <div class="code-block">
+<span class="keyword">const</span> fs = require(<span class="string">'fs'</span>);
+
+<span class="comment">// Padrão Conventional Commits básico: feat|fix|docs|style|refactor|test|chore(escopo): descrição</span>
+<span class="keyword">const</span> commitRegex = <span class="string">/^(feat|fix|docs|style|refactor|test|chore)(\([a-zA-Z0-9_-]+\))?: .{5,100}$/</span>;
+
+<span class="keyword">const</span> commitMsg = process.argv[<span class="number">2</span>];
+
+<span class="keyword">if</span> (!commitMsg) {
+    console.error(<span class="string">"Erro: Nenhuma mensagem de commit fornecida."</span>);
+    process.exit(<span class="number">1</span>);
+}
+
+<span class="keyword">if</span> (commitRegex.test(commitMsg)) {
+    console.log(<span class="string">"✅ Mensagem válida de acordo com Conventional Commits!"</span>);
+    process.exit(<span class="number">0</span>);
+} <span class="keyword">else</span> {
+    console.error(<span class="string">"❌ Mensagem inválida. Padrão exigido: tipo(escopo): descrição"</span>);
+    process.exit(<span class="number">1</span>);
+}
+                                </div>
+                            </div>
+
+                            <!-- Passo 4 -->
+                            <div id="step-4" class="step-content">
+                                <h3>Ativação e Testes Práticos</h3>
+                                <p style="margin-bottom: 1rem; color: var(--text-secondary);">
+                                    Agora que os arquivos estão criados, você pode testar a Skill pedindo ao agente para gerar e validar uma mensagem.
+                                </p>
+                                <div class="alert-info">
+                                    <p><strong>🛠️ Exercício para o Aluno:</strong> Tente enviar o prompt: <em>"Crie uma mensagem de commit para a adição da validação de formulário de login"</em>.</p>
+                                    <p style="margin-top: 0.5rem;">O agente deverá carregar a skill <code>git-commit-helper</code>, criar algo como <code>feat(auth): add login form validation</code>, e simular a execução do script com sucesso!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB: SIMULADOR -->
+            <section id="simulador" class="tab-content">
+                <div class="glass-card">
+                    <h2 class="card-title">Playground: Simulador de Match de Skills</h2>
+                    <p style="margin-bottom: 1.5rem;">
+                        Escreva um prompt no campo abaixo e veja como o sistema de IA reage: identifica a Skill correspondente, carrega suas regras e executa o script associado.
+                    </p>
+
+                    <div class="simulator-box">
+                        <div class="input-group">
+                            <input type="text" id="user-prompt" class="text-input" placeholder="Ex: 'crie um commit para a funcionalidade de login' ou 'qual o clima em SP?'" value="Quero criar um commit para correção de segurança no endpoint de pix">
+                            <button class="btn" onclick="runSimulation()">Simular Fluxo</button>
+                        </div>
+
+                        <!-- Pipeline Steps visualizer -->
+                        <div class="simulator-pipeline">
+                            <div class="pipeline-node" id="node-1">
+                                <div class="node-icon">1</div>
+                                <div class="node-desc">
+                                    <h4>Recebimento do Prompt</h4>
+                                    <p id="node-1-text">Aguardando entrada...</p>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-node" id="node-2">
+                                <div class="node-icon">2</div>
+                                <div class="node-desc">
+                                    <h4>Classificação de Intenção e Match de Skill</h4>
+                                    <p id="node-2-text">Analisando intenção em relação às Skills disponíveis...</p>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-node" id="node-3">
+                                <div class="node-icon">3</div>
+                                <div class="node-desc">
+                                    <h4>Injeção de Prompt / Regras do SKILL.md</h4>
+                                    <p id="node-3-text">Preparando prompt do agente...</p>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-node" id="node-4">
+                                <div class="node-icon">4</div>
+                                <div class="node-desc">
+                                    <h4>Execução do Script Associado</h4>
+                                    <p id="node-4-text">Executando validate_commit.js com os argumentos correspondentes...</p>
+                                    <div class="node-output" id="node-4-output">Output do terminal...</div>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-node" id="node-5">
+                                <div class="node-icon">5</div>
+                                <div class="node-desc">
+                                    <h4>Resultado do Agente</h4>
+                                    <p id="node-5-text">Resposta gerada com sucesso!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB: QUIZ -->
+            <section id="quiz" class="tab-content">
+                <div class="glass-card" id="quiz-container">
+                    <!-- Quiz dynamic content will be rendered here via JS -->
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>

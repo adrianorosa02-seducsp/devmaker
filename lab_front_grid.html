@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório Prático de CSS Grid</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .code-font { font-family: 'Fira Code', monospace; }
+        /* Transição suave para o grid container */
+        #grid-container {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 p-2.5 rounded-none shadow-lg shadow-indigo-500/30">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v5zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v5z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">CSS Grid Lab Interativo</h1>
+                    <p class="text-xs text-slate-400">Aprenda Grid manipulando propriedades em tempo real</p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="presetDashboard()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg border border-slate-700 transition">Exemplo: Dashboard</button>
+                <button onclick="presetGaleria()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg border border-slate-700 transition">Exemplo: Galeria</button>
+                <button onclick="resetLab()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-xs font-medium rounded-lg shadow transition">Resetar</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- PAINEL DE CONTROLES (Esquerda) -->
+        <section class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-6">
+            <h2 class="text-sm font-semibold tracking-wider text-indigo-400 uppercase flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                Controles do Container
+            </h2>
+
+            <!-- 1. Colunas -->
+            <div class="space-y-2">
+                <label class="text-xs font-medium text-slate-300 flex justify-between">
+                    <span>grid-template-columns</span>
+                    <span id="val-cols" class="text-indigo-400 code-font">repeat(3, minmax(0, 1fr))</span>
+                </label>
+                <select id="sel-cols" onchange="updateGrid()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                    <option value="repeat(1, minmax(0, 1fr))">1 Coluna (repeat(1, 1fr))</option>
+                    <option value="repeat(2, minmax(0, 1fr))">2 Colunas Iguais (repeat(2, 1fr))</option>
+                    <option value="repeat(3, minmax(0, 1fr))" selected>3 Colunas Iguais (repeat(3, 1fr))</option>
+                    <option value="repeat(4, minmax(0, 1fr))">4 Colunas Iguais (repeat(4, 1fr))</option>
+                    <option value="2fr 1fr 1fr">Proporcional (2fr 1fr 1fr)</option>
+                    <option value="200px 1fr">Fixo + Fluido (200px 1fr)</option>
+                    <option value="repeat(auto-fit, minmax(120px, 1fr))">Responsivo (auto-fit minmax)</option>
+                </select>
+            </div>
+
+            <!-- 2. Linhas -->
+            <div class="space-y-2">
+                <label class="text-xs font-medium text-slate-300 flex justify-between">
+                    <span>grid-template-rows</span>
+                    <span id="val-rows" class="text-indigo-400 code-font">auto</span>
+                </label>
+                <select id="sel-rows" onchange="updateGrid()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                    <option value="auto" selected>Automático (auto)</option>
+                    <option value="100px 100px 100px">Alturas Fixas (100px 100px 100px)</option>
+                    <option value="1fr 2fr 1fr">Proporcional (1fr 2fr 1fr)</option>
+                </select>
+            </div>
+
+            <!-- 3. Gaps -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-medium text-slate-300 flex justify-between">
+                        <span>row-gap</span>
+                        <span id="val-rowgap" class="text-indigo-400 code-font">16px</span>
+                    </label>
+                    <input type="range" id="range-rowgap" min="0" max="40" value="16" oninput="updateGrid()" class="w-full accent-indigo-500">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-medium text-slate-300 flex justify-between">
+                        <span>column-gap</span>
+                        <span id="val-colgap" class="text-indigo-400 code-font">16px</span>
+                    </label>
+                    <input type="range" id="range-colgap" min="0" max="40" value="16" oninput="updateGrid()" class="w-full accent-indigo-500">
+                </div>
+            </div>
+
+            <!-- 4. Alinhamentos -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-medium text-slate-300">justify-items</label>
+                    <select id="sel-justify" onchange="updateGrid()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                        <option value="stretch" selected>stretch</option>
+                        <option value="start">start</option>
+                        <option value="center">center</option>
+                        <option value="end">end</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-medium text-slate-300">align-items</label>
+                    <select id="sel-align" onchange="updateGrid()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                        <option value="stretch" selected>stretch</option>
+                        <option value="start">start</option>
+                        <option value="center">center</option>
+                        <option value="end">end</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Controles de Itens -->
+            <div class="pt-4 border-t border-slate-800 flex justify-between items-center">
+                <span class="text-xs font-semibold text-slate-400 uppercase">Quantidade de Blocos</span>
+                <div class="flex items-center gap-2">
+                    <button onclick="removeBlock()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center font-bold text-slate-300 transition">-</button>
+                    <span id="block-count" class="text-sm font-bold code-font w-6 text-center">6</span>
+                    <button onclick="addBlock()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center font-bold text-slate-300 transition">+</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PREVIEW E CÓDIGO (Direita) -->
+        <section class="lg:col-span-7 space-y-6">
+            
+            <!-- Caixa do Grid Visual -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col min-h-[380px]">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Preview Visual (Área do Grid)</span>
+                    <span class="text-xs text-indigo-400 bg-indigo-950/50 border border-indigo-800/50 px-2.5 py-1 rounded-lg">Clique em um bloco para ver truques de Span</span>
+                </div>
+                
+                <!-- CONTAINER PRINCIPAL DO GRID -->
+                <div id="grid-container" class="flex-1 bg-slate-950/80 border-2 border-dashed border-slate-800 rounded-xl p-4 min-h-[300px]">
+                    <!-- Blocos injetados via JS -->
+                </div>
+            </div>
+
+            <!-- Caixa de Código CSS Gerado -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">CSS Gerado Automaticamente</span>
+                    <button onclick="copyCode()" class="text-xs text-indigo-400 hover:text-indigo-300 transition flex items-center gap-1.5 font-medium">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                        Copiar Código
+                    </button>
+                </div>
+                <pre class="bg-slate-950 border border-slate-800/80 rounded-xl p-4 text-xs code-font text-indigo-300 overflow-x-auto"><code id="code-output">.container {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto;
+  row-gap: 16px;
+  column-gap: 16px;
+  justify-items: stretch;
+  align-items: stretch;
+}</code></pre>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Modal de Informações / Instruções para o Professor -->
+    <footer class="mt-auto border-t border-slate-800 bg-slate-900/30 py-4 px-4 text-center text-xs text-slate-500">
+        Lab desenvolvido para aulas de desenvolvimento web moderno • CSS Grid Layout
+    </footer>
+
+    <script>
+        let numBlocks = 6;
+        let selectedBlock = null;
+
+        const defaultColors = [
+            'from-indigo-500/20 to-indigo-600/40 border-indigo-500/50 text-indigo-300',
+            'from-cyan-500/20 to-cyan-600/40 border-cyan-500/50 text-cyan-300',
+            'from-emerald-500/20 to-emerald-600/40 border-emerald-500/50 text-emerald-300',
+            'from-amber-500/20 to-amber-600/40 border-amber-500/50 text-amber-300',
+            'from-rose-500/20 to-rose-600/40 border-rose-500/50 text-rose-300',
+            'from-purple-500/20 to-purple-600/40 border-purple-500/50 text-purple-300',
+            'from-blue-500/20 to-blue-600/40 border-blue-500/50 text-blue-300',
+            'from-teal-500/20 to-teal-600/40 border-teal-500/50 text-teal-300'
+        ];
+
+        function initGrid() {
+            renderBlocks();
+            updateGrid();
+        }
+
+        function renderBlocks() {
+            const container = document.getElementById('grid-container');
+            container.innerHTML = '';
+            
+            for (let i = 1; i <= numBlocks; i++) {
+                const colorClass = defaultColors[(i - 1) % defaultColors.length];
+                const div = document.createElement('div');
+                div.className = `bg-gradient-to-br ${colorClass} border rounded-xl p-4 flex flex-col justify-between shadow-sm cursor-pointer hover:scale-[1.02] transition-transform select-none`;
+                div.innerHTML = `
+                    <div class="flex justify-between items-center text-xs font-semibold opacity-75">
+                        <span>Bloco ${i}</span>
+                        <span class="code-font text-[10px]">item-${i}</span>
+                    </div>
+                    <div class="text-center my-2 font-bold text-sm">#${i}</div>
+                    <div class="text-[10px] text-center opacity-60">Clique para expandir</div>
+                `;
+                div.onclick = () => toggleSpan(div, i);
+                container.appendChild(div);
+            }
+            document.getElementById('block-count').innerText = numBlocks;
+        }
+
+        function updateGrid() {
+            const cols = document.getElementById('sel-cols').value;
+            const rows = document.getElementById('sel-rows').value;
+            const rowGap = document.getElementById('range-rowgap').value;
+            const colGap = document.getElementById('range-colgap').value;
+            const justify = document.getElementById('sel-justify').value;
+            const align = document.getElementById('sel-align').value;
+
+            // Atualiza labels de ranges
+            document.getElementById('val-cols').innerText = cols;
+            document.getElementById('val-rows').innerText = rows;
+            document.getElementById('val-rowgap').innerText = rowGap + 'px';
+            document.getElementById('val-colgap').innerText = colGap + 'px';
+
+            // Aplica estilos no container visual
+            const container = document.getElementById('grid-container');
+            container.style.display = 'grid';
+            container.style.gridTemplateColumns = cols;
+            container.style.gridTemplateRows = rows;
+            container.style.rowGap = rowGap + 'px';
+            container.style.columnGap = colGap + 'px';
+            container.style.justifyItems = justify;
+            container.style.alignItems = align;
+
+            // Atualiza texto no bloco de código
+            const codeOutput = `.container {
+  display: grid;
+  grid-template-columns: ${cols};
+  grid-template-rows: ${rows};
+  row-gap: ${rowGap}px;
+  column-gap: ${colGap}px;
+  justify-items: ${justify};
+  align-items: ${align};
+}`;
+            document.getElementById('code-output').innerText = codeOutput;
+        }
+
+        function addBlock() {
+            if (numBlocks < 12) {
+                numBlocks++;
+                renderBlocks();
+                updateGrid();
+            }
+        }
+
+        function removeBlock() {
+            if (numBlocks > 1) {
+                numBlocks--;
+                renderBlocks();
+                updateGrid();
+            }
+        }
+
+        function toggleSpan(element, index) {
+            // Alterna o span horizontal de um item individual para demonstrar grid-column: span 2
+            if (element.style.gridColumn === 'span 2 / span 2') {
+                element.style.gridColumn = 'auto';
+                element.style.gridRow = 'auto';
+                element.style.opacity = '1';
+            } else {
+                element.style.gridColumn = 'span 2 / span 2';
+                element.style.gridRow = 'span 2 / span 2';
+            }
+        }
+
+        function presetDashboard() {
+            document.getElementById('sel-cols').value = 'repeat(4, minmax(0, 1fr))';
+            document.getElementById('sel-rows').value = 'auto';
+            document.getElementById('range-rowgap').value = '16';
+            document.getElementById('range-colgap').value = '16';
+            document.getElementById('sel-justify').value = 'stretch';
+            document.getElementById('sel-align').value = 'stretch';
+            numBlocks = 6;
+            renderBlocks();
+            updateGrid();
+        }
+
+        function presetGaleria() {
+            document.getElementById('sel-cols').value = 'repeat(auto-fit, minmax(120px, 1fr))';
+            document.getElementById('sel-rows').value = 'auto';
+            document.getElementById('range-rowgap').value = '12';
+            document.getElementById('range-colgap').value = '12';
+            document.getElementById('sel-justify').value = 'center';
+            document.getElementById('sel-align').value = 'center';
+            numBlocks = 8;
+            renderBlocks();
+            updateGrid();
+        }
+
+        function resetLab() {
+            presetDashboard();
+        }
+
+        function copyCode() {
+            const codeText = document.getElementById('code-output').innerText;
+            document.execCommand('copy');
+            // Feedback simples
+            alert('Código copiado para a área de transferência!');
+        }
+
+        // Inicializa ao carregar
+        window.onload = initGrid;
+    </script>
+</body>
+</html>
