@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Tokens para Avaliações e Provas</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header>
+    <div class="header-container">
+      <div class="logo-area">
+        <div class="logo-icon">🔑</div>
+        <div class="logo-text">
+          <h1>Token Exam Access</h1>
+          <p>Plataforma de Liberação e Controle de Provas</p>
+        </div>
+      </div>
+      <nav class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('prof-panel')">👨‍🏫 Painel do Aplicador</button>
+        <button class="tab-btn" onclick="switchTab('student-panel')">🎓 Portal do Aluno</button>
+        <button class="tab-btn" onclick="switchTab('docs-panel')">📄 Documentação & Arquitetura</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="content-container">
+
+    <!-- ABAS 1: PAINEL DO PROFESSOR / APLICADOR -->
+    <div id="prof-panel" class="tab-panel active">
+      <div class="grid-2">
+
+        <!-- LADO ESQUERDO: FORMULÁRIO DE GERAÇÃO -->
+        <div class="card">
+          <div class="card-title">
+            <span>⚡ Gerar Novo Token</span>
+            <span style="font-size: 0.8rem; font-weight: normal; color: var(--accent-cyan);">Segurança Ativa</span>
+          </div>
+
+          <form id="token-form" onsubmit="handleGenerateToken(event)">
+            <div class="form-group">
+              <label for="exam_id">Avaliação / Prova</label>
+              <select id="exam_id" class="form-control" required>
+                <option value="EXAM-101">Matemática Discreta - P1</option>
+                <option value="EXAM-102">Estrutura de Dados II - Prova Prática</option>
+                <option value="EXAM-103">Engenharia de Software - Avaliação Geral</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="user_id">Aluno Matriculado</label>
+              <select id="user_id" class="form-control" required>
+                <option value="ALUNO-202601">Adriano Justino (RA: 202601)</option>
+                <option value="ALUNO-202602">Maria Silva (RA: 202602)</option>
+                <option value="ALUNO-202603">Carlos Eduardo (RA: 202603)</option>
+                <option value="TURMA-TODOS">-- Todos da Turma (Token Coletivo) --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="expiration_time">Tempo de Expiração do Token</label>
+              <select id="expiration_time" class="form-control">
+                <option value="15" selected>15 Minutos (Padrão de Segurança)</option>
+                <option value="30">30 Minutos</option>
+                <option value="60">60 Minutos</option>
+                <option value="5">5 Minutos (Alta Segurança)</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              🔒 Criar Token Temporário
+            </button>
+          </form>
+
+          <!-- DISPLAY DO TOKEN GERADO AGORA -->
+          <div id="latest-token-box" class="token-display-box" style="display: none;">
+            <p style="font-size: 0.8rem; color: var(--text-muted);">TOKEN GERADO COM SUCESSO</p>
+            <div class="token-code" id="display-token-code">----</div>
+            <div class="token-timer" id="display-token-timer">Expira em 15:00</div>
+            <button class="btn btn-secondary" style="margin-top: 10px; width: 100%;" onclick="copyLatestToken()">
+              📋 Copiar Código do Token
+            </button>
+          </div>
+        </div>
+
+        <!-- LADO DIREITO: LISTA E STATUS DOS TOKENS -->
+        <div class="card">
+          <div class="card-title">
+            <span>📊 Monitoramento de Tokens em Tempo Real</span>
+            <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;" onclick="renderTokenTable()">🔄 Atualizar</button>
+          </div>
+
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Token</th>
+                  <th>Aluno / Turma</th>
+                  <th>Prova</th>
+                  <th>Status</th>
+                  <th>Validade</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tokens-table-body">
+                <!-- Inserido dinamicamente via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ABAS 2: PORTAL DO ALUNO -->
+    <div id="student-panel" class="tab-panel">
+      <div class="student-portal">
+        <div class="card" id="student-login-card">
+          <div class="card-title" style="justify-content: center;">
+            <h2 style="font-size: 1.3rem;">🎓 Acesso à Avaliação</h2>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.875rem; text-align: center; margin-bottom: 1.5rem;">
+            Informe o token de liberação fornecido pelo seu professor para liberar o caderno de questões.
+          </p>
+
+          <form id="student-token-form" onsubmit="handleValidateStudentToken(event)">
+            <div class="form-group">
+              <label for="student_input_token">Código do Token</label>
+              <input type="text" id="student_input_token" class="form-control" placeholder="Ex: A1B2C3D4" style="text-align: center; font-size: 1.2rem; letter-spacing: 2px; font-family: monospace;" required>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              🚀 Validar Token e Iniciar Prova
+            </button>
+          </form>
+
+          <div id="student-feedback" style="margin-top: 1rem; display: none; padding: 10px; border-radius: var(--radius-md); font-size: 0.875rem; text-align: center;"></div>
+        </div>
+
+        <!-- CADERNO DE PROVA SIMULADO -->
+        <div id="exam-paper-card" class="exam-paper">
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1rem;">
+            <div>
+              <h3 id="paper-exam-title">Matemática Discreta - P1</h3>
+              <p style="font-size: 0.8rem; color: var(--accent-cyan);" id="paper-student-name">Aluno: Adriano Justino</p>
+            </div>
+            <span class="badge badge-em_uso" id="paper-status-badge">EM USO</span>
+          </div>
+
+          <div class="question-box">
+            <p><strong>Questão 1:</strong> Qual é o objetivo principal do uso de um Token com tempo de expiração curto (ex: 15 minutos) em sistemas de avaliação digitais?</p>
+            <label class="option-item">
+              <input type="radio" name="q1" value="A"> A) Reduzir o consumo de banco de dados.
+            </label>
+            <label class="option-item">
+              <input type="radio" name="q1" value="B" checked> B) Garantir que alunos só iniciem a prova simultaneamente e evitar acessos prévios não autorizados.
+            </label>
+            <label class="option-item">
+              <input type="radio" name="q1" value="C"> C) Substituir a senha do professor.
+            </label>
+          </div>
+
+          <button class="btn btn-primary" onclick="handleSubmitExam()" style="background: linear-gradient(135deg, var(--accent-emerald), #059669);">
+            ✅ Finalizar e Enviar Prova
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABAS 3: DOCUMENTAÇÃO & CÓDIGO DA ARQUITETURA -->
+    <div id="docs-panel" class="tab-panel">
+      <div class="card">
+        <div class="card-title">📖 Arquitetura e Implementação Backend</div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+          Conforme estruturado no <code style="color: var(--accent-cyan);">instrucoes.md</code>, o backend lida com a geração criptográfica, o armazenamento e o ciclo de vida do token:
+        </p>
+
+        <h4 style="margin: 1rem 0 0.5rem 0; color: var(--accent-amber);">1. Modelo em Python (Secrets & Datetime)</h4>
+        <pre class="code-snippet"><code>import secrets
+import datetime
+
+def criar_token_prova(usuario_id, prova_id, minutos_validade=15):
+    # Gera um token hexadecimal de alta entropia
+    token_seguro = secrets.token_hex(8).upper()
+    
+    # Define a expiração exata
+    expiracao = datetime.datetime.now() + datetime.timedelta(minutes=minutos_validade)
+    
+    # Modelo do registro no BD
+    token_data = {
+        "user_id": usuario_id,
+        "exam_id": prova_id,
+        "token": token_seguro,
+        "status": "pode_usar", # pode_usar | em_uso | utilizado | expirado
+        "expires_at": expiracao
+    }
+    
+    return token_data</code></pre>
+
+        <h4 style="margin: 1.5rem 0 0.5rem 0; color: var(--accent-amber);">2. Estados do Ciclo de Vida do Token</h4>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+          <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; flex: 1; min-width: 200px;">
+            <strong style="color: var(--accent-emerald);">🟢 pode_usar</strong>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Gerado pelo aplicador e aguardando entrada do aluno dentro da janela de validade.</p>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; flex: 1; min-width: 200px;">
+            <strong style="color: var(--accent-cyan);">🔵 em_uso</strong>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">O aluno iniciou a prova. Bloqueia múltiplos logins em outros dispositivos.</p>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; flex: 1; min-width: 200px;">
+            <strong style="color: var(--text-muted);">⚪ utilizado</strong>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">A prova foi entregue com sucesso. O token é inativado permanentemente.</p>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; flex: 1; min-width: 200px;">
+            <strong style="color: var(--accent-rose);">🔴 expirado</strong>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">A janela de tempo (ex: 15min) encerrou antes da validação pelo aluno.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    Sistema de Gestão de Tokens de Provas &copy; 2026 - Desenvolvido para Busca Ativa / Sala do Futuro
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação de Aula</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .rating-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        /* Esconde o rádio original */
+        .rating-container input[type="radio"] {
+            display: none;
+        }
+
+        /* Estilização do rótulo/botão */
+        .rating-label {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            transition: transform 0.2s ease;
+        }
+
+        .rating-label:hover {
+            transform: scale(1.1);
+        }
+
+        /* Estilo dos Emojis */
+        .emoji {
+            font-size: 40px;
+            margin-bottom: 8px;
+            filter: grayscale(40%);
+            transition: filter 0.2s ease, font-size 0.2s ease;
+        }
+
+        .text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        /* Efeitos visuais ao selecionar */
+        #triste:checked~label[for="triste"] .emoji {
+            filter: grayscale(0%);
+            font-size: 46px;
+        }
+
+        #triste:checked~label[for="triste"] .text {
+            color: #e74c3c;
+        }
+
+        #normal:checked~label[for="normal"] .emoji {
+            filter: grayscale(0%);
+            font-size: 46px;
+        }
+
+        #normal:checked~label[for="normal"] .text {
+            color: #f39c12;
+        }
+
+        #feliz:checked~label[for="feliz"] .emoji {
+            filter: grayscale(0%);
+            font-size: 46px;
+        }
+
+        #feliz:checked~label[for="feliz"] .text {
+            color: #2ecc71;
+        }
+
+        /* Botão de Enviar */
+        .btn-submit {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h2>Avaliação da Aula</h2>
+        <p>Como você avalia a aula de hoje?</p>
+
+        <form action="#" method="POST">
+            <div class="rating-container">
+                <!-- Opção Triste -->
+                <input type="radio" id="triste" name="avaliacao" value="triste" required>
+                <label for="triste" class="rating-label">
+                    <span class="emoji">😢</span>
+                    <span class="text">Triste</span>
+                </label>
+
+                <!-- Opção Normal -->
+                <input type="radio" id="normal" name="avaliacao" value="normal">
+                <label for="normal" class="rating-label">
+                    <span class="emoji">😐</span>
+                    <span class="text">Normal</span>
+                </label>
+
+                <!-- Opção Feliz -->
+                <input type="radio" id="feliz" name="avaliacao" value="feliz">
+                <label for="feliz" class="rating-label">
+                    <span class="emoji">😀</span>
+                    <span class="text">Feliz</span>
+                </label>
+            </div>
+
+            <button type="submit" class="btn-submit">Enviar Avaliação</button>
+        </form>
+    </div>
+
+</body>
+
+</html>
