@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula Interativa: Endereçamento IPv4, CIDR e Cálculo de Sub-redes</title>
+  <meta name="description" content="Material didático interativo para aula de Redes de Computadores: Estrutura IPv4, notação CIDR, cálculo detalhado de sub-redes e avaliação interativa.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background Decorative Canvas/Glows -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Header / Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-area">
+        <div class="logo-badge">SEDUC-SP</div>
+        <div class="logo-text">
+          <span class="course-name">Técnico em Desenvolvimento de Sistemas</span>
+          <h1>Endereçamento IPv4 &amp; Cálculo de Sub-redes (CIDR)</h1>
+        </div>
+      </div>
+      <nav class="nav-tabs" id="main-nav">
+        <button class="nav-btn active" data-target="mod-conceitos">
+          <span class="nav-icon">💡</span> 1. Estrutura IPv4
+        </button>
+        <button class="nav-btn" data-target="mod-cidr">
+          <span class="nav-icon">⚡</span> 2. Máscara &amp; CIDR
+        </button>
+        <button class="nav-btn" data-target="mod-calculo">
+          <span class="nav-icon">📐</span> 3. Cálculo Passo a Passo
+        </button>
+        <button class="nav-btn" data-target="mod-pratica">
+          <span class="nav-icon">🏢</span> 4. Estudo de Caso
+        </button>
+        <button class="nav-btn" data-target="mod-simulador">
+          <span class="nav-icon">🧮</span> 5. Calculadora Lab
+        </button>
+        <button class="nav-btn quiz-btn-nav" data-target="mod-quiz">
+          <span class="nav-icon">📝</span> 6. Avaliação
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+
+    <!-- MODULO 1: Estrutura do IPv4 -->
+    <section id="mod-conceitos" class="module-section active">
+      <div class="module-header">
+        <span class="module-tag">Aula 1 • SISANO1C2B3S16A1</span>
+        <h2>1. Estrutura e Fundamentos do Endereço IPv4</h2>
+        <p class="module-lead">Entenda a organização lógica, a divisão entre porção de rede e host, e a representação em bits.</p>
+      </div>
+
+      <!-- Analogy Card -->
+      <div class="card card-accent">
+        <div class="card-icon">🏠</div>
+        <div class="card-body">
+          <h3>Ponto de Partida: A Analogia do Endereço Físico</h3>
+          <p>Imagine que você mora em um prédio grande. Para que uma encomenda chegue até você, não basta apenas o nome da cidade: é preciso indicar o <strong>bairro</strong>, a <strong>rua</strong>, o <strong>número do prédio</strong> e o <strong>apartamento</strong>.</p>
+          <div class="analogy-grid">
+            <div class="analogy-box">
+              <span class="analogy-title">Rede (Network)</span>
+              <span class="analogy-desc">Bairro + Nome da Rua</span>
+              <small>Identifica a região/grupo a qual pertence</small>
+            </div>
+            <div class="analogy-separator">↔</div>
+            <div class="analogy-box">
+              <span class="analogy-title">Host (Dispositivo)</span>
+              <span class="analogy-desc">Número do Apto</span>
+              <small>Identifica o dispositivo individual dentro do grupo</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 32 Bits Interactive Visualizer -->
+      <div class="card">
+        <h3>Anatomia do Endereço IPv4 (32 Bits)</h3>
+        <p>O IPv4 é um endereço numérico de <strong>32 bits</strong> (4 octetos de 8 bits), representado em <em>decimal pontuado</em>.</p>
+        
+        <div class="ip-interactive-demo">
+          <div class="ip-header-bar">
+            <span>Exemplo: <strong class="highlight-code">192.168.1.10</strong></span>
+            <span>Total: 32 Bits (4 Octetos)</span>
+          </div>
+
+          <div class="octets-container">
+            <!-- Octeto 1 -->
+            <div class="octet-card net-part">
+              <div class="octet-val">192</div>
+              <div class="octet-label">1º Octeto (8 bits)</div>
+              <div class="octet-binary">11000000</div>
+              <div class="octet-type">Porção de REDE</div>
+            </div>
+            <span class="dot-separator">.</span>
+            <!-- Octeto 2 -->
+            <div class="octet-card net-part">
+              <div class="octet-val">168</div>
+              <div class="octet-label">2º Octeto (8 bits)</div>
+              <div class="octet-binary">10101000</div>
+              <div class="octet-type">Porção de REDE</div>
+            </div>
+            <span class="dot-separator">.</span>
+            <!-- Octeto 3 -->
+            <div class="octet-card net-part">
+              <div class="octet-val">1</div>
+              <div class="octet-label">3º Octeto (8 bits)</div>
+              <div class="octet-binary">00000001</div>
+              <div class="octet-type">Porção de REDE</div>
+            </div>
+            <span class="dot-separator">.</span>
+            <!-- Octeto 4 -->
+            <div class="octet-card host-part">
+              <div class="octet-val">10</div>
+              <div class="octet-label">4º Octeto (8 bits)</div>
+              <div class="octet-binary">00001010</div>
+              <div class="octet-type">Porção de HOST</div>
+            </div>
+          </div>
+
+          <!-- Bit Weight Scale -->
+          <div class="bit-scale-box">
+            <h4>Valores dos Bits de 1 Octeto (Da esquerda para direita):</h4>
+            <div class="bit-grid">
+              <div class="bit-cell"><span class="bit-pow">2<sup>7</sup></span><span class="bit-num">128</span></div>
+              <div class="bit-cell"><span class="bit-pow">2<sup>6</sup></span><span class="bit-num">64</span></div>
+              <div class="bit-cell"><span class="bit-pow">2<sup>5</sup></span><span class="bit-num">32</span></div>
+              <div class="bit-cell"><span class="bit-pow">2<sup>4</sup></span><span class="bit-num">16</span></div>
+              <div class="bit-cell"><span class="bit-pow">2<sup>3</sup></span><span class="bit-num">8</span></div>
+              <div class="bit-cell"><span class="bit-pow">2<sup>2</sup></span><span class="bit-num">4</span></div>
+              <div class="bit-cell"><span class="bit-pow">2<sup>1</sup></span><span class="bit-num">2</span></div>
+              <div class="bit-cell"><span class="bit-pow">2<sup>0</sup></span><span class="bit-num">1</span></div>
+            </div>
+            <p class="bit-note">Soma máxima de 1 octeto (todos bits em 1): 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = <strong>255</strong> (Varia de 0 a 255 = 256 combinações por octeto).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Concept Summary -->
+      <div class="grid-2col">
+        <div class="card">
+          <h3>📌 Regra Fundamental de IP Único</h3>
+          <p>Cada equipamento em uma rede precisa ter um IP <strong>exclusivo</strong>. IPs duplicados geram <em>Conflito de IP</em>, interrompendo a comunicação.</p>
+        </div>
+        <div class="card">
+          <h3>🎯 Papel da Porção de Rede vs Host</h3>
+          <p>Dispositivos com a <strong>mesma porção de rede</strong> comunicam-se diretamente. Dispositivos em redes diferentes necessitam de um <strong>Roteador (Gateway)</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULO 2: Máscara & CIDR -->
+    <section id="mod-cidr" class="module-section">
+      <div class="module-header">
+        <span class="module-tag">Aula 1 &amp; 2 • CIDR vs Classful</span>
+        <h2>2. Máscara de Sub-rede e Notação CIDR</h2>
+        <p class="module-lead">Como a máscara define onde termina a rede e onde começa o host.</p>
+      </div>
+
+      <!-- Classful vs Classless -->
+      <div class="card">
+        <h3>Classful (Antigo) vs Classless / CIDR (Atual)</h3>
+        <p>No modelo antigo (<em>Classful</em>), as redes eram presas a blocos rígidos (Classe A, B e C), provocando um enorme desperdício de endereços IP no mundo inteiro.</p>
+
+        <div class="comparison-table-wrapper">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Modelo</th>
+                <th>Prefixo Fixo / Flexível</th>
+                <th>Máscaras Padrão</th>
+                <th>Capacidade de Hosts</th>
+                <th>Flexibilidade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong class="tag-red">Classe A</strong> (Classful)</td>
+                <td>/8 fixo</td>
+                <td>255.0.0.0</td>
+                <td>16.777.214 hosts</td>
+                <td>Desperdício massivo</td>
+              </tr>
+              <tr>
+                <td><strong class="tag-yellow">Classe B</strong> (Classful)</td>
+                <td>/16 fixo</td>
+                <td>255.255.0.0</td>
+                <td>65.534 hosts</td>
+                <td>Rígido</td>
+              </tr>
+              <tr>
+                <td><strong class="tag-green">Classe C</strong> (Classful)</td>
+                <td>/24 fixo</td>
+                <td>255.255.255.0</td>
+                <td>254 hosts</td>
+                <td>Pequeno para médias empresas</td>
+              </tr>
+              <tr class="highlight-row">
+                <td><strong class="tag-blue">CIDR</strong> (Classless)</td>
+                <td><strong>Qualquer prefixo (/8 a /30)</strong></td>
+                <td>Definida pelo prefixo (ex: 255.255.255.192)</td>
+                <td><strong>Sob medida</strong> (2, 14, 30, 62, 126, 254...)</td>
+                <td><strong>Alocação Eficiente ✨</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- How Mask Works Binary Representation -->
+      <div class="card">
+        <h3>Representação da Máscara: CIDR vs Decimal Pontuado</h3>
+        <p>A máscara de sub-rede coloca <strong>bits 1</strong> para a parte de rede e <strong>bits 0</strong> para a parte de host.</p>
+
+        <div class="cidr-examples">
+          <!-- Example /24 -->
+          <div class="cidr-card">
+            <div class="cidr-header">
+              <span class="badge-prefix">/24</span>
+              <span class="cidr-dec">Máscara: 255.255.255.0</span>
+            </div>
+            <div class="binary-mask-display">
+              <span class="net-bits">11111111.11111111.11111111</span>.<span class="host-bits">00000000</span>
+            </div>
+            <div class="cidr-footer">
+              <span>Bits de Rede: <strong>24</strong></span>
+              <span>Bits de Host: <strong>8</strong> (32 - 24)</span>
+            </div>
+          </div>
+
+          <!-- Example /26 -->
+          <div class="cidr-card">
+            <div class="cidr-header">
+              <span class="badge-prefix">/26</span>
+              <span class="cidr-dec">Máscara: 255.255.255.192</span>
+            </div>
+            <div class="binary-mask-display">
+              <span class="net-bits">11111111.11111111.11111111.11</span><span class="host-bits">000000</span>
+            </div>
+            <div class="cidr-footer">
+              <span>Bits de Rede: <strong>26</strong></span>
+              <span>Bits de Host: <strong>6</strong> (32 - 26)</span>
+            </div>
+          </div>
+
+          <!-- Example /27 -->
+          <div class="cidr-card">
+            <div class="cidr-header">
+              <span class="badge-prefix">/27</span>
+              <span class="cidr-dec">Máscara: 255.255.255.224</span>
+            </div>
+            <div class="binary-mask-display">
+              <span class="net-bits">11111111.11111111.11111111.111</span><span class="host-bits">00000</span>
+            </div>
+            <div class="cidr-footer">
+              <span>Bits de Rede: <strong>27</strong></span>
+              <span>Bits de Host: <strong>5</strong> (32 - 27)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULO 3: Cálculo Passo a Passo -->
+    <section id="mod-calculo" class="module-section">
+      <div class="module-header">
+        <span class="module-tag">Detalhamento Máximo dos Cálculos</span>
+        <h2>3. Algoritmo e Fórmulas de Cálculo de Sub-rede</h2>
+        <p class="module-lead">Entenda a matemática precisa por trás de cada parâmetro de sub-rede.</p>
+      </div>
+
+      <!-- 4 Core Steps -->
+      <div class="formula-steps-grid">
+        
+        <!-- Step 1 -->
+        <div class="step-card">
+          <div class="step-number">PASSO 1</div>
+          <h4>Identificar Bits de Host ($n$)</h4>
+          <div class="formula-box">
+            $$n = 32 - \text{Prefixo CIDR}$$
+          </div>
+          <p>Como o IPv4 possui 32 bits no total, subtraindo o número de bits reservados para a rede, obtemos os bits restantes destinados aos dispositivos.</p>
+          <div class="example-mini">
+            <strong>Exemplo para /26:</strong><br>
+            \(n = 32 - 26 = \mathbf{6\text{ bits de host}}\)
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card">
+          <div class="step-number">PASSO 2</div>
+          <h4>Quantidade Total de Endereços</h4>
+          <div class="formula-box">
+            $$\text{Total IPs} = 2^n$$
+          </div>
+          <p>Com \(n\) bits de host, o número de combinações binárias possíveis é \(2^n\). Este valor define o <strong>tamanho do bloco (incremento)</strong>.</p>
+          <div class="example-mini">
+            <strong>Exemplo para /26:</strong><br>
+            \(2^6 = \mathbf{64\text{ endereços totais por bloco}}\)
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+          <div class="step-number">PASSO 3</div>
+          <h4>Hosts Válidos / Utilizáveis</h4>
+          <div class="formula-box">
+            $$\text{Hosts Válidos} = 2^n - 2$$
+          </div>
+          <p><strong>Por que subtrair 2?</strong> O 1º endereço é reservado para a <strong>Rede</strong> e o último é reservado para o <strong>Broadcast</strong>.</p>
+          <div class="example-mini">
+            <strong>Exemplo para /26:</strong><br>
+            \(64 - 2 = \mathbf{62\text{ hosts utilizáveis}}\)
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-card">
+          <div class="step-number">PASSO 4</div>
+          <h4>Tamanho do Bloco &amp; Incremento</h4>
+          <div class="formula-box">
+            $$\text{Incremento} = 256 - \text{Máscara Decimal}$$
+          </div>
+          <p>O incremento indica de quanto em quanto os endereços de rede saltam no octeto modificado.</p>
+          <div class="example-mini">
+            <strong>Exemplo para /26 (Máscara 255.255.255.192):</strong><br>
+            \(256 - 192 = \mathbf{64}\) (Redes: .0, .64, .128, .192)
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Worked out Detailed Example Slide 15 from PDF -->
+      <div class="card worked-example-card">
+        <div class="card-badge">Exemplo Guiado Completo • Do Material Didático</div>
+        <h3>Análise Completa da Rede <code>192.168.10.0/26</code></h3>
+        
+        <div class="breakdown-grid">
+          <div class="bd-item">
+            <span class="bd-label">1. Bits de Host</span>
+            <span class="bd-val">\(32 - 26 = 6\text{ bits}\)</span>
+          </div>
+          <div class="bd-item">
+            <span class="bd-label">2. Máscara Decimal</span>
+            <span class="bd-val"><code>255.255.255.192</code></span>
+          </div>
+          <div class="bd-item">
+            <span class="bd-label">3. Total por Sub-rede</span>
+            <span class="bd-val">\(2^6 = 64\text{ endereços}\)</span>
+          </div>
+          <div class="bd-item">
+            <span class="bd-label">4. Hosts Válidos</span>
+            <span class="bd-val">\(64 - 2 = 62\text{ hosts}\)</span>
+          </div>
+        </div>
+
+        <h4 class="sub-heading-table">Tabela de Sub-redes Resultantes (Incremento de 64 em 64):</h4>
+        
+        <div class="table-responsive">
+          <table class="custom-table table-striped">
+            <thead>
+              <tr>
+                <th>Sub-rede nº</th>
+                <th>Endereço de Rede (1º)</th>
+                <th>Primeiro Host Válido</th>
+                <th>Último Host Válido</th>
+                <th>Endereço de Broadcast (Último)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="sub-num">Sub-rede 1</span></td>
+                <td><code class="code-net">192.168.10.0</code></td>
+                <td><code class="code-host">192.168.10.1</code></td>
+                <td><code class="code-host">192.168.10.62</code></td>
+                <td><code class="code-bc">192.168.10.63</code></td>
+              </tr>
+              <tr>
+                <td><span class="sub-num">Sub-rede 2</span></td>
+                <td><code class="code-net">192.168.10.64</code></td>
+                <td><code class="code-host">192.168.10.65</code></td>
+                <td><code class="code-host">192.168.10.126</code></td>
+                <td><code class="code-bc">192.168.10.127</code></td>
+              </tr>
+              <tr>
+                <td><span class="sub-num">Sub-rede 3</span></td>
+                <td><code class="code-net">192.168.10.128</code></td>
+                <td><code class="code-host">192.168.10.129</code></td>
+                <td><code class="code-host">192.168.10.190</code></td>
+                <td><code class="code-bc">192.168.10.191</code></td>
+              </tr>
+              <tr>
+                <td><span class="sub-num">Sub-rede 4</span></td>
+                <td><code class="code-net">192.168.10.192</code></td>
+                <td><code class="code-host">192.168.10.193</code></td>
+                <td><code class="code-host">192.168.10.254</code></td>
+                <td><code class="code-bc">192.168.10.255</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULO 4: Estudo de Caso Prático -->
+    <section id="mod-pratica" class="module-section">
+      <div class="module-header">
+        <span class="module-tag">Aula 2 • SISANO1C2B3S16A2</span>
+        <h2>4. Estudo de Caso: Divisão por Departamentos</h2>
+        <p class="module-lead">Aplicação prática do conceito de Subnetting na infraestrutura de uma empresa real.</p>
+      </div>
+
+      <!-- Case Scenario Box -->
+      <div class="card case-card">
+        <div class="case-header">
+          <span class="case-badge">Cenário Corporativo</span>
+          <h3>Dividindo uma Rede <code>192.168.1.0/24</code> para 4 Departamentos</h3>
+        </div>
+        <p>A empresa necessita isolar logicamente quatro setores estratégicos: <strong>RH</strong>, <strong>Financeiro</strong>, <strong>TI</strong> e <strong>Vendas</strong>.</p>
+        
+        <div class="borrow-bits-explainer">
+          <div class="explainer-step">
+            <span class="step-bullet">A</span>
+            <div>
+              <strong>Necessidade:</strong> 4 sub-redes distintas.
+            </div>
+          </div>
+          <div class="explainer-step">
+            <span class="step-bullet">B</span>
+            <div>
+              <strong>Empréstimo de Bits ($k$):</strong> Precisamos achar $k$ tal que \(2^k \ge 4\).<br>
+              Como \(2^2 = 4\), devemos <strong>emprestar 2 bits</strong> da parte de host.
+            </div>
+          </div>
+          <div class="explainer-step">
+            <span class="step-bullet">C</span>
+            <div>
+              <strong>Novo Prefixo CIDR:</strong> Prefixo original \(24 + 2 = \mathbf{/26}\).
+            </div>
+          </div>
+          <div class="explainer-step">
+            <span class="step-bullet">D</span>
+            <div>
+              <strong>Máscara Resultante:</strong> 26 bits 1 em binário = <code>255.255.255.192</code>.
+            </div>
+          </div>
+        </div>
+
+        <div class="departments-grid">
+          <!-- RH -->
+          <div class="dept-card dept-rh">
+            <div class="dept-header">
+              <span class="dept-icon">👥</span>
+              <h4>RH</h4>
+            </div>
+            <div class="dept-details">
+              <div><span>Rede:</span> <code>192.168.1.0/26</code></div>
+              <div><span>Hosts Válidos:</span> <code>192.168.1.1</code> – <code>192.168.1.62</code></div>
+              <div><span>Broadcast:</span> <code>192.168.1.63</code></div>
+              <div><span>Capacidade:</span> 62 dispositivos</div>
+            </div>
+          </div>
+
+          <!-- Financeiro -->
+          <div class="dept-card dept-fin">
+            <div class="dept-header">
+              <span class="dept-icon">💰</span>
+              <h4>Financeiro</h4>
+            </div>
+            <div class="dept-details">
+              <div><span>Rede:</span> <code>192.168.1.64/26</code></div>
+              <div><span>Hosts Válidos:</span> <code>192.168.1.65</code> – <code>192.168.1.126</code></div>
+              <div><span>Broadcast:</span> <code>192.168.1.127</code></div>
+              <div><span>Capacidade:</span> 62 dispositivos</div>
+            </div>
+          </div>
+
+          <!-- TI -->
+          <div class="dept-card dept-ti">
+            <div class="dept-header">
+              <span class="dept-icon">💻</span>
+              <h4>TI</h4>
+            </div>
+            <div class="dept-details">
+              <div><span>Rede:</span> <code>192.168.1.128/26</code></div>
+              <div><span>Hosts Válidos:</span> <code>192.168.1.129</code> – <code>192.168.1.190</code></div>
+              <div><span>Broadcast:</span> <code>192.168.1.191</code></div>
+              <div><span>Capacidade:</span> 62 dispositivos</div>
+            </div>
+          </div>
+
+          <!-- Vendas -->
+          <div class="dept-card dept-vendas">
+            <div class="dept-header">
+              <span class="dept-icon">📈</span>
+              <h4>Vendas</h4>
+            </div>
+            <div class="dept-details">
+              <div><span>Rede:</span> <code>192.168.1.192/26</code></div>
+              <div><span>Hosts Válidos:</span> <code>192.168.1.193</code> – <code>192.168.1.254</code></div>
+              <div><span>Broadcast:</span> <code>192.168.1.255</code></div>
+              <div><span>Capacidade:</span> 62 dispositivos</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Benefits Summary -->
+        <div class="benefits-box">
+          <h4>🚀 Benefícios Técnicos Alcançados com o Subnetting:</h4>
+          <ul>
+            <li><strong>Redução drástica do tráfego de Broadcast:</strong> Os pacotes de broadcast ficam isolados dentro de cada sub-rede.</li>
+            <li><strong>Maior Segurança:</strong> Regras de Firewall e ACLs podem controlar o acesso entre o setor Financeiro e os demais.</li>
+            <li><strong>Organização e Gerenciamento:</strong> Cada setor possui seu próprio escopo DHCP e identificação lógica.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULO 5: Calculadora e Laboratório Interativo -->
+    <section id="mod-simulador" class="module-section">
+      <div class="module-header">
+        <span class="module-tag">Ferramenta Prática para Aula</span>
+        <h2>5. Calculadora Interativa de Sub-redes</h2>
+        <p class="module-lead">Insira um IP e prefixo para ver a decomposição binária e a tabela de sub-redes gerada instantaneamente.</p>
+      </div>
+
+      <div class="card calculator-card">
+        <div class="calc-inputs-row">
+          <div class="input-group">
+            <label for="input-ip">Endereço IP Base:</label>
+            <input type="text" id="input-ip" value="192.168.1.0" placeholder="ex: 192.168.1.0">
+          </div>
+          
+          <div class="input-group">
+            <label for="select-cidr">Prefixo CIDR Desejado:</label>
+            <select id="select-cidr">
+              <option value="24">/24 (255.255.255.0 - 254 hosts)</option>
+              <option value="25">/25 (255.255.255.128 - 126 hosts x 2 sub-redes)</option>
+              <option value="26" selected>/26 (255.255.255.192 - 62 hosts x 4 sub-redes)</option>
+              <option value="27">/27 (255.255.255.224 - 30 hosts x 8 sub-redes)</option>
+              <option value="28">/28 (255.255.255.240 - 14 hosts x 16 sub-redes)</option>
+              <option value="29">/29 (255.255.255.248 - 6 hosts x 32 sub-redes)</option>
+              <option value="30">/30 (255.255.255.252 - 2 hosts x 64 sub-redes)</option>
+            </select>
+          </div>
+
+          <button id="btn-calcular" class="btn-primary">Calcular Sub-redes ⚡</button>
+        </div>
+
+        <!-- Dynamic Output Container -->
+        <div id="calc-output" class="calc-results-container">
+          <!-- Filled dynamically by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULO 6: Avaliação / Quiz Interativo -->
+    <section id="mod-quiz" class="module-section">
+      <div class="module-header">
+        <span class="module-tag">Verificação de Aprendizagem</span>
+        <h2>6. Avaliação Interativa de Fixação</h2>
+        <p class="module-lead">Teste seus conhecimentos sobre IP, notação CIDR, cálculo de hosts válidos e divisão de redes.</p>
+      </div>
+
+      <div class="card quiz-card-wrapper">
+        <div class="quiz-progress-bar">
+          <div id="quiz-progress-fill" style="width: 0%;"></div>
+        </div>
+
+        <div id="quiz-container">
+          <!-- Quiz questions loaded dynamically via JS -->
+        </div>
+
+        <div id="quiz-result" class="quiz-result-box hidden">
+          <!-- Result summary shown at the end -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p>Educação Profissional Paulista • Governo do Estado de São Paulo</p>
+    <p><small>Desenvolvido com base no material didático oficial SISANO1C2B3S16A1 e SISANO1C2B3S16A2 (Componente 2 • Unidade 5).</small></p>
+  </footer>
+
+  <!-- MathJax for rendering LaTeX formulas cleanly -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+  <!-- JS Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
