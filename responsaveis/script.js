@@ -1,6 +1,7 @@
 /**
  * script.js - Lógica do Formulário de Cadastro de Responsáveis
  * Integração com modelo.js (alunos.txt) e Webhook n8n
+ * Padrão Visual: Sala do Futuro (SEDUC SP)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Elementos do DOM
+  const sidebar = document.getElementById('sidebar');
+  const sidebarCollapseBtn = document.getElementById('sidebarCollapseBtn');
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
   const envBadge = document.getElementById('envBadge');
   const turmaSelect = document.getElementById('turmaSelect');
   const alunoSelect = document.getElementById('alunoSelect');
@@ -22,6 +26,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnSubmit = document.getElementById('btnSubmit');
   const alertContainer = document.getElementById('alertContainer');
   const inputTelefone = document.getElementById('telefone');
+
+  // Interatividade da Sidebar (Mobile & Collapse)
+  if (mobileMenuToggle && sidebar) {
+    mobileMenuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+  }
+
+  if (sidebarCollapseBtn && sidebar) {
+    sidebarCollapseBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+  }
 
   // Detecta parâmetro 'prod=true' na URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -95,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (aluno) {
       studentNameDisplay.textContent = aluno.nome;
       studentSubDisplay.textContent = `RA: ${aluno.ra} | Escola: ${aluno.escola}`;
-      studentTurmaBadge.textContent = `Turma ${aluno.turma}`;
+      studentTurmaBadge.textContent = `Turma ${aluno.turma} - Novo Ensino Médio com Habilitação Profissional`;
       studentInfoCard.classList.remove('hidden');
     }
   });
@@ -120,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function showMessage(type, text) {
     alertContainer.innerHTML = `
       <div class="alert-box ${type}">
-        <span>${type === 'success' ? '✅' : '⚠️'}</span>
+        <span style="font-size: 1.1rem;">${type === 'success' ? '✅' : '⚠️'}</span>
         <div>${text}</div>
       </div>
     `;
@@ -160,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Desabilita o botão para evitar envio duplo
       btnSubmit.disabled = true;
-      btnSubmit.innerHTML = '⌛ Enviando dados...';
+      btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando dados...';
 
       // Dispara a requisição POST para o webhook n8n
       const response = await fetch(currentEndpoint, {

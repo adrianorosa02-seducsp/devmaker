@@ -3,149 +3,420 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Formulário de cadastro e vinculação de responsável do aluno - EE Antonio Reginato">
-  <title>Cadastro de Responsável - EE Antonio Reginato</title>
+  <meta name="description" content="Formulário de cadastro e vinculação de responsável do aluno - EE Antonio Reginato - Escola do Futuro">
+  <title>Escola do Futuro - Cadastro de Responsáveis</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-  <div class="main-wrapper">
-    <!-- Header -->
-    <header class="header-card">
-      <div id="envBadge" class="env-badge test">
-        <i class="fa-solid fa-flask"></i> Ambiente: Teste
+  <div class="app-wrapper">
+    <!-- Sidebar Lateral Escola do Futuro -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-container">
+          <div class="logo-text">
+            ESCOLA DO
+            <span>FUTURO</span>
+          </div>
+        </div>
+        <button id="sidebarCollapseBtn" class="sidebar-collapse-btn" title="Recolher menu">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
       </div>
-      <h1>Cadastro de Responsável</h1>
-      <div class="school-subtitle">
-        <i class="fa-solid fa-graduation-cap"></i> Escola Estadual Antonio Reginato
+
+      <div class="sidebar-search">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Buscar módulos...">
+        </div>
       </div>
-    </header>
 
-    <!-- Main Form Card -->
-    <main class="form-card">
-      <!-- Alert Message Container -->
-      <div id="alertContainer"></div>
-
-      <form id="formResponsavel" novalidate>
+      <ul class="sidebar-nav">
         
-        <!-- SEÇÃO 1: SELEÇÃO DO ALUNO -->
-        <div class="section-title">
-          <span class="step-number">1</span>
-          <span>Seleção do Aluno</span>
-        </div>
+        <!-- MÓDULO 1: PAINEL GERAL -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Painel Geral (Dashboard)</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-chart-line nav-icon"></i>
+              <span>Indicadores de frequência</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-triangle-exclamation nav-icon text-amber"></i>
+              <span>Alertas urgentes</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-chart-column nav-icon"></i>
+              <span>Gráficos de evasão</span>
+            </div>
+          </a>
+        </li>
 
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="turmaSelect">
-              <i class="fa-solid fa-users"></i> Turma/Série <span class="required-star">*</span>
-            </label>
-            <select id="turmaSelect" required>
-              <option value="">-- Selecione a Turma --</option>
-            </select>
-          </div>
+        <!-- MÓDULO 2: BUSCA ATIVA -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-bolt"></i>
+          <span>Busca Ativa</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-bolt-lightning nav-icon text-yellow"></i>
+              <span>Chamada Inicial</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-circle-exclamation nav-icon text-red"></i>
+              <span>Alertas Pendentes</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-clipboard-list nav-icon"></i>
+              <span>Histórico de Contatos</span>
+            </div>
+          </a>
+        </li>
 
-          <div class="form-group">
-            <label for="alunoSelect">
-              <i class="fa-solid fa-user-graduate"></i> Aluno <span class="required-star">*</span>
-            </label>
-            <select id="alunoSelect" disabled required>
-              <option value="">-- Primeiro selecione a Turma --</option>
-            </select>
-          </div>
-        </div>
+        <!-- MÓDULO 3: GESTÃO DE ALUNOS -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-users-gear"></i>
+          <span>Gestão de Alunos</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-user-graduate nav-icon"></i>
+              <span>Cadastro de Alunos</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item active">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-people-roof nav-icon"></i>
+              <span>Cadastro de Responsáveis</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-file-pen nav-icon"></i>
+              <span>Ocorrências</span>
+            </div>
+          </a>
+        </li>
 
-        <!-- Student Selected Info Card -->
-        <div id="studentInfoCard" class="student-info-card hidden">
-          <div class="student-detail">
-            <span id="studentNameDisplay" class="name">Nome do Aluno</span>
-            <span id="studentSubDisplay" class="sub">RA: - | Escola: -</span>
-          </div>
-          <span id="studentTurmaBadge" class="student-badge">Turma -</span>
-        </div>
+        <!-- MÓDULO 4: CONTROLE DE EQUIPAMENTOS -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span>Controle de Equipamentos</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-box-archive nav-icon"></i>
+              <span>Inventário de Itens</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-arrow-rotate-left nav-icon"></i>
+              <span>Empréstimos e Devoluções</span>
+            </div>
+          </a>
+        </li>
 
-        <!-- SEÇÃO 2: DADOS DO RESPONSÁVEL -->
-        <div class="section-title" style="margin-top: 10px;">
-          <span class="step-number">2</span>
-          <span>Dados do Responsável</span>
-        </div>
+        <!-- MÓDULO 5: RELATÓRIOS -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Relatórios</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-arrow-trend-up nav-icon"></i>
+              <span>Assiduidade e Frequência</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-arrow-trend-down nav-icon"></i>
+              <span>Eficácia da Busca Ativa</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-screwdriver-wrench nav-icon"></i>
+              <span>Uso de Equipamentos</span>
+            </div>
+          </a>
+        </li>
 
-        <div class="form-grid">
-          <div class="form-group full-width">
-            <label for="nomeResponsavel">
-              <i class="fa-solid fa-id-card"></i> Nome Completo do Responsável <span class="required-star">*</span>
-            </label>
-            <input 
-              type="text" 
-              id="nomeResponsavel" 
-              placeholder="Ex: Maria da Silva" 
-              required
-            >
-          </div>
+        <!-- MÓDULO 6: CONFIGURAÇÕES -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-gear"></i>
+          <span>Configurações</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-school nav-icon"></i>
+              <span>Turmas e Horários</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-user-lock nav-icon"></i>
+              <span>Controle de Acesso</span>
+            </div>
+          </a>
+        </li>
 
-          <div class="form-group">
-            <label for="tipoResponsavel">
-              <i class="fa-solid fa-people-roof"></i> Tipo / Parentesco <span class="required-star">*</span>
-            </label>
-            <select id="tipoResponsavel" required>
-              <option value="" disabled selected>-- Selecione --</option>
-              <option value="Mãe">Mãe</option>
-              <option value="Pai">Pai</option>
-              <option value="Avó">Avó</option>
-              <option value="Avô">Avô</option>
-              <option value="Tio">Tio</option>
-              <option value="Outro">Outro</option>
-            </select>
-          </div>
+      </ul>
+    </aside>
 
-          <div class="form-group">
-            <label for="telefone">
-              <i class="fa-solid fa-phone"></i> Telefone de Contato <span class="required-star">*</span>
-            </label>
-            <input 
-              type="tel" 
-              id="telefone" 
-              placeholder="(00) 00000-0000" 
-              required
-            >
-          </div>
-
-          <div class="form-group full-width">
-            <label class="toggle-wrapper" for="isWhatsapp">
-              <div class="toggle-info">
-                <i class="fa-brands fa-whatsapp"></i>
-                <span>Este número é WhatsApp?</span>
-              </div>
-              <div class="toggle-switch">
-                <input type="checkbox" id="isWhatsapp" checked>
-                <span class="slider"></span>
-              </div>
-            </label>
-          </div>
-
-          <div class="form-group full-width">
-            <label for="emailResponsavel">
-              <i class="fa-solid fa-envelope"></i> E-mail do Responsável <span class="required-star">*</span>
-            </label>
-            <input 
-              type="email" 
-              id="emailResponsavel" 
-              placeholder="exemplo@email.com" 
-              required
-            >
-          </div>
-        </div>
-
-        <button type="submit" id="btnSubmit" class="btn-submit">
-          <i class="fa-solid fa-paper-plane"></i> Cadastrar e Vincular Responsável
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+      <!-- Top Header Bar -->
+      <header class="top-header">
+        <button id="mobileMenuToggle" class="header-left-toggle">
+          <i class="fa-solid fa-bars"></i>
         </button>
 
-      </form>
-    </main>
+        <div class="header-right">
+          <!-- Environmental Badge -->
+          <div id="envBadge" class="env-badge test">
+            <i class="fa-solid fa-flask"></i> Ambiente: Teste
+          </div>
 
-    <footer>
-      Escola Estadual Antonio Reginato &bull; Sistema de Responsáveis &bull; DevMaker
-    </footer>
+          <!-- Red Quick Button -->
+          <button class="header-btn-red" title="Acesso Rápido">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </button>
+
+          <!-- Pedagógica Vision Button -->
+          <button class="header-btn-pedagogica">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Ir para Visão Pedagógica</span>
+          </button>
+
+          <!-- User Profile -->
+          <div class="user-profile">
+            <div class="avatar-circle">AJ</div>
+            <div class="user-details">
+              <span class="user-name">Adriano Justino Rosa</span>
+              <span class="user-role">Professor</span>
+              <span class="user-school">Antonio Reginato Prof</span>
+            </div>
+            <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: #64748b;"></i>
+          </div>
+
+          <!-- Notification Bell -->
+          <div class="notification-btn" title="Notificações">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge-dot">1</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Canvas de Conteúdo -->
+      <div class="content-canvas">
+        <!-- Breadcrumb Navigation -->
+        <nav class="breadcrumb">
+          <span>Home</span>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span>Gestão de Alunos</span>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span class="current">Cadastro de Responsáveis</span>
+        </nav>
+
+        <!-- Header da Página -->
+        <div class="page-header">
+          <div class="page-title-row">
+            <i class="fa-solid fa-people-roof" style="color: var(--sf-brand-blue);"></i>
+            <h1>Gestão de Alunos</h1>
+          </div>
+          <div class="section-subtitle-row">
+            <i class="fa-solid fa-user-plus"></i>
+            <span>Cadastro e Vinculação de Responsáveis</span>
+          </div>
+        </div>
+
+        <!-- Container para Alertas/Mensagens -->
+        <div id="alertContainer"></div>
+
+        <!-- CARD DE FILTROS (SELEÇÃO DE TURMA E ALUNO) -->
+        <section class="filtros-card">
+          <div class="filtros-top-bar">
+            <div class="filtros-header-left">
+              <div class="filtros-title">
+                <i class="fa-solid fa-filter"></i>
+                <span>Filtros</span>
+              </div>
+              <span class="filter-tag">URE: <strong>Marília</strong></span>
+              <span class="filter-tag">Escola: <strong>Antonio Reginato Prof</strong></span>
+            </div>
+
+            <div class="filtros-header-right">
+              <div class="year-badge">
+                2026 <i class="fa-regular fa-calendar"></i>
+              </div>
+              <button class="collapse-icon-btn" title="Recolher Filtros">
+                <i class="fa-solid fa-chevron-up"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="filtros-grid">
+            <div class="form-group">
+              <label for="turmaSelect">
+                Tipo de Ensino / Turma <span class="required-star">*</span>
+              </label>
+              <select id="turmaSelect" required>
+                <option value="">-- Selecione a Turma --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="alunoSelect">
+                Aluno <span class="required-star">*</span>
+              </label>
+              <select id="alunoSelect" disabled required>
+                <option value="">-- Primeiro selecione a Turma --</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- CARD DO ALUNO SELECIONADO -->
+        <div id="studentInfoCard" class="student-info-card hidden">
+          <div class="student-info-main">
+            <div class="student-avatar-icon">
+              <i class="fa-solid fa-user-graduate"></i>
+            </div>
+            <div class="student-details-text">
+              <span id="studentNameDisplay" class="student-name">Nome do Aluno</span>
+              <span id="studentSubDisplay" class="student-meta">RA: - | Escola: -</span>
+            </div>
+          </div>
+          <div class="student-badge-tag">
+            <i class="fa-solid fa-circle-info"></i>
+            <span id="studentTurmaBadge">Novo Ensino Médio Com Habilitação Profissional</span>
+          </div>
+        </div>
+
+        <!-- FORMULÁRIO DE DADOS DO RESPONSÁVEL -->
+        <main class="form-card">
+          <div class="form-section-title">
+            <span class="step-pill">2</span>
+            <span>Dados do Responsável</span>
+          </div>
+
+          <form id="formResponsavel" novalidate>
+            <div class="form-grid-2col">
+              <div class="form-group full-width">
+                <label for="nomeResponsavel">
+                  <i class="fa-solid fa-id-card" style="color: #64748b;"></i> Nome Completo do Responsável <span class="required-star">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="nomeResponsavel" 
+                  placeholder="Ex: Maria da Silva" 
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="tipoResponsavel">
+                  <i class="fa-solid fa-people-roof" style="color: #64748b;"></i> Tipo / Parentesco <span class="required-star">*</span>
+                </label>
+                <select id="tipoResponsavel" required>
+                  <option value="" disabled selected>-- Selecione --</option>
+                  <option value="Mãe">Mãe</option>
+                  <option value="Pai">Pai</option>
+                  <option value="Avó">Avó</option>
+                  <option value="Avô">Avô</option>
+                  <option value="Tio">Tio</option>
+                  <option value="Outro">Outro</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="telefone">
+                  <i class="fa-solid fa-phone" style="color: #64748b;"></i> Telefone de Contato <span class="required-star">*</span>
+                </label>
+                <input 
+                  type="tel" 
+                  id="telefone" 
+                  placeholder="(00) 00000-0000" 
+                  required
+                >
+              </div>
+
+              <div class="form-group full-width">
+                <label class="toggle-wrapper" for="isWhatsapp">
+                  <div class="toggle-info">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>Este número é WhatsApp?</span>
+                  </div>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="isWhatsapp" checked>
+                    <span class="slider"></span>
+                  </div>
+                </label>
+              </div>
+
+              <div class="form-group full-width">
+                <label for="emailResponsavel">
+                  <i class="fa-solid fa-envelope" style="color: #64748b;"></i> E-mail do Responsável <span class="required-star">*</span>
+                </label>
+                <input 
+                  type="email" 
+                  id="emailResponsavel" 
+                  placeholder="exemplo@email.com" 
+                  required
+                >
+              </div>
+            </div>
+
+            <button type="submit" id="btnSubmit" class="btn-submit">
+              <i class="fa-solid fa-paper-plane"></i> Cadastrar e Vincular Responsável
+            </button>
+          </form>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+          Escola Estadual Antonio Reginato &bull; Sistema de Responsáveis &bull; DevMaker &bull; Escola do Futuro
+        </footer>
+      </div>
+    </main>
   </div>
 
   <script src="modelo.js"></script>
