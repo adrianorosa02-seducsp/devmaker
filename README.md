@@ -1,6 +1,6 @@
 # Aqui é o Titulo
 ## Aqui é sub titulo
-** Isso está em negrito
+* Isso está em negrito
 ### Outro nivel
 It is a front-end for a simple hotel booking site. The site is developed using HTML/CSS and jquery plugins are used to provide extra features. There are total 5 webpages of the website.
 
