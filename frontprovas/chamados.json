@@ -1,0 +1,16 @@
+[
+    {
+        "id": "#6782",
+        "usuario": "admin",
+        "setor": "Financeiro",
+        "problema": "Impressora não conecta na rede",
+        "status": "Pendente"
+    },
+    {
+        "id": "#4926",
+        "usuario": "admin",
+        "setor": "RH",
+        "problema": "Impressora não conecta na rede",
+        "status": "Pendente"
+    }
+]
