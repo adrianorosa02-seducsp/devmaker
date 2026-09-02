@@ -1,3 +1,14 @@
+# ============================================================
+# Projeto Dashbord inteligente de aulas
+# Autor: Adriano Justino Rosa
+# Data: 02/09/2026
+# 1. Padrão de Turma: Agora detecta turmas como '2B - DS' ou '3A - ADM', mesmo com espaços
+# 2. Consolidação Automática: Une dados de todas as páginas e tabelas em um único arquivo banco_aulas.sqlite
+# 3. API Python: Disponibiliza as funções necessárias para integração com outros sistemas
+# 4. Testes Integrados: Inclui scripts de teste para verificar o funcionamento do sistema.
+# 5. Teste de Deploy:  Inclui scripts de teste para verificar o funcionamento do sistema.
+# ============================================================
+
 import sqlite3
 import re
 import os
@@ -23,7 +34,7 @@ def normalizar_df_horarios(df):
     df = df.fillna("")
     novas_linhas = []
     for idx, row in df.iterrows():
-        celulas_divididas = [str(val).split("\\n") for val in row]
+        celulas_divididas = [str(val).split("\n") for val in row]
         max_linhas = max(len(c) for c in celulas_divididas)
         for i in range(max_linhas):
             linha_normalizada = (
@@ -32,7 +43,7 @@ def normalizar_df_horarios(df):
             novas_linhas.append(list(linha_normalizada))
 
     df_corrigido = pd.DataFrame(novas_linhas)
-    df_corrigido = df_corrigido.replace(r"^\\s*$", None, regex=True).dropna(how="all")
+    df_corrigido = df_corrigido.replace(r"^\s*$", None, regex=True).dropna(how="all")
     return df_corrigido.reset_index(drop=True)
 
 def split_and_clean_schedule_df(df_original):
@@ -43,7 +54,7 @@ def split_and_clean_schedule_df(df_original):
     if df.empty or df.iloc[0].empty:
         return all_cleaned_schedules
 
-    turma_pattern = re.compile(r'^\\d[A-D](?: ?- ?[A-Z]+)?$')
+    turma_pattern = re.compile(r'^\d[A-D](?: ?- ?[A-Z]+)?$')
     turma_sections_info = []
 
     for col_idx, value in enumerate(df.iloc[0]):
@@ -102,7 +113,7 @@ def extrair_horarios_pdf(pdf):
             tabelas = page.extract_tables()
 
         texto_pagina = page.extract_text() or ""
-        turmas_encontradas = re.findall(r"\\b(\\d[A-D](?: ?- ?[A-Z]+)?)\\b", texto_pagina)
+        turmas_encontradas = re.findall(r"\b(\d[A-D](?: ?- ?[A-Z]+)?)\b", texto_pagina)
 
         for t_idx, tabela in enumerate(tabelas, start=1):
             df = pd.DataFrame(tabela)
@@ -288,11 +299,11 @@ if __name__ == "__main__":
     consolidated_dfs = obter_dfs_consolidados(caminho_pdf)
     print(f"Dados extraídos com sucesso. Turmas encontradas: {list(consolidated_dfs.keys())}")
     
-    print("\\nGerando banco de dados SQLite...")
+    print("\nGerando banco de dados SQLite...")
     criar_banco_de_dados(db_file, consolidated_dfs)
     print("Banco de dados criado e populado!")
     
-    print("\\nTestando painel para o dia 02/09/2026 (Quarta-feira)...")
+    print("\nTestando painel para o dia 02/09/2026 (Quarta-feira)...")
     dados_painel = get_dados_painel(db_file, '02/09/2026')
     
     print("=== DADOS RETORNADOS (JSON) ===")
