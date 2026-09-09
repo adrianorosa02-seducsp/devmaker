@@ -18,6 +18,8 @@ from io import BytesIO
 import pandas as pd
 import pdfplumber
 import requests
+from datetime import date
+
 
 # ============================================================
 # EXTRAÇÃO DE DADOS DO PDF
@@ -302,9 +304,10 @@ if __name__ == "__main__":
     print("\nGerando banco de dados SQLite...")
     criar_banco_de_dados(db_file, consolidated_dfs)
     print("Banco de dados criado e populado!")
-    
-    print("\nTestando painel para o dia 02/09/2026 (Quarta-feira)...")
-    dados_painel = get_dados_painel(db_file, '02/09/2026')
+    # Pega a data atual e formata como 'DD/MM/AAAA'
+    data_atual = date.today().strftime('%d/%m/%Y')    
+    #print("\nTestando painel para o dia 02/09/2026 (Quarta-feira)...")
+    dados_painel = get_dados_painel(db_file, data_atual)
     
     print("=== DADOS RETORNADOS (JSON) ===")
     print(json.dumps(dados_painel, indent=4, ensure_ascii=False))

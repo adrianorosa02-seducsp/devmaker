@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Formulário de cadastro e vinculação de responsável do aluno - EE Antonio Reginato - Escola do Futuro">
-  <title>Escola do Futuro - Cadastro de Responsáveis</title>
+  <meta name="description" content="Painel de Horários de Aulas em Tempo Real — EE Antonio Reginato — Escola do Futuro">
+  <title>Painel de Aulas — Escola do Futuro</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -33,7 +33,7 @@
       </div>
 
       <ul class="sidebar-nav">
-        
+
         <!-- MÓDULO 1: PAINEL GERAL -->
         <li class="nav-category-header">
           <i class="fa-solid fa-chart-pie"></i>
@@ -108,7 +108,7 @@
           </a>
         </li>
         <li>
-          <a href="#" class="sidebar-nav-item sub-item active">
+          <a href="index.html" class="sidebar-nav-item sub-item">
             <div class="nav-link-content">
               <i class="fa-solid fa-people-roof nav-icon"></i>
               <span>Cadastro de Responsáveis</span>
@@ -182,7 +182,8 @@
           <span>Configurações</span>
         </li>
         <li>
-          <a href="painel_aulas.html" class="sidebar-nav-item sub-item">
+          <!-- ITEM ATIVO: Painel de Aulas -->
+          <a href="painel_aulas.html" class="sidebar-nav-item sub-item active">
             <div class="nav-link-content">
               <i class="fa-solid fa-school nav-icon"></i>
               <span>Turmas e Horários</span>
@@ -210,21 +211,26 @@
         </button>
 
         <div class="header-right">
-          <!-- Environmental Badge -->
-          <div id="envBadge" class="env-badge test">
-            <i class="fa-solid fa-flask"></i> Ambiente: Teste
+          <!-- Relógio Oficial -->
+          <div class="painel-relogio" id="painelRelogio" title="Hora oficial de Brasília — WorldTimeAPI">
+            <i class="fa-regular fa-clock"></i>
+            <span id="horaAtualDisplay">--:--</span>
           </div>
 
-          <!-- Red Quick Button -->
-          <button class="header-btn-red" title="Acesso Rápido">
-            <i class="fa-solid fa-graduation-cap"></i>
+          <!-- Status Global -->
+          <div id="statusGlobal" class="painel-status-global"></div>
+
+          <!-- Botão Tela Inteira -->
+          <button id="fullscreenBtn" class="header-btn-fullscreen" title="Alternar modo Tela Inteira (F11)">
+            <i class="fa-solid fa-expand"></i>
+            <span>Tela Inteira</span>
           </button>
 
-          <!-- Pedagógica Vision Button -->
-          <button class="header-btn-pedagogica">
-            <i class="fa-solid fa-graduation-cap"></i>
-            <span>Ir para Visão Pedagógica</span>
-          </button>
+          <!-- Botão Voltar ao Cadastro -->
+          <a href="index.html" class="header-btn-pedagogica" title="Voltar ao Cadastro de Responsáveis">
+            <i class="fa-solid fa-people-roof"></i>
+            <span>Cadastro de Responsáveis</span>
+          </a>
 
           <!-- User Profile -->
           <div class="user-profile">
@@ -246,180 +252,164 @@
       </header>
 
       <!-- Canvas de Conteúdo -->
-      <div class="content-canvas">
+      <div class="content-canvas content-canvas--wide">
         <!-- Breadcrumb Navigation -->
         <nav class="breadcrumb">
           <span>Home</span>
           <i class="fa-solid fa-chevron-right"></i>
-          <span>Gestão de Alunos</span>
+          <span>Configurações</span>
           <i class="fa-solid fa-chevron-right"></i>
-          <span class="current">Cadastro de Responsáveis</span>
+          <span class="current">Turmas e Horários</span>
         </nav>
 
         <!-- Header da Página -->
         <div class="page-header">
           <div class="page-title-row">
-            <i class="fa-solid fa-people-roof" style="color: var(--sf-brand-blue);"></i>
-            <h1>Gestão de Alunos</h1>
+            <i class="fa-solid fa-school" style="color: var(--sf-brand-blue);"></i>
+            <h1>Painel de Aulas</h1>
           </div>
           <div class="section-subtitle-row">
-            <i class="fa-solid fa-user-plus"></i>
-            <span>Cadastro e Vinculação de Responsáveis</span>
+            <i class="fa-regular fa-calendar-check"></i>
+            <span id="painelSubtitulo">Carregando grade do dia...</span>
           </div>
         </div>
 
-        <!-- Container para Alertas/Mensagens -->
-        <div id="alertContainer"></div>
-
-        <!-- CARD DE FILTROS (SELEÇÃO DE TURMA E ALUNO) -->
-        <section class="filtros-card">
-          <div class="filtros-top-bar">
-            <div class="filtros-header-left">
-              <div class="filtros-title">
-                <i class="fa-solid fa-filter"></i>
-                <span>Filtros</span>
-              </div>
-              <span class="filter-tag">URE: <strong>Marília</strong></span>
-              <span class="filter-tag">Escola: <strong>Antonio Reginato Prof</strong></span>
-            </div>
-
-            <div class="filtros-header-right">
-              <div class="year-badge">
-                2026 <i class="fa-regular fa-calendar"></i>
-              </div>
-              <button class="collapse-icon-btn" title="Recolher Filtros">
-                <i class="fa-solid fa-chevron-up"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="filtros-grid">
-            <div class="form-group">
-              <label for="turmaSelect">
-                Tipo de Ensino / Turma <span class="required-star">*</span>
-              </label>
-              <select id="turmaSelect" required>
-                <option value="">-- Selecione a Turma --</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="alunoSelect">
-                Aluno <span class="required-star">*</span>
-              </label>
-              <select id="alunoSelect" disabled required>
-                <option value="">-- Primeiro selecione a Turma --</option>
-              </select>
-            </div>
-          </div>
-        </section>
-
-        <!-- CARD DO ALUNO SELECIONADO -->
-        <div id="studentInfoCard" class="student-info-card hidden">
-          <div class="student-info-main">
-            <div class="student-avatar-icon">
-              <i class="fa-solid fa-user-graduate"></i>
-            </div>
-            <div class="student-details-text">
-              <span id="studentNameDisplay" class="student-name">Nome do Aluno</span>
-              <span id="studentSubDisplay" class="student-meta">RA: - | Escola: -</span>
-            </div>
-          </div>
-          <div class="student-badge-tag">
-            <i class="fa-solid fa-circle-info"></i>
-            <span id="studentTurmaBadge">Novo Ensino Médio Com Habilitação Profissional</span>
-          </div>
+        <!-- Legenda de Status -->
+        <div class="painel-legenda">
+          <span class="legenda-item legenda-passada">
+            <span class="legenda-dot"></span>Aula encerrada
+          </span>
+          <span class="legenda-item legenda-em-andamento">
+            <span class="legenda-dot"></span>Em andamento
+          </span>
+          <span class="legenda-item legenda-proxima">
+            <span class="legenda-dot"></span>Próxima aula
+          </span>
+          <span class="legenda-item legenda-futura">
+            <span class="legenda-dot"></span>Aulas futuras
+          </span>
+          <span class="legenda-dica">
+            <i class="fa-solid fa-lightbulb"></i> Clique em qualquer aula na grade para edições rápidas.
+          </span>
         </div>
 
-        <!-- FORMULÁRIO DE DADOS DO RESPONSÁVEL -->
-        <main class="form-card">
-          <div class="form-section-title">
-            <span class="step-pill">2</span>
-            <span>Dados do Responsável</span>
+        <!-- Grade de Horários (renderizada por painel_aulas.js) -->
+        <div id="gradeContainer" class="grade-container">
+          <div class="painel-loading">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+            <span>Conectando ao servidor...</span>
           </div>
-
-          <form id="formResponsavel" novalidate>
-            <div class="form-grid-2col">
-              <div class="form-group full-width">
-                <label for="nomeResponsavel">
-                  <i class="fa-solid fa-id-card" style="color: #64748b;"></i> Nome Completo do Responsável <span class="required-star">*</span>
-                </label>
-                <input 
-                  type="text" 
-                  id="nomeResponsavel" 
-                  placeholder="Ex: Maria da Silva" 
-                  required
-                >
-              </div>
-
-              <div class="form-group">
-                <label for="tipoResponsavel">
-                  <i class="fa-solid fa-people-roof" style="color: #64748b;"></i> Tipo / Parentesco <span class="required-star">*</span>
-                </label>
-                <select id="tipoResponsavel" required>
-                  <option value="" disabled selected>-- Selecione --</option>
-                  <option value="Mãe">Mãe</option>
-                  <option value="Pai">Pai</option>
-                  <option value="Avó">Avó</option>
-                  <option value="Avô">Avô</option>
-                  <option value="Tio">Tio</option>
-                  <option value="Outro">Outro</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="telefone">
-                  <i class="fa-solid fa-phone" style="color: #64748b;"></i> Telefone de Contato <span class="required-star">*</span>
-                </label>
-                <input 
-                  type="tel" 
-                  id="telefone" 
-                  placeholder="(00) 00000-0000" 
-                  required
-                >
-              </div>
-
-              <div class="form-group full-width">
-                <label class="toggle-wrapper" for="isWhatsapp">
-                  <div class="toggle-info">
-                    <i class="fa-brands fa-whatsapp"></i>
-                    <span>Este número é WhatsApp?</span>
-                  </div>
-                  <div class="toggle-switch">
-                    <input type="checkbox" id="isWhatsapp" checked>
-                    <span class="slider"></span>
-                  </div>
-                </label>
-              </div>
-
-              <div class="form-group full-width">
-                <label for="emailResponsavel">
-                  <i class="fa-solid fa-envelope" style="color: #64748b;"></i> E-mail do Responsável <span class="required-star">*</span>
-                </label>
-                <input 
-                  type="email" 
-                  id="emailResponsavel" 
-                  placeholder="exemplo@email.com" 
-                  required
-                >
-              </div>
-            </div>
-
-            <button type="submit" id="btnSubmit" class="btn-submit">
-              <i class="fa-solid fa-paper-plane"></i> Cadastrar e Vincular Responsável
-            </button>
-          </form>
-        </main>
+        </div>
 
         <!-- Footer -->
         <footer class="app-footer">
-          Escola Estadual Antonio Reginato &bull; Sistema de Responsáveis &bull; DevMaker &bull; Escola do Futuro
+          Escola Estadual Antonio Reginato &bull; Painel de Aulas &bull; DevMaker &bull; Escola do Futuro
+          &bull; Hora: <a href="https://worldtimeapi.org" target="_blank" rel="noopener" style="color:var(--sf-text-muted)">WorldTimeAPI</a>
         </footer>
       </div>
     </main>
   </div>
 
-  <script src="modelo.js"></script>
-  <script src="script.js"></script>
+  <!-- MODAL CRUD DE HORÁRIOS -->
+  <div id="modalCrudHorario" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-calendar-days"></i>
+          <h2 id="modalTitulo">Gerenciar Horários de Aulas</h2>
+        </div>
+        <button id="btnFecharModal" class="modal-close-btn" title="Fechar">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Formulário de Cadastro/Edição -->
+        <form id="formAulaCrud" class="crud-form">
+          <input type="hidden" id="crudAulaId" value="">
+
+          <div class="form-grid-3col">
+            <div class="form-group">
+              <label for="crudDiaSemana">Dia da Semana *</label>
+              <select id="crudDiaSemana" required class="form-control">
+                <option value="Seg">Segunda-feira (Seg)</option>
+                <option value="Ter">Terça-feira (Ter)</option>
+                <option value="Qua">Quarta-feira (Qua)</option>
+                <option value="Qui">Quinta-feira (Qui)</option>
+                <option value="Sex">Sexta-feira (Sex)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="crudHorario">Horário *</label>
+              <input type="text" id="crudHorario" placeholder="ex: 07:00" required class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="crudTurma">Turma *</label>
+              <input type="text" id="crudTurma" placeholder="ex: 1A, 2B - DS" required class="form-control">
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label for="crudDisciplina">Disciplina *</label>
+              <input type="text" id="crudDisciplina" placeholder="ex: MAT, POR, FIS" required class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="crudProfessor">Professor</label>
+              <input type="text" id="crudProfessor" placeholder="ex: KARLA C" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="btnSalvarAula" class="btn-primary">
+              <i class="fa-solid fa-floppy-disk"></i> Salvar Aula
+            </button>
+            <button type="button" id="btnExcluirAula" class="btn-danger" style="display: none;">
+              <i class="fa-solid fa-trash-can"></i> Excluir Aula
+            </button>
+            <button type="button" id="btnCancelarEdicao" class="btn-secondary">
+              <i class="fa-solid fa-rotate-left"></i> Limpar Formulário
+            </button>
+          </div>
+        </form>
+
+        <hr class="modal-divider">
+
+        <!-- Busca e Tabela de Registros Cadastrados -->
+        <div class="crud-list-section">
+          <div class="crud-list-header">
+            <h3><i class="fa-solid fa-list-check"></i> Horários Cadastrados</h3>
+            <div class="search-box modal-search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="inputBuscaCrud" placeholder="Buscar turma, disciplina ou professor...">
+            </div>
+          </div>
+
+          <div class="crud-table-wrapper">
+            <table class="crud-table">
+              <thead>
+                <tr>
+                  <th>Dia</th>
+                  <th>Horário</th>
+                  <th>Turma</th>
+                  <th>Disciplina</th>
+                  <th>Professor</th>
+                  <th style="text-align: center;">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyAulasCrud">
+                <tr>
+                  <td colspan="6" style="text-align: center; color: var(--sf-text-muted);">Carregando horários...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="painel_aulas.js"></script>
 </body>
 </html>
