@@ -1,0 +1,23 @@
+const CFG = {
+
+  ABA_CALENDARIO: "Calendário",
+
+  ABA_DIA: "Dia",
+
+  ABA_TEMPLATE: "Template",
+
+  ABA_AULAS: "Aulas Diárias",
+
+  PRIMEIRA_LINHA: 4,
+
+  ULTIMA_LINHA: 20,
+
+  COLUNA_CHECKBOX: 9,
+
+  COLUNA_RELATORIO: 10,
+
+  COLUNA_RELATORIO_ORIGEM: 16,
+
+  TOTAL_COLUNAS_AULAS: 16
+
+};
