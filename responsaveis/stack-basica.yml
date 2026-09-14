@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+  web-nginx:
+    image: nginx:alpine
+    networks:
+      - dockermaster
+    volumes:
+      - /var/inetpub/wwwroot/projetos:/usr/share/nginx/html:ro
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 32M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=dockermaster"
+        - "traefik.http.routers.teste-turing.rule=Host(`lab.inetz.com.br`)"
+        - "traefik.http.routers.teste-turing.entrypoints=websecure"
+        - "traefik.http.routers.teste-turing.tls=true"
+        - "traefik.http.routers.teste-turing.tls.certresolver=letsencryptresolver"
+        - "traefik.http.routers.teste-turing-http.rule=Host(`lab.inetz.com.br`)"
+        - "traefik.http.routers.teste-turing-http.entrypoints=web"
+        - "traefik.http.services.teste-turing.loadbalancer.server.port=80"
+
+networks:
+  dockermaster:
+    external: true
