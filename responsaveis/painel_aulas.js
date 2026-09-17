@@ -17,9 +17,9 @@
 const ESCOLA_ID = 'c83b5925-3c67-43d7-8ccf-7b72ff4dd479';
 const CONFIG = {
   // Endereço do novo servidor FastAPI
-  API_PAINEL:   `http://localhost:8000/painel/dashboard/legacy?escola_id=${ESCOLA_ID}`,
-  API_AULAS:    `http://localhost:8000/painel/horarios`,
-  API_HORA:     'https://worldtimeapi.org/api/timezone/America/Sao_Paulo',
+  API_PAINEL: `http://geduc.inetz.com.br/painel/dashboard/legacy?escola_id=${ESCOLA_ID}`,
+  API_AULAS: `http://geduc.inetz.com.br/painel/horarios`,
+  API_HORA: 'https://worldtimeapi.org/api/timezone/America/Sao_Paulo',
   INTERVALO_MS: 60_000,           // Recalcula status a cada 60 segundos
   DURACAO_AULA: 50,               // Minutos de duração de cada aula
 };
@@ -28,7 +28,7 @@ const CONFIG = {
 // ESTADO GLOBAL
 // ============================================================
 
-let gradeDoDia   = null;   // JSON da grade, carregado uma única vez
+let gradeDoDia = null;   // JSON da grade, carregado uma única vez
 let timerRelogio = null;   // Referência ao setInterval
 let listaAulasCrud = [];   // Cache das aulas no modal CRUD
 
@@ -50,7 +50,7 @@ function horaParaMinutos(hhmm) {
  */
 async function fetchHoraOficial() {
   try {
-    const res  = await fetch(CONFIG.API_HORA, { cache: 'no-store' });
+    const res = await fetch(CONFIG.API_HORA, { cache: 'no-store' });
     const data = await res.json();
     const dt = new Date(data.datetime);
     const hh = String(dt.getHours()).padStart(2, '0');
@@ -126,7 +126,7 @@ function renderGrade(grade, horaAtual) {
   const turmas = Object.keys(slotsComStatus[0]?.turmas || {}).sort();
 
   const emAndamento = slotsComStatus.find(s => s.status === 'em_andamento');
-  const proxima     = slotsComStatus.find(s => s.status === 'proxima');
+  const proxima = slotsComStatus.find(s => s.status === 'proxima');
   if (statusGlobal) {
     if (emAndamento) {
       statusGlobal.innerHTML =
@@ -170,7 +170,7 @@ function renderGrade(grade, horaAtual) {
     turmas.forEach(turma => {
       const aula = slot.turmas?.[turma];
       const diaSemana = grade.dia_semana || 'Seg';
-      
+
       if (aula) {
         html += `
           <td class="col-aula col-aula-clickable" 
@@ -230,7 +230,7 @@ function renderGrade(grade, horaAtual) {
 async function fetchGrade() {
   const container = document.getElementById('gradeContainer');
   try {
-    const res  = await fetch(CONFIG.API_PAINEL, { cache: 'no-store' });
+    const res = await fetch(CONFIG.API_PAINEL, { cache: 'no-store' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     gradeDoDia = await res.json();
 
@@ -359,20 +359,20 @@ function renderTabelaCrud(aulas) {
   tbody.innerHTML = html;
 }
 
-window.editarAulaPeloId = function(id) {
+window.editarAulaPeloId = function (id) {
   const aula = listaAulasCrud.find(a => a.id === id);
   if (aula) {
     abrirModalCrudComDados(aula);
   }
 };
 
-window.excluirAulaPeloId = async function(id) {
+window.excluirAulaPeloId = async function (id) {
   if (!confirm(`Tem certeza que deseja excluir esta aula (ID ${id})?`)) return;
 
   try {
     const res = await fetch(`${CONFIG.API_AULAS}/${id}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('Falha ao excluir aula');
-    
+
     alert('Aula excluída com sucesso!');
     limparFormCrud();
     await carregarAulasCrud();
@@ -459,10 +459,10 @@ function toggleFullscreen() {
 }
 
 function setupUIInteractions() {
-  const sidebar         = document.getElementById('sidebar');
-  const mobileToggle    = document.getElementById('mobileMenuToggle');
+  const sidebar = document.getElementById('sidebar');
+  const mobileToggle = document.getElementById('mobileMenuToggle');
   const sidebarCollapse = document.getElementById('sidebarCollapseBtn');
-  const fullscreenBtn   = document.getElementById('fullscreenBtn');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
 
   const btnGerenciar = document.getElementById('btnGerenciarHorarios');
   const btnFecharModal = document.getElementById('btnFecharModal');
