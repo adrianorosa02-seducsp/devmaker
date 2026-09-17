@@ -14,10 +14,11 @@
 // CONFIGURAÇÃO
 // ============================================================
 
+const ESCOLA_ID = 'c83b5925-3c67-43d7-8ccf-7b72ff4dd479';
 const CONFIG = {
-  // Altere para o endereço do servidor Flask em produção
-  API_PAINEL:   'http://localhost:5000/api/painel',
-  API_AULAS:    'http://localhost:5000/api/aulas',
+  // Endereço do novo servidor FastAPI
+  API_PAINEL:   `http://localhost:8000/painel/dashboard/legacy?escola_id=${ESCOLA_ID}`,
+  API_AULAS:    `http://localhost:8000/painel/horarios`,
   API_HORA:     'https://worldtimeapi.org/api/timezone/America/Sao_Paulo',
   INTERVALO_MS: 60_000,           // Recalcula status a cada 60 segundos
   DURACAO_AULA: 50,               // Minutos de duração de cada aula
@@ -243,7 +244,7 @@ async function fetchGrade() {
       <div class="painel-erro">
         <i class="fa-solid fa-triangle-exclamation"></i>
         <p>Não foi possível conectar ao servidor.<br>
-           Verifique se o Flask está rodando em <code>${CONFIG.API_PAINEL}</code></p>
+           Verifique se o backend (FastAPI) está rodando em <code>${CONFIG.API_PAINEL}</code></p>
       </div>`;
   }
 }
