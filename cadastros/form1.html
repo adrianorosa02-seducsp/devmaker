@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cadastro de Unidades Escolares - Escola do Futuro - SEDUC SP">
+  <title>Escola do Futuro - Cadastro de Escola</title>
+
+  <!-- Biblioteca de Ícones Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Folha de Estilo Global (Design System Oficial) -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Backdrop para Sidebar no Mobile -->
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+  <div class="app-wrapper">
+    <!-- Sidebar Lateral Escola do Futuro -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-container">
+          <div class="logo-text">
+            ESCOLA DO
+            <span>FUTURO</span>
+          </div>
+        </div>
+        <button id="sidebarCollapseBtn" class="sidebar-collapse-btn" title="Recolher menu">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+      </div>
+
+      <div class="sidebar-search">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="sidebarSearchInput" placeholder="Buscar módulos...">
+        </div>
+      </div>
+
+      <ul class="sidebar-nav" id="sidebarNavList">
+        
+        <!-- MÓDULO 1: PAINEL GERAL -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Painel Geral (Dashboard)</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-chart-line nav-icon"></i>
+              <span>Indicadores de frequência</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-triangle-exclamation nav-icon" style="color: #d97706;"></i>
+              <span>Alertas urgentes</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-chart-column nav-icon"></i>
+              <span>Gráficos de evasão</span>
+            </div>
+          </a>
+        </li>
+
+        <!-- MÓDULO 2: GESTÃO ESCOLAR -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-school-flag"></i>
+          <span>Gestão Escolar</span>
+        </li>
+        <li>
+          <a href="form1.html" class="sidebar-nav-item sub-item active">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-school nav-icon"></i>
+              <span>Cadastro de Escola</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="https://lab.inetz.com.br/devmaker/ava/responsaveis/" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-people-roof nav-icon"></i>
+              <span>Cadastro de Responsáveis</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-user-graduate nav-icon"></i>
+              <span>Cadastro de Alunos</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-file-pen nav-icon"></i>
+              <span>Ocorrências</span>
+            </div>
+          </a>
+        </li>
+
+        <!-- MÓDULO 3: BUSCA ATIVA -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-bolt"></i>
+          <span>Busca Ativa</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-bolt-lightning nav-icon" style="color: #ca8a04;"></i>
+              <span>Chamada Inicial</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-circle-exclamation nav-icon" style="color: #dc2626;"></i>
+              <span>Alertas Pendentes</span>
+            </div>
+          </a>
+        </li>
+
+        <!-- MÓDULO 4: CONTROLE DE EQUIPAMENTOS -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span>Controle de Equipamentos</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-box-archive nav-icon"></i>
+              <span>Inventário de Itens</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-arrow-rotate-left nav-icon"></i>
+              <span>Empréstimos e Devoluções</span>
+            </div>
+          </a>
+        </li>
+
+        <!-- MÓDULO 5: CONFIGURAÇÕES -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-gear"></i>
+          <span>Configurações</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-chalkboard-user nav-icon"></i>
+              <span>Turmas e Horários</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-user-lock nav-icon"></i>
+              <span>Controle de Acesso</span>
+            </div>
+          </a>
+        </li>
+
+      </ul>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+      <!-- Top Header Bar -->
+      <header class="top-header">
+        <button id="mobileMenuToggle" class="header-left-toggle" title="Menu Lateral">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="header-right">
+          <!-- Environmental Badge -->
+          <div id="envBadge" class="env-badge prod">
+            <i class="fa-solid fa-circle-nodes"></i> API: GEDUC Produção
+          </div>
+
+          <!-- Botão Acesso Rápido -->
+          <button class="header-btn-red" title="Acesso Rápido">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </button>
+
+          <!-- Pedagógica Vision Button -->
+          <button class="header-btn-pedagogica" title="Visão Pedagógica">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Ir para Visão Pedagógica</span>
+          </button>
+
+          <!-- User Profile -->
+          <div class="user-profile" title="Perfil do Usuário">
+            <div class="avatar-circle">AJ</div>
+            <div class="user-details">
+              <span class="user-name">Adriano Justino Rosa</span>
+              <span class="user-role">Administrador / Professor</span>
+              <span class="user-school">Antonio Reginato Prof</span>
+            </div>
+            <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: #64748b;"></i>
+          </div>
+
+          <!-- Notification Bell -->
+          <div class="notification-btn" title="Notificações">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge-dot">1</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Canvas de Conteúdo -->
+      <div class="content-canvas">
+        <!-- Breadcrumb Navigation -->
+        <nav class="breadcrumb">
+          <span>Home</span>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span>Gestão Escolar</span>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span class="current">Cadastro de Escola</span>
+        </nav>
+
+        <!-- Header da Página -->
+        <div class="page-header">
+          <div class="page-title-row">
+            <i class="fa-solid fa-school-flag"></i>
+            <h1>Gestão Escolar</h1>
+          </div>
+          <div class="section-subtitle-row">
+            <i class="fa-solid fa-school"></i>
+            <span>Cadastro e Vinculação de Unidade Escolar</span>
+          </div>
+        </div>
+
+        <!-- Container para Alertas e Feedback -->
+        <div id="alertContainer"></div>
+
+        <!-- Card de Contexto e Filtros -->
+        <section class="filtros-card">
+          <div class="filtros-top-bar">
+            <div class="filtros-header-left">
+              <div class="filtros-title">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Contexto Institucional</span>
+              </div>
+              <span class="filter-tag">URE: <strong>Marília</strong></span>
+              <span class="filter-tag">Município: <strong>Marília - SP</strong></span>
+              <span class="filter-tag">Rede: <strong>Estadual (SEDUC SP)</strong></span>
+            </div>
+
+            <div class="filtros-header-right">
+              <div class="year-badge">
+                2026 <i class="fa-regular fa-calendar"></i>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card Dinâmico de Prévia da Escola em Tempo Real -->
+        <div id="escolaPreviewCard" class="student-info-card">
+          <div class="student-info-main">
+            <div class="student-avatar-icon">
+              <i class="fa-solid fa-school"></i>
+            </div>
+            <div class="student-details-text">
+              <span id="previewNome" class="student-name">Nova Escola (Aguardando preenchimento)</span>
+              <span id="previewEndereco" class="student-meta">
+                <i class="fa-solid fa-location-dot"></i> <span id="previewEnderecoTxt">Informe o endereço da unidade</span>
+              </span>
+            </div>
+          </div>
+          <div class="student-badge-tag">
+            <i class="fa-solid fa-circle-check" style="color: var(--sf-brand-blue);"></i>
+            <span id="previewStatus">Formulário de Cadastro</span>
+          </div>
+        </div>
+
+        <!-- Formulário de Cadastro da Escola -->
+        <main class="form-card">
+          <div class="form-section-title">
+            <span class="step-pill">1</span>
+            <span>Dados da Unidade Escolar</span>
+          </div>
+
+          <form id="escolaForm" novalidate>
+            <div class="form-grid-2col">
+              <!-- Nome da Escola -->
+              <div class="form-group full-width">
+                <label for="nome">
+                  <i class="fa-solid fa-school" style="color: #64748b;"></i> Nome da Escola <span class="required-star">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="nome" 
+                  name="nome" 
+                  placeholder="Ex: E.E. Professor Antonio Reginato" 
+                  required
+                >
+              </div>
+
+              <!-- Endereço -->
+              <div class="form-group full-width">
+                <label for="endereco">
+                  <i class="fa-solid fa-location-dot" style="color: #64748b;"></i> Endereço Completo <span class="required-star">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="endereco" 
+                  name="endereco" 
+                  placeholder="Ex: Av. Tiradentes, 450 - Centro - Marília/SP" 
+                  required
+                >
+              </div>
+
+              <!-- Telefone -->
+              <div class="form-group">
+                <label for="telefone">
+                  <i class="fa-solid fa-phone" style="color: #64748b;"></i> Telefone de Contato <span class="required-star">*</span>
+                </label>
+                <input 
+                  type="tel" 
+                  id="telefone" 
+                  name="telefone" 
+                  placeholder="(00) 0000-0000" 
+                  required
+                >
+              </div>
+
+              <!-- E-mail -->
+              <div class="form-group">
+                <label for="email">
+                  <i class="fa-solid fa-envelope" style="color: #64748b;"></i> E-mail Institucional <span class="required-star">*</span>
+                </label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  placeholder="escola@educacao.sp.gov.br" 
+                  required
+                >
+              </div>
+            </div>
+
+            <!-- Botão de Envio -->
+            <button type="submit" id="btnSubmit" class="btn-submit">
+              <i class="fa-solid fa-paper-plane"></i> Cadastrar Escola
+            </button>
+          </form>
+        </main>
+
+        <!-- Footer Oficial -->
+        <footer class="app-footer">
+          Escola Estadual Antonio Reginato &bull; Sistema Integrado GEDUC &bull; DevMaker &bull; Escola do Futuro
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts Modulares Compartilhados e Específicos -->
+  <script src="app.js"></script>
+  <script src="form1.js"></script>
+</body>
+</html>

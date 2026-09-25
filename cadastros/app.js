@@ -1,0 +1,130 @@
+/**
+ * app.js - Script Global e Compartilhado da Escola do Futuro
+ * Contém o comportamento padrão da interface (Sidebar, Busca, Máscaras, Alertas)
+ * Reutilizável em todas as páginas e cadastros da aplicação.
+ */
+
+window.EscolaDoFuturo = window.EscolaDoFuturo || {};
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Elementos comuns do Layout
+  const sidebar = document.getElementById('sidebar');
+  const sidebarCollapseBtn = document.getElementById('sidebarCollapseBtn');
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+  const sidebarSearchInput = document.getElementById('sidebarSearchInput');
+  const sidebarNavList = document.getElementById('sidebarNavList');
+
+  // Restaura estado de recolhimento da sidebar no desktop
+  const isCollapsedSaved = localStorage.getItem('sidebar_collapsed') === 'true';
+  if (isCollapsedSaved && sidebar && window.innerWidth > 900) {
+    sidebar.classList.add('collapsed');
+  }
+
+  // Alterna gaveta mobile da sidebar
+  function toggleMobileSidebar() {
+    if (!sidebar) return;
+    const isOpen = sidebar.classList.toggle('open');
+    if (sidebarBackdrop) {
+      sidebarBackdrop.classList.toggle('active', isOpen);
+    }
+  }
+
+  if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener('click', toggleMobileSidebar);
+  }
+
+  if (sidebarBackdrop) {
+    sidebarBackdrop.addEventListener('click', () => {
+      if (sidebar) sidebar.classList.remove('open');
+      sidebarBackdrop.classList.remove('active');
+    });
+  }
+
+  if (sidebarCollapseBtn && sidebar) {
+    sidebarCollapseBtn.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+        toggleMobileSidebar();
+      } else {
+        sidebar.classList.toggle('collapsed');
+        const isCollapsed = sidebar.classList.contains('collapsed');
+        localStorage.setItem('sidebar_collapsed', isCollapsed ? 'true' : 'false');
+      }
+    });
+  }
+
+  // Filtro de busca de módulos na sidebar
+  if (sidebarSearchInput && sidebarNavList) {
+    sidebarSearchInput.addEventListener('input', (e) => {
+      const termo = e.target.value.toLowerCase().trim();
+      const items = sidebarNavList.querySelectorAll('li');
+
+      items.forEach(item => {
+        if (item.classList.contains('nav-category-header')) return;
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(termo) ? '' : 'none';
+      });
+    });
+  }
+});
+
+/**
+ * Utilitário: Aplica máscara dinâmica de telefone brasileiro (Fixo: 10 dígitos / Celular: 11 dígitos)
+ * @param {HTMLInputElement} input
+ */
+EscolaDoFuturo.aplicarMascaraTelefone = function(input) {
+  if (!input) return;
+  input.addEventListener('input', (e) => {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 11) value = value.slice(0, 11);
+
+    if (value.length > 10) {
+      value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`;
+    } else if (value.length > 6) {
+      value = `(${value.slice(0, 2)}) ${value.slice(2, 6)}-${value.slice(6)}`;
+    } else if (value.length > 2) {
+      value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+    } else if (value.length > 0) {
+      value = `(${value}`;
+    }
+
+    e.target.value = value;
+  });
+};
+
+/**
+ * Utilitário: Exibe caixa de alerta padronizada do Design System
+ * @param {string} containerId - ID do elemento onde o alerta será inserido
+ * @param {'success'|'error'} tipo - Tipo do alerta
+ * @param {string} titulo - Título em negrito do alerta
+ * @param {string} mensagem - Texto ou HTML detalhado da mensagem
+ */
+EscolaDoFuturo.mostrarAlerta = function(containerId, tipo, titulo, mensagem) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const icon = tipo === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation';
+  const iconColor = tipo === 'success' ? 'var(--sf-success-green)' : 'var(--sf-accent-red)';
+
+  container.innerHTML = `
+    <div class="alert-box ${tipo}">
+      <i class="fa-solid ${icon}" style="font-size: 1.25rem; color: ${iconColor}; margin-top: 2px;"></i>
+      <div>
+        <strong>${titulo}</strong><br>
+        ${mensagem}
+      </div>
+    </div>
+  `;
+  container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+};
+
+/**
+ * Utilitário: Limpa os alertas do container informado
+ * @param {string} containerId
+ */
+EscolaDoFuturo.limparAlertas = function(containerId) {
+  const container = document.getElementById(containerId);
+  if (container) {
+    container.innerHTML = '';
+  }
+};
