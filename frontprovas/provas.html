@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal de Avaliações - 3º Bimestre | Prof. Adriano Rosa</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --badge-bg: #dbeafe;
+      --badge-text: #1e40af;
+      --shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+      --shadow-hover: 0 10px 25px rgba(37, 99, 235, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding: 30px 16px 60px 16px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* Cabeçalho */
+    header {
+      background: var(--card-bg);
+      padding: 32px 28px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-left: 8px solid var(--accent);
+      margin-bottom: 28px;
+      text-align: left;
+    }
+
+    .top-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-bimestre {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge-curso {
+      background-color: var(--badge-bg);
+      color: var(--badge-text);
+    }
+
+    h1 {
+      font-size: 1.85rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      margin-bottom: 20px;
+    }
+
+    .meta-box {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      padding: 16px 20px;
+      background: #f1f5f9;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      font-size: 0.95rem;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #334155;
+    }
+
+    .meta-item strong {
+      color: var(--primary);
+    }
+
+    /* Lista de Provas / Botões */
+    .provas-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .prova-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      transition: all 0.25s ease;
+    }
+
+    .prova-card:hover {
+      border-color: #93c5fd;
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    .prova-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .icon-wrapper {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      background: var(--primary-light);
+      flex-shrink: 0;
+    }
+
+    .prova-texts h2 {
+      font-size: 1.2rem;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .prova-texts p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    /* Botão de Acesso */
+    .btn-acessar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.98rem;
+      border-radius: 10px;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .btn-acessar:hover {
+      background: linear-gradient(135deg, var(--primary-hover), var(--primary));
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+      transform: scale(1.02);
+    }
+
+    .btn-acessar svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    @media (max-width: 640px) {
+      .prova-card {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+      }
+      .btn-acessar {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    /* Rodapé */
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Cabeçalho Institucional -->
+  <header>
+    <div class="top-meta">
+      <span class="badge badge-bimestre">3º Bimestre • 2026</span>
+      <span class="badge badge-curso">Desenvolvimento de Sistemas</span>
+    </div>
+    <h1>Portal de Avaliações Técnicas</h1>
+    <p class="subtitle">Selecione o componente curricular abaixo para acessar o formulário oficial de prova.</p>
+
+    <!-- Bloco de Identificação Clara: Professor, Escola e Bimestre -->
+    <div class="meta-box">
+      <div class="meta-item">
+        <span>👨‍🏫 <strong>Professor:</strong> Adriano Rosa</span>
+      </div>
+      <div class="meta-item">
+        <span>📅 <strong>Bimestre:</strong> 3º Bimestre</span>
+      </div>
+      <div class="meta-item">
+        <span>🏫 <strong>Escola:</strong> EE Antonio Reginato</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Lista de Disciplinas / Botões -->
+  <main class="provas-grid">
+
+    <!-- 1. Redes de Computadores -->
+    <article class="prova-card">
+      <div class="prova-info">
+        <div class="icon-wrapper">🌐</div>
+        <div class="prova-texts">
+          <h2>Redes de Computadores</h2>
+          <p>Avaliação técnica objetiva • 20 questões</p>
+        </div>
+      </div>
+      <!-- ATENÇÃO: Insira o link da prova no atributo href abaixo -->
+      <a href="#" class="btn-acessar" target="_blank" rel="noopener noreferrer">
+        <span>Acessar Prova</span>
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </article>
+
+    <!-- 2. Carreira e Competências para o Mercado de Trabalho -->
+    <article class="prova-card">
+      <div class="prova-info">
+        <div class="icon-wrapper">💼</div>
+        <div class="prova-texts">
+          <h2>Carreira e Competências para o Mercado de Trabalho</h2>
+          <p>Avaliação técnica objetiva • 20 questões (CCM)</p>
+        </div>
+      </div>
+      <!-- ATENÇÃO: Insira o link da prova no atributo href abaixo -->
+      <a href="https://lab.inetz.com.br/devmaker/ava/frontprovas/ccm_3b2.html" class="btn-acessar" target="_blank" rel="noopener noreferrer">
+        <span>Acessar Prova</span>
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </article>
+
+    <!-- 3. Inteligência Artificial -->
+    <article class="prova-card">
+      <div class="prova-info">
+        <div class="icon-wrapper">🤖</div>
+        <div class="prova-texts">
+          <h2>Inteligência Artificial</h2>
+          <p>Avaliação técnica objetiva • 20 questões</p>
+        </div>
+      </div>
+      <!-- ATENÇÃO: Insira o link da prova no atributo href abaixo -->
+      <a href="https://lab.inetz.com.br/devmaker/ava/frontprovas/redes3b.html" class="btn-acessar" target="_blank" rel="noopener noreferrer">
+        <span>Acessar Prova</span>
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </article>
+
+    <!-- 4. Programação Backend -->
+    <article class="prova-card">
+      <div class="prova-info">
+        <div class="icon-wrapper">⚙️</div>
+        <div class="prova-texts">
+          <h2>Programação Backend</h2>
+          <p>Avaliação técnica objetiva • 20 questões</p>
+        </div>
+      </div>
+      <!-- ATENÇÃO: Insira o link da prova no atributo href abaixo -->
+      <a href="#" class="btn-acessar" target="_blank" rel="noopener noreferrer">
+        <span>Acessar Prova</span>
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </article>
+
+    <!-- 5. Programação Frontend -->
+    <article class="prova-card">
+      <div class="prova-info">
+        <div class="icon-wrapper">💻</div>
+        <div class="prova-texts">
+          <h2>Programação Frontend</h2>
+          <p>Avaliação técnica objetiva • 20 questões</p>
+        </div>
+      </div>
+      <!-- ATENÇÃO: Insira o link da prova no atributo href abaixo -->
+      <a href="#" class="btn-acessar" target="_blank" rel="noopener noreferrer">
+        <span>Acessar Prova</span>
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </article>
+
+  </main>
+
+  <!-- Rodapé -->
+  <footer>
+    <p><strong>EE Antonio Reginato</strong> • Ensino Médio Técnico em Desenvolvimento de Sistemas</p>
+    <p>Professor Adriano Rosa • 3º Bimestre de 2026</p>
+  </footer>
+</div>
+
+</body>
+</html>
