@@ -1,260 +1,546 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Avaliação Digital - Redes de Computadores</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avaliação: Redes de Computadores e Segurança</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-hover: #1e40af;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --border: #e2e8f0;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 24px 12px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: var(--card-bg);
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
+      border-left: 6px solid var(--accent);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    p.subtitle {
+      color: #64748b;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+    }
+
+    .student-data {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .student-data {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .input-group input:focus {
+      border-color: var(--accent);
+      ring: 2px var(--accent);
+    }
+
+    .question-card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border);
+    }
+
+    .question-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .question-text {
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .option:hover {
+      background-color: #f1f5f9;
+    }
+
+    .option input[type="radio"] {
+      margin-top: 4px;
+    }
+
+    .option-text {
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .btn-submit {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-top: 32px;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-submit:disabled {
+      background-color: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    #feedback {
+      display: none;
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .feedback-success {
+      background-color: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .feedback-error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+  </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen py-10 px-4">
-  <div class="max-w-3xl mx-auto">
-    <!-- Header -->
-    <header class="bg-slate-800 border border-slate-700 rounded-2xl p-6 mb-6 shadow-xl">
-      <h1 class="text-2xl font-bold text-sky-400">Avaliação de Redes de Computadores</h1>
-      <p class="text-slate-400 text-sm mt-1">IPv4, Sub-redes, DNS e Infraestrutura Web</p>
-      
-      <!-- Identificação do Aluno -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">RA do Estudante</label>
-          <input id="ra" type="text" placeholder="Ex: 20095423" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sky-500">
+
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Avaliação de Redes de Computadores e Segurança</h1>
+      <p class="subtitle">IPv4, Sub-redes e Resolução DNS (Registro.br ao Cache Cloudflare)</p>
+
+      <div class="student-data">
+        <div class="input-group">
+          <label for="studentName">Nome Completo:</label>
+          <input type="text" id="studentName" placeholder="Ex: João da Silva" required />
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Nome Completo</label>
-          <input id="nome" type="text" placeholder="Digite seu nome" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sky-500">
+        <div class="input-group">
+          <label for="studentRA">RA (Registro do Aluno):</label>
+          <input type="text" id="studentRA" placeholder="Ex: 110573818" required />
         </div>
       </div>
     </header>
 
-    <!-- Barra de Progresso -->
-    <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 mb-6">
-      <div class="flex justify-between text-xs text-slate-400 mb-1">
-        <span>Progresso de Resolução</span>
-        <span id="progress-text">0 / 8 respondidas</span>
-      </div>
-      <div class="w-full bg-slate-700 rounded-full h-2.5">
-        <div id="progress-bar" class="bg-sky-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
-      </div>
-    </div>
-
-    <!-- Container de Questões -->
-    <form id="quiz-form" class="space-y-6">
-      <div id="questions-container" class="space-y-6"></div>
-
-      <button type="submit" id="btn-submit" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-200">
-        Finalizar e Enviar Avaliação
-      </button>
+    <form id="quizForm">
+      <div id="questionsContainer"></div>
+      <button type="submit" id="submitBtn" class="btn-submit">Finalizar e Enviar Respostas</button>
     </form>
 
-    <!-- Feedback / Mensagem Final -->
-    <div id="status-card" class="hidden mt-6 bg-slate-800 border border-emerald-600 rounded-xl p-6 text-center">
-      <h3 class="text-xl font-bold text-emerald-400">Avaliação Registrada com Sucesso!</h3>
-      <p id="result-message" class="text-slate-300 mt-2"></p>
-    </div>
+    <div id="feedback"></div>
   </div>
 
   <script>
-    // Substitua pela URL gerada ao publicar o Web App no Google Apps Script
-    const WEB_APP_URL = "SEU_APPS_SCRIPT_WEBAPP_URL_AQUI";
+    // URL gerada na implantação do Apps Script
+    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw21dJ0gMzRRml0aFwqEI8RfAPnkNYJE4NHQQqKWKpnM2YwFM86RDLSA4MrCP2uHANK/exec";
 
     const questions = [
       {
-        id: "q1",
+        id: 1,
         title: "Questão 1: Estrutura do Endereço IPv4",
-        prompt: "Em relação à arquitetura lógica do protocolo IPv4 (RFC 791), como é estruturado o endereço e qual a função da sua divisão hierárquica?",
-        options: {
-          A: "O IPv4 é formado por 4 bytes separados por pontos, sendo que o primeiro byte indica o país de origem e os demais identificam o computador na LAN.",
-          B: "O IPv4 possui 32 bits divididos em 4 octetos, servindo exclusivamente para indicar a porta lógica de comunicação de um aplicativo.",
-          C: "O IPv4 é composto por 32 bits organizados em quatro octetos decimais, estruturado hierarquicamente em porção de rede (Network ID) e porção de host (Host ID).",
-          D: "O IPv4 possui 64 bits distribuídos em notação decimal pontuada, sendo dividido em prefixo global, sub-rede e identificador de interface.",
-          E: "O IPv4 possui 32 bits divididos igualmente em 16 bits para identificação de rede e 16 bits para identificação de host em todas as configurações modernas."
-        },
-        gabarito: "C"
+        text: "Em relação à arquitetura lógica do protocolo IPv4 (RFC 791), como é estruturado o endereço e qual a função da sua divisão hierárquica?",
+        options: [
+          { letter: "A", text: "O IPv4 é formado por 4 bytes separados por pontos, sendo que o primeiro byte indica o país de origem e os demais identificam o computador na LAN." },
+          { letter: "B", text: "O IPv4 possui 32 bits divididos em 4 octetos, servindo exclusivamente para indicar a porta lógica de comunicação de um aplicativo." },
+          { letter: "C", text: "O IPv4 é composto por 32 bits organizados em quatro octetos decimais, estruturado hierarquicamente em porção de rede (Network ID) e porção de host (Host ID)." },
+          { letter: "D", text: "O IPv4 possui 64 bits distribuídos em notação decimal pontuada, sendo dividido em prefixo global, sub-rede e identificador de interface." },
+          { letter: "E", text: "O IPv4 possui 32 bits divididos igualmente em 16 bits para identificação de rede e 16 bits para identificação de host em todas as configurações modernas." }
+        ]
       },
       {
-        id: "q2",
+        id: 2,
         title: "Questão 2: Notação CIDR e Máscara de Sub-rede",
-        prompt: "Uma estação de trabalho foi configurada estaticamente com o endereço IP 192.168.10.130/26. Qual é a máscara de sub-rede em notação decimal pontuada correspondente e quantos bits restam para endereçamento de hosts?",
-        options: {
-          A: "255.255.255.0 e restam 8 bits para hosts.",
-          B: "255.255.255.128 e restam 7 bits para hosts.",
-          C: "255.255.255.192 e restam 6 bits para hosts.",
-          D: "255.255.255.224 e restam 5 bits para hosts.",
-          E: "255.255.255.192 e restam 26 bits para hosts."
-        },
-        gabarito: "C"
+        text: "Uma estação de trabalho foi configurada estaticamente com o endereço IP 192.168.10.130/26. Qual é a máscara de sub-rede em notação decimal pontuada correspondente e quantos bits restam para endereçamento de hosts?",
+        options: [
+          { letter: "A", text: "255.255.255.0 e restam 8 bits para hosts." },
+          { letter: "B", text: "255.255.255.128 e restam 7 bits para hosts." },
+          { letter: "C", text: "255.255.255.192 e restam 6 bits para hosts." },
+          { letter: "D", text: "255.255.255.224 e restam 5 bits para hosts." },
+          { letter: "E", text: "255.255.255.192 e restam 26 bits para hosts." }
+        ]
       },
       {
-        id: "q3",
+        id: 3,
         title: "Questão 3: Identificação de Endereço de Rede e Broadcast",
-        prompt: "Dada a sub-rede definida pelo bloco 172.16.8.0/22, quais são, respectivamente, o endereço de rede e o endereço de broadcast dessa sub-rede?",
-        options: {
-          A: "Rede: 172.16.8.0 | Broadcast: 172.16.8.255",
-          B: "Rede: 172.16.8.0 | Broadcast: 172.16.11.255",
-          C: "Rede: 172.16.0.0 | Broadcast: 172.16.15.255",
-          D: "Rede: 172.16.8.1 | Broadcast: 172.16.11.254",
-          E: "Rede: 172.16.8.0 | Broadcast: 172.16.12.0"
-        },
-        gabarito: "B"
+        text: "Dada a sub-rede definida pelo bloco 172.16.8.0/22, quais são, respectivamente, o endereço de rede e o endereço de broadcast dessa sub-rede?",
+        options: [
+          { letter: "A", text: "Rede: 172.16.8.0 | Broadcast: 172.16.8.255" },
+          { letter: "B", text: "Rede: 172.16.8.0 | Broadcast: 172.16.11.255" },
+          { letter: "C", text: "Rede: 172.16.0.0 | Broadcast: 172.16.15.255" },
+          { letter: "D", text: "Rede: 172.16.8.1 | Broadcast: 172.16.11.254" },
+          { letter: "E", text: "Rede: 172.16.8.0 | Broadcast: 172.16.12.0" }
+        ]
       },
       {
-        id: "q4",
+        id: 4,
         title: "Questão 4: Cálculo de Hosts Válidos",
-        prompt: "Um administrador precisa planejar uma sub-rede para um departamento que conta com 28 estações de trabalho e 2 impressoras em rede. Qual é a máscara de menor tamanho que atende exatamente a essa demanda sem desperdício excessivo de IPs?",
-        options: {
-          A: "/28 (255.255.255.240), suportando 30 hosts.",
-          B: "/26 (255.255.255.192), pois garante margem ampla de segurança.",
-          C: "/27 (255.255.255.224), fornecendo capacidade para 30 hosts utilizáveis.",
-          D: "/27 (255.255.255.224), fornecendo capacidade para 32 hosts utilizáveis.",
-          E: "/29 (255.255.255.248), fornecendo capacidade para 30 hosts utilizáveis."
-        },
-        gabarito: "C"
+        text: "Um administrador precisa planejar uma sub-rede para um departamento que conta com 28 estações de trabalho e 2 impressoras em rede. Qual é a máscara de menor tamanho que atende exatamente a essa demanda sem desperdício excessivo de IPs?",
+        options: [
+          { letter: "A", text: "/28 (255.255.255.240), suportando 30 hosts." },
+          { letter: "B", text: "/26 (255.255.255.192), pois garante margem ampla de segurança." },
+          { letter: "C", text: "/27 (255.255.255.224), fornecendo capacidade para 30 hosts utilizáveis." },
+          { letter: "D", text: "/27 (255.255.255.224), fornecendo capacidade para 32 hosts utilizáveis." },
+          { letter: "E", text: "/29 (255.255.255.248), fornecendo capacidade para 30 hosts utilizáveis." }
+        ]
       },
       {
-        id: "q5",
+        id: 5,
         title: "Questão 5: Divisão em Sub-redes Fixas (FLSM)",
-        prompt: "A partir do bloco IPv4 192.168.1.0/24, deseja-se dividi-lo em 4 sub-redes de igual capacidade. Qual será o intervalo de endereços IP utilizáveis da segunda sub-rede?",
-        options: {
-          A: "192.168.1.64 até 192.168.1.127",
-          B: "192.168.1.65 até 192.168.1.126",
-          C: "192.168.1.33 até 192.168.1.62",
-          D: "192.168.1.1 até 192.168.1.62",
-          E: "192.168.1.65 até 192.168.1.127"
-        },
-        gabarito: "B"
+        text: "A partir do bloco IPv4 192.168.1.0/24, deseja-se dividi-lo em 4 sub-redes de igual capacidade. Qual será o intervalo de endereços IP utilizáveis da segunda sub-rede?",
+        options: [
+          { letter: "A", text: "192.168.1.64 até 192.168.1.127" },
+          { letter: "B", text: "192.168.1.65 até 192.168.1.126" },
+          { letter: "C", text: "192.168.1.33 até 192.168.1.62" },
+          { letter: "D", text: "192.168.1.1 até 192.168.1.62" },
+          { letter: "E", text: "192.168.1.65 até 192.168.1.127" }
+        ]
       },
       {
-        id: "q6",
+        id: 6,
         title: "Questão 6: Intervalo de Endereçamento Privado (RFC 1918)",
-        prompt: "Dentre as faixas a seguir, assinale a opção que contém estritamente um endereço pertencente ao escopo de IPs privados e não roteáveis na internet pública:",
-        options: {
-          A: "172.33.10.15",
-          B: "192.169.50.100",
-          C: "10.150.20.1",
-          D: "169.254.10.5",
-          E: "127.0.0.1"
-        },
-        gabarito: "C"
+        text: "Dentre as faixas a seguir, assinale a opção que contém estritamente um endereço pertencente ao escopo de IPs privados e não roteáveis na internet pública:",
+        options: [
+          { letter: "A", text: "172.33.10.15" },
+          { letter: "B", text: "192.169.50.100" },
+          { letter: "C", text: "10.150.20.1" },
+          { letter: "D", text: "169.254.10.5" },
+          { letter: "E", text: "127.0.0.1" }
+        ]
       },
       {
-        id: "q7",
-        title: "Questão 7: Operação Lógica AND para Roteamento",
-        prompt: "Como uma estação cliente determina se um pacote de dados deve ser entregue diretamente na rede local (via ARP) ou encaminhado ao Default Gateway?",
-        options: {
-          A: "O cliente envia uma mensagem de broadcast DNS perguntando se o IP de destino é local.",
-          B: "O cliente compara o endereço MAC de destino com a tabela do switch gerenciável.",
-          C: "O cliente executa a operação lógica AND entre o seu próprio IP e a máscara, e entre o IP de destino e a máscara; se os resultados forem idênticos, a entrega é local.",
-          D: "O cliente verifica se o primeiro octeto do IP de destino termina em número par ou ímpar.",
-          E: "O cliente sempre envia o pacote primeiro ao Gateway, e o roteador decide se devolve para a LAN."
-        },
-        gabarito: "C"
+        id: 7,
+        title: "Questão 7: Operação Lógica AND para Decisão de Roteamento",
+        text: "Como uma estação cliente determina se um pacote de dados deve ser entregue diretamente na rede local (via ARP) ou encaminhado ao Default Gateway?",
+        options: [
+          { letter: "A", text: "O cliente envia uma mensagem de broadcast DNS perguntando se o IP de destino é local." },
+          { letter: "B", text: "O cliente compara o endereço MAC de destino com a tabela do switch gerenciável." },
+          { letter: "C", text: "O cliente executa a operação lógica AND entre o seu próprio IP e a máscara, e entre o IP de destino e a máscara; se os resultados forem idênticos, a entrega é local." },
+          { letter: "D", text: "O cliente verifica se o primeiro octeto do IP de destino termina em número par ou ímpar." },
+          { letter: "E", text: "O cliente sempre envia o pacote primeiro ao Gateway, e o roteador decide se devolve para a LAN." }
+        ]
       },
       {
-        id: "q8",
+        id: 8,
         title: "Questão 8: Ciclo Operacional do Protocolo DHCP (DORA)",
-        prompt: "Ao conectar um dispositivo em uma porta ethernet de rede local, ele negocia suas configurações IP automáticas via DHCP. Qual é a sequência cronológica correta das quatro mensagens trocadas?",
-        options: {
-          A: "DHCP Request -> DHCP Discover -> DHCP Offer -> DHCP Acknowledge",
-          B: "DHCP Offer -> DHCP Request -> DHCP Discover -> DHCP Acknowledge",
-          C: "DHCP Discover -> DHCP Offer -> DHCP Request -> DHCP Acknowledge",
-          D: "DHCP Discover -> DHCP Request -> DHCP Offer -> DHCP Acknowledge",
-          E: "DHCP Request -> DHCP Offer -> DHCP Discover -> DHCP Acknowledge"
-        },
-        gabarito: "C"
+        text: "Ao conectar um dispositivo em uma porta ethernet de rede local, ele negocia suas configurações IP automáticas via DHCP. Qual é a sequência cronológica correta das quatro mensagens trocadas?",
+        options: [
+          { letter: "A", text: "DHCP Request -> DHCP Discover -> DHCP Offer -> DHCP Acknowledge." },
+          { letter: "B", text: "DHCP Offer -> DHCP Request -> DHCP Discover -> DHCP Acknowledge." },
+          { letter: "C", text: "DHCP Discover -> DHCP Offer -> DHCP Request -> DHCP Acknowledge." },
+          { letter: "D", text: "DHCP Discover -> DHCP Request -> DHCP Offer -> DHCP Acknowledge." },
+          { letter: "E", text: "DHCP Solicit -> DHCP Advertise -> DHCP Request -> DHCP Reply." }
+        ]
+      },
+      {
+        id: 9,
+        title: "Questão 9: Estrutura Hierárquica do Sistema DNS",
+        text: "O Domain Name System (DNS) é uma base de dados distribuída e hierárquica. Ao resolver um domínio nacional terminado em .br, qual servidor representa a autoridade máxima imediatamente abaixo dos Root Servers?",
+        options: [
+          { letter: "A", text: "O servidor de nomes do subdomínio estadual ou municipal." },
+          { letter: "B", text: "O servidor autoritativo da instituição final." },
+          { letter: "C", text: "O servidor responsável pelo TLD (Top-Level Domain) .br administrado pela entidade de registro do país." },
+          { letter: "D", text: "O servidor recursivo local configurado na placa de rede do cliente." },
+          { letter: "E", text: "Os servidores de cache da borda da rede." }
+        ]
+      },
+      {
+        id: 10,
+        title: "Questão 10: Papel do Registro.br no Ecossistema DNS Nacional",
+        text: "Qual é a responsabilidade técnica e institucional do NIC.br e Registro.br no fluxo de resolução de nomes na internet brasileira?",
+        options: [
+          { letter: "A", text: "Hospedar as páginas web e gerenciar os certificados SSL de todas as empresas nacionais." },
+          { letter: "B", text: "Atuar como resolvedor de cache DNS recursivo obrigatório para todos os provedores de internet." },
+          { letter: "C", text: "Administrar a zona raiz do ccTLD .br e manter a delegação oficial dos servidores de nomes autoritativos de cada domínio registrado." },
+          { letter: "D", text: "Filtrar o tráfego HTTP contra ataques cibernéticos em primeira camada para domínios nacionais." },
+          { letter: "E", text: "Converter diretamente os nomes de domínio em endereços físicos de hardware MAC." }
+        ]
+      },
+      {
+        id: 11,
+        title: "Questão 11: Delegação de Servidores DNS (Registros NS)",
+        text: "Ao registrar um domínio no Registro.br e optar por utilizar a infraestrutura gerenciada de um provedor de nuvem como a Cloudflare, qual procedimento deve ser realizado no painel do Registro.br?",
+        options: [
+          { letter: "A", text: "Criar um registro do tipo A apontando diretamente para o IP 127.0.0.1." },
+          { letter: "B", text: "Cadastrar os servidores de nomes autoritativos (servidores NS informados pelo provedor) nos campos de DNS do domínio." },
+          { letter: "C", text: "Inserir um registro CNAME vinculando o domínio raiz ao site da entidade." },
+          { letter: "D", text: "Fazer o envio dos arquivos HTML diretamente nos servidores do Registro.br." },
+          { letter: "E", text: "Alterar a máscara de sub-rede do provedor local para liberar a porta 53 UDP." }
+        ]
+      },
+      {
+        id: 12,
+        title: "Questão 12: Tipos de Registros de Zona DNS (A, CNAME, MX, TXT)",
+        text: "Uma instituição precisa configurar o envio do tráfego do site para um servidor IPv4, criar um apelido para um portal de suporte e configurar servidores de correio eletrônico. Quais tipos de registros DNS devem ser criados, respectivamente?",
+        options: [
+          { letter: "A", text: "CNAME, A e TXT." },
+          { letter: "B", text: "PTR, NS e SOA." },
+          { letter: "C", text: "A, CNAME e MX." },
+          { letter: "D", text: "A, AAAA e PTR." },
+          { letter: "E", text: "MX, CNAME e A." }
+        ]
+      },
+      {
+        id: 13,
+        title: "Questão 13: Resolução Recursiva versus Autoritativa",
+        text: "Qual é a diferença fundamental entre um servidor DNS Recursivo (como o resolvedor do ISP ou 1.1.1.1) e um servidor DNS Autoritativo?",
+        options: [
+          { letter: "A", text: "O recursivo armazena o arquivo de zona oficial, enquanto o autoritativo apenas consulta outros servidores." },
+          { letter: "B", text: "O recursivo trabalha na camada física, enquanto o autoritativo trabalha na camada de aplicação." },
+          { letter: "C", text: "O servidor recursivo busca a resposta navegando pela hierarquia da internet em nome do cliente, enquanto o autoritativo possui as respostas definitivas sobre uma zona específica." },
+          { letter: "D", text: "O autoritativo criptografa todas as consultas, enquanto o recursivo não suporta segurança." },
+          { letter: "E", text: "O recursivo só funciona com endereços IPv6, e o autoritativo apenas com IPv4." }
+        ]
+      },
+      {
+        id: 14,
+        title: "Questão 14: Time-To-Live (TTL) e Comportamento de Cache",
+        text: "Se um registro DNS do tipo A possui um valor de TTL configurado em 300 segundos, qual é o impacto direto dessa configuração durante uma migração de servidor de hospedagem?",
+        options: [
+          { letter: "A", text: "As estações clientes e servidores recursivos manterão o IP antigo em cache por até 5 minutos após a alteração, garantindo rápida convergência da nova rota." },
+          { letter: "B", text: "O servidor levará 300 horas para propagar a informação para o Registro.br." },
+          { letter: "C", text: "As conexões TCP ativas cairão a cada 300 segundos independentemente da aplicação." },
+          { letter: "D", text: "O domínio ficará completamente inacessível e fora do ar durante os 300 segundos subsequentes." },
+          { letter: "E", text: "O provedor de nuvem renovará as chaves criptográficas SSL/TLS a cada 5 minutos." }
+        ]
+      },
+      {
+        id: 15,
+        title: "Questão 15: Ocultação do IP de Origem e Proxy Reverso",
+        text: "Ao habilitar o recurso de Proxy na Cloudflare (modo proxy ativado / Nuvem Laranja), o que acontece quando um usuário externo realiza uma consulta DNS pelo domínio da empresa?",
+        options: [
+          { letter: "A", text: "O usuário recebe o IP real da máquina física do data center da empresa." },
+          { letter: "B", text: "A consulta DNS retorna o endereço IP da infraestrutura Anycast de borda da Cloudflare, ocultando o IP de origem do servidor de hospedagem." },
+          { letter: "C", text: "O domínio deixa de responder consultas DNS e passa a operar exclusivamente por túneis VPN privados." },
+          { letter: "D", text: "O computador do usuário é bloqueado automaticamente pelo firewall da máquina cliente." },
+          { letter: "E", text: "A consulta DNS é convertida em um pacote broadcast na rede local do usuário." }
+        ]
+      },
+      {
+        id: 16,
+        title: "Questão 16: Roteamento Anycast e Distribuição de Tráfego",
+        text: "A rede global de borda utiliza a técnica de roteamento Anycast para responder às consultas DNS e requisições Web. Como funciona esse mecanismo no nível de roteamento IP?",
+        options: [
+          { letter: "A", text: "Cada servidor no mundo possui um endereço IP público exclusivo, e o cliente escolhe manualmente a rota." },
+          { letter: "B", text: "Múltiplos datacenters distribuídos geograficamente anunciam o mesmo endereço IP via protocolo BGP, fazendo com que o tráfego do cliente seja encaminhado ao ponto de presença mais próximo na rede." },
+          { letter: "C", text: "Os servidores transmitem os pacotes via satélite geoestacionário para todos os continentes simultaneamente." },
+          { letter: "D", text: "O IP do site muda a cada requisição de forma randômica para confundir invasores." },
+          { letter: "E", text: "O tráfego do usuário sempre viaja para o data center central nos Estados Unidos para validação antes de voltar." }
+        ]
+      },
+      {
+        id: 17,
+        title: "Questão 17: Autenticação de E-mails via DNS (SPF, DKIM e DMARC)",
+        text: "Para proteger o domínio contra ataques de falsificação de identidade (e-mail spoofing) e phishing, quais registros DNS devem ser configurados na zona autoritativa?",
+        options: [
+          { letter: "A", text: "Registros AAAA contendo os hashes criptográficos das senhas dos usuários." },
+          { letter: "B", text: "Registros PTR apontando para o endereço de IP do modem residencial do funcionário." },
+          { letter: "C", text: "Registros TXT contendo as diretivas SPF, chaves públicas DKIM e políticas de alinhamento DMARC." },
+          { letter: "D", text: "Registros CNAME apontando para a pasta de arquivos de nuvem compartilhada." },
+          { letter: "E", text: "Registros SRV indicando a porta do serviço de FTP de backups." }
+        ]
+      },
+      {
+        id: 18,
+        title: "Questão 18: Mecanismos de Borda: Cache e Mitigação DDoS",
+        text: "Qual é o impacto conjunto da utilização do Proxy Reverso e Cache da Cloudflare na disponibilidade de um site corporativo durante um pico de acessos ou ataque de negação de serviço (DDoS)?",
+        options: [
+          { letter: "A", text: "O tráfego atinge diretamente o servidor de hospedagem, superaquecendo as interfaces físicas de rede." },
+          { letter: "B", text: "A rede de borda absorve o tráfego em sua rede distribuída e atende requisições de arquivos estáticos direto da memória cache, reduzindo a carga no servidor de origem." },
+          { letter: "C", text: "O servidor de origem é desligado preventivamente e todas as transações são canceladas." },
+          { letter: "D", text: "A velocidade de carregamento diminui expressivamente porque o tráfego precisa ser descriptografado manualmente." },
+          { letter: "E", text: "A infraestrutura local do cliente precisa duplicar suas placas de rede para processar o ataque." }
+        ]
+      },
+      {
+        id: 19,
+        title: "Questão 19: Comandos de Diagnóstico e Inspeção DNS",
+        text: "Durante uma rotina de manutenção, o analista precisa verificar qual servidor autoritativo está respondendo por um domínio e inspecionar o registro MX configurado. Qual comando de terminal permite realizar essa investigação interativa?",
+        options: [
+          { letter: "A", text: "ping -t 127.0.0.1" },
+          { letter: "B", text: "tracert 255.255.255.255" },
+          { letter: "C", text: "nslookup (ou dig) consultando especificamente os registros NS e MX." },
+          { letter: "D", text: "ipconfig /release" },
+          { letter: "E", text: "netstat -an" }
+        ]
+      },
+      {
+        id: 20,
+        title: "Questão 20: Fluxo Completo de Resolução e Acesso Web",
+        text: "Considere o caminho percorrido desde a digitação de um endereço seguro no navegador até a exibição da página protegida com proxy de nuvem. Com base nesse fluxo técnico, o que ocorreria se os servidores NS estivessem incorretos no Registro.br?",
+        options: [
+          { letter: "A", text: "O site abriria normalmente, pois o navegador conecta-se diretamente pelo endereço MAC da empresa." },
+          { letter: "B", text: "O resolvedor recursivo não conseguiria encontrar os servidores autoritativos, resultando em falha de resolução (erro NXDOMAIN / SERVFAIL) para o usuário." },
+          { letter: "C", text: "O servidor de origem assumiria automaticamente a transmissão por pacotes ICMP." },
+          { letter: "D", text: "O sistema operacional local geraria um endereço IP dinâmico na faixa APIPA e carregaria o cache local." },
+          { letter: "E", text: "O tráfego seria desviado automaticamente para o motor de busca padrão do navegador." }
+        ]
       }
     ];
 
-    // Renderiza as questões
-    const container = document.getElementById("questions-container");
-    questions.forEach((q, idx) => {
-      const qCard = document.createElement("div");
-      qCard.className = "bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-md";
-      
-      let optionsHtml = "";
-      for (const [letter, text] of Object.entries(q.options)) {
-        optionsHtml += `
-          <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-900/60 border border-slate-700/80 hover:border-sky-500 cursor-pointer transition">
-            <input type="radio" name="${q.id}" value="${letter}" class="mt-1 accent-sky-500 question-radio">
-            <span class="text-sm text-slate-200"><strong class="text-sky-400 font-semibold">${letter})</strong> ${text}</span>
-          </label>
-        `;
-      }
+    // Renderizar as 20 questões dinamicamente
+    const container = document.getElementById("questionsContainer");
 
-      qCard.innerHTML = `
-        <h2 class="text-base font-bold text-sky-400 mb-2">${q.title}</h2>
-        <p class="text-slate-300 text-sm mb-4 leading-relaxed">${q.prompt}</p>
-        <div class="space-y-2">${optionsHtml}</div>
-      `;
-      container.appendChild(qCard);
+    questions.forEach(q => {
+      const card = document.createElement("div");
+      card.className = "question-card";
+
+      let optionsHtml = q.options.map(opt => `
+    <label class="option">
+      <input type="radio" name="q${q.id}" value="${opt.letter}" required />
+      <span class="option-text"><strong>${opt.letter})</strong> ${opt.text}</span>
+    </label>
+  `).join("");
+
+      card.innerHTML = `
+    <div class="question-title">${q.title}</div>
+    <div class="question-text">${q.text}</div>
+    <div class="options">${optionsHtml}</div>
+  `;
+      container.appendChild(card);
     });
 
-    // Atualiza barra de progresso
-    function updateProgress() {
-      const answered = questions.filter(q => document.querySelector(`input[name="${q.id}"]:checked`)).length;
-      const pct = (answered / questions.length) * 100;
-      document.getElementById("progress-bar").style.width = pct + "%";
-      document.getElementById("progress-text").textContent = `${answered} / ${questions.length} respondidas`;
-    }
-
-    document.querySelectorAll(".question-radio").forEach(radio => {
-      radio.addEventListener("change", updateProgress);
-    });
-
-    // Submissão do formulário
-    document.getElementById("quiz-form").addEventListener("submit", async (e) => {
+    // Manipular envio
+    document.getElementById("quizForm").addEventListener("submit", async function (e) {
       e.preventDefault();
-      const ra = document.getElementById("ra").value.trim();
-      const nome = document.getElementById("nome").value.trim();
 
-      if (!ra || !nome) {
-        alert("Por favor, preencha o RA e o Nome antes de enviar.");
+      const nameInput = document.getElementById("studentName").value.trim();
+      const raInput = document.getElementById("studentRA").value.trim();
+
+      if (!nameInput || !raInput) {
+        alert("Por favor, preencha o Nome e o RA antes de submeter.");
         return;
       }
 
-      let acertos = 0;
-      const respostas = {};
-      const gabaritos = {};
+      const submitBtn = document.getElementById("submitBtn");
+      const feedback = document.getElementById("feedback");
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Gravando respostas na planilha...";
 
-      questions.forEach(q => {
-        const selected = document.querySelector(`input[name="${q.id}"]:checked`);
-        const respAluno = selected ? selected.value : "";
-        respostas[q.id] = respAluno;
-        gabaritos["g" + q.id.replace("q", "")] = q.gabarito;
-        if (respAluno === q.gabarito) acertos++;
-      });
+      const respostas = {};
+      for (let i = 1; i <= 20; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        respostas[i] = selected ? selected.value : "";
+      }
 
       const payload = {
-        ra,
-        nome,
-        acertos,
-        respostas,
-        gabaritos,
-        timestamp: new Date().toISOString()
+        nome: nameInput,
+        ra: raInput,
+        escola: "EE Antonio Reginato",
+        serie: "3º A",
+        disciplina: "Redes de Computadores",
+        professor: "Adriano Rosa",
+        respostas: respostas
       };
 
-      const btn = document.getElementById("btn-submit");
-      btn.disabled = true;
-      btn.textContent = "Gravando na planilha...";
-
       try {
-        await fetch(WEB_APP_URL, {
+        const response = await fetch(WEBAPP_URL, {
           method: "POST",
-          mode: "no-cors",
+          mode: "no-cors", // Para evitar bloqueios de CORS simples com o Apps Script
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
 
-        document.getElementById("quiz-form").classList.add("hidden");
-        const statusCard = document.getElementById("status-card");
-        statusCard.classList.remove("hidden");
-        document.getElementById("result-message").innerHTML = 
-          `Obrigado, <strong>${nome}</strong> (RA: ${ra}).<br>Sua avaliação foi registrada com <strong>${acertos} de ${questions.length}</strong> acertos.`;
+        feedback.className = "feedback-success";
+        feedback.style.display = "block";
+        feedback.innerHTML = `Avaliação enviada com sucesso!<br>Parabéns, ${nameInput}. Seus dados e respostas foram registrados na planilha.`;
+        document.getElementById("quizForm").style.display = "none";
+
       } catch (err) {
-        alert("Erro na conexão ao enviar. Tente novamente.");
-        btn.disabled = false;
-        btn.textContent = "Finalizar e Enviar Avaliação";
+        console.error(err);
+        feedback.className = "feedback-error";
+        feedback.style.display = "block";
+        feedback.innerText = "Ocorreu um erro ao enviar suas respostas. Avise o professor.";
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Tentar novamente";
       }
     });
   </script>
 </body>
+
 </html>

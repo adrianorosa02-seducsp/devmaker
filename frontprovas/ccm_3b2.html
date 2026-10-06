@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avaliação: Carreiras e Competências para o Mercado de Trabalho - 3º Bimestre</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --success-bg: #dcfce7;
+      --success-text: #166534;
+      --success-border: #86efac;
+      --error-bg: #fee2e2;
+      --error-text: #991b1b;
+      --error-border: #fca5a5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 24px 14px 60px 14px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: var(--card-bg);
+      padding: 28px;
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
+      border-left: 6px solid var(--accent);
+      border-top: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge-bimestre {
+      display: inline-block;
+      background-color: var(--primary-light);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    h1 {
+      font-size: 1.65rem;
+      color: var(--primary);
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .info-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 12px 16px;
+      background: #f1f5f9;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      color: #334155;
+      margin-bottom: 20px;
+    }
+
+    .info-bar span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .student-data {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--border);
+    }
+
+    @media (max-width: 720px) {
+      .student-data {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      color: var(--text);
+      background-color: #fff;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .progress-bar-container {
+      position: sticky;
+      top: 12px;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      padding: 12px 18px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .progress-text {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #334155;
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), #38bdf8);
+      border-radius: 9999px;
+      transition: width 0.3s ease;
+    }
+
+    .question-card {
+      background: var(--card-bg);
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 22px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--border);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .question-card:focus-within {
+      border-color: #93c5fd;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .question-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .question-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #475569;
+      background: #f1f5f9;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .question-text {
+      font-size: 0.98rem;
+      margin-bottom: 18px;
+      line-height: 1.6;
+      color: #1e293b;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      background: #fff;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .option:hover {
+      background-color: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .option input[type="radio"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #94a3b8;
+      border-radius: 50%;
+      outline: none;
+      margin-top: 3px;
+      flex-shrink: 0;
+      cursor: pointer;
+      display: grid;
+      place-content: center;
+      transition: all 0.2s;
+    }
+
+    .option input[type="radio"]::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      transform: scale(0);
+      transition: transform 0.2s ease-in-out;
+      background-color: var(--accent);
+    }
+
+    .option input[type="radio"]:checked {
+      border-color: var(--accent);
+    }
+
+    .option input[type="radio"]:checked::before {
+      transform: scale(1);
+    }
+
+    .option.selected {
+      background-color: #eff6ff;
+      border-color: #93c5fd;
+    }
+
+    .option-letter {
+      font-weight: 700;
+      color: var(--primary);
+      min-width: 22px;
+    }
+
+    .option-text {
+      font-size: 0.92rem;
+      color: #334155;
+      line-height: 1.45;
+    }
+
+    .submit-section {
+      margin-top: 32px;
+      background: var(--card-bg);
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 480px;
+      padding: 16px 28px;
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.12rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      transition: all 0.25s ease;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background: linear-gradient(135deg, var(--primary-hover), var(--primary));
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:disabled {
+      background: #94a3b8;
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.8s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #feedback {
+      display: none;
+      margin-top: 24px;
+      padding: 24px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .feedback-success {
+      background-color: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid var(--success-border);
+    }
+
+    .feedback-error {
+      background-color: var(--error-bg);
+      color: var(--error-text);
+      border: 1px solid var(--error-border);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: var(--text-muted);
+      font-size: 0.84rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="badge-bimestre">3º Bimestre • Ensino Médio Técnico</div>
+    <h1>Avaliação Técnica: Carreiras e Competências para o Mercado de Trabalho</h1>
+    <p class="subtitle">Componente Curricular: CCM • Desenvolvimento de Sistemas • 20 Questões Objetivas</p>
+
+    <div class="info-bar">
+      <span>🏫 <strong>Escola:</strong> EE Antonio Reginato</span>
+      <span>👨‍🏫 <strong>Professor:</strong> Adriano Rosa</span>
+      <span>📋 <strong>Critério:</strong> 20 Questões (A a E)</span>
+    </div>
+
+    <div class="student-data">
+      <div class="input-group">
+        <label for="studentName">Nome Completo do Aluno(a): *</label>
+        <input type="text" id="studentName" placeholder="Digite seu nome completo" required autocomplete="name" />
+      </div>
+      <div class="input-group">
+        <label for="studentRA">RA com Dígito: *</label>
+        <input type="text" id="studentRA" placeholder="Ex: 000110573818-7" required />
+      </div>
+      <div class="input-group">
+        <label for="studentSerie">Série / Turma: *</label>
+        <select id="studentSerie" required>
+          <option value="1º A">1º Ano A</option>
+          <option value="1º B">1º Ano B</option>
+          <option value="1º C">1º Ano C</option>
+          <option value="2º A">2º Ano A</option>
+          <option value="2º B">2º Ano B</option>
+          <option value="3º A">3º Ano A</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <div class="progress-bar-container">
+    <div class="progress-text" id="progressText">0 de 20 respondidas</div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <form id="quizForm">
+    <div id="questionsContainer"></div>
+
+    <div class="submit-section">
+      <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 16px;">
+        Verifique todas as suas respostas com atenção antes de confirmar. O envio grava seus acertos diretamente na planilha do professor.
+      </p>
+      <button type="submit" id="submitBtn" class="btn-submit">
+        <span>Finalizar e Gravar Avaliação</span>
+      </button>
+    </div>
+  </form>
+
+  <div id="feedback"></div>
+
+  <footer>
+    <p>© 2026 EE Antonio Reginato • Ensino Técnico em Desenvolvimento de Sistemas</p>
+    <p>Componente: Carreiras e Competências para o Mercado de Trabalho • Professor Adriano Rosa</p>
+  </footer>
+</div>
+
+<script>
+/**
+ * BACKEND APPS SCRIPT CONFIGURATION
+ * Endpoint do Google Apps Script publicado que grava os acertos na planilha 'Avaliações DS'
+ */
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw21dJ0gMzRRml0aFwqEI8RfAPnkNYJE4NHQQqKWKpnM2YwFM86RDLSA4MrCP2uHANK/exec";
+
+// Banco estruturado com as 20 questões objetivas (Aba CCM - 3º Bimestre)
+const questions = [
+  {
+    "id": 1,
+    "title": "Questão 1: O Conceito de Persona Profissional e Code-Switching",
+    "text": "Ao ingressar no ambiente de trabalho, o jovem profissional frequentemente vivencia a transição da comunicação informal do cotidiano escolar/pessoal para as normas e expectativas corporativas. O conceito pedagógico e comportamental de 'code-switching' (troca de código) refere-se a:",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Eliminar de forma irreversível a autenticidade e a identidade individual para se submeter passivamente a qualquer ordem sem questionamento."
+      },
+      {
+        "letter": "B",
+        "text": "Manter deliberadamente o mesmo linguajar de gírias e informalidade da escola dentro do escritório para demonstrar espontaneidade aos diretores."
+      },
+      {
+        "letter": "C",
+        "text": "Desenvolver a capacidade de adaptar conscientemente o vocabulário, o tom de voz e o comportamento social aos diferentes contextos e culturas organizacionais, preservando a ética e a postura profissional."
+      },
+      {
+        "letter": "D",
+        "text": "Reescrever códigos-fonte de sistemas de informação legados utilizando linguagens de programação de baixo nível como Assembly e C."
+      },
+      {
+        "letter": "E",
+        "text": "Criar perfis anônimos em redes sociais para criticar a conduta interna de clientes e concorrentes da empresa."
+      }
+    ],
+    "answer": "C"
+  },
+  {
+    "id": 2,
+    "title": "Questão 2: Dress Code e Semiótica da Imagem Profissional",
+    "text": "A semiótica da imagem no contexto do trabalho investiga como elementos visuais e de vestimenta transmitem mensagens não-verbais imediatas sobre credibilidade e adequação à cultura da empresa. Diante das políticas de 'Dress Code' de uma organização, a conduta técnica esperada é:",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Observar e decodificar a cultura organizacional e as exigências da função, adequando a vestimenta com bom senso, asseio e respeito aos clientes e normas de segurança."
+      },
+      {
+        "letter": "B",
+        "text": "Utilizar trajes formais de gala (black tie) obrigatoriamente em todos os setores operacionais, inclusive em laboratórios de informática com regras informais."
+      },
+      {
+        "letter": "C",
+        "text": "Ignorar qualquer orientação da empresa sobre apresentação pessoal, alegando que padrões corporativos não possuem relevância no mercado."
+      },
+      {
+        "letter": "D",
+        "text": "Usar roupas estampadas com mensagens provocativas ou partidárias em reuniões executivas e apresentações para o conselho gestor."
+      },
+      {
+        "letter": "E",
+        "text": "Exigir que a companhia arque financeiramente com o guarda-roupa pessoal civil de todos os colaboradores recém-admitidos."
+      }
+    ],
+    "answer": "A"
+  },
+  {
+    "id": 3,
+    "title": "Questão 3: Postura e Etiqueta Diária no Ambiente Corporativo",
+    "text": "A convivência saudável em espaços de trabalho compartilhados (open spaces e escritórios integrados) requer o cumprimento de princípios de etiqueta e consideração mútua. Qual prática exemplifica uma atitude profissional exemplar no cotidiano?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Ouvir mensagens de áudio e participar de videoconferências sem fone de ouvido em volume alto no meio do escritório coletivo."
+      },
+      {
+        "letter": "B",
+        "text": "Utilizar fones de ouvido para reuniões virtuais, manter o telefone em modo silencioso, preservar a limpeza de bancadas comuns e cumprir rigorosamente os horários estabelecidos."
+      },
+      {
+        "letter": "C",
+        "text": "Interromper conversas técnicas entre colegas e superiores sem pedir licença para tratar de assuntos particulares."
+      },
+      {
+        "letter": "D",
+        "text": "Acumular embalagens de alimentos e copos descartáveis nas estações de trabalho de terceiros após os intervalos."
+      },
+      {
+        "letter": "E",
+        "text": "Assumir que atrasos sistemáticos de até meia hora em reuniões corporativas são naturais e não prejudicam o fluxo das equipes."
+      }
+    ],
+    "answer": "B"
+  },
+  {
+    "id": 4,
+    "title": "Questão 4: A Arte da Formalidade Suave na Comunicação Corporativa",
+    "text": "A comunicação contemporânea exige o domínio da 'formalidade suave' (soft formality), que busca superar tanto a frieza do vocabulário rebuscado arcaico quanto a vulgaridade do excesso de intimidade. Como esse equilíbrio é alcançado na rotina de trabalho?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Empregando obrigatoriamente vocábulos latinos e expressões burocráticas do século XIX em memorandos rápidos de alinhamento."
+      },
+      {
+        "letter": "B",
+        "text": "Substituindo argumentos técnicos por sequências de emojis e memes para tornar as interações corporativas descontraídas."
+      },
+      {
+        "letter": "C",
+        "text": "Adotando um tom agressivo e autoritário em todas as mensagens eletrônicas para impor respeito aos colegas de time."
+      },
+      {
+        "letter": "D",
+        "text": "Adotando uma comunicação clara, cordial, empática e gramaticalmente correta, que transmite objetividade e consideração sem rigidez artificial nem intimidade indevida."
+      },
+      {
+        "letter": "E",
+        "text": "Suprimindo saudações e despedidas em todas as mensagens para forçar uma comunicação puramente telegráfica."
+      }
+    ],
+    "answer": "D"
+  },
+  {
+    "id": 5,
+    "title": "Questão 5: Estrutura do E-mail Corporativo e Escrita Técnica",
+    "text": "O e-mail profissional é um documento corporativo formal e passível de auditoria. Qual conjunto de elementos compõe um e-mail estruturado de forma eficaz e orientada a resultados?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Assunto genérico ('Urgente'), texto sem parágrafos e ausência de assinatura com cargo ou telefone de contato."
+      },
+      {
+        "letter": "B",
+        "text": "Assunto todo em caixa alta (Caps Lock), links sem explicação de destino e solicitações sem indicação de prazos ou responsáveis."
+      },
+      {
+        "letter": "C",
+        "text": "Assunto claro e informativo, saudação inicial adequada, corpo com ordem direta e espaçamento limpo, chamada para ação (Call to Action) bem definida e assinatura institucional completa."
+      },
+      {
+        "letter": "D",
+        "text": "Redação em tom confidencial contendo queixas sobre outros departamentos e pedidos informais fora do fluxo da empresa."
+      },
+      {
+        "letter": "E",
+        "text": "Envio exclusivo de capturas de tela com texto manuscrito sem nenhuma linha digitada no corpo da mensagem."
+      }
+    ],
+    "answer": "C"
+  },
+  {
+    "id": 6,
+    "title": "Questão 6: Uso Ético e Segurança dos Campos de Destinatários (Para, CC e Cco)",
+    "text": "Ao enviar um informe de segurança ou atualização técnica para mais de 100 clientes ou parceiros de empresas concorrentes, o profissional de tecnologia deve aplicar princípios de segurança da informação e legislação de proteção de dados (LGPD). A conduta correta em relação aos destinatários é:",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Inserir todos os contatos no campo 'Para', facilitando a troca direta de informações comerciais entre as empresas clientes."
+      },
+      {
+        "letter": "B",
+        "text": "Preencher todos os e-mails no campo 'Com Cópia' (CC), garantindo a auditoria pública dos destinatários por qualquer leitor."
+      },
+      {
+        "letter": "C",
+        "text": "Dividir os endereços entre 'Para' e 'CC' aleatoriamente, já que ambos os campos ocultam os dados dos usuários em servidores modernos."
+      },
+      {
+        "letter": "D",
+        "text": "Encaminhar as mensagens individuais via redes sociais particulares sem registrar o envio no servidor da instituição."
+      },
+      {
+        "letter": "E",
+        "text": "Utilizar o campo 'Cópia Oculta' (Cco/BCC) para os contatos externos, preservando o sigilo dos e-mails e impedindo a exposição indevida de dados pessoais entre terceiros."
+      }
+    ],
+    "answer": "E"
+  },
+  {
+    "id": 7,
+    "title": "Questão 7: Etiqueta em Mensageiros Instantâneos (WhatsApp e Teams)",
+    "text": "Plataformas de comunicação instantânea como Microsoft Teams, Slack e WhatsApp são ferramentas indispensáveis na rotina corporativa, mas demandam etiqueta rigorosa para não gerar sobrecarga ou ruídos. Qual é a recomendação técnica para uso desses canais?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Redigir mensagens completas em bloco único com contexto claro, saudação e prazo, respeitando os horários de expediente e evitando mensagens fragmentadas ou áudios longos desnecessários."
+      },
+      {
+        "letter": "B",
+        "text": "Fracionar a conversa enviando uma palavra por mensagem sucessiva ('Oi', 'Tudo bem?', 'Posso perguntar?') e aguardar minutos até explicar o motivo do contato."
+      },
+      {
+        "letter": "C",
+        "text": "Gravar áudios de mais de oito minutos em grupos com muitos membros para evitar o trabalho de digitar instruções técnicas."
+      },
+      {
+        "letter": "D",
+        "text": "Acionar colegas de projeto em seus números de telefone particulares após as 22h para checar dúvidas rotineiras do dia seguinte."
+      },
+      {
+        "letter": "E",
+        "text": "Utilizar os canais gerais de anúncios corporativos prioritariamente para debates religiosos, esportivos e envio de correntes."
+      }
+    ],
+    "answer": "A"
+  },
+  {
+    "id": 8,
+    "title": "Questão 8: Estrutura Organizacional, Organograma e Relacionamento Hierárquico",
+    "text": "O organograma ilustra a divisão de responsabilidades, as linhas de comando e os fluxos de comunicação dentro de uma organização. Quando surge um conflito técnico ou necessidade de aprovação de recursos para um projeto, qual canal deve ser acionado prioritariamente?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Publicar um manifesto em fóruns abertos da internet para forçar a diretoria a tomar conhecimento do impasse."
+      },
+      {
+        "letter": "B",
+        "text": "Contornar a liderança imediata e cobrar um posicionamento direto do Diretor Geral da corporação em um corredor."
+      },
+      {
+        "letter": "C",
+        "text": "Tomar a decisão financeira monocraticamente, assumindo custos corporativos sem autorização superior."
+      },
+      {
+        "letter": "D",
+        "text": "Apresentar a situação com embasamento técnico e clareza ao gestor imediato, respeitando a linha hierárquica e os canais institucionais de reporte."
+      },
+      {
+        "letter": "E",
+        "text": "Ignorar a pendência e abandonar a tarefa sem documentar o motivo para os demais membros da equipe."
+      }
+    ],
+    "answer": "D"
+  },
+  {
+    "id": 9,
+    "title": "Questão 9: Diversidade de Gerações e Convivência Intergeracional no Trabalho",
+    "text": "Com a convivência simultânea de diferentes gerações no mercado (Baby Boomers, Geração X, Millennials/Y e Geração Z), equipes corporativas vivenciam perfis variados de comunicação e trabalho. O principal benefício estratégico de valorizar essa diversidade é:",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Dividir a empresa em alas separadas por idade para impedir que profissionais de gerações diferentes interajam."
+      },
+      {
+        "letter": "B",
+        "text": "Substituir compulsoriamente os trabalhadores com mais de 45 anos para manter apenas a visão dos recém-formados."
+      },
+      {
+        "letter": "C",
+        "text": "Promover a sinergia entre a maturidade, visão sistêmica e experiência dos mais seniores com a familiaridade digital, criatividade e novas abordagens dos mais jovens."
+      },
+      {
+        "letter": "D",
+        "text": "Determinar que o estilo de trabalho da geração mais antiga deve ser imposto sem adaptações ou modernizações metodológicas."
+      },
+      {
+        "letter": "E",
+        "text": "Impedir qualquer debate sobre processos, já que colaboradores com trajetórias distintas nunca chegam a consensos produtivos."
+      }
+    ],
+    "answer": "C"
+  },
+  {
+    "id": 10,
+    "title": "Questão 10: Dinâmica de Equipes de Alto Desempenho e Sinergia",
+    "text": "Em equipes de alto desempenho, os membros compartilham responsabilidades e trabalham de forma colaborativa. O fenômeno da 'sinergia' e da interdependência positiva nas tarefas manifesta-se quando:",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Um único membro executa 90% do projeto enquanto os demais permanecem ociosos aguardando a entrega final."
+      },
+      {
+        "letter": "B",
+        "text": "Os colaboradores competem agressivamente entre si pela autoria individual de cada linha de entrega do produto."
+      },
+      {
+        "letter": "C",
+        "text": "Cada funcionário cuida estritamente de sua microtarefa sem entender como ela se conecta aos objetivos gerais do negócio."
+      },
+      {
+        "letter": "D",
+        "text": "Não há divisão de papéis ou metas mensuráveis, dependendo apenas da inspiração espontânea de cada indivíduo."
+      },
+      {
+        "letter": "E",
+        "text": "As habilidades complementares dos membros se articulam harmonicamente, produzindo soluções integradas e resultados coletivos superiores à soma das atuações isoladas."
+      }
+    ],
+    "answer": "E"
+  },
+  {
+    "id": 11,
+    "title": "Questão 11: A Cultura do Feedback e Maturidade Emocional",
+    "text": "Nas organizações que cultivam a aprendizagem contínua, o feedback é tratado como uma oportunidade de desenvolvimento e calibração de expectativas. Ao receber um feedback corretivo sobre a qualidade de uma entrega técnica, qual postura demonstra inteligência emocional e profissionalismo?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Reagir com agressividade, interromper a liderança e culpar imediatamente os colegas de equipe pelas falhas identificadas."
+      },
+      {
+        "letter": "B",
+        "text": "Praticar a escuta ativa com serenidade, compreender os pontos técnicos a melhorar, fazer perguntas esclarecedoras e elaborar um plano de ação para aprimorar o trabalho."
+      },
+      {
+        "letter": "C",
+        "text": "Concordar passivamente na frente do gestor e descartar todas as orientações assim que a reunião for encerrada."
+      },
+      {
+        "letter": "D",
+        "text": "Pedir demissão no mesmo instante por interpretar correções em rotinas técnicas como ofensas à sua dignidade pessoal."
+      },
+      {
+        "letter": "E",
+        "text": "Espalhar boatos e descontentamento entre os pares para desestabilizar o clima organizacional do setor."
+      }
+    ],
+    "answer": "B"
+  },
+  {
+    "id": 12,
+    "title": "Questão 12: Modelo SCI (Situação, Comportamento, Impacto) de Feedback",
+    "text": "O framework SCI (Situação, Comportamento e Impacto) é uma técnica consagrada para formulação de feedbacks objetivos e desprovidos de juízos de valor moralizantes. Qual das alternativas descreve a correta aplicação do modelo?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Definir o contexto temporal e espacial exato (Situação), relatar a atitude ou ação específica diretamente observável (Comportamento) e evidenciar as consequências geradas para os resultados ou para o time (Impacto)."
+      },
+      {
+        "letter": "B",
+        "text": "Criticar traços de personalidade da pessoa utilizando rótulos abstratos como 'você é descompromissado' ou 'você não tem vocação'."
+      },
+      {
+        "letter": "C",
+        "text": "Emitir advertências genéricas em canais abertos sem especificar quando nem em qual atividade a falha ocorreu."
+      },
+      {
+        "letter": "D",
+        "text": "Guardar apontamentos de falhas durante meses e despejá-los todos de surpresa em uma única reunião de avaliação semestral."
+      },
+      {
+        "letter": "E",
+        "text": "Focar exclusivamente em elogios subjetivos, omitindo erros críticos nos processos para evitar qualquer desconforto imediato."
+      }
+    ],
+    "answer": "A"
+  },
+  {
+    "id": 13,
+    "title": "Questão 13: Ética Profissional, Compliance e Proteção de Dados",
+    "text": "Os programas de integridade corporativa (compliance) e o código de conduta disciplinam o uso responsável dos recursos e a salvaguarda de dados da empresa e de clientes. Qual das ações abaixo configura uma violação grave aos princípios éticos e de compliance?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Recusar gratificações financeiras ou favores de empresas que estão participando de processos de cotação e compras da instituição."
+      },
+      {
+        "letter": "B",
+        "text": "Registrar denúncias fundamentadas de desvios operacionais por meio dos canais seguros da ouvidoria institucional."
+      },
+      {
+        "letter": "C",
+        "text": "Bloquear a tela do computador corporativo sempre que se ausentar da estação de trabalho física ou remota."
+      },
+      {
+        "letter": "D",
+        "text": "Exportar listas de contatos, dados de faturamento ou códigos-fonte sigilosos da empresa para dispositivos pessoais sem autorização formal prévia."
+      },
+      {
+        "letter": "E",
+        "text": "Manter estrito sigilo sobre senhas de acesso aos servidores e nunca compartilhá-las por bilhetes ou chats abertos."
+      }
+    ],
+    "answer": "D"
+  },
+  {
+    "id": 14,
+    "title": "Questão 14: Atitude Proativa versus Comportamento Reativo e Postura de Dono",
+    "text": "A 'postura de dono' (sense of ownership) e o comportamento proativo são altamente valorizados em mercados dinâmicos. Como se diferenciam a mentalidade proativa e a mentalidade reativa no enfrentamento de gargalos corporativos?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "O profissional reativo busca causas de problemas antes que eles ocorram, enquanto o proativo aguarda o cliente reclamar para tomar uma providência."
+      },
+      {
+        "letter": "B",
+        "text": "A mentalidade reativa é sempre mais eficiente, pois evita o desperdício de energia no planejamento de cenários futuros."
+      },
+      {
+        "letter": "C",
+        "text": "O profissional proativo antecipa riscos, monitora indicadores e apresenta propostas estruturadas de solução com autonomia responsável; o reativo atua somente após a falha consumada e sob cobrança direta."
+      },
+      {
+        "letter": "D",
+        "text": "Ser proativo significa tomar decisões orçamentárias que pertencem à diretoria sem prestar contas a nenhum superior."
+      },
+      {
+        "letter": "E",
+        "text": "A postura de dono consiste em assumir a culpa pessoal por erros dos outros sem analisar a causa raiz do problema."
+      }
+    ],
+    "answer": "C"
+  },
+  {
+    "id": 15,
+    "title": "Questão 15: Gestão do Tempo e Priorização pela Matriz de Eisenhower",
+    "text": "A Matriz de Eisenhower classifica as demandas diárias através da combinação entre 'Urgência' e 'Importância'. Para atividades situadas no Quadrante 2, caracterizadas como 'Importantes, mas Não Urgentes' (como estudos de aprimoramento, manutenção preventiva e planejamento de médio prazo), a ação gerencial recomendada é:",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Executar no exato segundo em que surgirem, interrompendo imediatamente incidentes graves de suporte técnico em andamento."
+      },
+      {
+        "letter": "B",
+        "text": "Planejar e agendar blocos dedicados de tempo na agenda para realizá-las com qualidade antes que se tornem urgências críticas ou crises."
+      },
+      {
+        "letter": "C",
+        "text": "Delegar a fornecedores terceirizados por serem consideradas tarefas secundárias que não agregam valor estratégico."
+      },
+      {
+        "letter": "D",
+        "text": "Eliminar e excluir definitivamente do fluxo de trabalho por não possuírem cobrança de prazo imediato."
+      },
+      {
+        "letter": "E",
+        "text": "Ignorar indefinidamente, focando 100% da rotina diária no combate reativo a incêndios operacionais."
+      }
+    ],
+    "answer": "B"
+  },
+  {
+    "id": 16,
+    "title": "Questão 16: Aplicação da Metodologia 5S na Gestão do Ambiente Digital",
+    "text": "A consagrada metodologia 5S é plenamente aplicável à organização de arquivos digitais, e-mails e repositórios na nuvem. A aplicação combinada dos sensos de 'Seiri' (Utilização/Descarte) e 'Seiton' (Organização/Ordenação) no ambiente de computação corporativa traduz-se em:",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Salvar centenas de arquivos na pasta 'Downloads' e no 'Desktop' sem nenhuma catalogação temática ou cronológica."
+      },
+      {
+        "letter": "B",
+        "text": "Apagar backups institucionais regulares para liberar espaço em disco de forma indiscriminada."
+      },
+      {
+        "letter": "C",
+        "text": "Nomear planilhas com títulos confusos como 'versao_final_atualizada_mesmo_final2.xlsx' para agilizar o salvamento."
+      },
+      {
+        "letter": "D",
+        "text": "Manter dezenas de guias do navegador permanentemente abertas para consultar semanas depois sem organização em favoritos."
+      },
+      {
+        "letter": "E",
+        "text": "Identificar e descartar arquivos duplicados e temporários inúteis (Seiri) e estruturar pastas lógicas categorizadas por projeto com nomenclaturas padronizadas e acessíveis (Seiton)."
+      }
+    ],
+    "answer": "E"
+  },
+  {
+    "id": 17,
+    "title": "Questão 17: Gestão Visual de Fluxos de Trabalho com Quadros Kanban",
+    "text": "Sistemas visuais ágeis de gestão como o Kanban (utilizados em plataformas como Trello, Jira e Notion) baseiam-se na visualização do fluxo de trabalho e no controle do trabalho em progresso (Work In Progress - WIP). Qual é a principal finalidade técnica de limitar o WIP em um quadro Kanban?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Prevenir a sobrecarga da equipe, identificar gargalos no fluxo de produção e garantir que demandas iniciadas sejam concluídas com qualidade antes da absorção de novas tarefas ('parar de começar e começar a terminar')."
+      },
+      {
+        "letter": "B",
+        "text": "Garantir que os colaboradores iniciem simultaneamente o maior número possível de atividades sem terminar nenhuma no prazo."
+      },
+      {
+        "letter": "C",
+        "text": "Esconder da gerência quais tarefas estão atrasadas nas colunas de validação e teste."
+      },
+      {
+        "letter": "D",
+        "text": "Impedir que novos clientes façam solicitações à empresa até o final do ano letivo."
+      },
+      {
+        "letter": "E",
+        "text": "Obrigar que todos os cartões de tarefas fiquem acumulados indefinidamente na primeira coluna ('A Fazer')."
+      }
+    ],
+    "answer": "A"
+  },
+  {
+    "id": 18,
+    "title": "Questão 18: O Perfil Intraempreendedor e Agregação de Valor Interno",
+    "text": "O profissional intraempreendedor destaca-se por agir com iniciativa, visão sistêmica e responsabilidade pelo crescimento do negócio onde atua como colaborador. Qual das seguintes condutas caracteriza uma postura verdadeiramente intraempreendedora?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Utilizar recursos e tempo de expediente da empresa para desenvolver um negócio paralelo particular concorrente."
+      },
+      {
+        "letter": "B",
+        "text": "Limitar-se rigidamente ao cumprimento mínimo das funções descritas no contrato, recusando-se a colaborar em melhorias gerais."
+      },
+      {
+        "letter": "C",
+        "text": "Criticar abertamente as rotinas da empresa em redes sociais sem propor nenhuma alternativa prática de solução interna."
+      },
+      {
+        "letter": "D",
+        "text": "Mapear gargalos e desperdícios em um processo operacional da sua área, estruturar um projeto de otimização viável e engajar a equipe na sua implementação bem-sucedida."
+      },
+      {
+        "letter": "E",
+        "text": "Centralizar informações estratégicas para se tornar insubstituível e bloquear o aprendizado dos novos estagiários."
+      }
+    ],
+    "answer": "D"
+  },
+  {
+    "id": 19,
+    "title": "Questão 19: Inovação Incremental no Cotidiano Empresarial",
+    "text": "Enquanto a inovação radical cria rupturas estruturais de mercado, a inovação incremental concentra-se em melhorias contínuas, gradativas e consistentes em processos, ferramentas ou serviços já existentes. Assinale o exemplo que melhor retrata uma inovação incremental na rotina técnica:",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A invenção de um motor de fusão nuclear portátil para substituir todos os combustíveis fósseis do planeta em um mês."
+      },
+      {
+        "letter": "B",
+        "text": "A automação de relatórios manuais por meio de macros ou scripts de integração, reduzindo o tempo de digitação diária de três horas para poucos segundos e eliminando erros de digitação."
+      },
+      {
+        "letter": "C",
+        "text": "A paralisação abrupta de todos os servidores da empresa para aguardar o lançamento de computadores quânticos comerciais."
+      },
+      {
+        "letter": "D",
+        "text": "A imposição de que todos os processos digitais retornem obrigatoriamente a formulários físicos preenchidos à caneta."
+      },
+      {
+        "letter": "E",
+        "text": "A reformulação desordenada do modelo de negócios sem validação prévia com clientes ou análise financeira de risco."
+      }
+    ],
+    "answer": "B"
+  },
+  {
+    "id": 20,
+    "title": "Questão 20: Mapeamento Comportamental pela Metodologia DISC",
+    "text": "A metodologia DISC divide os padrões de comportamento em quatro quadrantes principais: Dominância (foco em resultados e desafios), Influência (foco em pessoas e comunicação), Estabilidade (foco em consistência, método e cooperação) e Conformidade (foco em regras, precisão e qualidade técnica). A relevância do mapeamento DISC para a montagem de equipes de trabalho reside em:",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Classificar os colaboradores entre 'superiores' e 'inferiores' para direcionar cortes de custos na folha de pagamento."
+      },
+      {
+        "letter": "B",
+        "text": "Formar departamentos exclusivamente com pessoas do perfil Dominância para assegurar que não haja questionamentos ou debates internos."
+      },
+      {
+        "letter": "C",
+        "text": "Comprovar que competências socioemocionais são imutáveis e que o ser humano não é capaz de se adaptar a novos desafios."
+      },
+      {
+        "letter": "D",
+        "text": "Dispensar a aplicação de treinamentos técnicos e processos seletivos formais com base em testes práticos."
+      },
+      {
+        "letter": "E",
+        "text": "Promover o autoconhecimento e o equilíbrio funcional do time, aproveitando as forças complementares de cada perfil para maximizar a comunicação e mitigar pontos cegos em projetos."
+      }
+    ],
+    "answer": "E"
+  }
+];
+
+const container = document.getElementById("questionsContainer");
+const progressText = document.getElementById("progressText");
+const progressFill = document.getElementById("progressFill");
+
+// Função para atualizar progresso visual
+function updateProgress() {
+  let answered = 0;
+  for (let i = 1; i <= questions.length; i++) {
+    if (document.querySelector(`input[name="q${i}"]:checked`)) {
+      answered++;
+    }
+  }
+  const pct = Math.round((answered / questions.length) * 100);
+  progressText.innerText = `${answered} de ${questions.length} respondidas (${pct}%)`;
+  progressFill.style.width = `${pct}%`;
+}
+
+// Renderizar dinamicamente as 20 questões
+questions.forEach(q => {
+  const card = document.createElement("div");
+  card.className = "question-card";
+  card.id = `card-q${q.id}`;
+
+  const optionsHtml = q.options.map(opt => `
+    <label class="option" id="opt-${q.id}-${opt.letter}">
+      <input type="radio" name="q${q.id}" value="${opt.letter}" required onchange="handleOptionSelect(${q.id}, '${opt.letter}')" />
+      <span class="option-letter">${opt.letter})</span>
+      <span class="option-text">${opt.text}</span>
+    </label>
+  `).join("");
+
+  card.innerHTML = `
+    <div class="question-header">
+      <span class="question-title">${q.title}</span>
+      <span class="question-badge">Questão ${q.id}/20</span>
+    </div>
+    <div class="question-text">${q.text}</div>
+    <div class="options">${optionsHtml}</div>
+  `;
+  container.appendChild(card);
+});
+
+// Realce visual da alternativa selecionada
+function handleOptionSelect(qId, letter) {
+  const card = document.getElementById(`card-q${qId}`);
+  const allLabels = card.querySelectorAll(".option");
+  allLabels.forEach(lbl => lbl.classList.remove("selected"));
+
+  const selectedLabel = document.getElementById(`opt-${qId}-${letter}`);
+  if (selectedLabel) {
+    selectedLabel.classList.add("selected");
+  }
+  updateProgress();
+}
+
+// Manipulador de Submissão do Formulário
+document.getElementById("quizForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const nameInput = document.getElementById("studentName").value.trim();
+  const raInput = document.getElementById("studentRA").value.trim();
+  const serieInput = document.getElementById("studentSerie").value;
+
+  if (!nameInput || !raInput) {
+    alert("Por favor, preencha o Nome Completo e o RA antes de submeter a avaliação.");
+    return;
+  }
+
+  // Verificar se as 20 questões foram respondidas
+  const respostas = {};
+  const unanswered = [];
+  for (let i = 1; i <= questions.length; i++) {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (selected) {
+      respostas[i] = selected.value;
+    } else {
+      unanswered.push(i);
+    }
+  }
+
+  if (unanswered.length > 0) {
+    alert(`Atenção: Você ainda não respondeu à(s) questão(ões): ${unanswered.join(", ")}. Por favor, responda todas as questões.`);
+    const firstMissing = document.getElementById(`card-q${unanswered[0]}`);
+    if (firstMissing) {
+      firstMissing.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    return;
+  }
+
+  const submitBtn = document.getElementById("submitBtn");
+  const feedback = document.getElementById("feedback");
+
+  // Bloqueio de clique duplo e feedback de carregamento
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner"></span><span>Gravando respostas na planilha...</span>';
+
+  const payload = {
+    nome: nameInput,
+    ra: raInput,
+    escola: "EE Antonio Reginato",
+    serie: serieInput,
+    disciplina: "Carreiras e Competências para o Mercado de Trabalho",
+    professor: "Adriano Rosa",
+    respostas: respostas
+  };
+
+  try {
+    // Envio assíncrono para o Google Apps Script com no-cors
+    await fetch(WEBAPP_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    feedback.className = "feedback-success";
+    feedback.style.display = "block";
+    feedback.innerHTML = `
+      <div style="font-size: 2.2rem; margin-bottom: 8px;">✅</div>
+      <h3 style="font-size: 1.4rem; color: #166534; margin-bottom: 8px;">Avaliação Concluída com Sucesso!</h3>
+      <p style="color: #14532d; font-size: 1.05rem;">
+        Obrigado, <strong>${nameInput}</strong> (RA: ${raInput}).<br>
+        Suas respostas foram gravadas na planilha <strong>Avaliações DS</strong> para correção e cômputo da nota.
+      </p>
+      <div style="margin-top: 16px; font-size: 0.9rem; color: #15803d;">
+        Disciplina: Carreiras e Competências para o Mercado de Trabalho (3º Bimestre)<br>
+        Turma: ${serieInput} • Escola: EE Antonio Reginato
+      </div>
+    `;
+
+    document.getElementById("quizForm").style.display = "none";
+    document.querySelector(".progress-bar-container").style.display = "none";
+    feedback.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  } catch (err) {
+    console.error("Erro na submissão:", err);
+    feedback.className = "feedback-error";
+    feedback.style.display = "block";
+    feedback.innerHTML = `
+      <div style="font-size: 2.2rem; margin-bottom: 8px;">⚠️</div>
+      <h3 style="font-size: 1.3rem; color: #991b1b; margin-bottom: 8px;">Erro ao Enviar Respostas</h3>
+      <p style="color: #7f1d1d;">
+        Houve uma instabilidade temporária na gravação dos seus dados. Por favor, tente novamente ou informe ao professor Adriano Rosa.
+      </p>
+    `;
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = "<span>Tentar Enviar Novamente</span>";
+    feedback.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+});
+</script>
+</body>
+</html>
