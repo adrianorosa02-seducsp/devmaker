@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avaliação Digital - Redes de Computadores</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen py-10 px-4">
+  <div class="max-w-3xl mx-auto">
+    <!-- Header -->
+    <header class="bg-slate-800 border border-slate-700 rounded-2xl p-6 mb-6 shadow-xl">
+      <h1 class="text-2xl font-bold text-sky-400">Avaliação de Redes de Computadores</h1>
+      <p class="text-slate-400 text-sm mt-1">IPv4, Sub-redes, DNS e Infraestrutura Web</p>
+      
+      <!-- Identificação do Aluno -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">RA do Estudante</label>
+          <input id="ra" type="text" placeholder="Ex: 20095423" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sky-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Nome Completo</label>
+          <input id="nome" type="text" placeholder="Digite seu nome" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sky-500">
+        </div>
+      </div>
+    </header>
+
+    <!-- Barra de Progresso -->
+    <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 mb-6">
+      <div class="flex justify-between text-xs text-slate-400 mb-1">
+        <span>Progresso de Resolução</span>
+        <span id="progress-text">0 / 8 respondidas</span>
+      </div>
+      <div class="w-full bg-slate-700 rounded-full h-2.5">
+        <div id="progress-bar" class="bg-sky-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- Container de Questões -->
+    <form id="quiz-form" class="space-y-6">
+      <div id="questions-container" class="space-y-6"></div>
+
+      <button type="submit" id="btn-submit" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-200">
+        Finalizar e Enviar Avaliação
+      </button>
+    </form>
+
+    <!-- Feedback / Mensagem Final -->
+    <div id="status-card" class="hidden mt-6 bg-slate-800 border border-emerald-600 rounded-xl p-6 text-center">
+      <h3 class="text-xl font-bold text-emerald-400">Avaliação Registrada com Sucesso!</h3>
+      <p id="result-message" class="text-slate-300 mt-2"></p>
+    </div>
+  </div>
+
+  <script>
+    // Substitua pela URL gerada ao publicar o Web App no Google Apps Script
+    const WEB_APP_URL = "SEU_APPS_SCRIPT_WEBAPP_URL_AQUI";
+
+    const questions = [
+      {
+        id: "q1",
+        title: "Questão 1: Estrutura do Endereço IPv4",
+        prompt: "Em relação à arquitetura lógica do protocolo IPv4 (RFC 791), como é estruturado o endereço e qual a função da sua divisão hierárquica?",
+        options: {
+          A: "O IPv4 é formado por 4 bytes separados por pontos, sendo que o primeiro byte indica o país de origem e os demais identificam o computador na LAN.",
+          B: "O IPv4 possui 32 bits divididos em 4 octetos, servindo exclusivamente para indicar a porta lógica de comunicação de um aplicativo.",
+          C: "O IPv4 é composto por 32 bits organizados em quatro octetos decimais, estruturado hierarquicamente em porção de rede (Network ID) e porção de host (Host ID).",
+          D: "O IPv4 possui 64 bits distribuídos em notação decimal pontuada, sendo dividido em prefixo global, sub-rede e identificador de interface.",
+          E: "O IPv4 possui 32 bits divididos igualmente em 16 bits para identificação de rede e 16 bits para identificação de host em todas as configurações modernas."
+        },
+        gabarito: "C"
+      },
+      {
+        id: "q2",
+        title: "Questão 2: Notação CIDR e Máscara de Sub-rede",
+        prompt: "Uma estação de trabalho foi configurada estaticamente com o endereço IP 192.168.10.130/26. Qual é a máscara de sub-rede em notação decimal pontuada correspondente e quantos bits restam para endereçamento de hosts?",
+        options: {
+          A: "255.255.255.0 e restam 8 bits para hosts.",
+          B: "255.255.255.128 e restam 7 bits para hosts.",
+          C: "255.255.255.192 e restam 6 bits para hosts.",
+          D: "255.255.255.224 e restam 5 bits para hosts.",
+          E: "255.255.255.192 e restam 26 bits para hosts."
+        },
+        gabarito: "C"
+      },
+      {
+        id: "q3",
+        title: "Questão 3: Identificação de Endereço de Rede e Broadcast",
+        prompt: "Dada a sub-rede definida pelo bloco 172.16.8.0/22, quais são, respectivamente, o endereço de rede e o endereço de broadcast dessa sub-rede?",
+        options: {
+          A: "Rede: 172.16.8.0 | Broadcast: 172.16.8.255",
+          B: "Rede: 172.16.8.0 | Broadcast: 172.16.11.255",
+          C: "Rede: 172.16.0.0 | Broadcast: 172.16.15.255",
+          D: "Rede: 172.16.8.1 | Broadcast: 172.16.11.254",
+          E: "Rede: 172.16.8.0 | Broadcast: 172.16.12.0"
+        },
+        gabarito: "B"
+      },
+      {
+        id: "q4",
+        title: "Questão 4: Cálculo de Hosts Válidos",
+        prompt: "Um administrador precisa planejar uma sub-rede para um departamento que conta com 28 estações de trabalho e 2 impressoras em rede. Qual é a máscara de menor tamanho que atende exatamente a essa demanda sem desperdício excessivo de IPs?",
+        options: {
+          A: "/28 (255.255.255.240), suportando 30 hosts.",
+          B: "/26 (255.255.255.192), pois garante margem ampla de segurança.",
+          C: "/27 (255.255.255.224), fornecendo capacidade para 30 hosts utilizáveis.",
+          D: "/27 (255.255.255.224), fornecendo capacidade para 32 hosts utilizáveis.",
+          E: "/29 (255.255.255.248), fornecendo capacidade para 30 hosts utilizáveis."
+        },
+        gabarito: "C"
+      },
+      {
+        id: "q5",
+        title: "Questão 5: Divisão em Sub-redes Fixas (FLSM)",
+        prompt: "A partir do bloco IPv4 192.168.1.0/24, deseja-se dividi-lo em 4 sub-redes de igual capacidade. Qual será o intervalo de endereços IP utilizáveis da segunda sub-rede?",
+        options: {
+          A: "192.168.1.64 até 192.168.1.127",
+          B: "192.168.1.65 até 192.168.1.126",
+          C: "192.168.1.33 até 192.168.1.62",
+          D: "192.168.1.1 até 192.168.1.62",
+          E: "192.168.1.65 até 192.168.1.127"
+        },
+        gabarito: "B"
+      },
+      {
+        id: "q6",
+        title: "Questão 6: Intervalo de Endereçamento Privado (RFC 1918)",
+        prompt: "Dentre as faixas a seguir, assinale a opção que contém estritamente um endereço pertencente ao escopo de IPs privados e não roteáveis na internet pública:",
+        options: {
+          A: "172.33.10.15",
+          B: "192.169.50.100",
+          C: "10.150.20.1",
+          D: "169.254.10.5",
+          E: "127.0.0.1"
+        },
+        gabarito: "C"
+      },
+      {
+        id: "q7",
+        title: "Questão 7: Operação Lógica AND para Roteamento",
+        prompt: "Como uma estação cliente determina se um pacote de dados deve ser entregue diretamente na rede local (via ARP) ou encaminhado ao Default Gateway?",
+        options: {
+          A: "O cliente envia uma mensagem de broadcast DNS perguntando se o IP de destino é local.",
+          B: "O cliente compara o endereço MAC de destino com a tabela do switch gerenciável.",
+          C: "O cliente executa a operação lógica AND entre o seu próprio IP e a máscara, e entre o IP de destino e a máscara; se os resultados forem idênticos, a entrega é local.",
+          D: "O cliente verifica se o primeiro octeto do IP de destino termina em número par ou ímpar.",
+          E: "O cliente sempre envia o pacote primeiro ao Gateway, e o roteador decide se devolve para a LAN."
+        },
+        gabarito: "C"
+      },
+      {
+        id: "q8",
+        title: "Questão 8: Ciclo Operacional do Protocolo DHCP (DORA)",
+        prompt: "Ao conectar um dispositivo em uma porta ethernet de rede local, ele negocia suas configurações IP automáticas via DHCP. Qual é a sequência cronológica correta das quatro mensagens trocadas?",
+        options: {
+          A: "DHCP Request -> DHCP Discover -> DHCP Offer -> DHCP Acknowledge",
+          B: "DHCP Offer -> DHCP Request -> DHCP Discover -> DHCP Acknowledge",
+          C: "DHCP Discover -> DHCP Offer -> DHCP Request -> DHCP Acknowledge",
+          D: "DHCP Discover -> DHCP Request -> DHCP Offer -> DHCP Acknowledge",
+          E: "DHCP Request -> DHCP Offer -> DHCP Discover -> DHCP Acknowledge"
+        },
+        gabarito: "C"
+      }
+    ];
+
+    // Renderiza as questões
+    const container = document.getElementById("questions-container");
+    questions.forEach((q, idx) => {
+      const qCard = document.createElement("div");
+      qCard.className = "bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-md";
+      
+      let optionsHtml = "";
+      for (const [letter, text] of Object.entries(q.options)) {
+        optionsHtml += `
+          <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-900/60 border border-slate-700/80 hover:border-sky-500 cursor-pointer transition">
+            <input type="radio" name="${q.id}" value="${letter}" class="mt-1 accent-sky-500 question-radio">
+            <span class="text-sm text-slate-200"><strong class="text-sky-400 font-semibold">${letter})</strong> ${text}</span>
+          </label>
+        `;
+      }
+
+      qCard.innerHTML = `
+        <h2 class="text-base font-bold text-sky-400 mb-2">${q.title}</h2>
+        <p class="text-slate-300 text-sm mb-4 leading-relaxed">${q.prompt}</p>
+        <div class="space-y-2">${optionsHtml}</div>
+      `;
+      container.appendChild(qCard);
+    });
+
+    // Atualiza barra de progresso
+    function updateProgress() {
+      const answered = questions.filter(q => document.querySelector(`input[name="${q.id}"]:checked`)).length;
+      const pct = (answered / questions.length) * 100;
+      document.getElementById("progress-bar").style.width = pct + "%";
+      document.getElementById("progress-text").textContent = `${answered} / ${questions.length} respondidas`;
+    }
+
+    document.querySelectorAll(".question-radio").forEach(radio => {
+      radio.addEventListener("change", updateProgress);
+    });
+
+    // Submissão do formulário
+    document.getElementById("quiz-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const ra = document.getElementById("ra").value.trim();
+      const nome = document.getElementById("nome").value.trim();
+
+      if (!ra || !nome) {
+        alert("Por favor, preencha o RA e o Nome antes de enviar.");
+        return;
+      }
+
+      let acertos = 0;
+      const respostas = {};
+      const gabaritos = {};
+
+      questions.forEach(q => {
+        const selected = document.querySelector(`input[name="${q.id}"]:checked`);
+        const respAluno = selected ? selected.value : "";
+        respostas[q.id] = respAluno;
+        gabaritos["g" + q.id.replace("q", "")] = q.gabarito;
+        if (respAluno === q.gabarito) acertos++;
+      });
+
+      const payload = {
+        ra,
+        nome,
+        acertos,
+        respostas,
+        gabaritos,
+        timestamp: new Date().toISOString()
+      };
+
+      const btn = document.getElementById("btn-submit");
+      btn.disabled = true;
+      btn.textContent = "Gravando na planilha...";
+
+      try {
+        await fetch(WEB_APP_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        document.getElementById("quiz-form").classList.add("hidden");
+        const statusCard = document.getElementById("status-card");
+        statusCard.classList.remove("hidden");
+        document.getElementById("result-message").innerHTML = 
+          `Obrigado, <strong>${nome}</strong> (RA: ${ra}).<br>Sua avaliação foi registrada com <strong>${acertos} de ${questions.length}</strong> acertos.`;
+      } catch (err) {
+        alert("Erro na conexão ao enviar. Tente novamente.");
+        btn.disabled = false;
+        btn.textContent = "Finalizar e Enviar Avaliação";
+      }
+    });
+  </script>
+</body>
+</html>
