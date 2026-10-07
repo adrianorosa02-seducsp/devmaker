@@ -1652,3 +1652,13 @@ body.fullscreen-mode .content-canvas--wide {
 .btn-icon-delete:hover {
   background: #fee2e2;
 }
+
+/* Painel de Aulas: Cabeçalhos Fixos */
+.grade-tabela th {
+  position: sticky;
+  top: 44px; /* Fixa logo abaixo do cabeçalho do Turno (44px) */
+  z-index: 19;
+  /* Para evitar que a rolagem fique transparente no th, aplicamos uma cor base sólida.
+     Mas eles já têm background-color herdado. Adicionamos outline para resolver possíveis gaps no scroll */
+  outline: 1px solid rgba(255, 255, 255, 0.1);
+}

@@ -105,6 +105,13 @@ function calcularStatus(horarios, horaAtual) {
 // RENDERIZAÇÃO DA GRADE DE AULAS
 // ============================================================
 
+function getTurno(horario) {
+  const h = parseInt(horario.split(':')[0], 10);
+  if (h < 12) return 'Manhã';
+  if (h < 18) return 'Tarde';
+  return 'Noite';
+}
+
 function renderGrade(grade, horaAtual) {
   const container = document.getElementById('gradeContainer');
   const horaDisplay = document.getElementById('horaAtualDisplay');
@@ -123,7 +130,12 @@ function renderGrade(grade, horaAtual) {
   }
 
   const slotsComStatus = calcularStatus(grade.horarios, horaAtual);
-  const turmas = Object.keys(slotsComStatus[0]?.turmas || {}).sort();
+  
+  const turmasSet = new Set();
+  slotsComStatus.forEach(s => {
+    if (s.turmas) Object.keys(s.turmas).forEach(t => turmasSet.add(t));
+  });
+  const turmas = Array.from(turmasSet).sort();
 
   const emAndamento = slotsComStatus.find(s => s.status === 'em_andamento');
   const proxima = slotsComStatus.find(s => s.status === 'proxima');
@@ -139,68 +151,110 @@ function renderGrade(grade, horaAtual) {
     }
   }
 
-  let html = `
-    <div class="grade-wrapper">
-      <table class="grade-tabela" id="gradeTabela">
+  let html = `<div class="grade-wrapper">`;
+
+  const turnos = [
+    { nome: 'Manhã', slots: [] },
+    { nome: 'Tarde', slots: [] },
+    { nome: 'Noite', slots: [] },
+  ];
+
+  slotsComStatus.forEach(slot => {
+    const t = getTurno(slot.horario);
+    if (t === 'Manhã') turnos[0].slots.push(slot);
+    else if (t === 'Tarde') turnos[1].slots.push(slot);
+    else turnos[2].slots.push(slot);
+  });
+
+  const turnoAtual = getTurno(horaAtual);
+
+  // Mantém apenas o turno atual e os turnos que ainda vão acontecer (restante do dia)
+  let turnosParaMostrar = [];
+  if (turnoAtual === 'Manhã') {
+    turnosParaMostrar = turnos; // Mostra Manhã, Tarde e Noite
+  } else if (turnoAtual === 'Tarde') {
+    turnosParaMostrar = turnos.filter(t => t.nome === 'Tarde' || t.nome === 'Noite');
+  } else {
+    turnosParaMostrar = turnos.filter(t => t.nome === 'Noite');
+  }
+
+  turnosParaMostrar.forEach(turno => {
+    if (turno.slots.length === 0) return;
+
+    // Pega apenas as turmas deste turno
+    const turmasSetTurno = new Set();
+    turno.slots.forEach(s => {
+      if (s.turmas) Object.keys(s.turmas).forEach(t => turmasSetTurno.add(t));
+    });
+    const turmasDoTurno = Array.from(turmasSetTurno).sort();
+
+    html += `
+      <div class="turno-header" style="position: sticky; top: 0; z-index: 20; height: 44px; box-sizing: border-box; background:var(--sf-brand-blue, #2563eb); color:white; padding:10px 15px; margin-top:30px; font-weight:600; border-radius:8px 8px 0 0; text-transform:uppercase; letter-spacing:1px; font-size:1.1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+        <i class="fa-solid fa-clock"></i> TURNO: ${turno.nome}
+      </div>
+      <table class="grade-tabela" style="margin-top:0; border-top:none; border-radius:0 0 8px 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
         <thead>
           <tr>
             <th class="col-horario">Horário</th>
-            ${turmas.map(t => `<th class="col-turma">${t}</th>`).join('')}
+            ${turmasDoTurno.map(t => `<th class="col-turma">${t}</th>`).join('')}
           </tr>
         </thead>
         <tbody>`;
 
-  slotsComStatus.forEach(slot => {
-    const cssStatus = `status-${slot.status}`;
-    let badgeHTML = '';
-    if (slot.status === 'em_andamento') {
-      badgeHTML = `<span class="badge-em-andamento"><span class="pulso"></span>EM CURSO</span>`;
-    } else if (slot.status === 'proxima') {
-      badgeHTML = `<span class="badge-proxima">⏭ PRÓXIMA</span>`;
-    }
-
-    html += `<tr class="linha-horario ${cssStatus}">
-      <td class="col-horario">
-        <div class="horario-wrap">
-          <span class="horario-hora">${slot.horario}</span>
-          ${badgeHTML}
-        </div>
-      </td>`;
-
-    turmas.forEach(turma => {
-      const aula = slot.turmas?.[turma];
-      const diaSemana = grade.dia_semana || 'Seg';
-
-      if (aula) {
-        html += `
-          <td class="col-aula col-aula-clickable" 
-              data-dia="${diaSemana}" 
-              data-horario="${slot.horario}" 
-              data-turma="${turma}" 
-              data-disciplina="${aula.disciplina}" 
-              data-professor="${aula.professor}"
-              title="Clique para editar a aula de ${turma}">
-            <div class="aula-card">
-              <span class="aula-disciplina">${aula.disciplina}</span>
-              <span class="aula-professor">${aula.professor}</span>
-            </div>
-          </td>`;
-      } else {
-        html += `
-          <td class="col-aula col-vazia col-aula-clickable" 
-              data-dia="${diaSemana}" 
-              data-horario="${slot.horario}" 
-              data-turma="${turma}" 
-              data-disciplina="" 
-              data-professor=""
-              title="Clique para cadastrar aula para ${turma} às ${slot.horario}">—</td>`;
+    turno.slots.forEach(slot => {
+      const cssStatus = `status-${slot.status}`;
+      let badgeHTML = '';
+      if (slot.status === 'em_andamento') {
+        badgeHTML = `<span class="badge-em-andamento"><span class="pulso"></span>EM CURSO</span>`;
+      } else if (slot.status === 'proxima') {
+        badgeHTML = `<span class="badge-proxima">⏭ PRÓXIMA</span>`;
       }
+
+      html += `<tr class="linha-horario ${cssStatus}">
+        <td class="col-horario">
+          <div class="horario-wrap">
+            <span class="horario-hora">${slot.horario}</span>
+            ${badgeHTML}
+          </div>
+        </td>`;
+
+      turmasDoTurno.forEach(turma => {
+        const aula = slot.turmas?.[turma];
+        const diaSemana = grade.dia_semana || 'Seg';
+
+        if (aula) {
+          html += `
+            <td class="col-aula col-aula-clickable" 
+                data-dia="${diaSemana}" 
+                data-horario="${slot.horario}" 
+                data-turma="${turma}" 
+                data-disciplina="${aula.disciplina}" 
+                data-professor="${aula.professor}"
+                title="Clique para editar a aula de ${turma}">
+              <div class="aula-card">
+                <span class="aula-disciplina">${aula.disciplina}</span>
+                <span class="aula-professor">${aula.professor}</span>
+              </div>
+            </td>`;
+        } else {
+          html += `
+            <td class="col-aula col-vazia col-aula-clickable" 
+                data-dia="${diaSemana}" 
+                data-horario="${slot.horario}" 
+                data-turma="${turma}" 
+                data-disciplina="" 
+                data-professor=""
+                title="Clique para cadastrar aula para ${turma} às ${slot.horario}">—</td>`;
+        }
+      });
+
+      html += `</tr>`;
     });
 
-    html += `</tr>`;
+    html += `</tbody></table>`;
   });
 
-  html += `</tbody></table></div>`;
+  html += `</div>`;
   container.innerHTML = html;
 
   // Atribui evento de clique para edição rápida em cada célula da grade
