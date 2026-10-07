@@ -9,7 +9,7 @@
 # 5. Teste de Deploy:  Inclui scripts de teste para verificar o funcionamento do sistema.
 # ============================================================
 
-import sqlite3
+
 import re
 import os
 import json
@@ -171,33 +171,15 @@ def obter_dfs_consolidados(pdf_url):
     return consolidated_dfs
 
 # ============================================================
-# BANCO DE DADOS E PAINEL
+# PREPARAÇÃO E ENVIO PARA API (POSTGRESQL)
 # ============================================================
 
-def criar_banco_de_dados(db_filepath, consolidated_dfs):
-    conn = sqlite3.connect(db_filepath)
-    cursor = conn.cursor()
-    
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS aulas (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        dia_semana TEXT,
-        horario TEXT,
-        turma TEXT,
-        disciplina TEXT,
-        professor TEXT
-    )
-    ''')
-    
-    cursor.execute('DELETE FROM aulas') # Clear existing data
-    
+def formatar_payload_api(consolidated_dfs):
+    # Extraímos todos os dias (Seg a Sex) e iteramos
     dias_banco = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex']
+    aulas_extraidas = []
     
     for turma, df in consolidated_dfs.items():
-        # df tem colunas: Horário, Seg, Ter, Qua, Qui, Sex, Origem
-        # Iteramos a cada 2 linhas (disciplina, depois professor)
-        
-        # Primeiro, garantimos que temos as colunas dos dias
         colunas_dias = [col for col in df.columns if col in dias_banco]
         if not colunas_dias:
             continue
@@ -214,100 +196,51 @@ def criar_banco_de_dados(db_filepath, consolidated_dfs):
                 if horario == 'None' or not horario:
                     continue
                     
-                for i, dia in enumerate(dias_banco):
+                for dia in dias_banco:
                     if dia in subject_row and dia in teacher_row:
                         disciplina = str(subject_row[dia]).strip()
                         professor = str(teacher_row[dia]).strip()
                         
                         if disciplina and disciplina != 'None' and professor and professor != 'None':
-                            cursor.execute('''
-                            INSERT INTO aulas (dia_semana, horario, turma, disciplina, professor)
-                            VALUES (?, ?, ?, ?, ?)
-                            ''', (dia, horario, turma, disciplina, professor))
+                            aulas_extraidas.append({
+                                "dia_semana": dia,
+                                "horario": horario,
+                                "turma": turma,
+                                "disciplina": disciplina,
+                                "professor": professor
+                            })
                             
-    conn.commit()
-    conn.close()
+    return {"aulas": aulas_extraidas}
 
-def obter_dia_semana(data_obj):
-    dias = {0: 'Seg', 1: 'Ter', 2: 'Qua', 3: 'Qui', 4: 'Sex', 5: 'Sab', 6: 'Dom'}
-    return dias.get(data_obj.weekday(), '')
-
-def get_dados_painel(db_filepath, data_str=None):
-    if not data_str:
-        data_obj = datetime.now()
-    else:
-        try:
-            if '/' in data_str:
-                data_obj = datetime.strptime(data_str, '%d/%m/%Y')
-            else:
-                data_obj = datetime.strptime(data_str, '%Y-%m-%d')
-        except ValueError:
-            data_obj = datetime.now()
-            
-    dia_semana_str = obter_dia_semana(data_obj)
+def enviar_para_api(payload, escola_id):
+    """Envia os dados extraídos para o novo backend FastAPI"""
+    url = f"https://geduc.inetz.com.br/escolas/{escola_id}/importar-horarios"
     
-    if dia_semana_str not in ['Seg', 'Ter', 'Qua', 'Qui', 'Sex']:
-        return {
-            "data": data_obj.strftime('%d/%m/%Y'),
-            "dia_semana": dia_semana_str,
-            "horarios": []
-        }
+    print(f"\nEnviando {len(payload.get('aulas', []))} aulas para a API: {url}...")
+    try:
+        resposta = requests.post(url, json=payload)
+        resposta.raise_for_status()
+        print("✅ Importação concluída com sucesso no PostgreSQL!")
+        print("Resposta do Servidor:", resposta.json())
         
-    conn = sqlite3.connect(db_filepath)
-    cursor = conn.cursor()
-    
-    cursor.execute('''
-        SELECT horario, turma, disciplina, professor 
-        FROM aulas 
-        WHERE dia_semana = ?
-        ORDER BY horario, turma
-    ''', (dia_semana_str,))
-    
-    rows = cursor.fetchall()
-    conn.close()
-    
-    horarios_dict = {}
-    for row in rows:
-        horario, turma, disp, prof = row
-        if horario not in horarios_dict:
-            horarios_dict[horario] = {}
-        
-        horarios_dict[horario][turma] = {
-            "disciplina": disp,
-            "professor": prof
-        }
-        
-    horarios_list = []
-    for horario in sorted(horarios_dict.keys()):
-        horarios_list.append({
-            "horario": horario,
-            "turmas": horarios_dict[horario]
-        })
-        
-    resultado = {
-        "data": data_obj.strftime('%d/%m/%Y'),
-        "dia_semana": dia_semana_str,
-        "horarios": horarios_list
-    }
-    
-    return resultado
+    except requests.exceptions.RequestException as e:
+        print("❌ Erro ao enviar para a API:", e)
+        if hasattr(e, 'response') and e.response is not None:
+            print("Detalhe do erro:", e.response.text)
 
 if __name__ == "__main__":
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    db_file = os.path.join(base_dir, 'aulas.sqlite')
-    caminho_pdf = "https://drive.google.com/uc?export=download&id=1tQVv5nWGp37Vb5V0LfJ-R2zK_tZ1bVfF"
+    caminho_pdf = "https://drive.google.com/uc?export=download&id=1VXWQf8E4WMFwFNgPxbEs1R-YmGNgg4OP"
+    ESCOLA_ID = "c83b5925-3c67-43d7-8ccf-7b72ff4dd479"
     
     print("Extraindo e processando PDF (isso pode levar alguns instantes)...")
     consolidated_dfs = obter_dfs_consolidados(caminho_pdf)
     print(f"Dados extraídos com sucesso. Turmas encontradas: {list(consolidated_dfs.keys())}")
     
-    print("\nGerando banco de dados SQLite...")
-    criar_banco_de_dados(db_file, consolidated_dfs)
-    print("Banco de dados criado e populado!")
-    # Pega a data atual e formata como 'DD/MM/AAAA'
-    data_atual = date.today().strftime('%d/%m/%Y')    
-    #print("\nTestando painel para o dia 02/09/2026 (Quarta-feira)...")
-    dados_painel = get_dados_painel(db_file, data_atual)
+    print("\nFormatando dados para envio...")
+    payload = formatar_payload_api(consolidated_dfs)
     
-    print("=== DADOS RETORNADOS (JSON) ===")
-    print(json.dumps(dados_painel, indent=4, ensure_ascii=False))
+    print("=== EXEMPLO DO PAYLOAD (Primeiras 2 aulas) ===")
+    print(json.dumps({"aulas": payload["aulas"][:2]}, indent=4, ensure_ascii=False))
+    
+    # Envia os dados para a API (FastAPI -> Postgres)
+    enviar_para_api(payload, ESCOLA_ID)
