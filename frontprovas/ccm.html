@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Avaliação: Carreiras e Competências</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Remove o highlight padrão ao tocar em telas mobile */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased font-sans pb-12">
+
+  <!-- Header Fixo Compacto -->
+  <header class="sticky top-0 z-30 bg-slate-900 text-white px-4 py-3 shadow-md border-b border-slate-800">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      <div>
+        <span class="text-xs uppercase tracking-wider text-emerald-400 font-semibold">Avaliação Técnica</span>
+        <h1 class="text-base font-bold leading-tight">Carreiras e Competências</h1>
+      </div>
+      <div id="badgeProgresso" class="text-xs font-mono bg-slate-800 border border-slate-700 px-2.5 py-1 rounded-full text-slate-300">
+        0/5
+      </div>
+    </div>
+    <!-- Barra de Progresso Superior -->
+    <div class="w-full bg-slate-800 h-1 mt-2 rounded-full overflow-hidden">
+      <div id="progressBar" class="bg-emerald-500 h-full w-0 transition-all duration-300"></div>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto px-4 mt-4 space-y-4">
+
+    <!-- Card de Identificação do Aluno -->
+    <section class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+      <h2 class="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+        </svg>
+        Identificação
+      </h2>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1" for="nome">Nome Completo</label>
+          <input type="text" id="nome" required placeholder="Digite seu nome..." 
+            class="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-slate-50 transition" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1" for="turma">Turma / Período</label>
+          <input type="text" id="turma" required placeholder="Ex: 3º A - Desenvolvimento de Sistemas" 
+            class="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-slate-50 transition" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Formulário das Questões -->
+    <form id="quizForm" class="space-y-4">
+
+      <!-- Questão 1 -->
+      <article class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 question-block" data-q="q1">
+        <div class="flex items-start justify-between gap-2 mb-2">
+          <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">Questão 01</span>
+          <span class="text-[11px] text-slate-400 font-medium">Soft Skills</span>
+        </div>
+        <p class="text-sm font-medium text-slate-900 leading-snug mb-3">
+          Ao atuar em equipes de desenvolvimento com metodologias ágeis, a inteligência emocional se manifesta principalmente em qual das seguintes atitudes?
+        </p>
+        <div class="space-y-2">
+          <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 active:bg-emerald-50 text-sm cursor-pointer transition select-none">
+            <input type="radio" name="q1" value="A" class="w-4 h-4 text-emerald-600 border-slate-300 focus:ring-emerald-500" />
+            <span class="text-slate-700">Evitar dar feedbacks aos colegas para manter um ambiente harmônico.</span>
+          </label>
+          <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 active:bg-emerald-50 text-sm cursor-pointer transition select-none">
+            <input type="radio" name="q1" value="B" class="w-4 h-4 text-emerald-600 border-slate-300 focus:ring-emerald-500" />
+            <span class="text-slate-700">Receber críticas técnicas em code reviews sem encará-las como ofensas pessoais.</span>
+          </label>
+          <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 active:bg-emerald-50 text-sm cursor-pointer transition select-none">
+            <input type="radio" name="q1" value="C" class="w-4 h-4 text-emerald-600 border-slate-300 focus:ring-emerald-500" />
+            <span class="text-slate-700">Centralizar a resolução de bugs para demonstrar autossuficiência técnica.</span>
+          </label>
+          <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 active:bg-emerald-50 text-sm cursor-pointer transition select-none">
+            <input type="radio" name="q1" value="D" class="w-4 h-4 text-emerald-600 border-slate-300 focus:ring-emerald-500" />
+            <span class="text-slate-700">Priorizar sempre as próprias ideias nas reuniões de retrospectiva.</span>
+          </label>
+        </div>
+      </article>
+
+      <!-- Questão 2 -->
+      <article class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 question-block" data-q="q2">
+        <div class="flex items-start justify-between gap-2 mb-2">
+          <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">Questão 02</span>
+          <span class="text-[11px] text-slate-400 font-medium">Presença Digital</span>
+        </div>
+        <p class="text-sm font-medium text-slate-900 leading-snug mb-3">
+          Para um desenvolvedor em início de carreira, qual estratégia de perfil no LinkedIn e GitHub agrega mais valor na visão de recrutadores técnicos?
+        </p>
+        <div class="space-y-2">
+          <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 active:bg-emerald-50 text-sm cursor-pointer transition select-none">
+            <input type="radio" name="q2" value="A" class="w-4 h-4 text-emerald-600 border-slate-300 focus:ring-emerald-500" />
+            <span class="text-slate-700">Listar todas as linguagens existentes no perfil, mesmo sem projetos práticos.</span>
+          </label>
+          <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 active:bg-emerald-50 text-sm cursor-pointer transition select-none">
+            <input type="radio" name="q2" value="B" class="w-4 h-4 text-emerald-600 border-slate-300 focus:ring-emerald-500" />
+            <span class="text-slate-700">Manter repositórios públicos com README bem documentado, deploy ativo e histórico de commits coerente.</span>
+          </label>
+          <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 active:bg-emerald-50 text-sm cursor-pointer transition select-none">
+            <input type="radio" name="q2" value="C" class="w-4 h-4 text-emerald-600 border-slate-300 focus:ring-emerald-500" />
+            <span class="text-slate-700">Subir apenas o código-fonte final zipado no repositório com mensagem padrão.</span>
+          </label>
+          <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 active:bg-emerald-50 text-sm cursor-pointer transition select-none">
+            <input type="radio" name="q2" value="D" class="w-4 h-4 text-emerald-600 border-slate-300 focus:ring-emerald-500" />
+            <span class="text-slate-700">Focar exclusivamente em conexões genéricas sem compartilhar aprendizados ou projetos.</span>
+          </label>
+        </div>
+      </article>
+
+      <!-- Botão Flutuante / Ação de Envio -->
+      <div class="pt-2">
+        <button type="submit" id="btnSubmit" 
+          class="w-full h-12 bg-emerald-600 active:bg-emerald-700 text-white font-semibold rounded-xl shadow-md transition flex items-center justify-center gap-2">
+          <span>Enviar Respostas</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          </svg>
+        </button>
+        <p id="msgFeedback" class="text-center text-xs mt-2 font-medium hidden"></p>
+      </div>
+
+    </form>
+  </main>
+
+  <script>
+    // Substituir pela URL do Web App gerada no Google Apps Script
+    const APPS_SCRIPT_URL = "SUA_URL_DO_APPS_SCRIPT_AQUI";
+
+    const form = document.getElementById('quizForm');
+    const nomeInput = document.getElementById('nome');
+    const turmaInput = document.getElementById('turma');
+    const progressBar = document.getElementById('progressBar');
+    const badgeProgresso = document.getElementById('badgeProgresso');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const msgFeedback = document.getElementById('msgFeedback');
+
+    const totalQuestoes = document.querySelectorAll('.question-block').length;
+
+    // Atualiza barra de progresso conforme respostas marcadas
+    function atualizarProgresso() {
+      const respondidas = new Set();
+      document.querySelectorAll('input[type="radio"]:checked').forEach(r => respondidas.add(r.name));
+      const total = respondidas.size;
+      const porcentagem = (total / totalQuestoes) * 100;
+
+      progressBar.style.width = `${porcentagem}%`;
+      badgeProgresso.innerText = `${total}/${totalQuestoes}`;
+
+      // Destaque visual na opção selecionada
+      document.querySelectorAll('.question-block').forEach(block => {
+        const checkedInput = block.querySelector('input[type="radio"]:checked');
+        block.querySelectorAll('label').forEach(lbl => {
+          lbl.classList.remove('border-emerald-500', 'bg-emerald-50');
+        });
+        if (checkedInput) {
+          checkedInput.closest('label').classList.add('border-emerald-500', 'bg-emerald-50');
+        }
+      });
+    }
+
+    form.addEventListener('change', atualizarProgresso);
+
+    // Envio com validação mobile
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nome = nomeInput.value.trim();
+      const turma = turmaInput.value.trim();
+
+      if (!nome || !turma) {
+        alert("Por favor, preencha seu nome e turma antes de enviar.");
+        nomeInput.focus();
+        return;
+      }
+
+      // Coleta respostas
+      const respostas = {};
+      const inputsChecked = form.querySelectorAll('input[type="radio"]:checked');
+      inputsChecked.forEach(input => {
+        respostas[input.name] = input.value;
+      });
+
+      if (Object.keys(respostas).length < totalQuestoes) {
+        if (!confirm("Você ainda não respondeu todas as questões. Deseja enviar assim mesmo?")) {
+          return;
+        }
+      }
+
+      btnSubmit.disabled = true;
+      btnSubmit.classList.add('opacity-70', 'cursor-not-allowed');
+      btnSubmit.innerHTML = 'Enviando respostas...';
+
+      const payload = {
+        timestamp: new Date().toISOString(),
+        aluno: nome,
+        turma: turma,
+        respostas: respostas
+      };
+
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors", // Adequado para Web Apps padrão do Apps Script
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        msgFeedback.innerText = "Avaliação enviada com sucesso!";
+        msgFeedback.className = "text-center text-xs mt-3 font-semibold text-emerald-600 block";
+        form.reset();
+        atualizarProgresso();
+      } catch (err) {
+        msgFeedback.innerText = "Erro na conexão. Verifique o sinal e tente novamente.";
+        msgFeedback.className = "text-center text-xs mt-3 font-semibold text-rose-600 block";
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.classList.remove('opacity-70', 'cursor-not-allowed');
+        btnSubmit.innerHTML = '<span>Enviar Novamente</span>';
+      }
+    });
+  </script>
+</body>
+</html>
