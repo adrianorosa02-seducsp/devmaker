@@ -17,8 +17,8 @@
 const ESCOLA_ID = 'c83b5925-3c67-43d7-8ccf-7b72ff4dd479';
 const CONFIG = {
   // Endereço do novo servidor FastAPI
-  API_PAINEL: `http://geduc.inetz.com.br/painel/dashboard/legacy?escola_id=${ESCOLA_ID}`,
-  API_AULAS: `http://geduc.inetz.com.br/painel/horarios`,
+  API_PAINEL: `https://geduc.inetz.com.br/painel/dashboard/legacy?escola_id=${ESCOLA_ID}`,
+  API_AULAS: `https://geduc.inetz.com.br/painel/horarios`,
   API_HORA: 'https://worldtimeapi.org/api/timezone/America/Sao_Paulo',
   INTERVALO_MS: 60_000,           // Recalcula status a cada 60 segundos
   DURACAO_AULA: 50,               // Minutos de duração de cada aula
