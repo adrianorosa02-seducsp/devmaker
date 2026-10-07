@@ -3,7 +3,7 @@
  * Integração com a API GEDUC (https://geduc.inetz.com.br/escolas/)
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+(function() {
   const escolaForm = document.getElementById('escolaForm');
   const btnSubmit = document.getElementById('btnSubmit');
 
@@ -134,4 +134,4 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-});
+})();

@@ -23,6 +23,14 @@ Antes de conseguir visualizar a grade de aulas, você precisa popular o banco de
 
 ---
 
+## 🔗 Integração com o Backend (API Endpoints)
+
+Para entender detalhadamente quais são os endpoints consumidos pelo painel, como funciona a extração de dados e as rotas administrativas (`/painel/...`) disponíveis no projeto de backend, consulte a nossa documentação oficial:
+
+👉 **[Documentação dos Endpoints do Painel - API FastAPI](./DOCS_API_PAINEL.md)**
+
+---
+
 ## 💻 Como Rodar Localmente (Desenvolvimento)
 
 Para rodar a aplicação localmente de forma profissional e sem problemas de bloqueio de segurança (CORS), siga os passos abaixo:

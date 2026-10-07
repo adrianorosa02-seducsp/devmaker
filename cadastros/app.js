@@ -128,3 +128,94 @@ EscolaDoFuturo.limparAlertas = function(containerId) {
     container.innerHTML = '';
   }
 };
+
+// ============================================================
+// SISTEMA DE ROTAS (SPA - SINGLE PAGE APPLICATION)
+// ============================================================
+window.EscolaSPA = {
+  canvasId: 'spa-canvas',
+  
+  carregarPagina: async function(url, linkElement = null) {
+    const canvas = document.getElementById(this.canvasId);
+    if (!canvas) return;
+
+    // Atualiza estado ativo no menu
+    if (linkElement) {
+      document.querySelectorAll('.sidebar-nav-item').forEach(el => el.classList.remove('active'));
+      linkElement.classList.add('active');
+    }
+
+    // Loader
+    canvas.innerHTML = `
+      <div class="spa-loader" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:40vh;">
+        <i class="fa-solid fa-circle-notch fa-spin" style="font-size:3rem; color:#2563eb; margin-bottom:20px;"></i>
+        <span style="color:#64748b; font-size:1.2rem;">Carregando módulo...</span>
+      </div>
+    `;
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+      
+      const htmlText = await response.text();
+      
+      // Extrair apenas o conteúdo útil se for uma página completa
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = htmlText;
+      const contentCanvas = tempDiv.querySelector('.content-canvas');
+      
+      canvas.innerHTML = contentCanvas ? contentCanvas.innerHTML : htmlText;
+
+      // Executar scripts contidos na View injetada
+      this.executarScriptsDaView(tempDiv);
+
+    } catch (error) {
+      console.error('Erro no SPA:', error);
+      canvas.innerHTML = `
+        <div class="spa-loader" style="color: #ef4444; text-align:center; padding: 40px;">
+          <i class="fa-solid fa-triangle-exclamation" style="font-size: 3rem;"></i>
+          <p>Falha ao carregar o módulo solicitado.</p>
+        </div>
+      `;
+    }
+  },
+
+  executarScriptsDaView: function(container) {
+    const scripts = container.querySelectorAll('script');
+    scripts.forEach(oldScript => {
+      // Ignorar app.js para não recarregar a engine toda vez
+      if (oldScript.src && oldScript.src.includes('app.js')) return;
+
+      const newScript = document.createElement('script');
+      Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+      if (oldScript.innerHTML) newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+      document.body.appendChild(newScript);
+    });
+  },
+
+  inicializarRouter: function() {
+    const links = document.querySelectorAll('.spa-link');
+    links.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const url = link.getAttribute('data-url');
+        if (url) {
+          this.carregarPagina(url, link);
+          // Fecha menu lateral se estiver no mobile
+          const sidebar = document.getElementById('sidebar');
+          if (sidebar && sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            if(backdrop) backdrop.classList.remove('active');
+          }
+        }
+      });
+    });
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('spa-canvas')) {
+    window.EscolaSPA.inicializarRouter();
+  }
+});
