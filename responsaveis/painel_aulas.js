@@ -223,6 +223,18 @@ function renderGrade(grade, horaAtual) {
         const diaSemana = grade.dia_semana || 'Seg';
 
         if (aula) {
+          // Lógica de injeção dos PAs (Professores Auxiliares) apenas no horário vigente
+          let pasHTML = '';
+          if (slot.status === 'em_andamento' && window.CONFIG_PA && window.CONFIG_PA[turma]) {
+            const listaPAs = window.CONFIG_PA[turma];
+            listaPAs.forEach(paInfo => {
+              pasHTML += `
+                <div class="badge-pa" title="Aluno: ${paInfo.aluno}">
+                  <i class="fa-solid fa-hands-holding-child"></i> PA: ${paInfo.nomePA}
+                </div>`;
+            });
+          }
+
           html += `
             <td class="col-aula col-aula-clickable" 
                 data-dia="${diaSemana}" 
@@ -234,6 +246,7 @@ function renderGrade(grade, horaAtual) {
               <div class="aula-card">
                 <span class="aula-disciplina">${aula.disciplina}</span>
                 <span class="aula-professor">${aula.professor}</span>
+                ${pasHTML}
               </div>
             </td>`;
         } else {
