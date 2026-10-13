@@ -1,9 +1,236 @@
+
+
+
+Formulário Mobile First para Cadastro
+Atualizou sistema para envio direto de documentos ao Drive.
+há 1 min.
+
+Análise de Conteúdo Workspace
+Analisou as capacidades de integração com VS Code.
+Conversão de Dados da Planilha
+Script desenvolvido para exportação de dados escolares via JSON.
+Configuração de Conectividade Sem IP
+Corrigiu falhas críticas no script do Google Apps.
+Extração de Texto de Imagem
+Transcreveu o conteúdo textual da imagem fornecida.
+Orquestração de Fluxo SupportFlow
+Transferiu conteúdos do projeto para o Google Drive.
+Análise de Provas Online
+Salvando registros no armazenamento em nuvem
+Precisa de entrada
+Gravação de Conteúdo Áudio
+Validou o fluxo de impressão via modo simulação.
+Brother Printer Booklet Script Archiving
+Saved the booklet generation script to Google Drive.
+Lesson Retrieval for Carreiras e Competências
+Identified the first lesson of the fourth quarter.
+Fourth Quarter Curriculum Preparation
+Researched and structured the first fourth quarter lesson.
+PostgreSQL Migration Project Documentation
+Generated comprehensive technical documentation for the database migration.
+
+Formulário Mobile First para Cadastro
+Beta
+
+Etapas do plano
+
+Conversa com o Gemini
+vamos criar um formulario html/css estilo devmaker/ava/cadastros com conceito first mobile, com o obletivo de atualizar (incluir ou alterar) o Link_rg da planilha https://docs.google.com/spreadsheets/d/1jVmKBKtpB67ws_6oJaG1-dow61MXrPWCBCrk6_D1xmc/edit?gid=477863843#gid=477863843
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Foi desenvolvido o formulário interativo no padrão visual DevMaker / AVA / Cadastros com arquitetura mobile-first, projetado especificamente para a inclusão e alteração do campo Link_rg na planilha Alunos_visita_Tecnica (aba alunos_documentos).
+
+Arquivos Gerados
+ — Interface web completa (HTML5, CSS3 responsivo e JavaScript nativo), pronta para uso em smartphones e navegadores desktop.
+Ícone do app HTML
+atualizar_link_rg
+ HTML 
+Ícone do app HTML
+atualizar_link_rg
+ HTML 
+
+ — Script de backend em Google Apps Script para recepção das requisições e gravação direta na coluna H (Link_Rg) da planilha.
+Ícone do app TXT
+Codigo.gs
+ TXT 
+Ícone do app TXT
+Codigo.gs
+ TXT 
+
+Principais Características da Solução
+Identidade Visual DevMaker / AVA: Cores institucionais (--primary: #1e3a8a, --accent: #2563eb), cartões com cantos arredondados, badges de contexto, tipografia do sistema e feedback visual claro com estados de foco acessíveis.
+
+Experiência Mobile-First:
+
+Métricas em Destaque: Contadores rápidos no topo (Total de Alunos, RGs Preenchidos e RGs Pendentes).
+
+Busca e Filtros Dinâmicos: Campo de busca instantânea por nome ou RA, com pílulas de filtro rápido por turma (2º B e 3º A) e por status de RG (Pendentes e Preenchidos).
+
+Lista em Cards Otimizados: Cada estudante possui um card de toque com iniciais, nome, RA, turma, link do documento atual (coluna G) e indicador de status do RG.
+
+Bottom Sheet (Gaveta Inferior): Ao tocar em Incluir/Alterar Link_RG, abre-se uma gaveta ergonômica para operações com uma mão no smartphone, contendo botão para colar da área de transferência, teste de abertura do link e confirmação com animação de salvamento.
+
+Persistência e Funcionamento Híbrido: O formulário já vem pré-carregado com os 38 alunos da planilha e armazena alterações localmente via localStorage. Ao configurar o Web App do Apps Script, a sincronização é enviada em tempo real para a planilha na nuvem.
+
+Instruções Rápidas de Implantação
+Abra a planilha Alunos_visita_Tecnica.
+
+Acesse o menu Extensões ➔ Apps Script.
+
+Cole o conteúdo de 
+ e salve o projeto.
+
+Clique em Implantar ➔ Nova implantação, escolha o tipo App da Web, configure o acesso para "Qualquer pessoa" e copie a URL gerada (terminada em /exec).
+
+No rodapé do arquivo 
+, cole a URL no campo de configuração da conexão para ativar a gravação remota automática.
+
+onde coloco o link do backend?
+
+
+
+
+O link do backend (URL do Web App do Google Apps Script terminada em /exec) pode ser inserido de duas formas:
+
+Opção 1: Diretamente pela tela do formulário (sem editar o código)
+Abra o arquivo 
+Ícone do app HTML
+atualizar_link_rg
+ HTML 
+Ícone do app HTML
+atualizar_link_rg
+ HTML 
+ no navegador do celular ou computador.
+
+Role até o rodapé da página.
+
+No painel ⚙️ Conexão Web App (Google Apps Script), cole a sua URL no campo indicado e clique em "Salvar".
+
+A URL será gravada no navegador (localStorage) e passará a sincronizar automaticamente a cada salvamento.
+
+Opção 2: Fixado no código-fonte do arquivo HTML
+Caso queira que o formulário já venha configurado por padrão para qualquer pessoa:
+
+Abra o arquivo 
+ em um editor de texto ou de código.
+
+Logo no início da tag <script> (logo abaixo dos modais), localize o bloco:
+
+JavaScript
+// =========================================================================
+// 🔗 CONFIGURAÇÃO DO BACKEND (GOOGLE APPS SCRIPT)
+// Cole aqui a URL de implantação do seu Web App (terminada em /exec):
+// =========================================================================
+const WEBAPP_URL_PADRAO = ""; 
+Cole a URL entre as aspas:
+
+JavaScript
+const WEBAPP_URL_PADRAO = "https://script.google.com/macros/s/SEU_ID_AQUI/exec";
+Salve o arquivo.
+
+funcionou, mas precisamos dar o upload para drive, ja que vamos mexer nisso, vamos acrescentar a atualização da coluna "Link" (g) que se refere a autorização
+
+
+
+
+
+
+
+
+
+
+
+
+
+A solução foi atualizada para suportar o upload direto de arquivos (fotos e PDFs) para o Google Drive e o gerenciamento simultâneo das duas colunas de documentos na planilha Alunos_visita_Tecnica (aba alunos_documentos):
+
+Coluna G (Link): Termo de Autorização para a Visita Técnica.
+
+Coluna H (Link_Rg): Documento de Identidade / RG do Aluno.
+
+Arquivos Atualizados
+ — Interface mobile-first com captura direta por câmera/galeria, compressão automática no navegador para envios rápidos sem lentidão e controle dual de documentos por aluno.
+Ícone do app HTML
+atualizar_documentos
+ HTML 
+Ícone do app HTML
+atualizar_documentos
+ HTML 
+
+ — Backend atualizado no Google Apps Script com criação automatizada de arquivos no Google Drive na pasta Documentos_Visita_Tecnica, configuração de permissões de leitura e gravação nas colunas correspondentes (E, F, G, H e I).
+Ícone do app TXT
+Codigo.gs
+ TXT 
+Ícone do app TXT
+Codigo.gs
+ TXT 
+
+Novas Funcionalidades Implementadas
+Upload Direto para o Google Drive:
+
+O usuário pode tirar foto direto da câmera do smartphone ou selecionar imagem/PDF da galeria.
+
+O formulário compacta a imagem via <canvas> antes do envio (reduzindo arquivos pesados de 10 MB para ~400 KB mantendo a legibilidade de assinaturas e dados), evitando estouro de cota do Apps Script.
+
+Opcionalmente, mantém a aba para colar links manuais já existentes do Drive.
+
+Gestão Integrada das Colunas G e H:
+
+Cada card de aluno agora exibe duas caixas de status: 📄 Autorização (G) e 🪪 RG (H).
+
+Cada documento possui seus próprios botões independentes: Ver (se já cadastrado) e Enviar / Alterar.
+
+Ao subir uma Autorização, o script atualiza a Coluna G (Link), a Coluna E (Arquivo), a Coluna F (ID_Arquivo) e a Coluna I (Status como OK).
+
+Ao subir um RG, o script atualiza a Coluna H (Link_Rg).
+
+Padronização Automática de Nomes no Drive:
+
+Os arquivos salvos são nomeados automaticamente no padrão:
+
+AUTORIZACAO_[TURMA]_[RA]_[NOME].[ext] ou RG_[TURMA]_[RA]_[NOME].[ext].
+
+Como Atualizar o Backend no Apps Script
+Abra a planilha Alunos_visita_Tecnica.
+
+Vá em Extensões ➔ Apps Script.
+
+Substitua o código existente pelo conteúdo de 
+ e salve (Ctrl + S).
+
+Clique em Implantar ➔ Gerenciar implantações.
+
+Clique no ícone de lápis (Editar), selecione Nova versão e clique em Implantar.
+
+A URL do Web App permanecerá a mesma (ou copie a nova, se for uma nova implantação) e cole no rodapé do 
+.
+
+
+
+
+
+O Gemini é uma IA e pode cometer erros.
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Atualização de Link_RG | Visita Técnica • E.E. Antônio Reginato</title>
+  <title>Upload & Gestão de Documentos | Visita Técnica • E.E. Antônio Reginato</title>
   <style>
     :root {
       --primary: #1e3a8a;
@@ -46,12 +273,12 @@
     body {
       background-color: var(--bg);
       color: var(--text-main);
-      padding: 16px 12px 100px;
+      padding: 14px 12px 100px;
       line-height: 1.5;
     }
 
     .container {
-      max-width: 720px;
+      max-width: 760px;
       margin: 0 auto;
     }
 
@@ -63,10 +290,10 @@
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
       border-left: 6px solid var(--accent);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .header-top {
@@ -81,7 +308,7 @@
       background: var(--primary-light);
       color: var(--accent);
       font-weight: 700;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       padding: 5px 12px;
       border-radius: 9999px;
       text-transform: uppercase;
@@ -106,29 +333,35 @@
 
     .header-titles p {
       color: var(--text-muted);
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       line-height: 1.4;
     }
 
-    /* Métricas / Contador Mobile */
+    /* Métricas Rápidas Grid 2x2 Mobile */
     .metrics-bar {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 8px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
+    }
+
+    @media (min-width: 600px) {
+      .metrics-bar {
+        grid-template-columns: repeat(4, 1fr);
+      }
     }
 
     .metric-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 12px 8px;
+      padding: 12px 10px;
       text-align: center;
       box-shadow: var(--shadow-sm);
     }
 
     .metric-label {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--text-muted);
       font-weight: 700;
       text-transform: uppercase;
@@ -136,31 +369,26 @@
     }
 
     .metric-val {
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       font-weight: 800;
       color: var(--primary);
       margin-top: 2px;
     }
 
-    .metric-val.ok {
-      color: var(--success);
-    }
+    .metric-val.ok { color: var(--success); }
+    .metric-val.alert { color: var(--warning); }
 
-    .metric-val.alert {
-      color: var(--warning);
-    }
-
-    /* Barra de Busca e Filtros */
+    /* Filtros e Busca */
     .filters-section {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 16px;
+      padding: 14px;
       box-shadow: var(--shadow-sm);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .search-box {
@@ -169,7 +397,7 @@
 
     .search-input {
       width: 100%;
-      padding: 13px 14px 13px 40px;
+      padding: 12px 14px 12px 38px;
       border: 1.5px solid var(--border);
       border-radius: 10px;
       font-size: 0.95rem;
@@ -186,10 +414,10 @@
 
     .search-icon {
       position: absolute;
-      left: 14px;
+      left: 12px;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--text-muted);
       pointer-events: none;
     }
@@ -214,9 +442,9 @@
 
     .filter-pills {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       overflow-x: auto;
-      padding-bottom: 4px;
+      padding-bottom: 2px;
       scrollbar-width: none;
     }
 
@@ -225,16 +453,16 @@
     }
 
     .pill {
-      padding: 8px 14px;
+      padding: 7px 12px;
       border-radius: 9999px;
-      font-size: 0.8rem;
+      font-size: 0.76rem;
       font-weight: 700;
       background: #f1f5f9;
       color: var(--text-muted);
       border: 1px solid var(--border);
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.2s;
+      transition: all 0.15s;
       flex-shrink: 0;
     }
 
@@ -245,7 +473,7 @@
       box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
     }
 
-    /* Lista de Alunos Mobile First */
+    /* Lista de Alunos */
     .list-header {
       display: flex;
       justify-content: space-between;
@@ -255,7 +483,7 @@
     }
 
     .list-title {
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
@@ -268,28 +496,24 @@
       gap: 12px;
     }
 
+    /* Card do Aluno Mobile */
     .student-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 16px;
       box-shadow: var(--shadow-sm);
-      transition: transform 0.15s ease, border-color 0.2s;
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
-    .student-card:active {
-      transform: scale(0.99);
+    .student-card.fully-complete {
+      border-left: 5px solid var(--success);
     }
 
-    .student-card.has-rg {
-      border-left: 4px solid var(--success);
-    }
-
-    .student-card.no-rg {
-      border-left: 4px solid var(--warning);
+    .student-card.has-pending {
+      border-left: 5px solid var(--warning);
     }
 
     .student-top {
@@ -313,7 +537,7 @@
       border: 1px solid var(--primary-border);
     }
 
-    .student-avatar.has-rg {
+    .student-avatar.complete {
       background: var(--success-light);
       color: var(--success);
       border-color: var(--success-border);
@@ -325,7 +549,7 @@
     }
 
     .student-name {
-      font-size: 0.95rem;
+      font-size: 0.94rem;
       font-weight: 700;
       color: var(--text-main);
       white-space: nowrap;
@@ -335,7 +559,7 @@
     }
 
     .student-meta {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
       display: flex;
       align-items: center;
@@ -346,112 +570,129 @@
       background: #f1f5f9;
       color: #334155;
       font-weight: 700;
-      font-size: 0.72rem;
-      padding: 2px 7px;
-      border-radius: 6px;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 5px;
     }
 
-    .rg-status-row {
+    /* Seções de Documentos (Autorização & RG) */
+    .docs-dual-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 600px) {
+      .docs-dual-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .doc-item-box {
       background: #f8fafc;
-      padding: 10px 12px;
-      border-radius: 8px;
       border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .doc-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .doc-type-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #334155;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      font-size: 0.82rem;
-    }
-
-    .rg-status-badge {
-      display: inline-flex;
-      align-items: center;
       gap: 5px;
-      font-weight: 700;
-      font-size: 0.75rem;
-      padding: 3px 8px;
-      border-radius: 6px;
     }
 
-    .rg-status-badge.ok {
+    .badge-doc-status {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 5px;
+      text-transform: uppercase;
+    }
+
+    .badge-doc-status.ok {
       background: var(--success-light);
       color: var(--success);
     }
 
-    .rg-status-badge.pending {
+    .badge-doc-status.pendente {
       background: var(--warning-light);
       color: var(--warning);
     }
 
-    .link-rg-preview {
+    .doc-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-action-view {
+      padding: 8px 10px;
+      background: #ffffff;
       color: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-weight: 700;
       text-decoration: none;
-      font-weight: 600;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      max-width: 140px;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
-    .card-actions {
-      display: flex;
-      gap: 8px;
+    .btn-action-view:hover {
+      background: var(--primary-light);
+      border-color: var(--primary-border);
     }
 
-    .btn-update {
+    .btn-action-upload {
       flex: 1;
-      padding: 11px 14px;
+      padding: 8px 10px;
       background: var(--accent);
       color: #ffffff;
       border: none;
-      border-radius: 8px;
-      font-size: 0.88rem;
+      border-radius: 6px;
+      font-size: 0.76rem;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      transition: background 0.2s, transform 0.1s;
+      gap: 5px;
+      transition: background 0.15s;
     }
 
-    .btn-update:hover {
+    .btn-action-upload:hover {
       background: var(--accent-hover);
     }
 
-    .btn-update.edit {
+    .btn-action-upload.edit {
       background: #475569;
     }
 
-    .btn-update.edit:hover {
+    .btn-action-upload.edit:hover {
       background: #334155;
     }
 
-    .btn-doc {
-      padding: 11px 12px;
-      background: #f1f5f9;
-      color: #334155;
-      text-decoration: none;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      border: 1px solid var(--border);
-    }
-
-    /* Bottom Sheet / Modal Mobile */
+    /* Bottom Sheet Modal Mobile */
     .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(15, 23, 42, 0.6);
+      background: rgba(15, 23, 42, 0.65);
       backdrop-filter: blur(4px);
       z-index: 1000;
       display: none;
@@ -477,11 +718,11 @@
       width: 100%;
       background: var(--card-bg);
       border-radius: 20px 20px 0 0;
-      padding: 24px 20px 32px;
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+      padding: 20px 18px 30px;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
       transform: translateY(100%);
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      max-height: 90vh;
+      max-height: 92vh;
       overflow-y: auto;
     }
 
@@ -490,7 +731,7 @@
         max-width: 520px;
         border-radius: 16px;
         transform: scale(0.95);
-        padding: 28px;
+        padding: 26px;
       }
     }
 
@@ -505,34 +746,32 @@
     }
 
     .sheet-handle {
-      width: 40px;
-      height: 5px;
+      width: 36px;
+      height: 4px;
       background: #cbd5e1;
-      border-radius: 3px;
-      margin: 0 auto 16px;
+      border-radius: 2px;
+      margin: 0 auto 14px;
     }
 
     @media (min-width: 640px) {
-      .sheet-handle {
-        display: none;
-      }
+      .sheet-handle { display: none; }
     }
 
     .sheet-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .sheet-title {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 800;
       color: var(--primary);
     }
 
     .sheet-subtitle {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
       margin-top: 2px;
     }
@@ -540,10 +779,10 @@
     .btn-close {
       background: #f1f5f9;
       border: none;
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: #64748b;
       cursor: pointer;
       display: flex;
@@ -551,60 +790,185 @@
       justify-content: center;
     }
 
-    .student-preview-box {
+    .student-preview-chip {
       background: var(--primary-light);
       border: 1px solid var(--primary-border);
       border-radius: 10px;
-      padding: 12px 14px;
-      margin-bottom: 20px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
 
     .preview-name {
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--primary);
     }
 
     .preview-meta {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: #3b82f6;
       display: flex;
       gap: 12px;
     }
 
+    /* Modos de Envio (Upload direto vs Link) */
+    .upload-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+
+    .tab-mode-btn {
+      padding: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+
+    .tab-mode-btn.active {
+      background: #ffffff;
+      color: var(--accent);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    /* Drop-zone de Upload para Smartphone */
+    .upload-zone {
+      border: 2px dashed #93c5fd;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 22px 14px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s;
+      margin-bottom: 14px;
+    }
+
+    .upload-zone:hover, .upload-zone.dragover {
+      background: var(--primary-light);
+      border-color: var(--accent);
+    }
+
+    .upload-zone input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .upload-zone-icon {
+      font-size: 2rem;
+      margin-bottom: 6px;
+      color: var(--accent);
+    }
+
+    .upload-zone-title {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--primary);
+    }
+
+    .upload-zone-desc {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Preview do Arquivo Selecionado */
+    .file-preview-card {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+    }
+
+    .file-preview-card.show {
+      display: flex;
+    }
+
+    .file-thumbnail {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .file-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #1e293b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-meta {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .btn-remove-file {
+      background: none;
+      border: none;
+      color: var(--danger);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* Campo Manual de Link */
     .form-group {
       display: flex;
       flex-direction: column;
       gap: 6px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .form-label {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: #334155;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .form-label span.req {
-      color: var(--danger);
-    }
-
-    .url-input-wrapper {
-      position: relative;
     }
 
     .form-input {
       width: 100%;
-      padding: 13px 14px;
+      padding: 12px 14px;
       border: 1.5px solid var(--border);
       border-radius: 10px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--text-main);
       background-color: #fff;
       outline: none;
@@ -616,45 +980,14 @@
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     }
 
-    .form-help {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      line-height: 1.4;
-      margin-top: 4px;
-    }
-
-    .quick-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 6px;
-    }
-
-    .btn-chip {
-      background: #f1f5f9;
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: #475569;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .btn-chip:hover {
-      background: #e2e8f0;
-    }
-
-    .btn-save {
+    .btn-submit-save {
       width: 100%;
-      padding: 15px;
+      padding: 14px;
       background: linear-gradient(135deg, var(--accent), var(--primary));
       color: #ffffff;
       border: none;
       border-radius: 10px;
-      font-size: 1rem;
+      font-size: 0.98rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -663,29 +996,29 @@
       gap: 8px;
       box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
       transition: all 0.2s;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
-    .btn-save:hover {
+    .btn-submit-save:hover {
       background: linear-gradient(135deg, var(--primary-hover), var(--primary));
     }
 
-    .btn-save:disabled {
-      opacity: 0.6;
+    .btn-submit-save:disabled {
+      opacity: 0.65;
       cursor: not-allowed;
     }
 
-    /* Toast Notification */
+    /* Toast */
     .toast {
       position: fixed;
-      bottom: 24px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%) translateY(100px);
       background: #0f172a;
       color: #ffffff;
       padding: 12px 20px;
       border-radius: 9999px;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 600;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
       display: flex;
@@ -704,21 +1037,15 @@
       opacity: 1;
     }
 
-    .toast.success {
-      background: #15803d;
-    }
+    .toast.success { background: #15803d; }
+    .toast.error { background: #b91c1c; }
 
-    .toast.error {
-      background: #b91c1c;
-    }
-
-    /* Rodapé Config / Backend */
     footer {
-      margin-top: 30px;
-      padding-top: 20px;
+      margin-top: 26px;
+      padding-top: 18px;
       border-top: 1px dashed var(--border);
       text-align: center;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
     }
 
@@ -726,19 +1053,15 @@
       background: #f1f5f9;
       border-radius: 10px;
       padding: 12px 14px;
-      margin-top: 12px;
+      margin-top: 10px;
       text-align: left;
-      font-size: 0.78rem;
-    }
-
-    .backend-config-card strong {
-      color: var(--primary);
+      font-size: 0.76rem;
     }
 
     .config-input-row {
       display: flex;
       gap: 8px;
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
     .config-input {
@@ -746,7 +1069,7 @@
       padding: 6px 10px;
       border: 1px solid var(--border);
       border-radius: 6px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       background: #fff;
     }
 
@@ -759,35 +1082,21 @@
       font-weight: 600;
       cursor: pointer;
     }
-
-    .empty-state {
-      background: var(--card-bg);
-      border: 1px dashed var(--border);
-      border-radius: var(--radius);
-      padding: 36px 20px;
-      text-align: center;
-      color: var(--text-muted);
-    }
-
-    .empty-icon {
-      font-size: 2.2rem;
-      margin-bottom: 8px;
-    }
   </style>
 </head>
 <body>
 
 <div class="container">
 
-  <!-- Header Mobile First DevMaker / AVA -->
+  <!-- Header DevMaker / AVA Mobile First -->
   <header>
     <div class="header-top">
       <span class="header-badge">E.E. Antônio Reginato</span>
-      <span class="header-badge tech">Visita Técnica 2026</span>
+      <span class="header-badge tech">Visita Técnica UNIMAR 2026</span>
     </div>
     <div class="header-titles">
-      <h1>Atualização de Link_RG</h1>
-      <p>Gerenciamento mobile para inclusão e alteração do link dos documentos de identidade dos alunos na planilha oficial.</p>
+      <h1>Documentos da Visita Técnica</h1>
+      <p>Upload direto para o Google Drive e atualização das colunas <strong>Link (G - Autorização)</strong> e <strong>Link_Rg (H - RG)</strong> na planilha oficial.</p>
     </div>
   </header>
 
@@ -798,11 +1107,15 @@
       <div class="metric-val" id="metric-total">38</div>
     </div>
     <div class="metric-card">
-      <div class="metric-label">RG Preenchido</div>
-      <div class="metric-val ok" id="metric-preenchidos">0</div>
+      <div class="metric-label">Autorizações OK</div>
+      <div class="metric-val ok" id="metric-aut-ok">38</div>
     </div>
     <div class="metric-card">
-      <div class="metric-label">RG Pendente</div>
+      <div class="metric-label">RGs OK</div>
+      <div class="metric-val" id="metric-rg-ok">0</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Pendências</div>
       <div class="metric-val alert" id="metric-pendentes">38</div>
     </div>
   </div>
@@ -822,39 +1135,41 @@
       <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()">✕</button>
     </div>
 
-    <!-- Pílulas de Turma e Status -->
+    <!-- Pílulas de Turma -->
     <div class="filter-pills" id="turmaPills">
       <button class="pill active" data-filter="todas" onclick="setTurmaFilter('todas', this)">Todas as Turmas (38)</button>
       <button class="pill" data-filter="2B" onclick="setTurmaFilter('2B', this)">2º B (29)</button>
       <button class="pill" data-filter="3A" onclick="setTurmaFilter('3A', this)">3º A (9)</button>
     </div>
 
+    <!-- Pílulas de Status Geral -->
     <div class="filter-pills" id="statusPills">
-      <button class="pill active" data-status="todos" onclick="setStatusFilter('todos', this)">Todos Status</button>
-      <button class="pill" data-status="pendente" onclick="setStatusFilter('pendente', this)">⚠️ Somente Pendentes</button>
-      <button class="pill" data-status="ok" onclick="setStatusFilter('ok', this)">✅ Somente Preenchidos</button>
+      <button class="pill active" data-status="todos" onclick="setStatusFilter('todos', this)">Todos</button>
+      <button class="pill" data-status="falta-rg" onclick="setStatusFilter('falta-rg', this)">⚠️ Falta RG</button>
+      <button class="pill" data-status="falta-aut" onclick="setStatusFilter('falta-aut', this)">⚠️ Falta Autorização</button>
+      <button class="pill" data-status="completo" onclick="setStatusFilter('completo', this)">✅ 100% Completo</button>
     </div>
   </div>
 
   <!-- Cabeçalho da Lista -->
   <div class="list-header">
     <div class="list-title" id="listCounterLabel">Exibindo 38 alunos</div>
-    <div style="font-size: 0.75rem; color: var(--text-muted);">Toque no botão para editar</div>
+    <div style="font-size: 0.74rem; color: var(--text-muted);">Toque em Enviar para fazer upload</div>
   </div>
 
   <!-- Lista de Alunos -->
   <div class="students-list" id="studentsListContainer">
-    <!-- Gerado dinamicamente via JavaScript -->
+    <!-- Renderizado dinamicamente via JS -->
   </div>
 
-  <!-- Configuração do Endpoint do Apps Script -->
+  <!-- Rodapé & Configuração do Apps Script -->
   <footer>
-    <p>Integração com Google Sheets: <strong>Alunos_visita_Tecnica</strong> (aba: <code>alunos_documentos</code>, Coluna H: <code>Link_Rg</code>)</p>
+    <p>Planilha Integrada: <strong>Alunos_visita_Tecnica</strong> (Aba: <code>alunos_documentos</code>)</p>
     
     <div class="backend-config-card">
-      <div><strong>⚙️ Conexão Web App (Google Apps Script):</strong></div>
-      <div style="margin-top: 4px; color: #475569;">
-        Insira a URL de implantação do Apps Script (Web App) para salvar direto na nuvem:
+      <div><strong>⚙️ URL do Web App (Google Apps Script):</strong></div>
+      <div style="margin-top: 3px; color: #475569;">
+        Conecte a URL de implantação do Apps Script para salvar arquivos e links direto no Google Drive e na Planilha:
       </div>
       <div class="config-input-row">
         <input 
@@ -871,80 +1186,109 @@
 
 </div>
 
-<!-- BOTTOM SHEET / MODAL MOBILE PARA ATUALIZAR LINK_RG -->
+<!-- BOTTOM SHEET / MODAL MOBILE PARA UPLOAD & LINK -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
   <div class="bottom-sheet" id="bottomSheet" onclick="event.stopPropagation()">
     <div class="sheet-handle"></div>
 
     <div class="sheet-header">
       <div>
-        <h2 class="sheet-title" id="sheetTitle">Atualizar Link_RG</h2>
-        <p class="sheet-subtitle">Insira ou modifique o link do documento RG</p>
+        <h2 class="sheet-title" id="sheetTitle">Upload de Documento</h2>
+        <p class="sheet-subtitle" id="sheetSubtitle">Envio direto para o Google Drive da visita</p>
       </div>
       <button class="btn-close" onclick="closeModal()">✕</button>
     </div>
 
-    <!-- Dados do Aluno Selecionado -->
-    <div class="student-preview-box">
+    <!-- Resumo do Aluno -->
+    <div class="student-preview-chip">
       <div class="preview-name" id="modalStudentName">Nome do Aluno</div>
       <div class="preview-meta">
         <span id="modalStudentRA">RA: -</span>
         <span id="modalStudentTurma">Turma: -</span>
+        <span id="modalDocTargetBadge" style="font-weight: 700; color: var(--accent);">Tipo: RG</span>
       </div>
     </div>
 
-    <!-- Formulário do Link_RG -->
-    <form id="rgUpdateForm" onsubmit="handleRgSubmit(event)">
-      <input type="hidden" id="modalStudentIndex" />
+    <!-- Alternador: Upload de Arquivo vs Link Manual -->
+    <div class="upload-tabs">
+      <button type="button" class="tab-mode-btn active" id="tabModeUpload" onclick="setMode('upload')">
+        📸 Tirar Foto / Upload
+      </button>
+      <button type="button" class="tab-mode-btn" id="tabModeLink" onclick="setMode('link')">
+        🔗 Colar Link Drive
+      </button>
+    </div>
 
-      <div class="form-group">
-        <label class="form-label" for="linkRgInput">
-          Link do Documento RG (Google Drive / URL) <span class="req">*</span>
-        </label>
-        
-        <div class="url-input-wrapper">
+    <!-- FORMULÁRIO -->
+    <form id="docUploadForm" onsubmit="handleDocSubmit(event)">
+      <input type="hidden" id="modalStudentIndex" />
+      <input type="hidden" id="modalDocType" value="rg" />
+
+      <!-- ÁREA 1: UPLOAD DE ARQUIVO (MOBILE CAMERA / GALLERY / PDF) -->
+      <div id="sectionUpload">
+        <div class="upload-zone" id="uploadDropZone">
+          <div class="upload-zone-icon" id="uploadZoneIcon">📷</div>
+          <div class="upload-zone-title" id="uploadZoneTitle">Toque para Tirar Foto ou Escolher Arquivo</div>
+          <div class="upload-zone-desc">Câmera, Galeria de Fotos ou PDF (Comprime fotos automaticamente)</div>
           <input 
-            type="url" 
-            id="linkRgInput" 
-            class="form-input" 
-            placeholder="https://drive.google.com/file/d/..." 
-            required 
-            autocomplete="off"
-            autocapitalize="none"
+            type="file" 
+            id="fileInput" 
+            accept="image/*,application/pdf" 
+            capture="environment"
+            onchange="handleFileChange(this)"
           />
         </div>
 
-        <div class="quick-actions">
-          <button type="button" class="btn-chip" onclick="pasteFromClipboard()">
-            📋 Colar link
-          </button>
-          <button type="button" class="btn-chip" onclick="clearInput()">
-            🗑️ Limpar
-          </button>
-          <button type="button" class="btn-chip" id="btnTestLink" onclick="testModalLink()" style="display: none;">
-            🔗 Abrir link
-          </button>
-        </div>
-
-        <div class="form-help">
-          💡 <strong>Dica:</strong> No Google Drive do celular, abra a imagem ou PDF do RG, toque nos 3 pontinhos ➔ <em>"Copiar link"</em> e cole aqui.
+        <div class="file-preview-card" id="filePreviewCard">
+          <div class="file-thumbnail" id="fileThumbnail">📄</div>
+          <div class="file-details">
+            <div class="file-name" id="fileNameText">arquivo.jpg</div>
+            <div class="file-meta" id="fileMetaText">Calculando tamanho...</div>
+          </div>
+          <button type="button" class="btn-remove-file" onclick="removeSelectedFile()" title="Remover">✕</button>
         </div>
       </div>
 
-      <button type="submit" class="btn-save" id="btnSaveLink">
-        <span>💾 Salvar Link_RG</span>
+      <!-- ÁREA 2: COLAR LINK MANUALMENTE -->
+      <div id="sectionLink" style="display: none;">
+        <div class="form-group">
+          <label class="form-label" for="manualLinkInput">
+            Link do Google Drive / Compartilhamento
+          </label>
+          <input 
+            type="url" 
+            id="manualLinkInput" 
+            class="form-input" 
+            placeholder="https://drive.google.com/file/d/..." 
+            autocomplete="off"
+          />
+          <div style="display:flex; gap:6px; margin-top:6px;">
+            <button type="button" class="pill" onclick="pasteFromClipboard()">📋 Colar do celular</button>
+            <button type="button" class="pill" onclick="document.getElementById('manualLinkInput').value = ''">🗑️ Limpar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTÃO DE ENVIO COM FEEDBACK VISUAL -->
+      <button type="submit" class="btn-submit-save" id="btnSubmitSave">
+        <span id="btnSubmitText">🚀 Enviar para o Drive e Salvar</span>
       </button>
     </form>
   </div>
 </div>
 
-<!-- TOAST NOTIFICATION -->
-<div class="toast" id="toastMessage">✓ Link_RG atualizado com sucesso!</div>
+<!-- TOAST -->
+<div class="toast" id="toastMessage">✓ Documento salvo com sucesso!</div>
 
 <script>
   // =========================================================================
-  // 1. DADOS INICIAIS (CARREGADOS DA PLANILHA alunos_documentos)
+  // 🔗 CONFIGURAÇÃO DO BACKEND (GOOGLE APPS SCRIPT)
+  // Cole aqui a URL de implantação do seu Web App (terminada em /exec):
   // =========================================================================
+  const WEBAPP_URL_PADRAO = ""; 
+  // =========================================================================
+
+  // Dados carregados da planilha
   const INITIAL_STUDENTS = [
   {
     "ra": "112972908",
@@ -1366,12 +1710,11 @@
   }
 ];
 
-  // Carrega do LocalStorage se já houver alterações salvas localmente
   let studentsData = [];
-  const storedData = localStorage.getItem('alunos_visita_tecnica_rg');
-  if (storedData) {
+  const stored = localStorage.getItem('alunos_visita_docs_v2');
+  if (stored) {
     try {
-      studentsData = JSON.parse(storedData);
+      studentsData = JSON.parse(stored);
     } catch (e) {
       studentsData = [...INITIAL_STUDENTS];
     }
@@ -1379,63 +1722,64 @@
     studentsData = [...INITIAL_STUDENTS];
   }
 
-  // Endpoint do Web App (Google Apps Script)
-  let WEBAPP_URL = localStorage.getItem('webapp_endpoint_url') || "";
+  let WEBAPP_URL = localStorage.getItem('webapp_endpoint_url') || WEBAPP_URL_PADRAO || "";
 
-  // Estado dos Filtros
+  // Filtros
   let currentTurmaFilter = 'todas';
   let currentStatusFilter = 'todos';
   let currentSearchQuery = '';
 
-  // =========================================================================
-  // 2. INICIALIZAÇÃO
-  // =========================================================================
+  // Estado do Modal
+  let activeMode = 'upload'; // 'upload' ou 'link'
+  let selectedFileBase64 = null;
+  let selectedFileName = "";
+  let selectedFileType = "";
+
   document.addEventListener('DOMContentLoaded', () => {
     const endpointField = document.getElementById('endpointInput');
     if (WEBAPP_URL) {
       endpointField.value = WEBAPP_URL;
-      document.getElementById('endpointStatusMsg').textContent = "● Conectado ao Apps Script configurado";
+      document.getElementById('endpointStatusMsg').textContent = "● Conectado ao Apps Script";
     }
-
     renderMetrics();
     renderList();
-
-    // Listener para validar input de link dinamicamente
-    document.getElementById('linkRgInput').addEventListener('input', function() {
-      const testBtn = document.getElementById('btnTestLink');
-      if (this.value && this.value.startsWith('http')) {
-        testBtn.style.display = 'inline-flex';
-      } else {
-        testBtn.style.display = 'none';
-      }
-    });
   });
 
   // =========================================================================
-  // 3. RENDERIZAÇÃO E FILTRAGEM
+  // MÉTRICAS & FILTRAGEM
   // =========================================================================
   function renderMetrics() {
     const total = studentsData.length;
-    const preenchidos = studentsData.filter(s => s.link_rg && s.link_rg.trim() !== '').length;
-    const pendentes = total - preenchidos;
+    const autOk = studentsData.filter(s => s.link && s.link.trim() !== '').length;
+    const rgOk = studentsData.filter(s => s.link_rg && s.link_rg.trim() !== '').length;
+    const pendentes = studentsData.filter(s => !s.link_rg || s.link_rg.trim() === '' || !s.link || s.link.trim() === '').length;
 
     document.getElementById('metric-total').textContent = total;
-    document.getElementById('metric-preenchidos').textContent = preenchidos;
+    document.getElementById('metric-aut-ok').textContent = autOk;
+    document.getElementById('metric-rg-ok').textContent = rgOk;
     document.getElementById('metric-pendentes').textContent = pendentes;
+
+    const rgMetricEl = document.getElementById('metric-rg-ok');
+    if (rgOk > 0) rgMetricEl.className = "metric-val ok";
+    else rgMetricEl.className = "metric-val";
   }
 
   function getFilteredStudents() {
     return studentsData.filter(student => {
-      // Filtro Turma
+      // Turma
       if (currentTurmaFilter !== 'todas' && student.turma !== currentTurmaFilter) {
         return false;
       }
-      // Filtro Status
-      const hasRg = Boolean(student.link_rg && student.link_rg.trim() !== '');
-      if (currentStatusFilter === 'pendente' && hasRg) return false;
-      if (currentStatusFilter === 'ok' && !hasRg) return false;
 
-      // Busca por Nome ou RA
+      const hasAut = Boolean(student.link && student.link.trim() !== '');
+      const hasRg = Boolean(student.link_rg && student.link_rg.trim() !== '');
+
+      // Status
+      if (currentStatusFilter === 'falta-rg' && hasRg) return false;
+      if (currentStatusFilter === 'falta-aut' && hasAut) return false;
+      if (currentStatusFilter === 'completo' && (!hasAut || !hasRg)) return false;
+
+      // Busca
       if (currentSearchQuery) {
         const q = currentSearchQuery.toLowerCase();
         const nomeMatch = student.nome.toLowerCase().includes(q);
@@ -1454,25 +1798,26 @@
 
     if (filtered.length === 0) {
       container.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">🔍</div>
-          <h3 style="color: var(--primary); font-size: 1.05rem; margin-bottom: 4px;">Nenhum aluno encontrado</h3>
-          <p style="font-size: 0.85rem;">Tente ajustar sua busca ou mudar os filtros de turma e status.</p>
+        <div style="background:#fff; border:1px dashed var(--border); border-radius:12px; padding:32px 16px; text-align:center; color:var(--text-muted);">
+          <div style="font-size:2rem; margin-bottom:8px;">🔍</div>
+          <div style="font-weight:700; color:var(--primary);">Nenhum aluno encontrado</div>
+          <div style="font-size:0.8rem; margin-top:2px;">Ajuste os filtros de busca, turma ou status.</div>
         </div>
       `;
       return;
     }
 
     container.innerHTML = filtered.map(student => {
-      // Encontra índice real no array principal
       const realIndex = studentsData.findIndex(s => s.ra === student.ra);
+      const hasAut = Boolean(student.link && student.link.trim() !== '');
       const hasRg = Boolean(student.link_rg && student.link_rg.trim() !== '');
+      const isComplete = hasAut && hasRg;
       const initials = student.nome.split(' ').slice(0, 2).map(n => n[0]).join('');
 
       return `
-        <div class="student-card ${hasRg ? 'has-rg' : 'no-rg'}">
+        <div class="student-card ${isComplete ? 'fully-complete' : 'has-pending'}">
           <div class="student-top">
-            <div class="student-avatar ${hasRg ? 'has-rg' : ''}">${initials}</div>
+            <div class="student-avatar ${isComplete ? 'complete' : ''}">${initials}</div>
             <div class="student-info">
               <div class="student-name" title="${student.nome}">${student.nome}</div>
               <div class="student-meta">
@@ -1482,31 +1827,54 @@
             </div>
           </div>
 
-          <div class="rg-status-row">
-            <div>
-              <span class="rg-status-badge ${hasRg ? 'ok' : 'pending'}">
-                ${hasRg ? '✅ Link_RG Cadastrado' : '⚠️ Link_RG Pendente'}
-              </span>
+          <div class="docs-dual-grid">
+            <!-- BOX 1: AUTORIZAÇÃO (COL G) -->
+            <div class="doc-item-box">
+              <div class="doc-item-header">
+                <span class="doc-type-label">📄 Autorização (G)</span>
+                <span class="badge-doc-status ${hasAut ? 'ok' : 'pendente'}">
+                  ${hasAut ? '✓ OK' : '⚠️ Pendente'}
+                </span>
+              </div>
+              <div class="doc-actions">
+                ${hasAut ? `
+                  <a href="${student.link}" target="_blank" class="btn-action-view" title="Abrir Autorização">
+                    👁️ Ver
+                  </a>
+                ` : ''}
+                <button 
+                  type="button" 
+                  class="btn-action-upload ${hasAut ? 'edit' : ''}" 
+                  onclick="openModal(${realIndex}, 'autorizacao')"
+                >
+                  ${hasAut ? '✏️ Alterar' : '📤 Enviar Autorização'}
+                </button>
+              </div>
             </div>
-            <div>
-              ${hasRg 
-                ? `<a href="${student.link_rg}" target="_blank" class="link-rg-preview" title="Abrir link do RG">🔗 Ver RG</a>` 
-                : `<span style="color: var(--text-muted); font-size: 0.75rem;">Sem link</span>`
-              }
-            </div>
-          </div>
 
-          <div class="card-actions">
-            <button 
-              type="button" 
-              class="btn-update ${hasRg ? 'edit' : ''}" 
-              onclick="openUpdateModal(${realIndex})"
-            >
-              ${hasRg ? '✏️ Alterar Link_RG' : '➕ Incluir Link_RG'}
-            </button>
-            <a href="${student.link}" target="_blank" class="btn-doc" title="Visualizar documento atual (Col G)">
-              📄 Doc Atual
-            </a>
+            <!-- BOX 2: LINK_RG (COL H) -->
+            <div class="doc-item-box">
+              <div class="doc-item-header">
+                <span class="doc-type-label">🪪 RG do Aluno (H)</span>
+                <span class="badge-doc-status ${hasRg ? 'ok' : 'pendente'}">
+                  ${hasRg ? '✓ OK' : '⚠️ Pendente'}
+                </span>
+              </div>
+              <div class="doc-actions">
+                ${hasRg ? `
+                  <a href="${student.link_rg}" target="_blank" class="btn-action-view" title="Abrir RG">
+                    👁️ Ver
+                  </a>
+                ` : ''}
+                <button 
+                  type="button" 
+                  class="btn-action-upload ${hasRg ? 'edit' : ''}" 
+                  onclick="openModal(${realIndex}, 'rg')"
+                >
+                  ${hasRg ? '✏️ Alterar' : '📤 Enviar RG'}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       `;
@@ -1514,7 +1882,7 @@
   }
 
   // =========================================================================
-  // 4. FILTROS E PESQUISA
+  // FILTROS
   // =========================================================================
   function handleSearch(val) {
     currentSearchQuery = val.trim();
@@ -1523,8 +1891,7 @@
   }
 
   function clearSearch() {
-    const input = document.getElementById('searchInput');
-    input.value = '';
+    document.getElementById('searchInput').value = '';
     currentSearchQuery = '';
     document.getElementById('clearSearchBtn').style.display = 'none';
     renderList();
@@ -1545,35 +1912,35 @@
   }
 
   // =========================================================================
-  // 5. MODAL BOTTOM-SHEET E SUBMISSÃO
+  // MODAL BOTTOM SHEET & COMPRESSÃO DE IMAGEM CLIENT-SIDE
   // =========================================================================
-  function openUpdateModal(index) {
+  function openModal(index, docType) {
     const student = studentsData[index];
     if (!student) return;
 
     document.getElementById('modalStudentIndex').value = index;
+    document.getElementById('modalDocType').value = docType;
+
     document.getElementById('modalStudentName').textContent = student.nome;
     document.getElementById('modalStudentRA').textContent = `RA: ${student.ra}-${student.digito}`;
     document.getElementById('modalStudentTurma').textContent = `Turma: ${student.turma}`;
-    
-    const input = document.getElementById('linkRgInput');
-    input.value = student.link_rg || '';
 
-    const testBtn = document.getElementById('btnTestLink');
-    if (input.value && input.value.startsWith('http')) {
-      testBtn.style.display = 'inline-flex';
-    } else {
-      testBtn.style.display = 'none';
-    }
+    const isRg = (docType === 'rg');
+    document.getElementById('modalDocTargetBadge').textContent = isRg ? "Destino: Coluna H (Link_Rg)" : "Destino: Coluna G (Link Autorização)";
+    document.getElementById('sheetTitle').textContent = isRg ? "Upload do Documento RG" : "Upload da Autorização";
+    document.getElementById('sheetSubtitle').textContent = isRg 
+      ? "Envio de foto ou PDF do RG para o Google Drive" 
+      : "Envio do Termo de Autorização assinado para o Google Drive";
 
-    const hasRg = Boolean(student.link_rg && student.link_rg.trim() !== '');
-    document.getElementById('sheetTitle').textContent = hasRg ? 'Alterar Link_RG' : 'Incluir Link_RG';
+    const currentUrl = isRg ? (student.link_rg || '') : (student.link || '');
+    document.getElementById('manualLinkInput').value = currentUrl;
+
+    removeSelectedFile();
+    setMode('upload');
 
     const overlay = document.getElementById('modalOverlay');
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
-
-    setTimeout(() => input.focus(), 300);
   }
 
   function closeModal() {
@@ -1583,88 +1950,224 @@
   }
 
   function closeModalOnOverlay(e) {
-    if (e.target.id === 'modalOverlay') {
-      closeModal();
+    if (e.target.id === 'modalOverlay') closeModal();
+  }
+
+  function setMode(mode) {
+    activeMode = mode;
+    const btnUpload = document.getElementById('tabModeUpload');
+    const btnLink = document.getElementById('tabModeLink');
+    const secUpload = document.getElementById('sectionUpload');
+    const secLink = document.getElementById('sectionLink');
+
+    if (mode === 'upload') {
+      btnUpload.classList.add('active');
+      btnLink.classList.remove('active');
+      secUpload.style.display = 'block';
+      secLink.style.display = 'none';
+      document.getElementById('btnSubmitText').textContent = '🚀 Fazer Upload para Drive & Salvar';
+    } else {
+      btnUpload.classList.remove('active');
+      btnLink.classList.add('active');
+      secUpload.style.display = 'none';
+      secLink.style.display = 'block';
+      document.getElementById('btnSubmitText').textContent = '💾 Salvar Link na Planilha';
     }
+  }
+
+  // Compactação e leitura do arquivo selecionado (Câmera ou Arquivo)
+  async function handleFileChange(input) {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    selectedFileName = file.name;
+    selectedFileType = file.type;
+
+    document.getElementById('fileNameText').textContent = file.name;
+    document.getElementById('fileMetaText').textContent = "Processando imagem...";
+    document.getElementById('filePreviewCard').classList.add('show');
+
+    // Se for imagem, comprime client-side para evitar estourar o limite de upload do Apps Script
+    if (file.type.startsWith('image/')) {
+      try {
+        const compressedDataUrl = await compressImage(file, 1600, 0.85);
+        selectedFileBase64 = compressedDataUrl;
+        
+        // Calcula tamanho aproximado em KB
+        const approxKb = Math.round((compressedDataUrl.length * 3 / 4) / 1024);
+        document.getElementById('fileMetaText').textContent = `Foto otimizada: ~${approxKb} KB • Pronta para o Drive`;
+        
+        const thumb = document.getElementById('fileThumbnail');
+        thumb.innerHTML = `<img src="${compressedDataUrl}" style="width:100%; height:100%; border-radius:6px; object-fit:cover;" />`;
+      } catch (err) {
+        console.error("Falha ao comprimir imagem, usando leitura direta:", err);
+        readFileDirect(file);
+      }
+    } else {
+      // PDF ou outro documento
+      document.getElementById('fileThumbnail').innerHTML = "📄";
+      const sizeMb = (file.size / (1024 * 1024)).toFixed(2);
+      document.getElementById('fileMetaText').textContent = `PDF: ${sizeMb} MB • Pronto para o Drive`;
+      readFileDirect(file);
+    }
+  }
+
+  function readFileDirect(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      selectedFileBase64 = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Utilitário Canvas para redimensionar fotos pesadas de celulares
+  function compressImage(file, maxWidth, quality) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.onerror = reject;
+        img.src = e.target.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function removeSelectedFile() {
+    document.getElementById('fileInput').value = '';
+    document.getElementById('filePreviewCard').classList.remove('show');
+    document.getElementById('fileThumbnail').innerHTML = "📄";
+    selectedFileBase64 = null;
+    selectedFileName = "";
+    selectedFileType = "";
   }
 
   async function pasteFromClipboard() {
     try {
       const text = await navigator.clipboard.readText();
       if (text) {
-        document.getElementById('linkRgInput').value = text.trim();
-        document.getElementById('btnTestLink').style.display = text.startsWith('http') ? 'inline-flex' : 'none';
-        showToast('Link colado com sucesso!');
+        document.getElementById('manualLinkInput').value = text.trim();
+        showToast('Link colado!');
       }
-    } catch (err) {
-      alert('Por favor, cole manualmente no campo pressionando e segurando na caixa de texto.');
+    } catch (e) {
+      alert('Pressione e segure o campo para colar manualmente.');
     }
   }
 
-  function clearInput() {
-    document.getElementById('linkRgInput').value = '';
-    document.getElementById('btnTestLink').style.display = 'none';
-  }
-
-  function testModalLink() {
-    const url = document.getElementById('linkRgInput').value.trim();
-    if (url) {
-      window.open(url, '_blank');
-    }
-  }
-
-  async function handleRgSubmit(e) {
+  // =========================================================================
+  // SUBMISSÃO & ATUALIZAÇÃO NO DRIVE E PLANILHA
+  // =========================================================================
+  async function handleDocSubmit(e) {
     e.preventDefault();
     const index = parseInt(document.getElementById('modalStudentIndex').value, 10);
-    const newLink = document.getElementById('linkRgInput').value.trim();
+    const docType = document.getElementById('modalDocType').value; // 'rg' ou 'autorizacao'
     const student = studentsData[index];
 
     if (!student) return;
 
-    const btn = document.getElementById('btnSaveLink');
+    const btn = document.getElementById('btnSubmitSave');
+    const btnText = document.getElementById('btnSubmitText');
     btn.disabled = true;
-    btn.innerHTML = '<span>⏳ Gravando na Planilha...</span>';
 
-    // 1. Atualiza no array de dados em memória e no localStorage
-    student.link_rg = newLink;
-    localStorage.setItem('alunos_visita_tecnica_rg', JSON.stringify(studentsData));
+    let finalLink = "";
+    let isUpload = (activeMode === 'upload');
 
-    // 2. Se o backend estiver configurado, envia para o Apps Script
-    let syncSuccess = false;
+    if (isUpload) {
+      if (!selectedFileBase64) {
+        alert("Por favor, selecione uma foto ou PDF antes de salvar.");
+        btn.disabled = false;
+        return;
+      }
+      btnText.innerHTML = "⏳ Enviando para o Google Drive...";
+    } else {
+      finalLink = document.getElementById('manualLinkInput').value.trim();
+      if (!finalLink) {
+        alert("Por favor, informe ou cole o link do Google Drive.");
+        btn.disabled = false;
+        return;
+      }
+      btnText.innerHTML = "⏳ Gravando na Planilha...";
+    }
+
+    // Payload de sincronização com o Apps Script
+    const payload = {
+      action: 'update_documento',
+      ra: student.ra,
+      digito: student.digito,
+      nome: student.nome,
+      turma: student.turma,
+      tipo: docType, // 'rg' ou 'autorizacao'
+      link: finalLink,
+      fileBase64: isUpload ? selectedFileBase64 : "",
+      fileName: isUpload ? selectedFileName : ""
+    };
+
+    let syncOk = false;
+    let driveUrlReturned = "";
+
     if (WEBAPP_URL && WEBAPP_URL.startsWith('http')) {
       try {
-        const payload = {
-          action: 'update_link_rg',
-          ra: student.ra,
-          digito: student.digito,
-          nome: student.nome,
-          turma: student.turma,
-          link_rg: newLink
-        };
-
-        await fetch(WEBAPP_URL, {
+        // Envio POST assíncrono para o Web App
+        const res = await fetch(WEBAPP_URL, {
           method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
-        syncSuccess = true;
+
+        try {
+          const resData = await res.json();
+          if (resData && resData.file_url) {
+            driveUrlReturned = resData.file_url;
+          }
+        } catch(e) {
+          // no-cors ou resposta direta
+        }
+        syncOk = true;
       } catch (err) {
-        console.warn('Aviso no envio assíncrono para o Apps Script:', err);
+        console.warn("Aviso no fetch Apps Script:", err);
       }
     }
 
+    // Atualiza o registro em memória e no localStorage
+    const savedUrl = driveUrlReturned || finalLink || (isUpload ? "https://drive.google.com/uploaded_file" : "");
+    if (docType === 'rg') {
+      student.link_rg = savedUrl;
+    } else {
+      student.link = savedUrl;
+      if (selectedFileName) student.arquivo = selectedFileName;
+    }
+
+    localStorage.setItem('alunos_visita_docs_v2', JSON.stringify(studentsData));
+
     btn.disabled = false;
-    btn.innerHTML = '<span>💾 Salvar Link_RG</span>';
+    btnText.innerHTML = "🚀 Fazer Upload para Drive & Salvar";
 
     closeModal();
     renderMetrics();
     renderList();
 
-    if (syncSuccess) {
-      showToast(`✓ Link_RG de ${student.nome.split(' ')[0]} salvo na planilha!`, 'success');
+    const docNameDisplay = (docType === 'rg') ? "RG" : "Autorização";
+    if (syncOk) {
+      showToast(`✓ ${docNameDisplay} de ${student.nome.split(' ')[0]} salvo no Drive e na Planilha!`, 'success');
     } else {
-      showToast(`✓ Link_RG de ${student.nome.split(' ')[0]} atualizado!`, 'success');
+      showToast(`✓ ${docNameDisplay} atualizado localmente! Conecte o Apps Script para salvar na nuvem.`, 'success');
     }
   }
 
@@ -1683,12 +2186,14 @@
     localStorage.setItem('webapp_endpoint_url', url);
     const statusMsg = document.getElementById('endpointStatusMsg');
     if (url) {
-      statusMsg.textContent = '✓ URL salva com sucesso! Os envios agora sincronizarão com sua planilha.';
+      statusMsg.textContent = '✓ Conectado! Uploads e links serão gravados direto no Google Drive e na Planilha.';
     } else {
-      statusMsg.textContent = 'Aviso: URL limpa. Os dados serão salvos localmente.';
+      statusMsg.textContent = 'Aviso: URL limpa. Modo offline / local ativo.';
     }
   }
 </script>
 
 </body>
 </html>
+atualizar_documentos.html
+Exibindo atualizar_documentos.html.
