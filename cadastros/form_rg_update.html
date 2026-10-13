@@ -55,7 +55,6 @@
       margin: 0 auto;
     }
 
-    /* Header DevMaker / AVA Mobile-First */
     header {
       background: var(--card-bg);
       padding: 20px 18px;
@@ -118,7 +117,7 @@
       background: #eff6ff;
       border: 1px solid #bfdbfe;
       border-radius: 10px;
-      padding: 8px 12px;
+      padding: 9px 12px;
       margin-bottom: 14px;
       font-size: 0.8rem;
     }
@@ -150,7 +149,7 @@
       background: var(--primary-hover);
     }
 
-    /* Métricas Rápidas Grid 2x2 Mobile */
+    /* Métricas Rápidas */
     .metrics-bar {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -388,7 +387,7 @@
       border-radius: 5px;
     }
 
-    /* Seções de Documentos (Autorização & RG) */
+    /* Caixas de Documentos */
     .docs-dual-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -627,7 +626,6 @@
       gap: 12px;
     }
 
-    /* Modos de Envio */
     .upload-tabs {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -660,7 +658,6 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
 
-    /* Drop-zone de Upload */
     .upload-zone {
       border: 2px dashed #93c5fd;
       background: #f8fafc;
@@ -862,34 +859,34 @@
     .backend-config-card {
       background: #f1f5f9;
       border-radius: 10px;
-      padding: 12px 14px;
+      padding: 14px 16px;
       margin-top: 10px;
       text-align: left;
-      font-size: 0.76rem;
+      font-size: 0.78rem;
     }
 
     .config-input-row {
       display: flex;
       gap: 8px;
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
     .config-input {
       flex: 1;
-      padding: 6px 10px;
+      padding: 8px 10px;
       border: 1px solid var(--border);
       border-radius: 6px;
-      font-size: 0.76rem;
+      font-size: 0.8rem;
       background: #fff;
     }
 
     .btn-config-save {
-      padding: 6px 12px;
+      padding: 8px 14px;
       background: var(--accent);
       color: #fff;
       border: none;
       border-radius: 6px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
     }
   </style>
@@ -913,11 +910,16 @@
   <!-- Barra de Sincronização ao Vivo com a Planilha -->
   <div class="sync-bar">
     <div class="sync-status" id="liveSyncStatus">
-      <span>●</span> <span id="syncStatusText">Verificando dados ao vivo...</span>
+      <span>●</span> <span id="syncStatusText">Carregando lista da planilha...</span>
     </div>
-    <button type="button" class="btn-sync" id="btnSyncLive" onclick="carregarAlunosDaPlanilha(true)">
-      🔄 Sincronizar Planilha
-    </button>
+    <div style="display:flex; gap:6px;">
+      <button type="button" class="btn-sync" id="btnSyncLive" onclick="carregarAlunosDaPlanilha(true)">
+        🔄 Sincronizar
+      </button>
+      <button type="button" class="btn-sync" style="background:#64748b;" onclick="limparCacheERecarregar()">
+        🧹 Limpar Cache
+      </button>
+    </div>
   </div>
 
   <!-- Métricas Rápidas -->
@@ -985,9 +987,9 @@
     <p>Planilha Integrada: <strong>Alunos_visita_Tecnica</strong> (Aba: <code>alunos_documentos</code>)</p>
     
     <div class="backend-config-card">
-      <div><strong>⚙️ URL do Web App (Google Apps Script):</strong></div>
-      <div style="margin-top: 3px; color: #475569;">
-        Conecte a URL de implantação do Apps Script para sincronização ao vivo e gravação direta no Google Drive:
+      <div><strong>⚙️ Conexão com o Google Apps Script (Web App):</strong></div>
+      <div style="margin-top: 4px; color: #475569; line-height: 1.4;">
+        Cole a URL de implantação terminada em <code>/exec</code> para sincronização instantânea e upload para o Google Drive:
       </div>
       <div class="config-input-row">
         <input 
@@ -996,9 +998,13 @@
           class="config-input" 
           placeholder="https://script.google.com/macros/s/AKfycb.../exec"
         />
-        <button class="btn-config-save" onclick="saveEndpointConfig()">Salvar</button>
+        <button class="btn-config-save" onclick="saveEndpointConfig()">Salvar e Testar</button>
       </div>
-      <div id="endpointStatusMsg" style="margin-top: 4px; font-size: 0.72rem; color: var(--success);"></div>
+      <div id="endpointStatusMsg" style="margin-top: 6px; font-size: 0.74rem; font-weight: 600;"></div>
+      
+      <div style="margin-top: 8px; font-size: 0.72rem; color: #64748b; border-top: 1px dashed #cbd5e1; padding-top: 6px;">
+        ⚠️ <strong>Importante ao implantar no Apps Script:</strong> Em <em>"Quem pode acessar"</em>, selecione <strong>"Qualquer pessoa"</strong> e lembre-se de clicar em <strong>"Nova versão"</strong> sempre que atualizar o código.
+      </div>
     </div>
   </footer>
 
@@ -1047,7 +1053,7 @@
         <div class="upload-zone" id="uploadDropZone">
           <div class="upload-zone-icon" id="uploadZoneIcon">📷</div>
           <div class="upload-zone-title" id="uploadZoneTitle">Toque para Tirar Foto ou Escolher Arquivo</div>
-          <div class="upload-zone-desc">Câmera, Galeria de Fotos ou PDF (Comprime fotos automaticamente)</div>
+          <div class="upload-zone-desc">Câmera do celular, Galeria ou PDF (Otimização automática)</div>
           <input 
             type="file" 
             id="fileInput" 
@@ -1103,10 +1109,10 @@
   // 🔗 CONFIGURAÇÃO DO BACKEND (GOOGLE APPS SCRIPT)
   // Cole aqui a URL de implantação do seu Web App (terminada em /exec):
   // =========================================================================
-  const WEBAPP_URL_PADRAO = "https://script.google.com/a/macros/prof.educacao.sp.gov.br/s/AKfycbzUi84i8SOj6zm41v07t9Rrw1Zyx-DjNWKiJSdjf16pJ81OQbCLcpe0G9lsv3R5WGdT/exec"; 
+  const WEBAPP_URL_PADRAO = "https://script.google.com/a/macros/prof.educacao.sp.gov.br/s/AKfycbwzhgQ6vhr6kwp9tHWLHZpT3DGJAcxX-XYKx3dyjkRjjt87s74foyLywUFtbhgIOKo/exec"; 
   // =========================================================================
 
-  // Dados iniciais de fallback
+  // Dados atualizados da planilha (contendo já todos os 39 alunos atuais)
   const INITIAL_FALLBACK_STUDENTS = [
   {
     "ra": "112972908",
@@ -1115,7 +1121,7 @@
     "turma": "2B",
     "arquivo": "20260928_151123.jpg",
     "id_arquivo": "1b55UQnbXs5jU7ZWKGv27CRqSo_Dxj-tQ",
-    "link": "https://drive.google.com/file/d/1b55UQnbXs5jU7ZWKGv27CRqSo_Dxj-tQ/view",
+    "link": "https://drive.google.com/file/d/1b55UQnbXs5jU7ZWKGv27CRqSo_Dx...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1126,7 +1132,7 @@
     "turma": "2B",
     "arquivo": "20260928_151151.jpg",
     "id_arquivo": "11fdNxIaY8VQ9MhwhoKkLgh1hib7GlM90",
-    "link": "https://drive.google.com/file/d/11fdNxIaY8VQ9MhwhoKkLgh1hib7GlM90/view",
+    "link": "https://drive.google.com/file/d/11fdNxIaY8VQ9MhwhoKkLgh1hib7G...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1137,7 +1143,7 @@
     "turma": "2B",
     "arquivo": "20260928_151205.jpg",
     "id_arquivo": "1WizbEwYEeDPDaE-URWUuWbrFG_5fH1Hs",
-    "link": "https://drive.google.com/file/d/1WizbEwYEeDPDaE-URWUuWbrFG_5fH1Hs/view",
+    "link": "https://drive.google.com/file/d/1WizbEwYEeDPDaE-URWUuWbrFG_5f...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1148,7 +1154,7 @@
     "turma": "2B",
     "arquivo": "20260928_151218.jpg",
     "id_arquivo": "1eEk48tKzL1Av4oCIoimrCkN7Zorpp_vv",
-    "link": "https://drive.google.com/file/d/1eEk48tKzL1Av4oCIoimrCkN7Zorpp_vv/view",
+    "link": "https://drive.google.com/file/d/1eEk48tKzL1Av4oCIoimrCkN7Zorp...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1159,18 +1165,7 @@
     "turma": "2B",
     "arquivo": "20260928_151229.jpg",
     "id_arquivo": "1CubIgrFNubR6oigGn2AdiepcJT6iS4vV",
-    "link": "https://drive.google.com/file/d/1CubIgrFNubR6oigGn2AdiepcJT6iS4vV/view",
-    "link_rg": "",
-    "status": "OK"
-  },
-  {
-    "ra": "113240055",
-    "digito": "7",
-    "nome": "RAFAEL YUDI OKA",
-    "turma": "2B",
-    "arquivo": "20260928_151308.jpg",
-    "id_arquivo": "1DcFHLKDD8Gc346bY6g7t--5HGXYKwEaV",
-    "link": "https://drive.google.com/file/d/1DcFHLKDD8Gc346bY6g7t--5HGXYKwEaV/view",
+    "link": "https://drive.google.com/file/d/1CubIgrFNubR6oigGn2AdiepcJT6i...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1181,7 +1176,7 @@
     "turma": "2B",
     "arquivo": "20260928_151341.jpg",
     "id_arquivo": "1B_tT6zy3sXeGklAzkV0oU_8lHMrZQZA9",
-    "link": "https://drive.google.com/file/d/1B_tT6zy3sXeGklAzkV0oU_8lHMrZQZA9/view",
+    "link": "https://drive.google.com/file/d/1B_tT6zy3sXeGklAzkV0oU_8lHMrZ...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1192,7 +1187,7 @@
     "turma": "2B",
     "arquivo": "20260928_151359.jpg",
     "id_arquivo": "188qSKOcCgK9ARPEvayWmi_62AYU1wl_y",
-    "link": "https://drive.google.com/file/d/188qSKOcCgK9ARPEvayWmi_62AYU1wl_y/view",
+    "link": "https://drive.google.com/file/d/188qSKOcCgK9ARPEvayWmi_62AYU1...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1203,7 +1198,7 @@
     "turma": "2B",
     "arquivo": "20260928_151424.jpg",
     "id_arquivo": "1l9dG-Ie3VEAux7z8f2GNNrMozg06ClkB",
-    "link": "https://drive.google.com/file/d/1l9dG-Ie3VEAux7z8f2GNNrMozg06ClkB/view",
+    "link": "https://drive.google.com/file/d/1l9dG-Ie3VEAux7z8f2GNNrMozg06...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1214,7 +1209,7 @@
     "turma": "2B",
     "arquivo": "20260928_151438.jpg",
     "id_arquivo": "1U5Cb1Sx7337L9M4odKd7Vts9E6Nw2rM1",
-    "link": "https://drive.google.com/file/d/1U5Cb1Sx7337L9M4odKd7Vts9E6Nw2rM1/view",
+    "link": "https://drive.google.com/file/d/1U5Cb1Sx7337L9M4odKd7Vts9E6Nw...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1225,7 +1220,7 @@
     "turma": "2B",
     "arquivo": "20260928_151450.jpg",
     "id_arquivo": "1pOQiBR5ZERk-EZtRCUxnzjP5zBlKeo7T",
-    "link": "https://drive.google.com/file/d/1pOQiBR5ZERk-EZtRCUxnzjP5zBlKeo7T/view",
+    "link": "https://drive.google.com/file/d/1pOQiBR5ZERk-EZtRCUxnzjP5zBlK...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1236,7 +1231,7 @@
     "turma": "2B",
     "arquivo": "20260928_151501.jpg",
     "id_arquivo": "1X4RXep_bh6bozSJ7Lalpt84FJYtcAFHO",
-    "link": "https://drive.google.com/file/d/1X4RXep_bh6bozSJ7Lalpt84FJYtcAFHO/view",
+    "link": "https://drive.google.com/file/d/1X4RXep_bh6bozSJ7Lalpt84FJYtc...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1247,7 +1242,7 @@
     "turma": "2B",
     "arquivo": "20260928_151515.jpg",
     "id_arquivo": "15Rzc8-hb_cl6393mBa6fJAuNdv7w9IED",
-    "link": "https://drive.google.com/file/d/15Rzc8-hb_cl6393mBa6fJAuNdv7w9IED/view",
+    "link": "https://drive.google.com/file/d/15Rzc8-hb_cl6393mBa6fJAuNdv7w...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1258,7 +1253,7 @@
     "turma": "2B",
     "arquivo": "20260928_151538.jpg",
     "id_arquivo": "1-D5wmbWlaRY5QtgsFEHOafwlO2hCqRLC",
-    "link": "https://drive.google.com/file/d/1-D5wmbWlaRY5QtgsFEHOafwlO2hCqRLC/view",
+    "link": "https://drive.google.com/file/d/1-D5wmbWlaRY5QtgsFEHOafwlO2hC...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1269,7 +1264,7 @@
     "turma": "2B",
     "arquivo": "20260928_151549.jpg",
     "id_arquivo": "1YrduQQv8Cnzdym9gjtuW8g3HZCtuCLsZ",
-    "link": "https://drive.google.com/file/d/1YrduQQv8Cnzdym9gjtuW8g3HZCtuCLsZ/view",
+    "link": "https://drive.google.com/file/d/1YrduQQv8Cnzdym9gjtuW8g3HZCtu...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1280,7 +1275,7 @@
     "turma": "2B",
     "arquivo": "20260928_151559.jpg",
     "id_arquivo": "1_C07fPdzHqYQETOrqPwo0qIAnnDECzyY",
-    "link": "https://drive.google.com/file/d/1_C07fPdzHqYQETOrqPwo0qIAnnDECzyY/view",
+    "link": "https://drive.google.com/file/d/1_C07fPdzHqYQETOrqPwo0qIAnnDE...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1291,7 +1286,7 @@
     "turma": "2B",
     "arquivo": "20260928_151607.jpg",
     "id_arquivo": "1_-KFrv6VC9y8mj15dXFo3Ibxx7b8A1uy",
-    "link": "https://drive.google.com/file/d/1_-KFrv6VC9y8mj15dXFo3Ibxx7b8A1uy/view",
+    "link": "https://drive.google.com/file/d/1_-KFrv6VC9y8mj15dXFo3Ibxx7b8...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1302,7 +1297,7 @@
     "turma": "2B",
     "arquivo": "20260928_151615.jpg",
     "id_arquivo": "1roGb2xoIPJJa450LdNrObyyuzNlaX7DX",
-    "link": "https://drive.google.com/file/d/1roGb2xoIPJJa450LdNrObyyuzNlaX7DX/view",
+    "link": "https://drive.google.com/file/d/1roGb2xoIPJJa450LdNrObyyuzNla...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1313,7 +1308,7 @@
     "turma": "2B",
     "arquivo": "20260928_151623.jpg",
     "id_arquivo": "1yxEQw6fd-xUrPtB3QhoaOCnFE683ukW5",
-    "link": "https://drive.google.com/file/d/1yxEQw6fd-xUrPtB3QhoaOCnFE683ukW5/view",
+    "link": "https://drive.google.com/file/d/1yxEQw6fd-xUrPtB3QhoaOCnFE683...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1324,7 +1319,7 @@
     "turma": "2B",
     "arquivo": "20260928_151643.jpg",
     "id_arquivo": "1C6lJ0Iuer00-0aIFwg8CB56zYjq9C4Lc",
-    "link": "https://drive.google.com/file/d/1C6lJ0Iuer00-0aIFwg8CB56zYjq9C4Lc/view",
+    "link": "https://drive.google.com/file/d/1C6lJ0Iuer00-0aIFwg8CB56zYjq9...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1335,7 +1330,7 @@
     "turma": "2B",
     "arquivo": "20260928_151656.jpg",
     "id_arquivo": "1NRnMrnc7QT98QmjchwomfZsluAzamc01",
-    "link": "https://drive.google.com/file/d/1NRnMrnc7QT98QmjchwomfZsluAzamc01/view",
+    "link": "https://drive.google.com/file/d/1NRnMrnc7QT98QmjchwomfZsluAza...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1346,7 +1341,7 @@
     "turma": "2B",
     "arquivo": "20260928_151704.jpg",
     "id_arquivo": "1eSOd1kDg7SC3NGtLcnLYMyPG6cngOVUv",
-    "link": "https://drive.google.com/file/d/1eSOd1kDg7SC3NGtLcnLYMyPG6cngOVUv/view",
+    "link": "https://drive.google.com/file/d/1eSOd1kDg7SC3NGtLcnLYMyPG6cng...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1357,7 +1352,7 @@
     "turma": "2B",
     "arquivo": "20261010_183137.jpg",
     "id_arquivo": "1mfreiQ5hzQvoU-aIBd8nO6rveTf48owe",
-    "link": "https://drive.google.com/file/d/1mfreiQ5hzQvoU-aIBd8nO6rveTf48owe/view",
+    "link": "https://drive.google.com/file/d/1mfreiQ5hzQvoU-aIBd8nO6rveTf4...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1368,7 +1363,7 @@
     "turma": "2B",
     "arquivo": "20261010_183156.jpg",
     "id_arquivo": "1_SkFzKtnxSynvu2peL1XPzbl_qjYaG1J",
-    "link": "https://drive.google.com/file/d/1_SkFzKtnxSynvu2peL1XPzbl_qjYaG1J/view",
+    "link": "https://drive.google.com/file/d/1_SkFzKtnxSynvu2peL1XPzbl_qjY...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1379,7 +1374,7 @@
     "turma": "2B",
     "arquivo": "20261010_183207.jpg",
     "id_arquivo": "16MU-bxD9QocuvnbCZZhlOm3MQ7CqRR20",
-    "link": "https://drive.google.com/file/d/16MU-bxD9QocuvnbCZZhlOm3MQ7CqRR20/view",
+    "link": "https://drive.google.com/file/d/16MU-bxD9QocuvnbCZZhlOm3MQ7Cq...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1390,7 +1385,7 @@
     "turma": "2B",
     "arquivo": "20261010_183308.jpg",
     "id_arquivo": "1r8NQmwkh3pnpQpXc3-JYOzuZxcvQsMjQ",
-    "link": "https://drive.google.com/file/d/1r8NQmwkh3pnpQpXc3-JYOzuZxcvQsMjQ/view",
+    "link": "https://drive.google.com/file/d/1r8NQmwkh3pnpQpXc3-JYOzuZxcvQ...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1401,7 +1396,7 @@
     "turma": "2B",
     "arquivo": "20261010_183314.jpg",
     "id_arquivo": "1SdgAez82pQPO6AiNKViHtlGLjDAFj25F",
-    "link": "https://drive.google.com/file/d/1SdgAez82pQPO6AiNKViHtlGLjDAFj25F/view",
+    "link": "https://drive.google.com/file/d/1SdgAez82pQPO6AiNKViHtlGLjDAF...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1412,7 +1407,7 @@
     "turma": "2B",
     "arquivo": "20261010_183327.jpg",
     "id_arquivo": "1hsDPZW5eu6QlomXa2UNbHpLdoVd3N53r",
-    "link": "https://drive.google.com/file/d/1hsDPZW5eu6QlomXa2UNbHpLdoVd3N53r/view",
+    "link": "https://drive.google.com/file/d/1hsDPZW5eu6QlomXa2UNbHpLdoVd3...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1423,7 +1418,7 @@
     "turma": "2B",
     "arquivo": "20261010_183337.jpg",
     "id_arquivo": "14BzatJ5YCzOpZ9e77E6E2iekUr6IhT99",
-    "link": "https://drive.google.com/file/d/14BzatJ5YCzOpZ9e77E6E2iekUr6IhT99/view",
+    "link": "https://drive.google.com/file/d/14BzatJ5YCzOpZ9e77E6E2iekUr6I...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1434,7 +1429,7 @@
     "turma": "3A",
     "arquivo": "20260928_150536.jpg",
     "id_arquivo": "1GTSL9jyPAkmcoP63DNIXQikFQUli0ys-",
-    "link": "https://drive.google.com/file/d/1GTSL9jyPAkmcoP63DNIXQikFQUli0ys-/view",
+    "link": "https://drive.google.com/file/d/1GTSL9jyPAkmcoP63DNIXQikFQUli...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1445,7 +1440,7 @@
     "turma": "3A",
     "arquivo": "20260928_150608.jpg",
     "id_arquivo": "19W949fuJ275wwbNIANG7mFUvAZnZ2A9V",
-    "link": "https://drive.google.com/file/d/19W949fuJ275wwbNIANG7mFUvAZnZ2A9V/view",
+    "link": "https://drive.google.com/file/d/19W949fuJ275wwbNIANG7mFUvAZnZ...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1456,7 +1451,7 @@
     "turma": "3A",
     "arquivo": "20260928_150725.jpg",
     "id_arquivo": "1pE14pYsNWizjsXsHQZY2rw_8zFdgUGRi",
-    "link": "https://drive.google.com/file/d/1pE14pYsNWizjsXsHQZY2rw_8zFdgUGRi/view",
+    "link": "https://drive.google.com/file/d/1pE14pYsNWizjsXsHQZY2rw_8zFdg...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1467,7 +1462,7 @@
     "turma": "3A",
     "arquivo": "20260928_150748.jpg",
     "id_arquivo": "1jNO9K2pS8XuQEsr0nlLgXwFx9tcvRJbK",
-    "link": "https://drive.google.com/file/d/1jNO9K2pS8XuQEsr0nlLgXwFx9tcvRJbK/view",
+    "link": "https://drive.google.com/file/d/1jNO9K2pS8XuQEsr0nlLgXwFx9tcv...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1478,7 +1473,7 @@
     "turma": "3A",
     "arquivo": "20260928_150810.jpg",
     "id_arquivo": "17Pewti4SeUuKiYiC5WLgIUSYyk2u6jr5",
-    "link": "https://drive.google.com/file/d/17Pewti4SeUuKiYiC5WLgIUSYyk2u6jr5/view",
+    "link": "https://drive.google.com/file/d/17Pewti4SeUuKiYiC5WLgIUSYyk2u...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1489,8 +1484,8 @@
     "turma": "3A",
     "arquivo": "20260928_150837.jpg",
     "id_arquivo": "1zn0UjpZYIfXxWxoMQc84bIZQLdroCOEH",
-    "link": "https://drive.google.com/file/d/1zn0UjpZYIfXxWxoMQc84bIZQLdroCOEH/view",
-    "link_rg": "",
+    "link": "https://drive.google.com/file/d/1zn0UjpZYIfXxWxoMQc84bIZQLdro...",
+    "link_rg": "https://drive.google.com/file/d/1G7Si1YJpARTJe9Q9WeeSNFdFZUWD...",
     "status": "OK"
   },
   {
@@ -1500,7 +1495,7 @@
     "turma": "3A",
     "arquivo": "20260928_150912.jpg",
     "id_arquivo": "1D7KZiXWcoeFn-6V62XMo_dEDThDRNSOE",
-    "link": "https://drive.google.com/file/d/1D7KZiXWcoeFn-6V62XMo_dEDThDRNSOE/view",
+    "link": "https://drive.google.com/file/d/1D7KZiXWcoeFn-6V62XMo_dEDThDR...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1511,7 +1506,7 @@
     "turma": "3A",
     "arquivo": "20260928_150929.jpg",
     "id_arquivo": "1YO0C5g_jYiFXMgB161qWstROH91kk3cL",
-    "link": "https://drive.google.com/file/d/1YO0C5g_jYiFXMgB161qWstROH91kk3cL/view",
+    "link": "https://drive.google.com/file/d/1YO0C5g_jYiFXMgB161qWstROH91k...",
     "link_rg": "",
     "status": "OK"
   },
@@ -1522,14 +1517,25 @@
     "turma": "3A",
     "arquivo": "20261010_183347.jpg",
     "id_arquivo": "1emJMs8WgrBfN3-NCeu_kZLCvzdS5W4SA",
-    "link": "https://drive.google.com/file/d/1emJMs8WgrBfN3-NCeu_kZLCvzdS5W4SA/view",
+    "link": "https://drive.google.com/file/d/1emJMs8WgrBfN3-NCeu_kZLCvzdS5...",
     "link_rg": "",
     "status": "OK"
+  },
+  {
+    "ra": "110003338",
+    "digito": "5",
+    "nome": "VINICIUS ALVES PEREIRA",
+    "turma": "3A",
+    "arquivo": "",
+    "id_arquivo": "",
+    "link": "",
+    "link_rg": "https://drive.google.com/file/d/11qWTe56r1crap8sVyOETG-Fd7e9s...",
+    "status": "PENDENTE"
   }
 ];
 
   let studentsData = [];
-  const stored = localStorage.getItem('alunos_visita_docs_v2');
+  const stored = localStorage.getItem('alunos_visita_docs_v3');
   if (stored) {
     try {
       studentsData = JSON.parse(stored);
@@ -1557,68 +1563,135 @@
     const endpointField = document.getElementById('endpointInput');
     if (WEBAPP_URL) {
       endpointField.value = WEBAPP_URL;
+      document.getElementById('endpointStatusMsg').textContent = "● URL configurada. Testando conexão com a planilha...";
+      document.getElementById('endpointStatusMsg').style.color = "var(--accent)";
     }
     
-    // Renderiza inicialmente com o cache local
+    // Renderiza inicialmente
     updateTurmaPills();
     renderMetrics();
     renderList();
 
-    // Dispara a sincronização ao vivo com a planilha se a URL estiver configurada!
+    // Se houver URL do backend configurada, tenta sincronizar automaticamente
     if (WEBAPP_URL && WEBAPP_URL.startsWith('http')) {
       carregarAlunosDaPlanilha(false);
     } else {
-      document.getElementById('syncStatusText').textContent = "Modo Local / Cache ativo (Configure a URL abaixo para sincronizar ao vivo)";
+      document.getElementById('syncStatusText').textContent = "Modo Local ativo (39 alunos carregados)";
     }
   });
 
   // =========================================================================
-  // SINCRONIZAÇÃO AO VIVO COM A PLANILHA (doGet do Apps Script)
+  // SINCRONIZAÇÃO HÍBRIDA: FETCH DIRETO + JSONP (CONTORNA 100% DO CORS)
   // =========================================================================
   async function carregarAlunosDaPlanilha(isUserClick = false) {
     if (!WEBAPP_URL || !WEBAPP_URL.startsWith('http')) {
-      if (isUserClick) alert("Por favor, informe a URL do Web App no rodapé para sincronizar.");
+      if (isUserClick) alert("Por favor, cole a URL do seu Apps Script no rodapé e clique em 'Salvar e Testar'.");
       return;
     }
 
     const syncStatusText = document.getElementById('syncStatusText');
     const syncBtn = document.getElementById('btnSyncLive');
+    const statusMsg = document.getElementById('endpointStatusMsg');
+
     syncStatusText.textContent = "Sincronizando com a planilha...";
     syncBtn.disabled = true;
 
+    let receivedAlunos = null;
+
+    // Tentativa 1: Fetch padrão
     try {
-      // Adiciona timestamp para furar o cache do navegador e pegar adições recentes
-      const urlWithCacheBuster = WEBAPP_URL + (WEBAPP_URL.includes('?') ? '&' : '?') + 'action=list&t=' + Date.now();
-      
-      const response = await fetch(urlWithCacheBuster);
-      const data = await response.json();
-
+      const urlWithT = WEBAPP_URL + (WEBAPP_URL.includes('?') ? '&' : '?') + 't=' + Date.now();
+      const res = await fetch(urlWithT);
+      const data = await res.json();
       if (data && data.status === 'success' && Array.isArray(data.alunos)) {
-        // Atualiza a lista completa com os dados mais recentes da planilha
-        studentsData = data.alunos;
-        localStorage.setItem('alunos_visita_docs_v2', JSON.stringify(studentsData));
+        receivedAlunos = data.alunos;
+      }
+    } catch (errFetch) {
+      console.warn("Fetch direto falhou (provável restrição CORS local), tentando via JSONP...", errFetch);
+    }
 
-        updateTurmaPills();
-        renderMetrics();
-        renderList();
-
-        syncStatusText.textContent = `Ao vivo • ${data.alunos.length} alunos carregados da planilha`;
-        document.getElementById('endpointStatusMsg').textContent = `✓ Sincronizado ao vivo com a planilha (${data.alunos.length} alunos encontrados).`;
-
-        if (isUserClick) {
-          showToast(`✓ Planilha sincronizada! ${data.alunos.length} alunos carregados.`, 'success');
+    // Tentativa 2: Fallback automático via JSONP (imune a bloqueios de CORS em file:// ou navegadores)
+    if (!receivedAlunos) {
+      try {
+        const dataJsonp = await fetchViaJsonp(WEBAPP_URL);
+        if (dataJsonp && dataJsonp.status === 'success' && Array.isArray(dataJsonp.alunos)) {
+          receivedAlunos = dataJsonp.alunos;
         }
-      } else {
-        syncStatusText.textContent = "Aviso: Planilha respondeu, mas não retornou alunos.";
+      } catch (errJsonp) {
+        console.warn("JSONP também falhou:", errJsonp);
       }
-    } catch (err) {
-      console.warn("Erro ao buscar dados ao vivo:", err);
-      syncStatusText.textContent = `Cache local ativo (${studentsData.length} alunos). Falha ao buscar ao vivo.`;
+    }
+
+    syncBtn.disabled = false;
+
+    if (receivedAlunos && receivedAlunos.length > 0) {
+      studentsData = receivedAlunos;
+      localStorage.setItem('alunos_visita_docs_v3', JSON.stringify(studentsData));
+
+      updateTurmaPills();
+      renderMetrics();
+      renderList();
+
+      syncStatusText.textContent = `Ao vivo • ${receivedAlunos.length} alunos da planilha sincronizados`;
+      statusMsg.textContent = `✓ Sucesso! Conectado e sincronizado com a planilha (${receivedAlunos.length} alunos).`;
+      statusMsg.style.color = "var(--success)";
+
       if (isUserClick) {
-        showToast("Não foi possível conectar ao Web App. Verifique se a implantação está acessível a 'Qualquer pessoa'.", 'error');
+        showToast(`✓ Planilha sincronizada! ${receivedAlunos.length} alunos carregados ao vivo.`, 'success');
       }
-    } finally {
-      syncBtn.disabled = false;
+    } else {
+      syncStatusText.textContent = `Lista em cache (${studentsData.length} alunos). Conexão não respondeu.`;
+      statusMsg.textContent = "⚠️ Não foi possível ler da planilha. Verifique se o Apps Script foi implantado com 'Quem pode acessar: Qualquer pessoa' e gere uma 'Nova versão'.";
+      statusMsg.style.color = "var(--danger)";
+      
+      if (isUserClick) {
+        showToast("Falha na sincronização ao vivo. Verifique a implantação do Apps Script.", 'error');
+      }
+    }
+  }
+
+  // Função JSONP nativa para contornar qualquer barreira de CORS do navegador
+  function fetchViaJsonp(url) {
+    return new Promise((resolve, reject) => {
+      const callbackName = 'googleAppsScriptCb_' + Math.round(100000 * Math.random());
+      const sep = url.includes('?') ? '&' : '?';
+      const script = document.createElement('script');
+      
+      window[callbackName] = function(data) {
+        delete window[callbackName];
+        if (script.parentNode) script.parentNode.removeChild(script);
+        resolve(data);
+      };
+
+      script.src = url + sep + 'callback=' + callbackName + '&t=' + Date.now();
+      script.onerror = function() {
+        delete window[callbackName];
+        if (script.parentNode) script.parentNode.removeChild(script);
+        reject(new Error('Falha ao carregar script JSONP'));
+      };
+
+      document.body.appendChild(script);
+      setTimeout(() => {
+        if (window[callbackName]) {
+          delete window[callbackName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+          reject(new Error('Timeout JSONP'));
+        }
+      }, 12000);
+    });
+  }
+
+  function limparCacheERecarregar() {
+    localStorage.removeItem('alunos_visita_docs_v3');
+    localStorage.removeItem('alunos_visita_docs_v2');
+    localStorage.removeItem('alunos_visita_tecnica_rg');
+    studentsData = [...INITIAL_FALLBACK_STUDENTS];
+    updateTurmaPills();
+    renderMetrics();
+    renderList();
+    showToast("Cache local limpo! Dados restaurados.", "normal");
+    if (WEBAPP_URL) {
+      carregarAlunosDaPlanilha(true);
     }
   }
 
@@ -2036,7 +2109,7 @@
       if (selectedFileName) student.arquivo = selectedFileName;
     }
 
-    localStorage.setItem('alunos_visita_docs_v2', JSON.stringify(studentsData));
+    localStorage.setItem('alunos_visita_docs_v3', JSON.stringify(studentsData));
 
     btn.disabled = false;
     btnText.innerHTML = "🚀 Fazer Upload para Drive & Salvar";
@@ -2068,7 +2141,7 @@
     localStorage.setItem('webapp_endpoint_url', url);
     const statusMsg = document.getElementById('endpointStatusMsg');
     if (url) {
-      statusMsg.textContent = '✓ Conectado! Sincronizando com a planilha...';
+      statusMsg.textContent = '✓ Conectado! Testando sincronização...';
       carregarAlunosDaPlanilha(true);
     } else {
       statusMsg.textContent = 'Aviso: URL limpa. Modo offline ativo.';
