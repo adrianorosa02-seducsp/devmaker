@@ -7,7 +7,7 @@ window.CONFIG_PA = {
     { nomePA: "Dene", aluno: "19928837474" }
   ],
   "3C": [
-    { nomePA: "Dene", aluno: "RA87554445" }
+    { nomePA: "Tácia", aluno: "RA87554445" }
   ],
   "1A": [
     { nomePA: "Mariele", aluno: "RA00157777" }

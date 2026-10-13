@@ -110,6 +110,46 @@
       line-height: 1.4;
     }
 
+    /* Barra de Sincronização ao Vivo */
+    .sync-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+      font-size: 0.8rem;
+    }
+
+    .sync-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #1e40af;
+      font-weight: 600;
+    }
+
+    .btn-sync {
+      background: var(--accent);
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.15s;
+    }
+
+    .btn-sync:hover {
+      background: var(--primary-hover);
+    }
+
     /* Métricas Rápidas Grid 2x2 Mobile */
     .metrics-bar {
       display: grid;
@@ -587,7 +627,7 @@
       gap: 12px;
     }
 
-    /* Modos de Envio (Upload direto vs Link) */
+    /* Modos de Envio */
     .upload-tabs {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -620,7 +660,7 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
 
-    /* Drop-zone de Upload para Smartphone */
+    /* Drop-zone de Upload */
     .upload-zone {
       border: 2px dashed #93c5fd;
       background: #f8fafc;
@@ -666,7 +706,6 @@
       margin-top: 2px;
     }
 
-    /* Preview do Arquivo Selecionado */
     .file-preview-card {
       display: none;
       align-items: center;
@@ -722,7 +761,6 @@
       padding: 4px;
     }
 
-    /* Campo Manual de Link */
     .form-group {
       display: flex;
       flex-direction: column;
@@ -781,7 +819,6 @@
       cursor: not-allowed;
     }
 
-    /* Toast */
     .toast {
       position: fixed;
       bottom: 20px;
@@ -873,23 +910,33 @@
     </div>
   </header>
 
+  <!-- Barra de Sincronização ao Vivo com a Planilha -->
+  <div class="sync-bar">
+    <div class="sync-status" id="liveSyncStatus">
+      <span>●</span> <span id="syncStatusText">Verificando dados ao vivo...</span>
+    </div>
+    <button type="button" class="btn-sync" id="btnSyncLive" onclick="carregarAlunosDaPlanilha(true)">
+      🔄 Sincronizar Planilha
+    </button>
+  </div>
+
   <!-- Métricas Rápidas -->
   <div class="metrics-bar">
     <div class="metric-card">
       <div class="metric-label">Total Alunos</div>
-      <div class="metric-val" id="metric-total">38</div>
+      <div class="metric-val" id="metric-total">0</div>
     </div>
     <div class="metric-card">
       <div class="metric-label">Autorizações OK</div>
-      <div class="metric-val ok" id="metric-aut-ok">38</div>
+      <div class="metric-val ok" id="metric-aut-ok">0</div>
     </div>
     <div class="metric-card">
       <div class="metric-label">RGs OK</div>
-      <div class="metric-val" id="metric-rg-ok">0</div>
+      <div class="metric-val ok" id="metric-rg-ok">0</div>
     </div>
     <div class="metric-card">
       <div class="metric-label">Pendências</div>
-      <div class="metric-val alert" id="metric-pendentes">38</div>
+      <div class="metric-val alert" id="metric-pendentes">0</div>
     </div>
   </div>
 
@@ -908,11 +955,9 @@
       <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()">✕</button>
     </div>
 
-    <!-- Pílulas de Turma -->
+    <!-- Pílulas de Turma (Geradas Dinamicamente) -->
     <div class="filter-pills" id="turmaPills">
-      <button class="pill active" data-filter="todas" onclick="setTurmaFilter('todas', this)">Todas as Turmas (38)</button>
-      <button class="pill" data-filter="2B" onclick="setTurmaFilter('2B', this)">2º B (29)</button>
-      <button class="pill" data-filter="3A" onclick="setTurmaFilter('3A', this)">3º A (9)</button>
+      <button class="pill active" data-filter="todas" onclick="setTurmaFilter('todas', this)">Todas as Turmas</button>
     </div>
 
     <!-- Pílulas de Status Geral -->
@@ -926,8 +971,8 @@
 
   <!-- Cabeçalho da Lista -->
   <div class="list-header">
-    <div class="list-title" id="listCounterLabel">Exibindo 38 alunos</div>
-    <div style="font-size: 0.74rem; color: var(--text-muted);">Toque em Enviar para fazer upload</div>
+    <div class="list-title" id="listCounterLabel">Carregando lista de alunos...</div>
+    <div style="font-size: 0.74rem; color: var(--text-muted);">Toque em Enviar para upload</div>
   </div>
 
   <!-- Lista de Alunos -->
@@ -942,7 +987,7 @@
     <div class="backend-config-card">
       <div><strong>⚙️ URL do Web App (Google Apps Script):</strong></div>
       <div style="margin-top: 3px; color: #475569;">
-        Conecte a URL de implantação do Apps Script para salvar arquivos e links direto no Google Drive e na Planilha:
+        Conecte a URL de implantação do Apps Script para sincronização ao vivo e gravação direta no Google Drive:
       </div>
       <div class="config-input-row">
         <input 
@@ -997,7 +1042,7 @@
       <input type="hidden" id="modalStudentIndex" />
       <input type="hidden" id="modalDocType" value="rg" />
 
-      <!-- ÁREA 1: UPLOAD DE ARQUIVO (MOBILE CAMERA / GALLERY / PDF) -->
+      <!-- ÁREA 1: UPLOAD DE ARQUIVO -->
       <div id="sectionUpload">
         <div class="upload-zone" id="uploadDropZone">
           <div class="upload-zone-icon" id="uploadZoneIcon">📷</div>
@@ -1058,11 +1103,11 @@
   // 🔗 CONFIGURAÇÃO DO BACKEND (GOOGLE APPS SCRIPT)
   // Cole aqui a URL de implantação do seu Web App (terminada em /exec):
   // =========================================================================
-  const WEBAPP_URL_PADRAO = "https://script.google.com/macros/s/AKfycbypAPg2WTqdcnnQD1L8FH-Rex1_mxfOK5Uqhanupg3f7eShLSWXW2QcyA_X-IeiBds/exec"; 
+  const WEBAPP_URL_PADRAO = "https://script.google.com/a/macros/prof.educacao.sp.gov.br/s/AKfycbzUi84i8SOj6zm41v07t9Rrw1Zyx-DjNWKiJSdjf16pJ81OQbCLcpe0G9lsv3R5WGdT/exec"; 
   // =========================================================================
 
-  // Dados carregados da planilha
-  const INITIAL_STUDENTS = [
+  // Dados iniciais de fallback
+  const INITIAL_FALLBACK_STUDENTS = [
   {
     "ra": "112972908",
     "digito": "4",
@@ -1489,10 +1534,10 @@
     try {
       studentsData = JSON.parse(stored);
     } catch (e) {
-      studentsData = [...INITIAL_STUDENTS];
+      studentsData = [...INITIAL_FALLBACK_STUDENTS];
     }
   } else {
-    studentsData = [...INITIAL_STUDENTS];
+    studentsData = [...INITIAL_FALLBACK_STUDENTS];
   }
 
   let WEBAPP_URL = localStorage.getItem('webapp_endpoint_url') || WEBAPP_URL_PADRAO || "";
@@ -1503,7 +1548,7 @@
   let currentSearchQuery = '';
 
   // Estado do Modal
-  let activeMode = 'upload'; // 'upload' ou 'link'
+  let activeMode = 'upload';
   let selectedFileBase64 = null;
   let selectedFileName = "";
   let selectedFileType = "";
@@ -1512,11 +1557,94 @@
     const endpointField = document.getElementById('endpointInput');
     if (WEBAPP_URL) {
       endpointField.value = WEBAPP_URL;
-      document.getElementById('endpointStatusMsg').textContent = "● Conectado ao Apps Script";
     }
+    
+    // Renderiza inicialmente com o cache local
+    updateTurmaPills();
     renderMetrics();
     renderList();
+
+    // Dispara a sincronização ao vivo com a planilha se a URL estiver configurada!
+    if (WEBAPP_URL && WEBAPP_URL.startsWith('http')) {
+      carregarAlunosDaPlanilha(false);
+    } else {
+      document.getElementById('syncStatusText').textContent = "Modo Local / Cache ativo (Configure a URL abaixo para sincronizar ao vivo)";
+    }
   });
+
+  // =========================================================================
+  // SINCRONIZAÇÃO AO VIVO COM A PLANILHA (doGet do Apps Script)
+  // =========================================================================
+  async function carregarAlunosDaPlanilha(isUserClick = false) {
+    if (!WEBAPP_URL || !WEBAPP_URL.startsWith('http')) {
+      if (isUserClick) alert("Por favor, informe a URL do Web App no rodapé para sincronizar.");
+      return;
+    }
+
+    const syncStatusText = document.getElementById('syncStatusText');
+    const syncBtn = document.getElementById('btnSyncLive');
+    syncStatusText.textContent = "Sincronizando com a planilha...";
+    syncBtn.disabled = true;
+
+    try {
+      // Adiciona timestamp para furar o cache do navegador e pegar adições recentes
+      const urlWithCacheBuster = WEBAPP_URL + (WEBAPP_URL.includes('?') ? '&' : '?') + 'action=list&t=' + Date.now();
+      
+      const response = await fetch(urlWithCacheBuster);
+      const data = await response.json();
+
+      if (data && data.status === 'success' && Array.isArray(data.alunos)) {
+        // Atualiza a lista completa com os dados mais recentes da planilha
+        studentsData = data.alunos;
+        localStorage.setItem('alunos_visita_docs_v2', JSON.stringify(studentsData));
+
+        updateTurmaPills();
+        renderMetrics();
+        renderList();
+
+        syncStatusText.textContent = `Ao vivo • ${data.alunos.length} alunos carregados da planilha`;
+        document.getElementById('endpointStatusMsg').textContent = `✓ Sincronizado ao vivo com a planilha (${data.alunos.length} alunos encontrados).`;
+
+        if (isUserClick) {
+          showToast(`✓ Planilha sincronizada! ${data.alunos.length} alunos carregados.`, 'success');
+        }
+      } else {
+        syncStatusText.textContent = "Aviso: Planilha respondeu, mas não retornou alunos.";
+      }
+    } catch (err) {
+      console.warn("Erro ao buscar dados ao vivo:", err);
+      syncStatusText.textContent = `Cache local ativo (${studentsData.length} alunos). Falha ao buscar ao vivo.`;
+      if (isUserClick) {
+        showToast("Não foi possível conectar ao Web App. Verifique se a implantação está acessível a 'Qualquer pessoa'.", 'error');
+      }
+    } finally {
+      syncBtn.disabled = false;
+    }
+  }
+
+  // =========================================================================
+  // GERAÇÃO DINÂMICA DE PÍLULAS DE TURMA
+  // =========================================================================
+  function updateTurmaPills() {
+    const container = document.getElementById('turmaPills');
+    const turmasMap = {};
+
+    studentsData.forEach(s => {
+      const t = s.turma || 'Sem Turma';
+      turmasMap[t] = (turmasMap[t] || 0) + 1;
+    });
+
+    const turmasKeys = Object.keys(turmasMap).sort();
+    
+    let html = `<button class="pill ${currentTurmaFilter === 'todas' ? 'active' : ''}" data-filter="todas" onclick="setTurmaFilter('todas', this)">Todas as Turmas (${studentsData.length})</button>`;
+
+    turmasKeys.forEach(t => {
+      const isActive = (currentTurmaFilter === t) ? 'active' : '';
+      html += `<button class="pill ${isActive}" data-filter="${t}" onclick="setTurmaFilter('${t}', this)">Turma ${t} (${turmasMap[t]})</button>`;
+    });
+
+    container.innerHTML = html;
+  }
 
   // =========================================================================
   // MÉTRICAS & FILTRAGEM
@@ -1539,7 +1667,6 @@
 
   function getFilteredStudents() {
     return studentsData.filter(student => {
-      // Turma
       if (currentTurmaFilter !== 'todas' && student.turma !== currentTurmaFilter) {
         return false;
       }
@@ -1547,16 +1674,14 @@
       const hasAut = Boolean(student.link && student.link.trim() !== '');
       const hasRg = Boolean(student.link_rg && student.link_rg.trim() !== '');
 
-      // Status
       if (currentStatusFilter === 'falta-rg' && hasRg) return false;
       if (currentStatusFilter === 'falta-aut' && hasAut) return false;
       if (currentStatusFilter === 'completo' && (!hasAut || !hasRg)) return false;
 
-      // Busca
       if (currentSearchQuery) {
         const q = currentSearchQuery.toLowerCase();
-        const nomeMatch = student.nome.toLowerCase().includes(q);
-        const raMatch = (student.ra + "-" + student.digito).includes(q) || student.ra.includes(q);
+        const nomeMatch = (student.nome || '').toLowerCase().includes(q);
+        const raMatch = ((student.ra || '') + "-" + (student.digito || '')).includes(q) || (student.ra || '').includes(q);
         if (!nomeMatch && !raMatch) return false;
       }
 
@@ -1585,7 +1710,7 @@
       const hasAut = Boolean(student.link && student.link.trim() !== '');
       const hasRg = Boolean(student.link_rg && student.link_rg.trim() !== '');
       const isComplete = hasAut && hasRg;
-      const initials = student.nome.split(' ').slice(0, 2).map(n => n[0]).join('');
+      const initials = (student.nome || 'AL').split(' ').slice(0, 2).map(n => n[0] || '').join('');
 
       return `
         <div class="student-card ${isComplete ? 'fully-complete' : 'has-pending'}">
@@ -1685,7 +1810,7 @@
   }
 
   // =========================================================================
-  // MODAL BOTTOM SHEET & COMPRESSÃO DE IMAGEM CLIENT-SIDE
+  // MODAL BOTTOM SHEET & COMPRESSÃO DE IMAGEM
   // =========================================================================
   function openModal(index, docType) {
     const student = studentsData[index];
@@ -1748,7 +1873,6 @@
     }
   }
 
-  // Compactação e leitura do arquivo selecionado (Câmera ou Arquivo)
   async function handleFileChange(input) {
     if (!input.files || !input.files[0]) return;
     const file = input.files[0];
@@ -1759,24 +1883,18 @@
     document.getElementById('fileMetaText').textContent = "Processando imagem...";
     document.getElementById('filePreviewCard').classList.add('show');
 
-    // Se for imagem, comprime client-side para evitar estourar o limite de upload do Apps Script
     if (file.type.startsWith('image/')) {
       try {
         const compressedDataUrl = await compressImage(file, 1600, 0.85);
         selectedFileBase64 = compressedDataUrl;
-        
-        // Calcula tamanho aproximado em KB
         const approxKb = Math.round((compressedDataUrl.length * 3 / 4) / 1024);
         document.getElementById('fileMetaText').textContent = `Foto otimizada: ~${approxKb} KB • Pronta para o Drive`;
-        
         const thumb = document.getElementById('fileThumbnail');
         thumb.innerHTML = `<img src="${compressedDataUrl}" style="width:100%; height:100%; border-radius:6px; object-fit:cover;" />`;
       } catch (err) {
-        console.error("Falha ao comprimir imagem, usando leitura direta:", err);
         readFileDirect(file);
       }
     } else {
-      // PDF ou outro documento
       document.getElementById('fileThumbnail').innerHTML = "📄";
       const sizeMb = (file.size / (1024 * 1024)).toFixed(2);
       document.getElementById('fileMetaText').textContent = `PDF: ${sizeMb} MB • Pronto para o Drive`;
@@ -1792,7 +1910,6 @@
     reader.readAsDataURL(file);
   }
 
-  // Utilitário Canvas para redimensionar fotos pesadas de celulares
   function compressImage(file, maxWidth, quality) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -1801,18 +1918,15 @@
         img.onload = () => {
           let width = img.width;
           let height = img.height;
-
           if (width > maxWidth) {
             height = Math.round((height * maxWidth) / width);
             width = maxWidth;
           }
-
           const canvas = document.createElement('canvas');
           canvas.width = width;
           canvas.height = height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
-
           resolve(canvas.toDataURL('image/jpeg', quality));
         };
         img.onerror = reject;
@@ -1845,12 +1959,12 @@
   }
 
   // =========================================================================
-  // SUBMISSÃO & ATUALIZAÇÃO NO DRIVE E PLANILHA
+  // SUBMISSÃO & ATUALIZAÇÃO
   // =========================================================================
   async function handleDocSubmit(e) {
     e.preventDefault();
     const index = parseInt(document.getElementById('modalStudentIndex').value, 10);
-    const docType = document.getElementById('modalDocType').value; // 'rg' ou 'autorizacao'
+    const docType = document.getElementById('modalDocType').value;
     const student = studentsData[index];
 
     if (!student) return;
@@ -1879,14 +1993,13 @@
       btnText.innerHTML = "⏳ Gravando na Planilha...";
     }
 
-    // Payload de sincronização com o Apps Script
     const payload = {
       action: 'update_documento',
       ra: student.ra,
       digito: student.digito,
       nome: student.nome,
       turma: student.turma,
-      tipo: docType, // 'rg' ou 'autorizacao'
+      tipo: docType,
       link: finalLink,
       fileBase64: isUpload ? selectedFileBase64 : "",
       fileName: isUpload ? selectedFileName : ""
@@ -1897,7 +2010,6 @@
 
     if (WEBAPP_URL && WEBAPP_URL.startsWith('http')) {
       try {
-        // Envio POST assíncrono para o Web App
         const res = await fetch(WEBAPP_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -1909,16 +2021,13 @@
           if (resData && resData.file_url) {
             driveUrlReturned = resData.file_url;
           }
-        } catch(e) {
-          // no-cors ou resposta direta
-        }
+        } catch(e) {}
         syncOk = true;
       } catch (err) {
         console.warn("Aviso no fetch Apps Script:", err);
       }
     }
 
-    // Atualiza o registro em memória e no localStorage
     const savedUrl = driveUrlReturned || finalLink || (isUpload ? "https://drive.google.com/uploaded_file" : "");
     if (docType === 'rg') {
       student.link_rg = savedUrl;
@@ -1940,7 +2049,7 @@
     if (syncOk) {
       showToast(`✓ ${docNameDisplay} de ${student.nome.split(' ')[0]} salvo no Drive e na Planilha!`, 'success');
     } else {
-      showToast(`✓ ${docNameDisplay} atualizado localmente! Conecte o Apps Script para salvar na nuvem.`, 'success');
+      showToast(`✓ ${docNameDisplay} atualizado localmente!`, 'success');
     }
   }
 
@@ -1959,9 +2068,10 @@
     localStorage.setItem('webapp_endpoint_url', url);
     const statusMsg = document.getElementById('endpointStatusMsg');
     if (url) {
-      statusMsg.textContent = '✓ Conectado! Uploads e links serão gravados direto no Google Drive e na Planilha.';
+      statusMsg.textContent = '✓ Conectado! Sincronizando com a planilha...';
+      carregarAlunosDaPlanilha(true);
     } else {
-      statusMsg.textContent = 'Aviso: URL limpa. Modo offline / local ativo.';
+      statusMsg.textContent = 'Aviso: URL limpa. Modo offline ativo.';
     }
   }
 </script>
