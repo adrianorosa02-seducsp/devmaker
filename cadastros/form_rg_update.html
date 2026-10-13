@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Atualização de Link_RG | Visita Técnica • E.E. Antônio Reginato</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --primary-border: #bfdbfe;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --badge-bg: #dbeafe;
+      --badge-text: #1e40af;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --success-border: #86efac;
+      --warning: #d97706;
+      --warning-light: #fef3c7;
+      --warning-border: #fcd34d;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --danger-border: #fca5a5;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+      --shadow-lg: 0 10px 25px rgba(37, 99, 235, 0.12);
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding: 16px 12px 100px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* Header DevMaker / AVA Mobile-First */
+    header {
+      background: var(--card-bg);
+      padding: 20px 18px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-left: 6px solid var(--accent);
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .header-badge {
+      background: var(--primary-light);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-badge.tech {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .header-titles h1 {
+      font-size: 1.35rem;
+      color: var(--primary);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .header-titles p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+
+    /* Métricas / Contador Mobile */
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .metric-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 8px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .metric-val {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-top: 2px;
+    }
+
+    .metric-val.ok {
+      color: var(--success);
+    }
+
+    .metric-val.alert {
+      color: var(--warning);
+    }
+
+    /* Barra de Busca e Filtros */
+    .filters-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 13px 14px 13px 40px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      background-color: #ffffff;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .clear-search-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #e2e8f0;
+      color: #64748b;
+      border: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .filter-pills::-webkit-scrollbar {
+      display: none;
+    }
+
+    .pill {
+      padding: 8px 14px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .pill.active {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    }
+
+    /* Lista de Alunos Mobile First */
+    .list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 0 4px;
+    }
+
+    .list-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .students-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .student-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s ease, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .student-card:active {
+      transform: scale(0.99);
+    }
+
+    .student-card.has-rg {
+      border-left: 4px solid var(--success);
+    }
+
+    .student-card.no-rg {
+      border-left: 4px solid var(--warning);
+    }
+
+    .student-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .student-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--primary-light);
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid var(--primary-border);
+    }
+
+    .student-avatar.has-rg {
+      background: var(--success-light);
+      color: var(--success);
+      border-color: var(--success-border);
+    }
+
+    .student-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .student-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+
+    .student-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-turma {
+      background: #f1f5f9;
+      color: #334155;
+      font-weight: 700;
+      font-size: 0.72rem;
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+
+    .rg-status-row {
+      background: #f8fafc;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.82rem;
+    }
+
+    .rg-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .rg-status-badge.ok {
+      background: var(--success-light);
+      color: var(--success);
+    }
+
+    .rg-status-badge.pending {
+      background: var(--warning-light);
+      color: var(--warning);
+    }
+
+    .link-rg-preview {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      max-width: 140px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-update {
+      flex: 1;
+      padding: 11px 14px;
+      background: var(--accent);
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-update:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-update.edit {
+      background: #475569;
+    }
+
+    .btn-update.edit:hover {
+      background: #334155;
+    }
+
+    .btn-doc {
+      padding: 11px 12px;
+      background: #f1f5f9;
+      color: #334155;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border: 1px solid var(--border);
+    }
+
+    /* Bottom Sheet / Modal Mobile */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      align-items: flex-end;
+      opacity: 1;
+    }
+
+    @media (min-width: 640px) {
+      .modal-overlay.active {
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+    }
+
+    .bottom-sheet {
+      width: 100%;
+      background: var(--card-bg);
+      border-radius: 20px 20px 0 0;
+      padding: 24px 20px 32px;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @media (min-width: 640px) {
+      .bottom-sheet {
+        max-width: 520px;
+        border-radius: 16px;
+        transform: scale(0.95);
+        padding: 28px;
+      }
+    }
+
+    .modal-overlay.active .bottom-sheet {
+      transform: translateY(0);
+    }
+
+    @media (min-width: 640px) {
+      .modal-overlay.active .bottom-sheet {
+        transform: scale(1);
+      }
+    }
+
+    .sheet-handle {
+      width: 40px;
+      height: 5px;
+      background: #cbd5e1;
+      border-radius: 3px;
+      margin: 0 auto 16px;
+    }
+
+    @media (min-width: 640px) {
+      .sheet-handle {
+        display: none;
+      }
+    }
+
+    .sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .sheet-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .sheet-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .btn-close {
+      background: #f1f5f9;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      color: #64748b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .student-preview-box {
+      background: var(--primary-light);
+      border: 1px solid var(--primary-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .preview-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--primary);
+    }
+
+    .preview-meta {
+      font-size: 0.8rem;
+      color: #3b82f6;
+      display: flex;
+      gap: 12px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-label span.req {
+      color: var(--danger);
+    }
+
+    .url-input-wrapper {
+      position: relative;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      background-color: #fff;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .form-help {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-top: 4px;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .btn-chip {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-chip:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-save {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+      transition: all 0.2s;
+      margin-top: 10px;
+    }
+
+    .btn-save:hover {
+      background: linear-gradient(135deg, var(--primary-hover), var(--primary));
+    }
+
+    .btn-save:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 9999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 2000;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast.success {
+      background: #15803d;
+    }
+
+    .toast.error {
+      background: #b91c1c;
+    }
+
+    /* Rodapé Config / Backend */
+    footer {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px dashed var(--border);
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .backend-config-card {
+      background: #f1f5f9;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-top: 12px;
+      text-align: left;
+      font-size: 0.78rem;
+    }
+
+    .backend-config-card strong {
+      color: var(--primary);
+    }
+
+    .config-input-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .config-input {
+      flex: 1;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.78rem;
+      background: #fff;
+    }
+
+    .btn-config-save {
+      padding: 6px 12px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .empty-state {
+      background: var(--card-bg);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 36px 20px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .empty-icon {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header Mobile First DevMaker / AVA -->
+  <header>
+    <div class="header-top">
+      <span class="header-badge">E.E. Antônio Reginato</span>
+      <span class="header-badge tech">Visita Técnica 2026</span>
+    </div>
+    <div class="header-titles">
+      <h1>Atualização de Link_RG</h1>
+      <p>Gerenciamento mobile para inclusão e alteração do link dos documentos de identidade dos alunos na planilha oficial.</p>
+    </div>
+  </header>
+
+  <!-- Métricas Rápidas -->
+  <div class="metrics-bar">
+    <div class="metric-card">
+      <div class="metric-label">Total Alunos</div>
+      <div class="metric-val" id="metric-total">38</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">RG Preenchido</div>
+      <div class="metric-val ok" id="metric-preenchidos">0</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">RG Pendente</div>
+      <div class="metric-val alert" id="metric-pendentes">38</div>
+    </div>
+  </div>
+
+  <!-- Filtros e Busca Rápida -->
+  <div class="filters-section">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="search" 
+        id="searchInput" 
+        class="search-input" 
+        placeholder="Buscar aluno por nome ou RA..." 
+        autocomplete="off"
+        oninput="handleSearch(this.value)"
+      />
+      <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()">✕</button>
+    </div>
+
+    <!-- Pílulas de Turma e Status -->
+    <div class="filter-pills" id="turmaPills">
+      <button class="pill active" data-filter="todas" onclick="setTurmaFilter('todas', this)">Todas as Turmas (38)</button>
+      <button class="pill" data-filter="2B" onclick="setTurmaFilter('2B', this)">2º B (29)</button>
+      <button class="pill" data-filter="3A" onclick="setTurmaFilter('3A', this)">3º A (9)</button>
+    </div>
+
+    <div class="filter-pills" id="statusPills">
+      <button class="pill active" data-status="todos" onclick="setStatusFilter('todos', this)">Todos Status</button>
+      <button class="pill" data-status="pendente" onclick="setStatusFilter('pendente', this)">⚠️ Somente Pendentes</button>
+      <button class="pill" data-status="ok" onclick="setStatusFilter('ok', this)">✅ Somente Preenchidos</button>
+    </div>
+  </div>
+
+  <!-- Cabeçalho da Lista -->
+  <div class="list-header">
+    <div class="list-title" id="listCounterLabel">Exibindo 38 alunos</div>
+    <div style="font-size: 0.75rem; color: var(--text-muted);">Toque no botão para editar</div>
+  </div>
+
+  <!-- Lista de Alunos -->
+  <div class="students-list" id="studentsListContainer">
+    <!-- Gerado dinamicamente via JavaScript -->
+  </div>
+
+  <!-- Configuração do Endpoint do Apps Script -->
+  <footer>
+    <p>Integração com Google Sheets: <strong>Alunos_visita_Tecnica</strong> (aba: <code>alunos_documentos</code>, Coluna H: <code>Link_Rg</code>)</p>
+    
+    <div class="backend-config-card">
+      <div><strong>⚙️ Conexão Web App (Google Apps Script):</strong></div>
+      <div style="margin-top: 4px; color: #475569;">
+        Insira a URL de implantação do Apps Script (Web App) para salvar direto na nuvem:
+      </div>
+      <div class="config-input-row">
+        <input 
+          type="url" 
+          id="endpointInput" 
+          class="config-input" 
+          placeholder="https://script.google.com/macros/s/AKfycb.../exec"
+        />
+        <button class="btn-config-save" onclick="saveEndpointConfig()">Salvar</button>
+      </div>
+      <div id="endpointStatusMsg" style="margin-top: 4px; font-size: 0.72rem; color: var(--success);"></div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- BOTTOM SHEET / MODAL MOBILE PARA ATUALIZAR LINK_RG -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+  <div class="bottom-sheet" id="bottomSheet" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+
+    <div class="sheet-header">
+      <div>
+        <h2 class="sheet-title" id="sheetTitle">Atualizar Link_RG</h2>
+        <p class="sheet-subtitle">Insira ou modifique o link do documento RG</p>
+      </div>
+      <button class="btn-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <!-- Dados do Aluno Selecionado -->
+    <div class="student-preview-box">
+      <div class="preview-name" id="modalStudentName">Nome do Aluno</div>
+      <div class="preview-meta">
+        <span id="modalStudentRA">RA: -</span>
+        <span id="modalStudentTurma">Turma: -</span>
+      </div>
+    </div>
+
+    <!-- Formulário do Link_RG -->
+    <form id="rgUpdateForm" onsubmit="handleRgSubmit(event)">
+      <input type="hidden" id="modalStudentIndex" />
+
+      <div class="form-group">
+        <label class="form-label" for="linkRgInput">
+          Link do Documento RG (Google Drive / URL) <span class="req">*</span>
+        </label>
+        
+        <div class="url-input-wrapper">
+          <input 
+            type="url" 
+            id="linkRgInput" 
+            class="form-input" 
+            placeholder="https://drive.google.com/file/d/..." 
+            required 
+            autocomplete="off"
+            autocapitalize="none"
+          />
+        </div>
+
+        <div class="quick-actions">
+          <button type="button" class="btn-chip" onclick="pasteFromClipboard()">
+            📋 Colar link
+          </button>
+          <button type="button" class="btn-chip" onclick="clearInput()">
+            🗑️ Limpar
+          </button>
+          <button type="button" class="btn-chip" id="btnTestLink" onclick="testModalLink()" style="display: none;">
+            🔗 Abrir link
+          </button>
+        </div>
+
+        <div class="form-help">
+          💡 <strong>Dica:</strong> No Google Drive do celular, abra a imagem ou PDF do RG, toque nos 3 pontinhos ➔ <em>"Copiar link"</em> e cole aqui.
+        </div>
+      </div>
+
+      <button type="submit" class="btn-save" id="btnSaveLink">
+        <span>💾 Salvar Link_RG</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast" id="toastMessage">✓ Link_RG atualizado com sucesso!</div>
+
+<script>
+  // =========================================================================
+  // 1. DADOS INICIAIS (CARREGADOS DA PLANILHA alunos_documentos)
+  // =========================================================================
+  const INITIAL_STUDENTS = [
+  {
+    "ra": "112972908",
+    "digito": "4",
+    "nome": "ANA JULYA MONTANHAL LIMA",
+    "turma": "2B",
+    "arquivo": "20260928_151123.jpg",
+    "id_arquivo": "1b55UQnbXs5jU7ZWKGv27CRqSo_Dxj-tQ",
+    "link": "https://drive.google.com/file/d/1b55UQnbXs5jU7ZWKGv27CRqSo_Dxj-tQ/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111598335",
+    "digito": "0",
+    "nome": "VITÓRIA CAPUTI DE JESUS",
+    "turma": "2B",
+    "arquivo": "20260928_151151.jpg",
+    "id_arquivo": "11fdNxIaY8VQ9MhwhoKkLgh1hib7GlM90",
+    "link": "https://drive.google.com/file/d/11fdNxIaY8VQ9MhwhoKkLgh1hib7GlM90/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "112244979",
+    "digito": "3",
+    "nome": "VICENTE BARBOSA SANTOS GONÇALVES",
+    "turma": "2B",
+    "arquivo": "20260928_151205.jpg",
+    "id_arquivo": "1WizbEwYEeDPDaE-URWUuWbrFG_5fH1Hs",
+    "link": "https://drive.google.com/file/d/1WizbEwYEeDPDaE-URWUuWbrFG_5fH1Hs/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "110628006",
+    "digito": "4",
+    "nome": "SARAH DOS SANTOS YACOUB",
+    "turma": "2B",
+    "arquivo": "20260928_151218.jpg",
+    "id_arquivo": "1eEk48tKzL1Av4oCIoimrCkN7Zorpp_vv",
+    "link": "https://drive.google.com/file/d/1eEk48tKzL1Av4oCIoimrCkN7Zorpp_vv/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "112770606",
+    "digito": "8",
+    "nome": "RYAN FERNANDES DA SILVA",
+    "turma": "2B",
+    "arquivo": "20260928_151229.jpg",
+    "id_arquivo": "1CubIgrFNubR6oigGn2AdiepcJT6iS4vV",
+    "link": "https://drive.google.com/file/d/1CubIgrFNubR6oigGn2AdiepcJT6iS4vV/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "113240055",
+    "digito": "7",
+    "nome": "RAFAEL YUDI OKA",
+    "turma": "2B",
+    "arquivo": "20260928_151308.jpg",
+    "id_arquivo": "1DcFHLKDD8Gc346bY6g7t--5HGXYKwEaV",
+    "link": "https://drive.google.com/file/d/1DcFHLKDD8Gc346bY6g7t--5HGXYKwEaV/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "112508329",
+    "digito": "3",
+    "nome": "ANA LYVIA ROCHA RIBEIRO",
+    "turma": "2B",
+    "arquivo": "20260928_151341.jpg",
+    "id_arquivo": "1B_tT6zy3sXeGklAzkV0oU_8lHMrZQZA9",
+    "link": "https://drive.google.com/file/d/1B_tT6zy3sXeGklAzkV0oU_8lHMrZQZA9/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "113547721",
+    "digito": "8",
+    "nome": "PIETRO BUENO GRANCIERE",
+    "turma": "2B",
+    "arquivo": "20260928_151359.jpg",
+    "id_arquivo": "188qSKOcCgK9ARPEvayWmi_62AYU1wl_y",
+    "link": "https://drive.google.com/file/d/188qSKOcCgK9ARPEvayWmi_62AYU1wl_y/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "113762481",
+    "digito": "4",
+    "nome": "MARIA JULIA DOS SANTOS RODRIGUES DA SILVA",
+    "turma": "2B",
+    "arquivo": "20260928_151424.jpg",
+    "id_arquivo": "1l9dG-Ie3VEAux7z8f2GNNrMozg06ClkB",
+    "link": "https://drive.google.com/file/d/1l9dG-Ie3VEAux7z8f2GNNrMozg06ClkB/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "114258884",
+    "digito": "1",
+    "nome": "LUCAS SOARES MOURA",
+    "turma": "2B",
+    "arquivo": "20260928_151438.jpg",
+    "id_arquivo": "1U5Cb1Sx7337L9M4odKd7Vts9E6Nw2rM1",
+    "link": "https://drive.google.com/file/d/1U5Cb1Sx7337L9M4odKd7Vts9E6Nw2rM1/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "113799184",
+    "digito": "7",
+    "nome": "LUANA BEATRIZ NAGASHI MAXIMO",
+    "turma": "2B",
+    "arquivo": "20260928_151450.jpg",
+    "id_arquivo": "1pOQiBR5ZERk-EZtRCUxnzjP5zBlKeo7T",
+    "link": "https://drive.google.com/file/d/1pOQiBR5ZERk-EZtRCUxnzjP5zBlKeo7T/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111471826",
+    "digito": "9",
+    "nome": "LORENA CARDOSO DE OLIVEIRA",
+    "turma": "2B",
+    "arquivo": "20260928_151501.jpg",
+    "id_arquivo": "1X4RXep_bh6bozSJ7Lalpt84FJYtcAFHO",
+    "link": "https://drive.google.com/file/d/1X4RXep_bh6bozSJ7Lalpt84FJYtcAFHO/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111499859",
+    "digito": "X",
+    "nome": "LETÍCIA DOS SANTOS NOGUEIRA",
+    "turma": "2B",
+    "arquivo": "20260928_151515.jpg",
+    "id_arquivo": "15Rzc8-hb_cl6393mBa6fJAuNdv7w9IED",
+    "link": "https://drive.google.com/file/d/15Rzc8-hb_cl6393mBa6fJAuNdv7w9IED/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111466174",
+    "digito": "0",
+    "nome": "JÚLIA MOREIRA PRADO",
+    "turma": "2B",
+    "arquivo": "20260928_151538.jpg",
+    "id_arquivo": "1-D5wmbWlaRY5QtgsFEHOafwlO2hCqRLC",
+    "link": "https://drive.google.com/file/d/1-D5wmbWlaRY5QtgsFEHOafwlO2hCqRLC/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "112199316",
+    "digito": "3",
+    "nome": "JOÃO VICTOR FERNET ANTUNES",
+    "turma": "2B",
+    "arquivo": "20260928_151549.jpg",
+    "id_arquivo": "1YrduQQv8Cnzdym9gjtuW8g3HZCtuCLsZ",
+    "link": "https://drive.google.com/file/d/1YrduQQv8Cnzdym9gjtuW8g3HZCtuCLsZ/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "123983063",
+    "digito": "4",
+    "nome": "JIMMY JAHZEEL LASCANO ROMERO",
+    "turma": "2B",
+    "arquivo": "20260928_151559.jpg",
+    "id_arquivo": "1_C07fPdzHqYQETOrqPwo0qIAnnDECzyY",
+    "link": "https://drive.google.com/file/d/1_C07fPdzHqYQETOrqPwo0qIAnnDECzyY/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "112742747",
+    "digito": "7",
+    "nome": "ISADORA CRISTHINE STRAIOTTO DE OLIVEIRA",
+    "turma": "2B",
+    "arquivo": "20260928_151607.jpg",
+    "id_arquivo": "1_-KFrv6VC9y8mj15dXFo3Ibxx7b8A1uy",
+    "link": "https://drive.google.com/file/d/1_-KFrv6VC9y8mj15dXFo3Ibxx7b8A1uy/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111466092",
+    "digito": "9",
+    "nome": "GUILHERME DE OLIVEIRA BAHIANO",
+    "turma": "2B",
+    "arquivo": "20260928_151615.jpg",
+    "id_arquivo": "1roGb2xoIPJJa450LdNrObyyuzNlaX7DX",
+    "link": "https://drive.google.com/file/d/1roGb2xoIPJJa450LdNrObyyuzNlaX7DX/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "110688725",
+    "digito": "6",
+    "nome": "EZEQUIEL VICTOR BALDENEBRO LIMA",
+    "turma": "2B",
+    "arquivo": "20260928_151623.jpg",
+    "id_arquivo": "1yxEQw6fd-xUrPtB3QhoaOCnFE683ukW5",
+    "link": "https://drive.google.com/file/d/1yxEQw6fd-xUrPtB3QhoaOCnFE683ukW5/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111553578",
+    "digito": "X",
+    "nome": "DANIELLE RIBEIRO DE ARAÚJO",
+    "turma": "2B",
+    "arquivo": "20260928_151643.jpg",
+    "id_arquivo": "1C6lJ0Iuer00-0aIFwg8CB56zYjq9C4Lc",
+    "link": "https://drive.google.com/file/d/1C6lJ0Iuer00-0aIFwg8CB56zYjq9C4Lc/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111790548",
+    "digito": "2",
+    "nome": "CAIO HENRIQUE PEREIRA FERREIRA",
+    "turma": "2B",
+    "arquivo": "20260928_151656.jpg",
+    "id_arquivo": "1NRnMrnc7QT98QmjchwomfZsluAzamc01",
+    "link": "https://drive.google.com/file/d/1NRnMrnc7QT98QmjchwomfZsluAzamc01/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "112503386",
+    "digito": "1",
+    "nome": "BRYAN YOSHISADA SUZUKI BRASIL",
+    "turma": "2B",
+    "arquivo": "20260928_151704.jpg",
+    "id_arquivo": "1eSOd1kDg7SC3NGtLcnLYMyPG6cngOVUv",
+    "link": "https://drive.google.com/file/d/1eSOd1kDg7SC3NGtLcnLYMyPG6cngOVUv/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111520987",
+    "digito": "5",
+    "nome": "MATHEUS FORNAZARI SABATINI",
+    "turma": "2B",
+    "arquivo": "20261010_183137.jpg",
+    "id_arquivo": "1mfreiQ5hzQvoU-aIBd8nO6rveTf48owe",
+    "link": "https://drive.google.com/file/d/1mfreiQ5hzQvoU-aIBd8nO6rveTf48owe/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111891987",
+    "digito": "7",
+    "nome": "MARIA JULIA BALDENEBRO DOS REIS",
+    "turma": "2B",
+    "arquivo": "20261010_183156.jpg",
+    "id_arquivo": "1_SkFzKtnxSynvu2peL1XPzbl_qjYaG1J",
+    "link": "https://drive.google.com/file/d/1_SkFzKtnxSynvu2peL1XPzbl_qjYaG1J/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "113638699",
+    "digito": "3",
+    "nome": "PEDRO HENRIQUE TORRES",
+    "turma": "2B",
+    "arquivo": "20261010_183207.jpg",
+    "id_arquivo": "16MU-bxD9QocuvnbCZZhlOm3MQ7CqRR20",
+    "link": "https://drive.google.com/file/d/16MU-bxD9QocuvnbCZZhlOm3MQ7CqRR20/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111560387",
+    "digito": "5",
+    "nome": "THALES COELHO LOURENÇO",
+    "turma": "2B",
+    "arquivo": "20261010_183308.jpg",
+    "id_arquivo": "1r8NQmwkh3pnpQpXc3-JYOzuZxcvQsMjQ",
+    "link": "https://drive.google.com/file/d/1r8NQmwkh3pnpQpXc3-JYOzuZxcvQsMjQ/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "110688735",
+    "digito": "9",
+    "nome": "MANUELLA DOS SANTOS LIMA",
+    "turma": "2B",
+    "arquivo": "20261010_183314.jpg",
+    "id_arquivo": "1SdgAez82pQPO6AiNKViHtlGLjDAFj25F",
+    "link": "https://drive.google.com/file/d/1SdgAez82pQPO6AiNKViHtlGLjDAFj25F/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "109830748",
+    "digito": "3",
+    "nome": "MARCELO FRANCISCO DE OLIVEIRA JUNIOR",
+    "turma": "2B",
+    "arquivo": "20261010_183327.jpg",
+    "id_arquivo": "1hsDPZW5eu6QlomXa2UNbHpLdoVd3N53r",
+    "link": "https://drive.google.com/file/d/1hsDPZW5eu6QlomXa2UNbHpLdoVd3N53r/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "113547749",
+    "digito": "8",
+    "nome": "VINICIUS MARQUES SOUZA",
+    "turma": "2B",
+    "arquivo": "20261010_183337.jpg",
+    "id_arquivo": "14BzatJ5YCzOpZ9e77E6E2iekUr6IhT99",
+    "link": "https://drive.google.com/file/d/14BzatJ5YCzOpZ9e77E6E2iekUr6IhT99/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111156083",
+    "digito": "3",
+    "nome": "ALLYSSON GABRIEL DE PAULA LIMA",
+    "turma": "3A",
+    "arquivo": "20260928_150536.jpg",
+    "id_arquivo": "1GTSL9jyPAkmcoP63DNIXQikFQUli0ys-",
+    "link": "https://drive.google.com/file/d/1GTSL9jyPAkmcoP63DNIXQikFQUli0ys-/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111473737",
+    "digito": "9",
+    "nome": "ANTONY ELIAS BARBOSA DE SOUZA DELPHINO",
+    "turma": "3A",
+    "arquivo": "20260928_150608.jpg",
+    "id_arquivo": "19W949fuJ275wwbNIANG7mFUvAZnZ2A9V",
+    "link": "https://drive.google.com/file/d/19W949fuJ275wwbNIANG7mFUvAZnZ2A9V/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "109760535",
+    "digito": "8",
+    "nome": "GABRIEL PERES DE OLIVEIRA",
+    "turma": "3A",
+    "arquivo": "20260928_150725.jpg",
+    "id_arquivo": "1pE14pYsNWizjsXsHQZY2rw_8zFdgUGRi",
+    "link": "https://drive.google.com/file/d/1pE14pYsNWizjsXsHQZY2rw_8zFdgUGRi/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "110661061",
+    "digito": "1",
+    "nome": "ALLAN GABRIEL TENORIO DO SOUTO",
+    "turma": "3A",
+    "arquivo": "20260928_150748.jpg",
+    "id_arquivo": "1jNO9K2pS8XuQEsr0nlLgXwFx9tcvRJbK",
+    "link": "https://drive.google.com/file/d/1jNO9K2pS8XuQEsr0nlLgXwFx9tcvRJbK/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111472687",
+    "digito": "4",
+    "nome": "STHEFANY VICTÓRIA GOMES MIQUELIM",
+    "turma": "3A",
+    "arquivo": "20260928_150810.jpg",
+    "id_arquivo": "17Pewti4SeUuKiYiC5WLgIUSYyk2u6jr5",
+    "link": "https://drive.google.com/file/d/17Pewti4SeUuKiYiC5WLgIUSYyk2u6jr5/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111517454",
+    "digito": "X",
+    "nome": "YGOR GUSTAVO PEREIRA",
+    "turma": "3A",
+    "arquivo": "20260928_150837.jpg",
+    "id_arquivo": "1zn0UjpZYIfXxWxoMQc84bIZQLdroCOEH",
+    "link": "https://drive.google.com/file/d/1zn0UjpZYIfXxWxoMQc84bIZQLdroCOEH/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "110631915",
+    "digito": "1",
+    "nome": "KAIQUE DE BRITO OLIVEIRA",
+    "turma": "3A",
+    "arquivo": "20260928_150912.jpg",
+    "id_arquivo": "1D7KZiXWcoeFn-6V62XMo_dEDThDRNSOE",
+    "link": "https://drive.google.com/file/d/1D7KZiXWcoeFn-6V62XMo_dEDThDRNSOE/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "111549850",
+    "digito": "2",
+    "nome": "MATHEUS ROCHA LOPES",
+    "turma": "3A",
+    "arquivo": "20260928_150929.jpg",
+    "id_arquivo": "1YO0C5g_jYiFXMgB161qWstROH91kk3cL",
+    "link": "https://drive.google.com/file/d/1YO0C5g_jYiFXMgB161qWstROH91kk3cL/view",
+    "link_rg": "",
+    "status": "OK"
+  },
+  {
+    "ra": "110660852",
+    "digito": "5",
+    "nome": "GABRIEL STRAIOTTO FRUTUOSO",
+    "turma": "3A",
+    "arquivo": "20261010_183347.jpg",
+    "id_arquivo": "1emJMs8WgrBfN3-NCeu_kZLCvzdS5W4SA",
+    "link": "https://drive.google.com/file/d/1emJMs8WgrBfN3-NCeu_kZLCvzdS5W4SA/view",
+    "link_rg": "",
+    "status": "OK"
+  }
+];
+
+  // Carrega do LocalStorage se já houver alterações salvas localmente
+  let studentsData = [];
+  const storedData = localStorage.getItem('alunos_visita_tecnica_rg');
+  if (storedData) {
+    try {
+      studentsData = JSON.parse(storedData);
+    } catch (e) {
+      studentsData = [...INITIAL_STUDENTS];
+    }
+  } else {
+    studentsData = [...INITIAL_STUDENTS];
+  }
+
+  // Endpoint do Web App (Google Apps Script)
+  let WEBAPP_URL = localStorage.getItem('webapp_endpoint_url') || "";
+
+  // Estado dos Filtros
+  let currentTurmaFilter = 'todas';
+  let currentStatusFilter = 'todos';
+  let currentSearchQuery = '';
+
+  // =========================================================================
+  // 2. INICIALIZAÇÃO
+  // =========================================================================
+  document.addEventListener('DOMContentLoaded', () => {
+    const endpointField = document.getElementById('endpointInput');
+    if (WEBAPP_URL) {
+      endpointField.value = WEBAPP_URL;
+      document.getElementById('endpointStatusMsg').textContent = "● Conectado ao Apps Script configurado";
+    }
+
+    renderMetrics();
+    renderList();
+
+    // Listener para validar input de link dinamicamente
+    document.getElementById('linkRgInput').addEventListener('input', function() {
+      const testBtn = document.getElementById('btnTestLink');
+      if (this.value && this.value.startsWith('http')) {
+        testBtn.style.display = 'inline-flex';
+      } else {
+        testBtn.style.display = 'none';
+      }
+    });
+  });
+
+  // =========================================================================
+  // 3. RENDERIZAÇÃO E FILTRAGEM
+  // =========================================================================
+  function renderMetrics() {
+    const total = studentsData.length;
+    const preenchidos = studentsData.filter(s => s.link_rg && s.link_rg.trim() !== '').length;
+    const pendentes = total - preenchidos;
+
+    document.getElementById('metric-total').textContent = total;
+    document.getElementById('metric-preenchidos').textContent = preenchidos;
+    document.getElementById('metric-pendentes').textContent = pendentes;
+  }
+
+  function getFilteredStudents() {
+    return studentsData.filter(student => {
+      // Filtro Turma
+      if (currentTurmaFilter !== 'todas' && student.turma !== currentTurmaFilter) {
+        return false;
+      }
+      // Filtro Status
+      const hasRg = Boolean(student.link_rg && student.link_rg.trim() !== '');
+      if (currentStatusFilter === 'pendente' && hasRg) return false;
+      if (currentStatusFilter === 'ok' && !hasRg) return false;
+
+      // Busca por Nome ou RA
+      if (currentSearchQuery) {
+        const q = currentSearchQuery.toLowerCase();
+        const nomeMatch = student.nome.toLowerCase().includes(q);
+        const raMatch = (student.ra + "-" + student.digito).includes(q) || student.ra.includes(q);
+        if (!nomeMatch && !raMatch) return false;
+      }
+
+      return true;
+    });
+  }
+
+  function renderList() {
+    const container = document.getElementById('studentsListContainer');
+    const filtered = getFilteredStudents();
+    document.getElementById('listCounterLabel').textContent = `Exibindo ${filtered.length} de ${studentsData.length} alunos`;
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">🔍</div>
+          <h3 style="color: var(--primary); font-size: 1.05rem; margin-bottom: 4px;">Nenhum aluno encontrado</h3>
+          <p style="font-size: 0.85rem;">Tente ajustar sua busca ou mudar os filtros de turma e status.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = filtered.map(student => {
+      // Encontra índice real no array principal
+      const realIndex = studentsData.findIndex(s => s.ra === student.ra);
+      const hasRg = Boolean(student.link_rg && student.link_rg.trim() !== '');
+      const initials = student.nome.split(' ').slice(0, 2).map(n => n[0]).join('');
+
+      return `
+        <div class="student-card ${hasRg ? 'has-rg' : 'no-rg'}">
+          <div class="student-top">
+            <div class="student-avatar ${hasRg ? 'has-rg' : ''}">${initials}</div>
+            <div class="student-info">
+              <div class="student-name" title="${student.nome}">${student.nome}</div>
+              <div class="student-meta">
+                <span>RA: <strong>${student.ra}-${student.digito}</strong></span>
+                <span class="badge-turma">${student.turma}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="rg-status-row">
+            <div>
+              <span class="rg-status-badge ${hasRg ? 'ok' : 'pending'}">
+                ${hasRg ? '✅ Link_RG Cadastrado' : '⚠️ Link_RG Pendente'}
+              </span>
+            </div>
+            <div>
+              ${hasRg 
+                ? `<a href="${student.link_rg}" target="_blank" class="link-rg-preview" title="Abrir link do RG">🔗 Ver RG</a>` 
+                : `<span style="color: var(--text-muted); font-size: 0.75rem;">Sem link</span>`
+              }
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button 
+              type="button" 
+              class="btn-update ${hasRg ? 'edit' : ''}" 
+              onclick="openUpdateModal(${realIndex})"
+            >
+              ${hasRg ? '✏️ Alterar Link_RG' : '➕ Incluir Link_RG'}
+            </button>
+            <a href="${student.link}" target="_blank" class="btn-doc" title="Visualizar documento atual (Col G)">
+              📄 Doc Atual
+            </a>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // =========================================================================
+  // 4. FILTROS E PESQUISA
+  // =========================================================================
+  function handleSearch(val) {
+    currentSearchQuery = val.trim();
+    document.getElementById('clearSearchBtn').style.display = currentSearchQuery ? 'flex' : 'none';
+    renderList();
+  }
+
+  function clearSearch() {
+    const input = document.getElementById('searchInput');
+    input.value = '';
+    currentSearchQuery = '';
+    document.getElementById('clearSearchBtn').style.display = 'none';
+    renderList();
+  }
+
+  function setTurmaFilter(turma, btn) {
+    currentTurmaFilter = turma;
+    document.querySelectorAll('#turmaPills .pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    renderList();
+  }
+
+  function setStatusFilter(status, btn) {
+    currentStatusFilter = status;
+    document.querySelectorAll('#statusPills .pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    renderList();
+  }
+
+  // =========================================================================
+  // 5. MODAL BOTTOM-SHEET E SUBMISSÃO
+  // =========================================================================
+  function openUpdateModal(index) {
+    const student = studentsData[index];
+    if (!student) return;
+
+    document.getElementById('modalStudentIndex').value = index;
+    document.getElementById('modalStudentName').textContent = student.nome;
+    document.getElementById('modalStudentRA').textContent = `RA: ${student.ra}-${student.digito}`;
+    document.getElementById('modalStudentTurma').textContent = `Turma: ${student.turma}`;
+    
+    const input = document.getElementById('linkRgInput');
+    input.value = student.link_rg || '';
+
+    const testBtn = document.getElementById('btnTestLink');
+    if (input.value && input.value.startsWith('http')) {
+      testBtn.style.display = 'inline-flex';
+    } else {
+      testBtn.style.display = 'none';
+    }
+
+    const hasRg = Boolean(student.link_rg && student.link_rg.trim() !== '');
+    document.getElementById('sheetTitle').textContent = hasRg ? 'Alterar Link_RG' : 'Incluir Link_RG';
+
+    const overlay = document.getElementById('modalOverlay');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    setTimeout(() => input.focus(), 300);
+  }
+
+  function closeModal() {
+    const overlay = document.getElementById('modalOverlay');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function closeModalOnOverlay(e) {
+    if (e.target.id === 'modalOverlay') {
+      closeModal();
+    }
+  }
+
+  async function pasteFromClipboard() {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text) {
+        document.getElementById('linkRgInput').value = text.trim();
+        document.getElementById('btnTestLink').style.display = text.startsWith('http') ? 'inline-flex' : 'none';
+        showToast('Link colado com sucesso!');
+      }
+    } catch (err) {
+      alert('Por favor, cole manualmente no campo pressionando e segurando na caixa de texto.');
+    }
+  }
+
+  function clearInput() {
+    document.getElementById('linkRgInput').value = '';
+    document.getElementById('btnTestLink').style.display = 'none';
+  }
+
+  function testModalLink() {
+    const url = document.getElementById('linkRgInput').value.trim();
+    if (url) {
+      window.open(url, '_blank');
+    }
+  }
+
+  async function handleRgSubmit(e) {
+    e.preventDefault();
+    const index = parseInt(document.getElementById('modalStudentIndex').value, 10);
+    const newLink = document.getElementById('linkRgInput').value.trim();
+    const student = studentsData[index];
+
+    if (!student) return;
+
+    const btn = document.getElementById('btnSaveLink');
+    btn.disabled = true;
+    btn.innerHTML = '<span>⏳ Gravando na Planilha...</span>';
+
+    // 1. Atualiza no array de dados em memória e no localStorage
+    student.link_rg = newLink;
+    localStorage.setItem('alunos_visita_tecnica_rg', JSON.stringify(studentsData));
+
+    // 2. Se o backend estiver configurado, envia para o Apps Script
+    let syncSuccess = false;
+    if (WEBAPP_URL && WEBAPP_URL.startsWith('http')) {
+      try {
+        const payload = {
+          action: 'update_link_rg',
+          ra: student.ra,
+          digito: student.digito,
+          nome: student.nome,
+          turma: student.turma,
+          link_rg: newLink
+        };
+
+        await fetch(WEBAPP_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        syncSuccess = true;
+      } catch (err) {
+        console.warn('Aviso no envio assíncrono para o Apps Script:', err);
+      }
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<span>💾 Salvar Link_RG</span>';
+
+    closeModal();
+    renderMetrics();
+    renderList();
+
+    if (syncSuccess) {
+      showToast(`✓ Link_RG de ${student.nome.split(' ')[0]} salvo na planilha!`, 'success');
+    } else {
+      showToast(`✓ Link_RG de ${student.nome.split(' ')[0]} atualizado!`, 'success');
+    }
+  }
+
+  function showToast(msg, type = 'normal') {
+    const toast = document.getElementById('toastMessage');
+    toast.textContent = msg;
+    toast.className = 'toast show ' + (type === 'success' ? 'success' : '');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 4000);
+  }
+
+  function saveEndpointConfig() {
+    const url = document.getElementById('endpointInput').value.trim();
+    WEBAPP_URL = url;
+    localStorage.setItem('webapp_endpoint_url', url);
+    const statusMsg = document.getElementById('endpointStatusMsg');
+    if (url) {
+      statusMsg.textContent = '✓ URL salva com sucesso! Os envios agora sincronizarão com sua planilha.';
+    } else {
+      statusMsg.textContent = 'Aviso: URL limpa. Os dados serão salvos localmente.';
+    }
+  }
+</script>
+
+</body>
+</html>
