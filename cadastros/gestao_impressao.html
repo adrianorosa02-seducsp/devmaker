@@ -39,19 +39,21 @@
     body {
       background-color: var(--bg);
       color: var(--text-main);
-      padding: 24px 16px 60px;
+      padding: 24px 20px 60px;
       line-height: 1.5;
     }
 
+    /* Layout ampliado para visualização plena de todas as colunas */
     .container {
-      max-width: 1040px;
+      max-width: 1440px;
+      width: 96%;
       margin: 0 auto;
     }
 
     /* Header DevMaker */
     header {
       background: var(--card-bg);
-      padding: 28px;
+      padding: 28px 32px;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
@@ -100,7 +102,7 @@
     }
 
     .tab-btn {
-      padding: 12px 22px;
+      padding: 12px 24px;
       background: transparent;
       border: none;
       font-size: 1rem;
@@ -158,7 +160,7 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 28px;
+      padding: 28px 32px;
       box-shadow: var(--shadow);
       margin-bottom: 24px;
     }
@@ -381,8 +383,8 @@
     /* Painel de Gestão (Dashboard) */
     .metrics-bar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
       margin-bottom: 24px;
     }
 
@@ -390,8 +392,11 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 18px;
+      padding: 20px 22px;
       box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .metric-label {
@@ -406,27 +411,64 @@
       font-size: 1.7rem;
       font-weight: 800;
       color: var(--primary);
-      margin-top: 4px;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
+    /* Estados dinâmicos da impressora */
+    .status-printer-ready {
+      color: #16a34a !important;
+      font-size: 1.2rem !important;
+      font-weight: 800;
+    }
+
+    .status-printer-error {
+      color: #dc2626 !important;
+      font-size: 1.15rem !important;
+      font-weight: 800;
+      animation: pulse-danger 2s infinite ease-in-out;
+    }
+
+    .status-printer-busy {
+      color: #0284c7 !important;
+      font-size: 1.2rem !important;
+      font-weight: 800;
+    }
+
+    .status-printer-waiting {
+      color: #d97706 !important;
+      font-size: 1.2rem !important;
+      font-weight: 800;
+    }
+
+    @keyframes pulse-danger {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.02); }
+    }
+
+    /* Tabela da Fila de Impressão */
     .table-container {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       overflow-x: auto;
+      min-width: 100%;
     }
 
     table {
       width: 100%;
+      min-width: 1180px; /* Garante espaço folgado para todas as 9 colunas */
       border-collapse: collapse;
       text-align: left;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
     }
 
     th {
       background: #f8fafc;
-      padding: 14px 16px;
+      padding: 16px 18px;
       font-weight: 700;
       color: #334155;
       border-bottom: 2px solid var(--border);
@@ -434,7 +476,7 @@
     }
 
     td {
-      padding: 14px 16px;
+      padding: 14px 18px;
       border-bottom: 1px solid var(--border);
       vertical-align: middle;
     }
@@ -443,13 +485,16 @@
       background-color: #fbfcfe;
     }
 
+    /* Badges de Status da Solicitação */
     .badge-status {
-      display: inline-block;
-      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
       border-radius: 9999px;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-weight: 700;
-      text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .status-pendente {
@@ -467,14 +512,33 @@
       color: var(--success);
     }
 
+    .status-erro {
+      background: var(--danger-light);
+      color: var(--danger);
+      animation: pulse-danger 2s infinite ease-in-out;
+    }
+
+    .status-imprimindo {
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 700;
+    }
+
+    .badge-tag {
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 0.78rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
     .date-urgent {
       color: var(--danger);
       font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 4px;
     }
 
+    /* Botões de Ação na Tabela */
     .btn-action {
       padding: 8px 14px;
       font-size: 0.84rem;
@@ -486,6 +550,7 @@
       align-items: center;
       gap: 6px;
       transition: all 0.15s;
+      white-space: nowrap;
     }
 
     .btn-liberar {
@@ -516,6 +581,38 @@
       background: #e2e8f0;
     }
 
+    /* Botão de Atualizar Fila */
+    .btn-refresh {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-refresh:hover {
+      background: #f8fafc;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-refresh.spinning span {
+      display: inline-block;
+      animation: spin 1s infinite linear;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
     /* Alertas e Mensagens */
     .alert {
       padding: 14px 18px;
@@ -543,7 +640,7 @@
       border: 1px solid #bae6fd;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       header {
         flex-direction: column;
         align-items: flex-start;
@@ -578,7 +675,7 @@
     </button>
     <button class="tab-btn" onclick="switchTab('tab-gestao')">
       📊 Fila & Liberação (Gestão)
-      <span class="tab-count" id="badge-pendentes">2</span>
+      <span class="tab-count" id="badge-pendentes">0</span>
     </button>
   </div>
 
@@ -599,8 +696,8 @@
           </div>
 
           <div class="input-group">
-            <label for="dataNecessidade">Para quando é a impressão? (Data de Aplicação) <span class="req">*</span></label>
-            <input type="date" id="dataNecessidade" required />
+            <label for="dataNecessidade">Para quando é a impressão? (Data e Horário de Aplicação) <span class="req">*</span></label>
+            <input type="datetime-local" id="dataNecessidade" required />
           </div>
         </div>
 
@@ -707,19 +804,33 @@
     <div class="metrics-bar">
       <div class="metric-card">
         <div class="metric-label">Solicitações na Fila</div>
-        <div class="metric-val" id="metric-pendentes">2</div>
+        <div class="metric-val" id="metric-pendentes">0</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">Cópias Pendentes</div>
-        <div class="metric-val" id="metric-copias">70</div>
+        <div class="metric-val" id="metric-copias">0</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">Impressas no Bimestre</div>
-        <div class="metric-val" id="metric-impressas">480</div>
+        <div class="metric-val" id="metric-impressas">0</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">Status da Impressora</div>
-        <div class="metric-val" style="font-size:1.2rem; color:var(--success); margin-top:8px;">● Conectada</div>
+        <div class="metric-val" id="metric-status-impressora">
+          <span class="status-printer-ready">● Conectada</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:12px; flex-wrap:wrap;">
+      <h3 style="font-size:1.15rem; color:var(--primary); font-weight:700; display:flex; align-items:center; gap:8px;">
+        📋 Fila de Impressão e Liberação
+      </h3>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span id="sync-indicator" style="font-size:0.8rem; color:var(--text-muted);">Sincronizando com a nuvem...</span>
+        <button type="button" class="btn-refresh" onclick="carregarFilaDoBackend(true)" id="btnRefresh" title="Recarregar fila da nuvem">
+          <span>🔄</span> Atualizar Fila
+        </button>
       </div>
     </div>
 
@@ -727,15 +838,15 @@
       <table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Data de Aplicação</th>
-            <th>Solicitante</th>
-            <th>Turma / Disciplina</th>
-            <th>Acabamento</th>
-            <th>Cor</th>
-            <th>Cópias</th>
-            <th>Status</th>
-            <th>Ações da Gestão</th>
+            <th style="width: 80px;">ID</th>
+            <th style="width: 170px;">Data de Aplicação</th>
+            <th style="width: 180px;">Solicitante</th>
+            <th style="width: 210px;">Turma / Disciplina</th>
+            <th style="width: 140px;">Acabamento</th>
+            <th style="width: 80px;">Cor</th>
+            <th style="width: 100px;">Cópias</th>
+            <th style="width: 170px;">Status</th>
+            <th style="width: 160px;">Ações da Gestão</th>
           </tr>
         </thead>
         <tbody id="queueTableBody">
@@ -749,43 +860,15 @@
 <script>
   // =========================================================================
   // 🔗 CONFIGURAÇÃO DO BACKEND (GOOGLE APPS SCRIPT)
-  // Substitua o valor abaixo pela URL do seu Web App gerada no Apps Script:
-  // Exemplo: const WEBAPP_URL = "https://script.google.com/macros/s/AKfycb.../exec";
+  // URL ativa implantada no Google Apps Script:
   // =========================================================================
-  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbx_zN1eAUeMATrALp5GWtVWDEy2nbCVJlFDGVwuA4GQ1SUsYfixnHpzNvp9gXTPatpRUQ/exec";
+  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyfIsn7cLoMNYUGIdVoGswTADhy-w3QWsbnZjRYhTvsvjFYd1fktniwrTEBvzO-tncB/exec";
+  
   // =========================================================================
 
-  // Dados em memória (usados para demonstração inicial e fallback)
-  let queueData = [
-    {
-      id: "SOL-101",
-      dataPedido: "2026-10-08",
-      dataNecessidade: "2026-10-09",
-      professor: "Adriano Justino Rosa",
-      turma: "9º Ano A",
-      disciplina: "Matemática - Simulado SARESP",
-      copias: 35,
-      acabamento: "Formato Livreto",
-      cor: "P&B",
-      arquivoNome: "SARESP_9ANO_MAT_2026.pdf",
-      linkDrive: "#",
-      status: "Pendente"
-    },
-    {
-      id: "SOL-102",
-      dataPedido: "2026-10-08",
-      dataNecessidade: "2026-10-10",
-      professor: "Maria Silva",
-      turma: "6º Ano B",
-      disciplina: "Língua Portuguesa - Diagnóstica",
-      copias: 30,
-      acabamento: "Formato Livreto",
-      cor: "P&B",
-      arquivoNome: "Prova_Diagnostica_LP_6B.pdf",
-      linkDrive: "#",
-      status: "Concluído"
-    }
-  ];
+  // Dados da fila em memória
+  let queueData = [];
+  let pollingInterval = null;
 
   let selectedFileBase64 = null;
   let selectedFileName = "";
@@ -796,9 +879,14 @@
 
     if (tabId === 'tab-solicitar') {
       document.querySelectorAll('.tab-btn')[0].classList.add('active');
+      if (pollingInterval) clearInterval(pollingInterval);
     } else {
       document.querySelectorAll('.tab-btn')[1].classList.add('active');
       carregarFilaDoBackend();
+      // Inicia auto-polling a cada 12 segundos enquanto estiver na aba de Gestão
+      if (!pollingInterval) {
+        pollingInterval = setInterval(() => carregarFilaDoBackend(false), 12000);
+      }
     }
     document.getElementById(tabId).classList.add('active');
   }
@@ -835,6 +923,47 @@
     selectedFileName = "";
   }
 
+  // Formatação amigável de Data e Hora no padrão brasileiro DD/MM/YYYY HH:mm
+  function formatarDataHora(val) {
+    if (!val) return "-";
+    try {
+      const d = new Date(val);
+      if (!isNaN(d.getTime())) {
+        const dia = String(d.getDate()).padStart(2, '0');
+        const mes = String(d.getMonth() + 1).padStart(2, '0');
+        const ano = d.getFullYear();
+        const horas = String(d.getHours()).padStart(2, '0');
+        const minutos = String(d.getMinutes()).padStart(2, '0');
+
+        const strVal = String(val).trim();
+        // Se a data original tiver hora definida (formato datetime-local, ISO com hora ou formato com espaço)
+        if (strVal.includes('T') && !strVal.endsWith('T00:00:00.000Z') && !strVal.endsWith('T03:00:00.000Z')) {
+          return `${dia}/${mes}/${ano} ${horas}:${minutos}`;
+        } else if (strVal.includes(' ') && strVal.includes(':')) {
+          return `${dia}/${mes}/${ano} ${horas}:${minutos}`;
+        } else if (strVal.includes('T03:00:00.000Z') || strVal.endsWith('T00:00:00.000Z')) {
+          // Data pura vinda do Google Sheets sem horário específico
+          return `${dia}/${mes}/${ano}`;
+        }
+        return `${dia}/${mes}/${ano} ${horas}:${minutos}`;
+      }
+    } catch (e) {}
+
+    // Fallback de strings puras
+    const str = String(val).replace('T', ' ').replace('Z', '').split('.')[0];
+    const parts = str.split(' ');
+    const dateParts = parts[0].split('-');
+    if (dateParts.length === 3) {
+      const dataBr = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+      if (parts[1]) {
+        const timeParts = parts[1].split(':');
+        return `${dataBr} ${timeParts[0]}:${timeParts[1]}`;
+      }
+      return dataBr;
+    }
+    return val;
+  }
+
   async function handleFormSubmit(e) {
     e.preventDefault();
     const btn = document.getElementById('btnSubmit');
@@ -856,15 +985,14 @@
       turma: turma,
       disciplina: disciplina,
       copias: copias,
-      acabamento: acabamento === 'livreto' ? 'Formato Livreto' : (acabamento === 'duplex' ? 'Frente/Verso' : 'Apenas Frente'),
+      acabamento: acabamento === 'livreto' ? 'Formato Livreto' : (acabamento === 'duplex' ? 'Frente e Verso' : 'Apenas Frente'),
       cor: cor === 'monocromatico' ? 'P&B' : 'Colorido',
       fileName: selectedFileName || "documento.pdf",
       fileBase64: selectedFileBase64 || "",
       observacoes: observacoes
     };
 
-    // Se a URL do Apps Script estiver configurada, envia via POST
-    if (WEBAPP_URL && !WEBAPP_URL.includes("SUA_URL_DO_APPS_SCRIPT")) {
+    if (WEBAPP_URL) {
       try {
         await fetch(WEBAPP_URL, {
           method: "POST",
@@ -877,24 +1005,6 @@
       }
     }
 
-    // Registra na fila local imediata
-    const newSol = {
-      id: "SOL-" + (100 + queueData.length + 1),
-      dataPedido: new Date().toISOString().split('T')[0],
-      dataNecessidade: payload.dataNecessidade,
-      professor: payload.professor,
-      turma: payload.turma,
-      disciplina: payload.disciplina,
-      copias: payload.copias,
-      acabamento: payload.acabamento,
-      cor: payload.cor,
-      arquivoNome: payload.fileName,
-      linkDrive: "#",
-      status: "Pendente"
-    };
-
-    queueData.unshift(newSol);
-
     btn.disabled = false;
     btn.innerHTML = '<span>🚀 Enviar Pedido para Fila de Impressão</span>';
     
@@ -904,17 +1014,27 @@
 
     document.getElementById('printForm').reset();
     clearFile();
-    updateMetrics();
+    
+    // Atualiza a data padrão
+    setDefaultDateTime();
 
-    setTimeout(() => alertBox.classList.remove('show'), 6000);
+    setTimeout(() => {
+      alertBox.classList.remove('show');
+      switchTab('tab-gestao');
+    }, 1500);
   }
 
-  async function carregarFilaDoBackend() {
-    if (WEBAPP_URL && !WEBAPP_URL.includes("SUA_URL_DO_APPS_SCRIPT")) {
+  async function carregarFilaDoBackend(manual = false) {
+    const refreshBtn = document.getElementById('btnRefresh');
+    const syncIndicator = document.getElementById('sync-indicator');
+    if (manual && refreshBtn) refreshBtn.classList.add('spinning');
+    if (syncIndicator) syncIndicator.textContent = "Sincronizando...";
+
+    if (WEBAPP_URL) {
       try {
         const res = await fetch(WEBAPP_URL);
         const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           queueData = data.map(item => ({
             id: item.ID || "SOL-000",
             dataPedido: item.Data_Pedido || "",
@@ -923,27 +1043,83 @@
             turma: item.Turma || "",
             disciplina: item.Disciplina || "",
             copias: parseInt(item.Copias_Solicitadas || 35, 10),
-            acabamento: item.Acabamento || "Livreto",
+            copiasImpressas: parseInt(item.Copias_Impressas || 0, 10),
+            acabamento: item.Acabamento || "Formato Livreto",
             cor: item.Cor || "P&B",
             arquivoNome: item.Nome_Arquivo || "arquivo.pdf",
             linkDrive: item.Link_Drive_PDF || "#",
-            status: item.Status || "Pendente"
+            status: String(item.Status || "Pendente").trim()
           }));
+          if (syncIndicator) {
+            const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            syncIndicator.textContent = `Atualizado às ${horaAtual}`;
+          }
         }
       } catch (e) {
-        console.log("Modo offline / dados locais ativos.");
+        console.warn("Modo offline / dados locais ativos:", e);
+        if (syncIndicator) syncIndicator.textContent = "Offline (usando cache local)";
       }
+    }
+
+    if (manual && refreshBtn) {
+      setTimeout(() => refreshBtn.classList.remove('spinning'), 600);
     }
     renderQueueTable();
   }
 
+  // Atualiza o Status da Impressora dinamicamente com base nas respostas do backend/agente
+  function updatePrinterStatusMetric() {
+    const metricVal = document.getElementById('metric-status-impressora');
+    if (!metricVal) return;
+
+    // 1. Procura se há algum erro de hardware ativo reportado pelo Agente / Spooler
+    const itemErro = queueData.find(it => {
+      const s = String(it.status || "").toLowerCase();
+      return s.includes("erro") || s.includes("falha") || s.includes("preso") || s.includes("sem papel") || s.includes("tampa") || s.includes("offline");
+    });
+
+    // 2. Procura se há algum item sendo impresso neste instante
+    const itemImprimindo = queueData.find(it => {
+      const s = String(it.status || "").toLowerCase();
+      return s.includes("imprimindo") || s.includes("processando");
+    });
+
+    // 3. Procura se há itens liberados aguardando o Agente iniciar
+    const itemLiberado = queueData.find(it => {
+      const s = String(it.status || "").toLowerCase();
+      return s.includes("liberado") || s.includes("liberada");
+    });
+
+    if (itemErro) {
+      metricVal.innerHTML = `<span class="status-printer-error" title="Atenção: falha detectada em ${itemErro.id}. Verifique a bandeja ou simulador.">⚠️ ${itemErro.status}</span>`;
+    } else if (itemImprimindo) {
+      metricVal.innerHTML = `<span class="status-printer-busy" title="Impressão em andamento: ${itemImprimindo.id}">🖨️ Imprimindo (${itemImprimindo.id})</span>`;
+    } else if (itemLiberado) {
+      metricVal.innerHTML = `<span class="status-printer-waiting" title="Trabalho aguardando processamento pelo agente">⏳ Fila Ativa (${itemLiberado.id})</span>`;
+    } else {
+      metricVal.innerHTML = `<span class="status-printer-ready" title="Impressora conectada e pronta para novas tarefas">● Pronta / Ociosa</span>`;
+    }
+  }
+
   function updateMetrics() {
-    const pendentes = queueData.filter(item => item.status === 'Pendente');
+    const pendentes = queueData.filter(item => {
+      const s = String(item.status || "").toLowerCase();
+      return s === 'pendente' || s.includes('erro') || s.includes('liberado') || s.includes('imprimindo');
+    });
     document.getElementById('metric-pendentes').textContent = pendentes.length;
     document.getElementById('badge-pendentes').textContent = pendentes.length;
     
-    const copiasPendentes = pendentes.reduce((acc, cur) => acc + cur.copias, 0);
-    document.getElementById('metric-copias').textContent = copiasPendentes;
+    const copiasPendentes = pendentes.reduce((acc, cur) => acc + (cur.copias - (cur.copiasImpressas || 0)), 0);
+    document.getElementById('metric-copias').textContent = Math.max(0, copiasPendentes);
+
+    const concluidos = queueData.filter(item => {
+      const s = String(item.status || "").toLowerCase();
+      return s.includes('concluid') || s.includes('impresso');
+    });
+    const copiasImpressas = concluidos.reduce((acc, cur) => acc + cur.copias, 0);
+    document.getElementById('metric-impressas').textContent = copiasImpressas;
+
+    updatePrinterStatusMetric();
   }
 
   function renderQueueTable() {
@@ -951,44 +1127,65 @@
     tbody.innerHTML = '';
     updateMetrics();
 
-    const sorted = [...queueData].sort((a, b) => new Date(a.dataNecessidade) - new Date(b.dataNecessidade));
+    // Ordena priorizando itens com Erro, depois Liberados/Imprimindo, depois por data
+    const sorted = [...queueData].sort((a, b) => {
+      const aErr = String(a.status || "").toLowerCase().includes('erro') ? -1 : 0;
+      const bErr = String(b.status || "").toLowerCase().includes('erro') ? -1 : 0;
+      if (aErr !== bErr) return aErr - bErr;
+      return new Date(a.dataNecessidade) - new Date(b.dataNecessidade);
+    });
 
     sorted.forEach(item => {
       const tr = document.createElement('tr');
       
       const hoje = new Date().toISOString().split('T')[0];
-      const isUrgent = item.dataNecessidade && item.dataNecessidade <= hoje;
-      const dataFormatada = item.dataNecessidade ? item.dataNecessidade.split('-').reverse().join('/') : '-';
+      const isUrgent = item.dataNecessidade && item.dataNecessidade.slice(0, 10) <= hoje;
+      const dataFormatada = formatarDataHora(item.dataNecessidade);
 
       let statusBadge = `<span class="badge-status status-pendente">Pendente</span>`;
-      if (item.status === 'Liberado') statusBadge = `<span class="badge-status status-liberado">Liberado</span>`;
-      if (item.status === 'Concluído' || item.status === 'Impresso') statusBadge = `<span class="badge-status status-impresso">Concluído</span>`;
+      const st = String(item.status || "").toLowerCase();
+
+      if (st.includes('erro') || st.includes('falha') || st.includes('preso') || st.includes('sem papel')) {
+        statusBadge = `<span class="badge-status status-erro" title="${item.status}">⚠️ ${item.status}</span>`;
+      } else if (st.includes('imprimindo') || st.includes('processando')) {
+        statusBadge = `<span class="badge-status status-imprimindo">🖨️ ${item.status}</span>`;
+      } else if (st.includes('liberado') || st.includes('liberada')) {
+        statusBadge = `<span class="badge-status status-liberado">Liberado</span>`;
+      } else if (st.includes('concluid') || st.includes('impresso')) {
+        statusBadge = `<span class="badge-status status-impresso">Concluído</span>`;
+      }
+
+      // Exibição de cópias: se houve falha ou impressão parcial, exibe o progresso
+      let copiasDisplay = `<strong>${item.copias}</strong>`;
+      if ((st.includes('erro') || st.includes('imprimindo')) && item.copiasImpressas !== undefined && item.copiasImpressas > 0) {
+        copiasDisplay = `<strong>${item.copiasImpressas} / ${item.copias}</strong><br><small style="color:var(--text-muted);">feitas</small>`;
+      }
 
       tr.innerHTML = `
         <td><strong>${item.id}</strong></td>
         <td>
-          <span class="${isUrgent ? 'date-urgent' : ''}">
-            ${isUrgent ? '⚠️ ' : ''}${dataFormatada}
+          <span class="${isUrgent ? 'date-urgent' : ''}" style="display:inline-flex; align-items:center; gap:6px; font-weight:600; white-space:nowrap;">
+            ${isUrgent ? '⚠️ ' : '📅 '}${dataFormatada}
           </span>
         </td>
-        <td>${item.professor}</td>
+        <td><strong>${item.professor}</strong></td>
         <td><strong>${item.turma}</strong><br><small style="color:#64748b;">${item.disciplina}</small></td>
         <td>${item.acabamento}</td>
-        <td>${item.cor}</td>
-        <td><strong>${item.copias}</strong></td>
+        <td><span class="badge-tag">${item.cor}</span></td>
+        <td>${copiasDisplay}</td>
         <td>${statusBadge}</td>
         <td>
-          <div style="display:flex; gap:6px;">
-            ${item.status === 'Pendente' ? `
-              <button class="btn-action btn-liberar" onclick="liberarImpressao('${item.id}')">
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            ${(item.status === 'Pendente' || st.includes('erro') || st.includes('falha')) ? `
+              <button class="btn-action btn-liberar" onclick="liberarImpressao('${item.id}')" title="Enviar para fila da Brother">
                 🖨️ Liberar
               </button>
-            ` : (item.status === 'Liberado' ? `
-              <button class="btn-action btn-concluir" onclick="concluirImpressao('${item.id}')">
+            ` : (st.includes('liberado') || st.includes('imprimindo') ? `
+              <button class="btn-action btn-concluir" onclick="concluirImpressao('${item.id}')" title="Confirmar conclusão manualmente">
                 ✓ Concluir
               </button>
-            ` : `<small style="color:#16a34a; font-weight:700;">Finalizado</small>`)}
-            <a href="${item.linkDrive || '#'}" target="_blank" class="btn-action btn-view" title="Ver Arquivo">📄 PDF</a>
+            ` : `<small style="color:#16a34a; font-weight:700;">✓ Finalizado</small>`)}
+            <a href="${item.linkDrive || '#'}" target="_blank" class="btn-action btn-view" title="Abrir arquivo PDF no Google Drive">📄 PDF</a>
           </div>
         </td>
       `;
@@ -996,17 +1193,35 @@
     });
   }
 
-  function liberarImpressao(id) {
+  async function liberarImpressao(id) {
     const item = queueData.find(q => q.id === id);
     if (item) {
-      if (confirm(`Liberar impressão de ${item.copias} cópias em ${item.acabamento} para a impressora Brother MFC-L8610CDW?`)) {
+      if (confirm(`Liberar impressão de ${item.copias} cópias em '${item.acabamento}' para a impressora Brother MFC-L8610CDW?`)) {
         item.status = "Liberado";
         renderQueueTable();
+
+        if (WEBAPP_URL) {
+          try {
+            await fetch(WEBAPP_URL, {
+              method: "POST",
+              mode: "no-cors",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                action: "updateStatus",
+                id: id,
+                status: "Liberado"
+              })
+            });
+            setTimeout(carregarFilaDoBackend, 1200);
+          } catch (err) {
+            console.error("Erro ao sincronizar liberação com a nuvem:", err);
+          }
+        }
       }
     }
   }
 
-  function concluirImpressao(id) {
+  async function concluirImpressao(id) {
     const item = queueData.find(q => q.id === id);
     if (item) {
       const confirmadas = prompt(`Confirme a quantidade de cópias impressas:`, item.copias);
@@ -1014,15 +1229,44 @@
         item.status = "Concluído";
         item.copiasImpressas = parseInt(confirmadas, 10);
         renderQueueTable();
+
+        if (WEBAPP_URL) {
+          try {
+            await fetch(WEBAPP_URL, {
+              method: "POST",
+              mode: "no-cors",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                action: "updateStatus",
+                id: id,
+                status: "Concluído",
+                copiasImpressas: item.copiasImpressas
+              })
+            });
+            setTimeout(carregarFilaDoBackend, 1200);
+          } catch (err) {
+            console.error("Erro ao sincronizar conclusão com a nuvem:", err);
+          }
+        }
       }
     }
   }
 
+  function setDefaultDateTime() {
+    const now = new Date();
+    // Ajusta para o horário local para preencher o input datetime-local
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    const formatted = now.toISOString().slice(0, 16);
+    const input = document.getElementById('dataNecessidade');
+    if (input) {
+      input.min = formatted;
+      input.value = formatted;
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('dataNecessidade').min = today;
-    document.getElementById('dataNecessidade').value = today;
-    updateMetrics();
+    setDefaultDateTime();
+    carregarFilaDoBackend();
   });
 </script>
 
