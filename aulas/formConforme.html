@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário Conforme LGPD (Depois) - Solução Recomendada</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-20 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 py-3 sm:px-6 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-600 text-white font-bold text-xs shadow-sm">
+          ✓
+        </span>
+        <div>
+          <h1 class="text-sm font-bold text-slate-900 leading-tight">Formulário Conforme (Solução Recomendada)</h1>
+          <p class="text-xs text-slate-500">Padrão Arquitetural Privacy by Design & by Default</p>
+        </div>
+      </div>
+      <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+        Conforme à LGPD
+      </span>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-4 py-6 sm:px-6 flex-1 w-full space-y-6">
+
+    <!-- Status Banner -->
+    <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-xl shadow-sm">
+      <div class="flex items-center gap-2">
+        <span class="px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase bg-emerald-200 text-emerald-900">
+          Boas Práticas de Engenharia
+        </span>
+        <span class="text-xs text-emerald-800 font-medium">Conformidade Plena com a Lei nº 13.709/2018</span>
+      </div>
+      <p class="text-xs sm:text-sm text-emerald-900 mt-1 leading-relaxed">
+        Solução técnica demonstrando minimização estrita de campos, transparência de finalidade por dado coletado, aviso de privacidade acessível com canal do Encarregado (DPO) e consentimento granular desmarcado por padrão (opt-in ativo).
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      
+      <!-- Formulário Conforme -->
+      <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-7">
+        <div class="border-b border-slate-100 pb-3 mb-5">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold text-slate-900">Inscrição na Oficina Técnica</h2>
+            <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+              Ambiente Seguro
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">Capacitação em Desenvolvimento de Sistemas e Redes.</p>
+        </div>
+
+        <form id="form-conforme" class="space-y-4">
+          
+          <!-- Campo 1: Nome -->
+          <div>
+            <label for="good-name" class="block text-xs font-semibold text-slate-800 mb-1">
+              Nome Completo <span class="text-rose-500">*</span>
+            </label>
+            <input type="text" id="good-name" required placeholder="Digite seu nome completo" class="w-full text-xs px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition">
+            <p class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
+              <span class="text-emerald-600 font-bold">✓</span>
+              <strong>Finalidade:</strong> Emissão nominal de certificado e chamada presencial.
+            </p>
+          </div>
+
+          <!-- Campo 2: E-mail -->
+          <div>
+            <label for="good-email" class="block text-xs font-semibold text-slate-800 mb-1">
+              E-mail para Contato <span class="text-rose-500">*</span>
+            </label>
+            <input type="email" id="good-email" required placeholder="aluno@email.com" class="w-full text-xs px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition">
+            <p class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
+              <span class="text-emerald-600 font-bold">✓</span>
+              <strong>Finalidade:</strong> Envio das credenciais de acesso e materiais de aula.
+            </p>
+          </div>
+
+          <!-- Campo 3: Curso -->
+          <div>
+            <label for="good-course" class="block text-xs font-semibold text-slate-800 mb-1">
+              Oficina Selecionada <span class="text-rose-500">*</span>
+            </label>
+            <select id="good-course" class="w-full text-xs px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition">
+              <option value="DevSistemas">Desenvolvimento de Sistemas • Aplicação Prática LGPD</option>
+              <option value="RedesNuvem">Redes de Computadores e Nuvem • Arquitetura e SDN</option>
+            </select>
+            <p class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
+              <span class="text-emerald-600 font-bold">✓</span>
+              <strong>Finalidade:</strong> Alocação do estudante no laboratório físico correspondente.
+            </p>
+          </div>
+
+          <!-- Aviso de Privacidade -->
+          <div class="bg-slate-50 border border-slate-200 p-3.5 rounded-xl space-y-2">
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+              <span class="text-xs font-bold text-slate-900">Aviso de Privacidade & Direitos (Art. 18)</span>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Os dados coletados destinam-se exclusivamente à operacionalização desta oficina técnica (Art. 7º, V da LGPD). O titular pode solicitar confirmação, retificação ou exclusão a qualquer momento pelo canal do DPO.
+            </p>
+            <div class="flex flex-wrap items-center gap-2 pt-1 text-[11px]">
+              <button type="button" id="btn-open-policy" class="text-indigo-600 hover:text-indigo-800 font-semibold underline">
+                Ver Política Completa
+              </button>
+              <span class="text-slate-300">•</span>
+              <span class="text-slate-600">Encarregado (DPO): <code class="text-slate-800 bg-white px-1 py-0.5 rounded border border-slate-200">dpo@escola.sp.gov.br</code></span>
+            </div>
+          </div>
+
+          <!-- Consentimentos Granulares -->
+          <fieldset class="space-y-2.5 pt-1">
+            <legend class="text-xs font-semibold text-slate-800 mb-1.5">Manifestação de Vontade (Opt-in Ativo):</legend>
+
+            <div class="flex items-start gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition">
+              <input type="checkbox" id="check-terms" required class="mt-0.5 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 h-4 w-4">
+              <label for="check-terms" class="text-xs text-slate-700 leading-snug cursor-pointer">
+                <span class="font-semibold text-slate-900">Obrigatório:</span> Aceito o regulamento da oficina e as diretrizes de tratamento de dados. <span class="text-rose-500">*</span>
+              </label>
+            </div>
+
+            <div class="flex items-start gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition">
+              <input type="checkbox" id="check-mkt" class="mt-0.5 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 h-4 w-4">
+              <label for="check-mkt" class="text-xs text-slate-700 leading-snug cursor-pointer">
+                <span class="font-semibold text-slate-900">Opcional:</span> Aceito receber avisos sobre novas oficinas gratuitas por e-mail.
+              </label>
+            </div>
+          </fieldset>
+
+          <button type="submit" class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm rounded-xl transition shadow flex items-center justify-center gap-2">
+            Confirmar Inscrição Conforme
+          </button>
+        </form>
+      </div>
+
+      <!-- Auditoria e Payload -->
+      <div class="lg:col-span-5 space-y-4">
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+          <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            Critérios Técnicos Aplicados
+          </h3>
+
+          <div class="space-y-2.5 text-xs">
+            <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+              <span class="font-bold text-emerald-700">Minimização Estrita:</span>
+              <p class="text-slate-600 mt-0.5">Sem solicitações de RG, CPF inicial, telefone ou endereço residencial desnecessários.</p>
+            </div>
+            <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+              <span class="font-bold text-emerald-700">Consentimento Válido:</span>
+              <p class="text-slate-600 mt-0.5">Checkboxes desmarcados, garantindo voluntariedade real (Art. 8º da LGPD).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payload Auditável -->
+        <div class="bg-slate-900 rounded-2xl p-5 text-white shadow-sm border border-slate-800">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-mono text-emerald-400 font-semibold">POST /api/v1/inscricoes</span>
+            <span class="text-[10px] text-slate-400 font-mono">Log Back-end</span>
+          </div>
+          <pre id="json-preview" class="text-[11px] text-slate-300 bg-slate-950 p-3 rounded-lg overflow-x-auto border border-slate-800 font-mono leading-relaxed">{
+  "status": "aguardando_submissao",
+  "dpo_responsavel": "dpo@escola.sp.gov.br",
+  "versao_politica": "v2.4"
+}</pre>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Modal Política Completa -->
+  <div id="modal-policy" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+        <h3 class="text-sm font-bold text-slate-900">Política de Privacidade</h3>
+        <button id="btn-close-modal" class="text-slate-400 hover:text-slate-700 font-bold">&times;</button>
+      </div>
+      <div class="text-xs text-slate-600 space-y-2 max-h-60 overflow-y-auto">
+        <p><strong>1. Finalidade:</strong> Gestão educacional da oficina técnica e emissão de certificados.</p>
+        <p><strong>2. Compartilhamento:</strong> Não compartilhamos dados com terceiros ou redes de publicidade.</p>
+        <p><strong>3. Direitos (Art. 18):</strong> Canal aberto para confirmação, retificação ou revogação.</p>
+        <p><strong>4. Contato DPO:</strong> dpo@escola.sp.gov.br</p>
+      </div>
+      <div class="pt-2 flex justify-end">
+        <button id="btn-close-modal-bottom" class="px-3 py-1.5 bg-slate-900 text-white text-xs font-medium rounded-lg">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-emerald-950 text-white px-4 py-3 rounded-xl shadow-lg border border-emerald-700 flex items-center gap-3 text-xs max-w-sm transition-all duration-300 transform translate-y-16 opacity-0 pointer-events-none">
+    <span class="text-emerald-400 font-bold">✓ Sucesso:</span>
+    <span>Inscrição registrada e metadados de auditoria gerados no back-end.</span>
+  </div>
+
+  <footer class="bg-white border-t border-slate-200 py-3 text-center text-[11px] text-slate-400">
+    Padrão Arquitetural Privacy by Design • Educação Profissional Paulista
+  </footer>
+
+  <script>
+    const modal = document.getElementById('modal-policy');
+    const btnOpen = document.getElementById('btn-open-policy');
+    const btnClose = document.getElementById('btn-close-modal');
+    const btnCloseBottom = document.getElementById('btn-close-modal-bottom');
+    const toast = document.getElementById('toast');
+    const form = document.getElementById('form-conforme');
+    const nameIn = document.getElementById('good-name');
+    const emailIn = document.getElementById('good-email');
+    const courseIn = document.getElementById('good-course');
+    const termsCheck = document.getElementById('check-terms');
+    const mktCheck = document.getElementById('check-mkt');
+    const jsonPreview = document.getElementById('json-preview');
+
+    btnOpen.addEventListener('click', () => modal.classList.remove('hidden'));
+    btnClose.addEventListener('click', () => modal.classList.add('hidden'));
+    btnCloseBottom.addEventListener('click', () => modal.classList.add('hidden'));
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const payload = {
+        aluno_nome: nameIn.value.trim(),
+        aluno_email: emailIn.value.trim(),
+        curso_inscrito: courseIn.value,
+        consentimento_termos: termsCheck.checked,
+        consentimento_marketing: mktCheck.checked,
+        versao_politica: "v2.4",
+        timestamp: new Date().toISOString(),
+        dpo_responsavel: "dpo@escola.sp.gov.br",
+        hash_integridade: "sha256:" + Math.random().toString(36).substring(2, 12)
+      };
+
+      jsonPreview.textContent = JSON.stringify(payload, null, 2);
+
+      toast.classList.remove('translate-y-16', 'opacity-0', 'pointer-events-none');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.add('translate-y-16', 'opacity-0', 'pointer-events-none');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 4000);
+    });
+  </script>
+</body>
+</html>

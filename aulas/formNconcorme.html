@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário Não Conforme (Antes) - Exemplo Didático LGPD</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-20 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 py-3 sm:px-6 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-rose-600 text-white font-bold text-xs shadow-sm">
+          !
+        </span>
+        <div>
+          <h1 class="text-sm font-bold text-slate-900 leading-tight">Formulário Não Conforme (Cenário Vulnerável)</h1>
+          <p class="text-xs text-slate-500">Exemplo Didático de Dark Patterns e Não Conformidade</p>
+        </div>
+      </div>
+      <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-800 border border-rose-200">
+        Não Conforme à LGPD
+      </span>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-4 py-6 sm:px-6 flex-1 w-full space-y-6">
+
+    <!-- Status Banner -->
+    <div class="bg-rose-50 border-l-4 border-rose-500 p-4 rounded-r-xl shadow-sm">
+      <div class="flex items-center gap-2">
+        <span class="px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase bg-rose-200 text-rose-800">
+          Auditoria de Código
+        </span>
+        <span class="text-xs text-rose-700 font-medium">Violação dos Arts. 6º, 8º e 41 da Lei nº 13.709/2018</span>
+      </div>
+      <p class="text-xs sm:text-sm text-rose-900 mt-1 leading-relaxed">
+        Este formulário exemplifica vícios clássicos de desenvolvimento: coleta desnecessária de dados, ausência de finalidade específica, caixa de consentimento pré-marcada (<em>dark pattern</em>) e ausência de canal de contato com o DPO.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      
+      <!-- Formulário com Problemas -->
+      <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-7">
+        <div class="border-b border-slate-100 pb-3 mb-5">
+          <h2 class="text-base font-bold text-slate-900">Inscrição para Oficinas Técnicas</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Preencha seus dados para garantir uma vaga.</p>
+        </div>
+
+        <form id="form-vulneravel" class="space-y-4">
+          <div>
+            <label for="bad-name" class="block text-xs font-medium text-slate-700 mb-1">Nome Completo</label>
+            <input type="text" id="bad-name" value="Ana Souza" class="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:border-rose-400">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="bad-email" class="block text-xs font-medium text-slate-700 mb-1">E-mail</label>
+              <input type="email" id="bad-email" value="ana.souza@email.com" class="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:border-rose-400">
+            </div>
+            <div>
+              <label for="bad-phone" class="block text-xs font-medium text-slate-700 mb-1">Telefone Celular</label>
+              <input type="text" id="bad-phone" value="(11) 98765-4321" class="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:border-rose-400">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="bad-school" class="block text-xs font-medium text-slate-700 mb-1">Escola de Origem</label>
+              <input type="text" id="bad-school" value="E.E. Central de São Paulo" class="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:border-rose-400">
+            </div>
+            <div>
+              <label for="bad-city" class="block text-xs font-medium text-slate-700 mb-1">Cidade</label>
+              <input type="text" id="bad-city" value="São Paulo" class="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:border-rose-400">
+            </div>
+          </div>
+
+          <div>
+            <label for="bad-course" class="block text-xs font-medium text-slate-700 mb-1">Curso de Interesse</label>
+            <select id="bad-course" class="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:border-rose-400">
+              <option>Desenvolvimento de Sistemas</option>
+              <option>Redes de Computadores e Nuvem</option>
+            </select>
+          </div>
+
+          <!-- Área Crítica Não Conforme -->
+          <div class="pt-3 border-t border-slate-100 space-y-3 bg-rose-50/70 p-3.5 rounded-xl border border-rose-200">
+            <!-- Texto vago e ilegível -->
+            <p class="text-[10px] text-slate-500 leading-tight">
+              Ao continuar, seus dados poderão ser usados pela plataforma e parceiros comerciais para fins diversos.
+            </p>
+
+            <!-- Checkbox pré-marcado (Dark Pattern) -->
+            <div class="flex items-start gap-2">
+              <input type="checkbox" id="bad-check" checked class="mt-0.5 rounded text-rose-600 focus:ring-rose-500 border-rose-300">
+              <label for="bad-check" class="text-xs text-slate-700 font-medium">
+                Li e concordo com todos os termos da plataforma.
+              </label>
+            </div>
+
+            <!-- Link sem transparência -->
+            <div class="text-[11px] text-slate-500">
+              Consulte nossa <button type="button" id="btn-bad-policy" class="text-slate-600 underline hover:text-slate-900 font-medium">Política</button>.
+            </div>
+          </div>
+
+          <button type="submit" id="btn-submit" class="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-900 text-white font-medium text-xs rounded-xl transition shadow">
+            Enviar Inscrição
+          </button>
+        </form>
+      </div>
+
+      <!-- Análise de Infrações -->
+      <div class="lg:col-span-5 space-y-3">
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+          <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+            Diagnóstico de Infrações
+          </h3>
+
+          <div class="space-y-3 text-xs">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="flex items-center justify-between font-bold text-rose-600 mb-1">
+                <span>1. Checkbox Pré-marcado</span>
+                <span class="text-[10px] bg-rose-100 text-rose-700 px-1.5 py-0.5 rounded">Art. 8º, § 4º</span>
+              </div>
+              <p class="text-slate-600 leading-relaxed">
+                Vício de consentimento. A seleção automática é um <em>dark pattern</em> proibido. O aceite deve ser sempre fruto de ação ativa e voluntária do titular.
+              </p>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="flex items-center justify-between font-bold text-rose-600 mb-1">
+                <span>2. Finalidade Vaga</span>
+                <span class="text-[10px] bg-rose-100 text-rose-700 px-1.5 py-0.5 rounded">Art. 6º, I</span>
+              </div>
+              <p class="text-slate-600 leading-relaxed">
+                A expressão "fins diversos e parceiros" viola o princípio da finalidade. Não é permitido obter autorização genérica em branco.
+              </p>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="flex items-center justify-between font-bold text-rose-600 mb-1">
+                <span>3. Ausência de DPO</span>
+                <span class="text-[10px] bg-rose-100 text-rose-700 px-1.5 py-0.5 rounded">Art. 41</span>
+              </div>
+              <p class="text-slate-600 leading-relaxed">
+                O formulário não identifica o Encarregado de Dados nem provê canais oficiais para solicitações de acesso ou exclusão (DSAR).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Modal Política Vaga -->
+  <div id="modal-policy" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+        <h3 class="text-sm font-bold text-rose-600">Alerta de Transparência</h3>
+        <button id="btn-close-modal" class="text-slate-400 hover:text-slate-700 font-bold">&times;</button>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        O link original "Política" não redirecionava para nenhum documento válido nem mencionava os direitos dos titulares do Art. 18 da LGPD.
+      </p>
+      <div class="pt-2 flex justify-end">
+        <button id="btn-close-modal-bottom" class="px-3 py-1.5 bg-slate-800 text-white text-xs font-medium rounded-lg">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-rose-900 text-white px-4 py-3 rounded-xl shadow-lg border border-rose-700 flex items-center gap-3 text-xs max-w-sm transition-all duration-300 transform translate-y-16 opacity-0 pointer-events-none">
+    <span class="font-bold">⚠️ Risco Regulatório:</span>
+    <span>Formulário submetido sem consentimento livre ou finalidade determinada.</span>
+  </div>
+
+  <footer class="bg-white border-t border-slate-200 py-3 text-center text-[11px] text-slate-400">
+    Material Pedagógico • Técnico em Desenvolvimento de Sistemas
+  </footer>
+
+  <script>
+    const modal = document.getElementById('modal-policy');
+    const btnOpen = document.getElementById('btn-bad-policy');
+    const btnClose = document.getElementById('btn-close-modal');
+    const btnCloseBottom = document.getElementById('btn-close-modal-bottom');
+    const toast = document.getElementById('toast');
+    const form = document.getElementById('form-vulneravel');
+
+    btnOpen.addEventListener('click', () => modal.classList.remove('hidden'));
+    btnClose.addEventListener('click', () => modal.classList.add('hidden'));
+    btnCloseBottom.addEventListener('click', () => modal.classList.add('hidden'));
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      toast.classList.remove('translate-y-16', 'opacity-0', 'pointer-events-none');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.add('translate-y-16', 'opacity-0', 'pointer-events-none');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 4000);
+    });
+  </script>
+</body>
+</html>
