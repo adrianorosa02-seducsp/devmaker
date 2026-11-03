@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Envio de Documento - RG</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-sub: #64748b;
+      --border: #cbd5e1;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    header {
+      text-align: center;
+      padding: 8px 0 4px;
+    }
+
+    header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    header p {
+      font-size: 0.88rem;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .badge-opt {
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      color: var(--text-sub);
+      font-weight: 500;
+    }
+
+    .badge-req {
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-group label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 88px;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 0 12px;
+      font-size: 0.95rem;
+      outline: none;
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    input[readonly] {
+      background-color: #f8fafc;
+      color: #334155;
+      font-weight: 600;
+    }
+
+    .photo-area {
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      background: #fafafa;
+      position: relative;
+      overflow: hidden;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .photo-area:active {
+      transform: scale(0.99);
+      background: #f1f5f9;
+    }
+
+    .photo-area.has-photo {
+      border: 2px solid var(--success);
+      padding: 0;
+      background: #000;
+    }
+
+    .photo-area img {
+      width: 100%;
+      max-height: 230px;
+      object-fit: cover;
+      display: none;
+    }
+
+    .photo-area.has-photo img {
+      display: block;
+    }
+
+    .photo-area.has-photo .photo-placeholder {
+      display: none;
+    }
+
+    .photo-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-sub);
+    }
+
+    .photo-placeholder svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--text-sub);
+    }
+
+    .btn-retake {
+      display: none;
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(15, 23, 42, 0.85);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      backdrop-filter: blur(4px);
+    }
+
+    .photo-area.has-photo .btn-retake {
+      display: block;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .btn-submit {
+      width: 100%;
+      height: 50px;
+      border-radius: var(--radius);
+      border: none;
+      background: var(--primary);
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+      transition: background-color 0.2s, transform 0.1s;
+      margin-top: 6px;
+      margin-bottom: 24px;
+    }
+
+    .btn-submit:active {
+      transform: scale(0.98);
+      background: var(--primary-hover);
+    }
+
+    .btn-submit:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #statusModal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal-box {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      width: 100%;
+      max-width: 340px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .modal-box h3 { font-size: 1.15rem; }
+    .modal-box p { font-size: 0.9rem; color: var(--text-sub); }
+    .modal-btn {
+      margin-top: 8px;
+      height: 40px;
+      border-radius: 8px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Documentação Escolar</h1>
+      <p>Envio seguro de RG e Autorização</p>
+    </header>
+
+    <form id="uploadForm">
+      <!-- DADOS DO ALUNO -->
+      <section class="card">
+        <div class="card-title">
+          <span>Dados do Aluno</span>
+          <span class="badge-req">Obrigatório</span>
+        </div>
+
+        <div class="input-group">
+          <label for="nome">Nome Completo</label>
+          <input 
+            type="text" 
+            id="nome" 
+            name="nome" 
+            list="listaAlunos" 
+            placeholder="Digite ou selecione o aluno" 
+            autocomplete="off" 
+            required
+          >
+          <datalist id="listaAlunos"></datalist>
+        </div>
+
+        <div class="input-row">
+          <div class="input-group">
+            <label for="ra">RA</label>
+            <input type="text" id="ra" name="ra" placeholder="RA gerado" readonly required>
+          </div>
+          <div class="input-group">
+            <label for="digito">Dígito</label>
+            <input type="text" id="digito" name="digito" placeholder="D" readonly required>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOTO RG FRENTE -->
+      <section class="card">
+        <div class="card-title">
+          <span>1. RG - Frente</span>
+          <span class="badge-req">Obrigatório</span>
+        </div>
+        <div class="photo-area" id="box_frente" onclick="abrirCamera('rg_frente')">
+          <img id="prev_frente" alt="RG Frente">
+          <div class="photo-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+              <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+            <span>Tirar Foto da Frente</span>
+          </div>
+          <button type="button" class="btn-retake">Refazer</button>
+        </div>
+        <input type="file" id="rg_frente" accept="image/*" capture="environment" required>
+      </section>
+
+      <!-- FOTO RG VERSO -->
+      <section class="card">
+        <div class="card-title">
+          <span>2. RG - Verso</span>
+          <span class="badge-req">Obrigatório</span>
+        </div>
+        <div class="photo-area" id="box_verso" onclick="abrirCamera('rg_verso')">
+          <img id="prev_verso" alt="RG Verso">
+          <div class="photo-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+              <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+            <span>Tirar Foto do Verso</span>
+          </div>
+          <button type="button" class="btn-retake">Refazer</button>
+        </div>
+        <input type="file" id="rg_verso" accept="image/*" capture="environment" required>
+      </section>
+
+      <!-- FOTO AUTORIZAÇÃO (OPCIONAL) -->
+      <section class="card">
+        <div class="card-title">
+          <span>3. Autorização Assinada</span>
+          <span class="badge-opt">Opcional</span>
+        </div>
+        <div class="photo-area" id="box_autorizacao" onclick="abrirCamera('rg_autorizacao')">
+          <img id="prev_autorizacao" alt="Autorização">
+          <div class="photo-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="12" y1="18" x2="12" y2="12"></line>
+              <line x1="9" y1="15" x2="15" y2="15"></line>
+            </svg>
+            <span>Tirar Foto da Folha</span>
+          </div>
+          <button type="button" class="btn-retake">Refazer</button>
+        </div>
+        <input type="file" id="rg_autorizacao" accept="image/*" capture="environment">
+      </section>
+
+      <button type="submit" class="btn-submit" id="btnSubmit">
+        <span class="btn-text">Enviar Documentos</span>
+        <div class="spinner" id="btnSpinner"></div>
+      </button>
+    </form>
+  </div>
+
+  <!-- MODAL FEEDBACK -->
+  <div id="statusModal">
+    <div class="modal-box">
+      <h3 id="modalTitle">Status</h3>
+      <p id="modalMsg">Mensagem</p>
+      <button type="button" class="modal-btn" onclick="fecharModal()">OK</button>
+    </div>
+  </div>
+
+  <script>
+    // BASE DE DADOS DOS ALUNOS EXTRAÍDA DA PLANILHA (AMILCARE, BICUDO, REGINATO)
+    const alunos = [
+      { nome: "ANA CAROLINA LIMA DIAS", ra: "109750449", d: "9" },
+      { nome: "ANA LAURA MONTEIRO NUNES", ra: "110600074", d: "2" },
+      { nome: "ARTHUR HENRIQUE ROSA ARGENTON", ra: "109795539", d: "4" },
+      { nome: "BRIAN EDUARDO AMÉRICO VITORINO", ra: "109750512", d: "1" },
+      { nome: "CAUANE VITORIA TORRES BIGNARDI", ra: "111185514", d: "6" },
+      { nome: "CHRISTIAN DAMASCENO PASSOS", ra: "110233729", d: "8" },
+      { nome: "DAVI SILVEIRA COSTA", ra: "110684292", d: "3" },
+      { nome: "FELIPE CLEMENTE SPILLA FERREIRA", ra: "112829232", d: "4" },
+      { nome: "FELIPE COSTA SOARES TOLEDO", ra: "110462355", d: "9" },
+      { nome: "FELIPE GONÇALVES GEDRA", ra: "111494942", d: "5" },
+      { nome: "FELIPE ROMÃO DA SILVA", ra: "109727971", d: "6" },
+      { nome: "GABRIEL EDUARDO DOS SANTOS TAMURA", ra: "110630476", d: "7" },
+      { nome: "GUILHERME HAYASHI NOMIYAMA", ra: "110631758", d: "0" },
+      { nome: "ISABELLA PEREIRA DE ANDRADE", ra: "111140232", d: "2" },
+      { nome: "ISAQUE SILVA DO NASCIMENTO", ra: "111513632", d: "X" },
+      { nome: "JOÃO PEDRO OLIVEIRA SILVA", ra: "110977566", d: "0" },
+      { nome: "JORGE MATHEUS DA SILVA VITOR", ra: "108673423", d: "3" },
+      { nome: "MARIA CLARA SIMONELLI MESQUITA DE ALMEIDA", ra: "111756706", d: "0" },
+      { nome: "MIGUEL DA SILVA NUNES MOLINOS", ra: "111580103", d: "X" },
+      { nome: "NICOLLY VICTÓRIA MARTINS LEAL", ra: "111514172", d: "7" },
+      { nome: "PABLO LEANDRO", ra: "110473210", d: "5" },
+      { nome: "RAUL FERNANDES ALENCAR", ra: "111048426", d: "4" },
+      { nome: "VINICIUS REIS BUIM NEVES", ra: "113134942", d: "8" },
+      { nome: "BEATRIZ GODOY FAGUNDES", ra: "120790045", d: "X" },
+      { nome: "DEIVID WILLIANS RODRIGUES GARCIA", ra: "111579326", d: "3" },
+      { nome: "EMILLY VITÓRIA BULGARELLI", ra: "109864659", d: "9" },
+      { nome: "ESTHER ROSSETINI CARVALHO", ra: "110625177", d: "5" },
+      { nome: "ISABELA CRISTINA GUERRA", ra: "109750639", d: "3" },
+      { nome: "ISABELY COSTA MATOS", ra: "109922784", d: "7" },
+      { nome: "ISAQUE NASCIMENTO CAPUTE", ra: "111452089", d: "5" },
+      { nome: "JOÃO PEDRO MARTINS FALCONI", ra: "108991191", d: "9" },
+      { nome: "KAUAN SOARES LIMA", ra: "111363820", d: "5" },
+      { nome: "LAURA RODRIGUES DA ROCHA", ra: "112629554", d: "1" },
+      { nome: "LAYSSA NICOLE NUNES DE LIMA", ra: "109773546", d: "1" },
+      { nome: "LUCAS CHAVES BERBEL", ra: "110512837", d: "4" },
+      { nome: "MARIA LUIZA BRAZ DA SILVA", ra: "110280474", d: "5" },
+      { nome: "MARIANA DEL VALLE PANZA MORA", ra: "122272403", d: "0" },
+      { nome: "NARAYANE EDUARDA MANTOVANI DE ARAUJO", ra: "110965271", d: "9" },
+      { nome: "NYCOLE RODRIGUES GOMES", ra: "110984797", d: "X" },
+      { nome: "RYAN FELIPE RIBEIRO DA SILVA", ra: "110666008", d: "0" },
+      { nome: "SALOMÃO DYOGO GUEDES ARAÚJO", ra: "111482178", d: "0" },
+      { nome: "SOFIA RAFAELA LELLIS GONÇALVES", ra: "108162472", d: "3" },
+      { nome: "SOFIA REBLIN FRAGA", ra: "124121395", d: "1" },
+      { nome: "VICTOR HUGO ROCHA", ra: "109867248", d: "3" },
+      { nome: "ZION RIBEIRO DA SILVA SANTOS PEDROGAN", ra: "109320753", d: "X" },
+      { nome: "ALEXANDRE DA SILVA OLIVEIRA", ra: "111671824", d: "8" },
+      { nome: "ALLAN GABRIEL TENORIO DO SOUTO", ra: "110661061", d: "1" },
+      { nome: "ALLYSSON GABRIEL DE PAULA LIMA", ra: "111156083", d: "3" },
+      { nome: "ANA JULIA ALVES DA SILVA", ra: "112508032", d: "2" },
+      { nome: "ANA JULYA MONTANHAL LIMA", ra: "112972908", d: "4" },
+      { nome: "ANA LYVIA ROCHA RIBEIRO", ra: "112508329", d: "3" },
+      { nome: "ANITA PAES BAPTISTA", ra: "112428636", d: "6" },
+      { nome: "ANTONY ELIAS BARBOSA DE SOUZA DELPHINO", ra: "111473737", d: "9" },
+      { nome: "BRYAN YOSHISADA SUZUKI BRASIL", ra: "112503386", d: "1" },
+      { nome: "CAIO HENRIQUE PEREIRA FERREIRA", ra: "111790548", d: "2" },
+      { nome: "CALEBE NUNES DE OLIVEIRA", ra: "111938511", d: "8" },
+      { nome: "DANIEL AZEVEDO NELERO ORTEGA", ra: "113570479", d: "X" },
+      { nome: "DANIELLE RIBEIRO DE ARAÚJO", ra: "111553578", d: "X" },
+      { nome: "DEBORA GONCALVES DOS SANTOS", ra: "111795262", d: "9" },
+      { nome: "DIEGO CREMA JERONIMO", ra: "111894057", d: "X" },
+      { nome: "DIEGO DOMINGUES DE SOUZA", ra: "110656228", d: "8" },
+      { nome: "EDUARDO MASSON CANGUSSU", ra: "111699178", d: "0" },
+      { nome: "EZEQUIEL VICTOR BALDENEBRO LIMA", ra: "110688725", d: "6" },
+      { nome: "FELIPPE SOARES RAMOS DE ANDRADE CARDAMONI RODRIGUES", ra: "109731210", d: "0" },
+      { nome: "GABRIEL ALVES ANDRADE", ra: "110630879", d: "7" },
+      { nome: "GABRIEL PERES DE OLIVEIRA", ra: "109760535", d: "8" },
+      { nome: "GABRIEL SILVA CAMPOS", ra: "111935518", d: "7" },
+      { nome: "GABRIEL STRAIOTTO FRUTUOSO", ra: "110660852", d: "5" },
+      { nome: "GIOVANNA KARLA ROCHA DA SILVA", ra: "110439683", d: "X" },
+      { nome: "GUILHERME DE OLIVEIRA BAHIANO", ra: "111466092", d: "9" },
+      { nome: "GUILHERME HENRIQUE DOS SANTOS COSTA", ra: "112796394", d: "6" },
+      { nome: "ISADORA CRISTHINE STRAIOTTO DE OLIVEIRA", ra: "112742747", d: "7" },
+      { nome: "JIMMY JAHZEEL LASCANO ROMERO", ra: "123983063", d: "4" },
+      { nome: "JOÃO VICTOR FERNET ANTUNES", ra: "112199316", d: "3" },
+      { nome: "JÚLIA MOREIRA PRADO", ra: "111466174", d: "0" },
+      { nome: "KAIQUE DE BRITO OLIVEIRA", ra: "110631915", d: "1" },
+      { nome: "KAWE RODRIGUES CATARINO DE QUEIROZ", ra: "110125080", d: "X" },
+      { nome: "LETÍCIA DOS SANTOS NOGUEIRA", ra: "111499859", d: "X" },
+      { nome: "LORENA CARDOSO DE OLIVEIRA", ra: "111471826", d: "9" },
+      { nome: "LUANA BEATRIZ NAGASHI MAXIMO", ra: "113799184", d: "7" },
+      { nome: "LUCAS SOARES MOURA", ra: "114258884", d: "1" },
+      { nome: "LYVIA CAROLINA BARROS GARCIA", ra: "110689470", d: "4" },
+      { nome: "MANUELLA DOS SANTOS LIMA", ra: "110688735", d: "9" },
+      { nome: "MARCELO FRANCISCO DE OLIVEIRA JUNIOR", ra: "109830748", d: "3" },
+      { nome: "MARIA CLARA MAYUMI SHINZATO XAVIER", ra: "111466118", d: "1" },
+      { nome: "MARIA JULIA BALDENEBRO DOS REIS", ra: "111891987", d: "7" },
+      { nome: "MARIA JULIA DOS SANTOS RODRIGUES DA SILVA", ra: "113762481", d: "4" },
+      { nome: "MATHEUS DE OLIVEIRA NOVAES", ra: "111535405", d: "X" },
+      { nome: "MATHEUS FORNAZARI SABATINI", ra: "111520987", d: "5" },
+      { nome: "MATHEUS ROCHA LOPES", ra: "111549850", d: "2" },
+      { nome: "PABLO HENRIQUE MIGUEL XAVIER", ra: "110633522", d: "3" },
+      { nome: "PEDRO HENRIQUE BALDICERA DA SILVA", ra: "110661108", d: "1" },
+      { nome: "PEDRO HENRIQUE TORRES", ra: "113638699", d: "3" },
+      { nome: "PIETRO BUENO GRANCIERE", ra: "113547721", d: "8" },
+      { nome: "RAFAEL YUDI OKA", ra: "113240055", d: "7" },
+      { nome: "RICHARD URAKAWA DE CAMARGO", ra: "109759242", d: "X" },
+      { nome: "RYAN FERNANDES DA SILVA", ra: "112770606", d: "8" },
+      { nome: "SARA DOS SANTOS PEREIRA", ra: "111523270", d: "8" },
+      { nome: "SARAH DOS SANTOS YACOUB", ra: "110628006", d: "4" },
+      { nome: "STHEFANY VICTÓRIA GOMES MIQUELIM", ra: "111472687", d: "4" },
+      { nome: "THALES COELHO LOURENÇO", ra: "111560387", d: "5" },
+      { nome: "VICENTE BARBOSA SANTOS GONÇALVES", ra: "112244979", d: "3" },
+      { nome: "VICTOR HUGO FERREIRA BRITO", ra: "111672008", d: "5" },
+      { nome: "VINICIUS ALVES PEREIRA", ra: "110003338", d: "5" },
+      { nome: "VINICIUS MARQUES SOUZA", ra: "113547749", d: "8" },
+      { nome: "VITÓRIA CAPUTI DE JESUS", ra: "111598335", d: "0" },
+      { nome: "YGOR GUSTAVO PEREIRA", ra: "111517454", d: "X" }
+    ];
+
+    // Popula o datalist para pesquisa rápida no mobile
+    const datalist = document.getElementById('listaAlunos');
+    alunos.forEach(item => {
+      const opt = document.createElement('option');
+      opt.value = item.nome;
+      datalist.appendChild(opt);
+    });
+
+    // Auto-preenchimento ao digitar ou selecionar o nome
+    const inputNome = document.getElementById('nome');
+    const inputRa = document.getElementById('ra');
+    const inputDigito = document.getElementById('digito');
+
+    function buscarAluno() {
+      const termo = inputNome.value.trim().toUpperCase();
+      const achado = alunos.find(a => a.nome.toUpperCase() === termo);
+      if (achado) {
+        inputRa.value = achado.ra;
+        inputDigito.value = achado.d;
+      } else {
+        inputRa.value = '';
+        inputDigito.value = '';
+      }
+    }
+
+    inputNome.addEventListener('input', buscarAluno);
+    inputNome.addEventListener('change', buscarAluno);
+
+    // Controle de fotos e previews
+    function abrirCamera(inputId) {
+      document.getElementById(inputId).click();
+    }
+
+    function setupFileInput(inputId, boxId, prevId) {
+      const input = document.getElementById(inputId);
+      const box = document.getElementById(boxId);
+      const prev = document.getElementById(prevId);
+
+      input.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            prev.src = evt.target.result;
+            box.classList.add('has-photo');
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    setupFileInput('rg_frente', 'box_frente', 'prev_frente');
+    setupFileInput('rg_verso', 'box_verso', 'prev_verso');
+    setupFileInput('rg_autorizacao', 'box_autorizacao', 'prev_autorizacao');
+
+    // Envio do formulário para o Webhook do n8n
+    const form = document.getElementById('uploadForm');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const btnText = btnSubmit.querySelector('.btn-text');
+    const btnSpinner = document.getElementById('btnSpinner');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      if (!inputRa.value || !inputDigito.value) {
+        mostrarModal("Atenção", "Por favor, selecione um aluno válido da lista para preencher o RA e Dígito automaticamente.");
+        return;
+      }
+
+      const fileFrente = document.getElementById('rg_frente').files[0];
+      const fileVerso = document.getElementById('rg_verso').files[0];
+      const fileAuto = document.getElementById('rg_autorizacao').files[0];
+
+      if (!fileFrente || !fileVerso) {
+        mostrarModal("Atenção", "É obrigatório tirar a foto da frente e do verso do RG.");
+        return;
+      }
+
+      // Monta o FormData com os nomes exatos esperados pelo script do n8n
+      const formData = new FormData();
+      formData.append('nome', inputNome.value.trim());
+      formData.append('ra', inputRa.value.trim());
+      formData.append('digito', inputDigito.value.trim());
+      formData.append('autorizacao', fileAuto ? 'sim' : 'nao');
+
+      formData.append('rg_frente', fileFrente, 'rg_frente.jpg');
+      formData.append('rg_verso', fileVerso, 'rg_verso.jpg');
+      if (fileAuto) {
+        formData.append('rg_autorizacao', fileAuto, 'rg_autorizacao.jpg');
+      }
+
+      // Estado de loading
+      btnSubmit.disabled = true;
+      btnText.textContent = "Enviando...";
+      btnSpinner.style.display = "block";
+
+      try {
+        const response = await fetch('https://n8n.inetz.com.br/webhook-test/receber-documentos-rg', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (response.ok) {
+          mostrarModal("Sucesso!", "Documentos enviados com sucesso.");
+          form.reset();
+          document.querySelectorAll('.photo-area').forEach(box => box.classList.remove('has-photo'));
+          document.querySelectorAll('.photo-area img').forEach(img => img.src = '');
+        } else {
+          mostrarModal("Erro no envio", "O servidor retornou o status " + response.status + ". Tente novamente.");
+        }
+      } catch (err) {
+        mostrarModal("Falha de Conexão", "Não foi possível conectar ao servidor n8n. Verifique sua conexão.");
+      } finally {
+        btnSubmit.disabled = false;
+        btnText.textContent = "Enviar Documentos";
+        btnSpinner.style.display = "none";
+      }
+    });
+
+    function mostrarModal(titulo, msg) {
+      document.getElementById('modalTitle').textContent = titulo;
+      document.getElementById('modalMsg').textContent = msg;
+      document.getElementById('statusModal').style.display = 'flex';
+    }
+
+    function fecharModal() {
+      document.getElementById('statusModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

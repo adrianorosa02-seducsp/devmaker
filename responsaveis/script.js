@@ -27,7 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const alertContainer = document.getElementById('alertContainer');
   const inputTelefone = document.getElementById('telefone');
 
-  // Interatividade da Sidebar (Mobile & Collapse)
+  // Restaura estado recolhido salvo no localStorage
+  const isCollapsedSaved = localStorage.getItem('sidebar_collapsed') === 'true';
+  if (isCollapsedSaved && sidebar && window.innerWidth > 900) {
+    sidebar.classList.add('collapsed');
+  }
+
+  // Interatividade da Sidebar (Mobile & Desktop Collapse)
   if (mobileMenuToggle && sidebar) {
     mobileMenuToggle.addEventListener('click', () => {
       sidebar.classList.toggle('open');
@@ -36,7 +42,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (sidebarCollapseBtn && sidebar) {
     sidebarCollapseBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
+      if (window.innerWidth <= 900) {
+        sidebar.classList.toggle('open');
+      } else {
+        sidebar.classList.toggle('collapsed');
+        const isCollapsed = sidebar.classList.contains('collapsed');
+        localStorage.setItem('sidebar_collapsed', isCollapsed ? 'true' : 'false');
+      }
     });
   }
 

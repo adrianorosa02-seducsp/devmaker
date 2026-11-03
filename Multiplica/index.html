@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Multiplica - Projeto educacional inovador que une tecnologia e materiais concretos para ensinar multiplicação de forma envolvente e eficaz.">
+    <title>Multiplica | Aprendizado que Transforma</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Cursor glow effect -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">
+                <span class="logo-icon">✕</span>
+                <span class="logo-text">Multiplica</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about" class="nav-link">Sobre</a></li>
+                <li><a href="#features" class="nav-link">Funcionalidades</a></li>
+                <li><a href="#modules" class="nav-link">Módulos</a></li>
+                <li><a href="#materials" class="nav-link">Material Concreto</a></li>
+                <li><a href="#gallery" class="nav-link">Galeria</a></li>
+                <li><a href="#contact" class="nav-link nav-cta">Saiba Mais</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="hero-gradient-orb orb-1"></div>
+            <div class="hero-gradient-orb orb-2"></div>
+            <div class="hero-gradient-orb orb-3"></div>
+            <div class="hero-grid"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                Projeto Educacional Inovador
+            </div>
+            <h1 class="hero-title">
+                <span class="title-line">Aprender a</span>
+                <span class="title-line title-highlight">Multiplicar</span>
+                <span class="title-line">nunca foi tão</span>
+                <span class="title-line title-accent">divertido.</span>
+            </h1>
+            <p class="hero-description">
+                Uma solução completa que une <strong>tecnologia</strong> e <strong>materiais concretos</strong> 
+                para transformar o ensino de multiplicação em uma experiência envolvente e eficaz.
+            </p>
+            <div class="hero-actions">
+                <a href="#modules" class="btn btn-primary">
+                    <span>Explorar Módulos</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#materials" class="btn btn-secondary">
+                    <span>Ver Material</span>
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number" data-count="3">0</span>
+                    <span class="stat-label">Módulos</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="100">0</span>
+                    <span class="stat-suffix">%</span>
+                    <span class="stat-label">Interativo</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="2">0</span>
+                    <span class="stat-label">Plataformas</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="phone-mockup">
+                <div class="phone-frame">
+                    <div class="phone-notch"></div>
+                    <img src="app_principal.jpg" alt="Tela principal do Multiplica App" class="phone-screen" loading="eager">
+                </div>
+                <div class="phone-glow"></div>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Sobre o Projeto</span>
+                <h2 class="section-title">Tecnologia a serviço da <span class="text-gradient">educação</span></h2>
+                <p class="section-subtitle">
+                    O Multiplica é um projeto que combina um aplicativo mobile intuitivo com 
+                    materiais concretos manipuláveis, criando uma experiência de aprendizado 
+                    multissensorial para o ensino de multiplicação.
+                </p>
+            </div>
+            <div class="about-grid">
+                <div class="about-card" data-reveal>
+                    <div class="card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    </div>
+                    <h3>App Educacional</h3>
+                    <p>Aplicativo mobile com interface amigável, projetado especificamente para crianças aprenderem multiplicação de forma gamificada.</p>
+                </div>
+                <div class="about-card" data-reveal>
+                    <div class="card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                    </div>
+                    <h3>Material Concreto</h3>
+                    <p>Blocos de madeira manipuláveis que permitem aos alunos construir e visualizar operações matemáticas com as próprias mãos.</p>
+                </div>
+                <div class="about-card" data-reveal>
+                    <div class="card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <h3>Conformidade</h3>
+                    <p>Sistema integrado de acompanhamento e conformidade, garantindo que o projeto atenda a todos os requisitos pedagógicos.</p>
+                </div>
+                <div class="about-card" data-reveal>
+                    <div class="card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </div>
+                    <h3>Resultados Reais</h3>
+                    <p>Metodologia comprovada que combina aprendizado digital e físico para maximizar a retenção e compreensão dos alunos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Funcionalidades</span>
+                <h2 class="section-title">O que torna o Multiplica <span class="text-gradient">especial</span></h2>
+            </div>
+            <div class="features-showcase">
+                <div class="feature-item" data-reveal>
+                    <div class="feature-number">01</div>
+                    <div class="feature-content">
+                        <h3>Interface Intuitiva</h3>
+                        <p>Design pensado para crianças, com cores vibrantes, ícones claros e navegação simplificada que facilita o uso autônomo.</p>
+                    </div>
+                    <div class="feature-line"></div>
+                </div>
+                <div class="feature-item" data-reveal>
+                    <div class="feature-number">02</div>
+                    <div class="feature-content">
+                        <h3>Backend Robusto</h3>
+                        <p>Sistema de gerenciamento completo para professores e administradores acompanharem o progresso e gerenciarem conteúdo.</p>
+                    </div>
+                    <div class="feature-line"></div>
+                </div>
+                <div class="feature-item" data-reveal>
+                    <div class="feature-number">03</div>
+                    <div class="feature-content">
+                        <h3>Aprendizado Concreto</h3>
+                        <p>Integração única com blocos de madeira que permitem ao aluno tocar, montar e desmontar operações matemáticas.</p>
+                    </div>
+                    <div class="feature-line"></div>
+                </div>
+                <div class="feature-item" data-reveal>
+                    <div class="feature-number">04</div>
+                    <div class="feature-content">
+                        <h3>Rastreabilidade Completa</h3>
+                        <p>Acompanhe cada etapa do aprendizado, desde a conformidade do app até o progresso individual de cada aluno.</p>
+                    </div>
+                    <div class="feature-line"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modules Section -->
+    <section class="modules" id="modules">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Módulos do Sistema</span>
+                <h2 class="section-title">Arquitetura <span class="text-gradient">modular</span></h2>
+                <p class="section-subtitle">
+                    O Multiplica é composto por módulos especializados que trabalham juntos 
+                    para oferecer uma experiência de aprendizado completa.
+                </p>
+            </div>
+            <div class="modules-grid">
+                <div class="module-card module-mobile" data-reveal>
+                    <div class="module-header">
+                        <span class="module-tag">Mobile</span>
+                        <div class="module-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                        </div>
+                    </div>
+                    <img src="Modulo_mobile.jpg" alt="Módulo Mobile do Multiplica" class="module-image" loading="lazy">
+                    <h3 class="module-title">Módulo Mobile</h3>
+                    <p class="module-desc">Aplicativo intuitivo com atividades interativas de multiplicação, gamificação e feedback em tempo real para os alunos.</p>
+                    <ul class="module-features-list">
+                        <li>Atividades gamificadas</li>
+                        <li>Interface amigável</li>
+                        <li>Feedback instantâneo</li>
+                    </ul>
+                </div>
+                <div class="module-card module-backend" data-reveal>
+                    <div class="module-header">
+                        <span class="module-tag">Backend</span>
+                        <div class="module-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        </div>
+                    </div>
+                    <img src="Modulo_backend.jpg" alt="Módulo Backend do Multiplica" class="module-image" loading="lazy">
+                    <h3 class="module-title">Módulo Backend</h3>
+                    <p class="module-desc">Painel administrativo completo para gestão de conteúdo, acompanhamento de turmas e análise de desempenho dos alunos.</p>
+                    <ul class="module-features-list">
+                        <li>Gestão de conteúdo</li>
+                        <li>Relatórios detalhados</li>
+                        <li>Painel administrativo</li>
+                    </ul>
+                </div>
+                <div class="module-card module-compliance" data-reveal>
+                    <div class="module-header">
+                        <span class="module-tag">Conformidade</span>
+                        <div class="module-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                        </div>
+                    </div>
+                    <img src="App_em_conformidade.jpg" alt="Módulo de Conformidade do Multiplica" class="module-image" loading="lazy">
+                    <h3 class="module-title">Conformidade & Status</h3>
+                    <p class="module-desc">Sistema de verificação e rastreamento que garante a conformidade do projeto com requisitos pedagógicos e técnicos.</p>
+                    <ul class="module-features-list">
+                        <li>Validação automática</li>
+                        <li>Status em tempo real</li>
+                        <li>Conformidade garantida</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Materials Section -->
+    <section class="materials" id="materials">
+        <div class="container">
+            <div class="materials-layout">
+                <div class="materials-info" data-reveal>
+                    <span class="section-tag">Material Concreto</span>
+                    <h2 class="section-title">Aprendizado que se <span class="text-gradient">toca</span></h2>
+                    <p class="materials-description">
+                        O Multiplica vai além da tela. Utilizamos blocos de madeira cuidadosamente 
+                        projetados que permitem aos alunos manipular, construir e visualizar 
+                        operações de multiplicação com as próprias mãos.
+                    </p>
+                    <div class="materials-benefits">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div>
+                                <h4>Aprendizado Multissensorial</h4>
+                                <p>Engaja visão, tato e raciocínio lógico simultaneamente.</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div>
+                                <h4>Construção Livre</h4>
+                                <p>Os alunos constroem retângulos para representar multiplicações.</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div>
+                                <h4>Medição e Verificação</h4>
+                                <p>Uso de régua para medir e validar as construções feitas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="materials-gallery" data-reveal>
+                    <div class="gallery-mosaic">
+                        <div class="mosaic-item mosaic-large">
+                            <img src="1000111473.jpg" alt="Alunos construindo formas com blocos de madeira" loading="lazy">
+                            <div class="mosaic-overlay">
+                                <span>Construção de Formas</span>
+                            </div>
+                        </div>
+                        <div class="mosaic-item mosaic-small">
+                            <img src="1000111466.jpg" alt="Medição com régua dos blocos" loading="lazy">
+                            <div class="mosaic-overlay">
+                                <span>Medição Precisa</span>
+                            </div>
+                        </div>
+                        <div class="mosaic-item mosaic-small">
+                            <img src="1000111474.jpg" alt="Quadrado montado com blocos" loading="lazy">
+                            <div class="mosaic-overlay">
+                                <span>Quadrado Completo</span>
+                            </div>
+                        </div>
+                        <div class="mosaic-item mosaic-medium">
+                            <img src="1000111475.jpg" alt="Blocos agrupados em formato de escada" loading="lazy">
+                            <div class="mosaic-overlay">
+                                <span>Padrões Matemáticos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery / Showcase Section -->
+    <section class="gallery" id="gallery">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Galeria</span>
+                <h2 class="section-title">Veja o Multiplica em <span class="text-gradient">ação</span></h2>
+                <p class="section-subtitle">
+                    Capturas de tela, materiais e momentos reais de aprendizado.
+                </p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item gallery-wide" data-reveal>
+                    <img src="imagem2_agrupada.png" alt="Visão geral do sistema Multiplica" loading="lazy">
+                    <div class="gallery-caption">
+                        <h4>Visão Geral do Sistema</h4>
+                        <p>Todas as telas e módulos integrados</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-reveal>
+                    <img src="requerimentos.png" alt="Requisitos do projeto Multiplica" loading="lazy">
+                    <div class="gallery-caption">
+                        <h4>Requisitos do Projeto</h4>
+                        <p>Especificações técnicas e pedagógicas</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-reveal>
+                    <img src="Cumprida.jpg" alt="Metas cumpridas do projeto" loading="lazy">
+                    <div class="gallery-caption">
+                        <h4>Metas Cumpridas</h4>
+                        <p>Status e progresso alcançado</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-reveal>
+                    <img src="video_simulado.png" alt="Simulação em vídeo do app" loading="lazy">
+                    <div class="gallery-caption">
+                        <h4>Simulação do App</h4>
+                        <p>Demonstração da experiência do usuário</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-reveal>
+                    <img src="1000111467.jpg" alt="Construção com blocos de madeira" loading="lazy">
+                    <div class="gallery-caption">
+                        <h4>Material em Uso</h4>
+                        <p>Construção ativa com blocos</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-reveal>
+                    <img src="1000111468.jpg" alt="Verificação das construções" loading="lazy">
+                    <div class="gallery-caption">
+                        <h4>Verificação</h4>
+                        <p>Medição e validação do aprendizado</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Requirements Section -->
+    <section class="requirements" id="requirements">
+        <div class="container">
+            <div class="req-layout">
+                <div class="req-info" data-reveal>
+                    <span class="section-tag">Requisitos</span>
+                    <h2 class="section-title">Construído com <span class="text-gradient">excelência</span></h2>
+                    <p>O projeto Multiplica foi desenvolvido seguindo rigorosos padrões de qualidade, 
+                    atendendo a todos os requisitos técnicos e pedagógicos estabelecidos pela SEDUC-SP.</p>
+                    <div class="req-highlights">
+                        <div class="req-highlight-item">
+                            <span class="req-check">✓</span>
+                            <span>App em conformidade total</span>
+                        </div>
+                        <div class="req-highlight-item">
+                            <span class="req-check">✓</span>
+                            <span>Metas pedagógicas cumpridas</span>
+                        </div>
+                        <div class="req-highlight-item">
+                            <span class="req-check">✓</span>
+                            <span>Material concreto validado</span>
+                        </div>
+                        <div class="req-highlight-item">
+                            <span class="req-check">✓</span>
+                            <span>Módulos integrados e funcionais</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="req-image" data-reveal>
+                    <img src="requerimentos.png" alt="Requisitos detalhados do Multiplica" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="contact">
+        <div class="cta-bg">
+            <div class="cta-orb cta-orb-1"></div>
+            <div class="cta-orb cta-orb-2"></div>
+        </div>
+        <div class="container">
+            <div class="cta-content" data-reveal>
+                <h2 class="cta-title">Pronto para transformar o ensino de matemática?</h2>
+                <p class="cta-description">
+                    Conheça o Multiplica e descubra como a tecnologia aliada a materiais concretos 
+                    pode revolucionar o aprendizado de multiplicação.
+                </p>
+                <div class="cta-actions">
+                    <a href="mailto:contato@multiplica.edu.br" class="btn btn-primary btn-large">
+                        <span>Entre em Contato</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="#hero" class="btn btn-ghost">
+                        <span>Voltar ao Topo</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#hero" class="nav-logo">
+                        <span class="logo-icon">✕</span>
+                        <span class="logo-text">Multiplica</span>
+                    </a>
+                    <p>Transformando o ensino de multiplicação através da tecnologia e materiais concretos.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navegação</h4>
+                    <a href="#about">Sobre</a>
+                    <a href="#features">Funcionalidades</a>
+                    <a href="#modules">Módulos</a>
+                    <a href="#materials">Material Concreto</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Projeto</h4>
+                    <a href="#gallery">Galeria</a>
+                    <a href="#requirements">Requisitos</a>
+                    <a href="#contact">Contato</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Multiplica — Projeto DevMaker | SEDUC-SP</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

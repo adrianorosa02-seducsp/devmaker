@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Painel de Horários de Aulas em Tempo Real — EE Antonio Reginato — Escola do Futuro">
+  <title>Painel de Aulas — Escola do Futuro</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <!-- Sidebar Lateral Escola do Futuro -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-container">
+          <div class="logo-text">
+            ESCOLA DO
+            <span>FUTURO</span>
+          </div>
+        </div>
+        <button id="sidebarCollapseBtn" class="sidebar-collapse-btn" title="Recolher menu">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+      </div>
+
+      <div class="sidebar-search">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Buscar módulos...">
+        </div>
+      </div>
+
+      <ul class="sidebar-nav">
+
+        <!-- MÓDULO 1: PAINEL GERAL -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Painel Geral (Dashboard)</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-chart-line nav-icon"></i>
+              <span>Indicadores de frequência</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-triangle-exclamation nav-icon text-amber"></i>
+              <span>Alertas urgentes</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-chart-column nav-icon"></i>
+              <span>Gráficos de evasão</span>
+            </div>
+          </a>
+        </li>
+
+        <!-- MÓDULO 2: BUSCA ATIVA -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-bolt"></i>
+          <span>Busca Ativa</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-bolt-lightning nav-icon text-yellow"></i>
+              <span>Chamada Inicial</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-circle-exclamation nav-icon text-red"></i>
+              <span>Alertas Pendentes</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-clipboard-list nav-icon"></i>
+              <span>Histórico de Contatos</span>
+            </div>
+          </a>
+        </li>
+
+        <!-- MÓDULO 3: GESTÃO DE ALUNOS -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-users-gear"></i>
+          <span>Gestão de Alunos</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-user-graduate nav-icon"></i>
+              <span>Cadastro de Alunos</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="index.html" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-people-roof nav-icon"></i>
+              <span>Cadastro de Responsáveis</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-file-pen nav-icon"></i>
+              <span>Ocorrências</span>
+            </div>
+          </a>
+        </li>
+
+        <!-- MÓDULO 4: CONTROLE DE EQUIPAMENTOS -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span>Controle de Equipamentos</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-box-archive nav-icon"></i>
+              <span>Inventário de Itens</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-arrow-rotate-left nav-icon"></i>
+              <span>Empréstimos e Devoluções</span>
+            </div>
+          </a>
+        </li>
+
+        <!-- MÓDULO 5: RELATÓRIOS -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Relatórios</span>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-arrow-trend-up nav-icon"></i>
+              <span>Assiduidade e Frequência</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-arrow-trend-down nav-icon"></i>
+              <span>Eficácia da Busca Ativa</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-screwdriver-wrench nav-icon"></i>
+              <span>Uso de Equipamentos</span>
+            </div>
+          </a>
+        </li>
+
+        <!-- MÓDULO 6: CONFIGURAÇÕES -->
+        <li class="nav-category-header">
+          <i class="fa-solid fa-gear"></i>
+          <span>Configurações</span>
+        </li>
+        <li>
+          <!-- ITEM ATIVO: Painel de Aulas -->
+          <a href="painel_aulas.html" class="sidebar-nav-item sub-item active">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-school nav-icon"></i>
+              <span>Turmas e Horários</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-item sub-item">
+            <div class="nav-link-content">
+              <i class="fa-solid fa-user-lock nav-icon"></i>
+              <span>Controle de Acesso</span>
+            </div>
+          </a>
+        </li>
+
+      </ul>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+      <!-- Top Header Bar -->
+      <header class="top-header">
+        <button id="mobileMenuToggle" class="header-left-toggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="header-right">
+          <!-- Relógio Oficial -->
+          <div class="painel-relogio" id="painelRelogio" title="Hora oficial de Brasília — WorldTimeAPI">
+            <i class="fa-regular fa-clock"></i>
+            <span id="horaAtualDisplay">--:--</span>
+          </div>
+
+          <!-- Status Global -->
+          <div id="statusGlobal" class="painel-status-global"></div>
+
+          <!-- Botão Tela Inteira -->
+          <button id="fullscreenBtn" class="header-btn-fullscreen" title="Alternar modo Tela Inteira (F11)">
+            <i class="fa-solid fa-expand"></i>
+            <span>Tela Inteira</span>
+          </button>
+
+          <!-- Botão Voltar ao Cadastro -->
+          <a href="index.html" class="header-btn-pedagogica" title="Voltar ao Cadastro de Responsáveis">
+            <i class="fa-solid fa-people-roof"></i>
+            <span>Cadastro de Responsáveis</span>
+          </a>
+
+          <!-- User Profile -->
+          <div class="user-profile">
+            <div class="avatar-circle">AJ</div>
+            <div class="user-details">
+              <span class="user-name">Adriano Justino Rosa</span>
+              <span class="user-role">Professor</span>
+              <span class="user-school">Antonio Reginato Prof</span>
+            </div>
+            <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: #64748b;"></i>
+          </div>
+
+          <!-- Notification Bell -->
+          <div class="notification-btn" title="Notificações">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge-dot">1</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Canvas de Conteúdo -->
+      <div class="content-canvas content-canvas--wide">
+        <!-- Breadcrumb Navigation -->
+        <nav class="breadcrumb">
+          <span>Home</span>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span>Configurações</span>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span class="current">Turmas e Horários</span>
+        </nav>
+
+        <!-- Header da Página -->
+        <div class="page-header">
+          <div class="page-title-row">
+            <i class="fa-solid fa-school" style="color: var(--sf-brand-blue);"></i>
+            <h1>Painel de Aulas</h1>
+          </div>
+          <div class="section-subtitle-row">
+            <i class="fa-regular fa-calendar-check"></i>
+            <span id="painelSubtitulo">Carregando grade do dia...</span>
+          </div>
+        </div>
+
+        <!-- Legenda de Status -->
+        <div class="painel-legenda">
+          <span class="legenda-item legenda-passada">
+            <span class="legenda-dot"></span>Aula encerrada
+          </span>
+          <span class="legenda-item legenda-em-andamento">
+            <span class="legenda-dot"></span>Em andamento
+          </span>
+          <span class="legenda-item legenda-proxima">
+            <span class="legenda-dot"></span>Próxima aula
+          </span>
+          <span class="legenda-item legenda-futura">
+            <span class="legenda-dot"></span>Aulas futuras
+          </span>
+          <span class="legenda-dica">
+            <i class="fa-solid fa-lightbulb"></i> Clique em qualquer aula na grade para edições rápidas.
+          </span>
+        </div>
+
+        <!-- Grade de Horários (renderizada por painel_aulas.js) -->
+        <div id="gradeContainer" class="grade-container">
+          <div class="painel-loading">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+            <span>Conectando ao servidor...</span>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+          Escola Estadual Antonio Reginato &bull; Painel de Aulas &bull; DevMaker &bull; Escola do Futuro
+          &bull; Hora: <a href="https://worldtimeapi.org" target="_blank" rel="noopener" style="color:var(--sf-text-muted)">WorldTimeAPI</a>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL CRUD DE HORÁRIOS -->
+  <div id="modalCrudHorario" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-calendar-days"></i>
+          <h2 id="modalTitulo">Gerenciar Horários de Aulas</h2>
+        </div>
+        <button id="btnFecharModal" class="modal-close-btn" title="Fechar">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Formulário de Cadastro/Edição -->
+        <form id="formAulaCrud" class="crud-form">
+          <input type="hidden" id="crudAulaId" value="">
+
+          <div class="form-grid-3col">
+            <div class="form-group">
+              <label for="crudDiaSemana">Dia da Semana *</label>
+              <select id="crudDiaSemana" required class="form-control">
+                <option value="Seg">Segunda-feira (Seg)</option>
+                <option value="Ter">Terça-feira (Ter)</option>
+                <option value="Qua">Quarta-feira (Qua)</option>
+                <option value="Qui">Quinta-feira (Qui)</option>
+                <option value="Sex">Sexta-feira (Sex)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="crudHorario">Horário *</label>
+              <input type="text" id="crudHorario" placeholder="ex: 07:00" required class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="crudTurma">Turma *</label>
+              <input type="text" id="crudTurma" placeholder="ex: 1A, 2B - DS" required class="form-control">
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label for="crudDisciplina">Disciplina *</label>
+              <input type="text" id="crudDisciplina" placeholder="ex: MAT, POR, FIS" required class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="crudProfessor">Professor</label>
+              <input type="text" id="crudProfessor" placeholder="ex: KARLA C" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="btnSalvarAula" class="btn-primary">
+              <i class="fa-solid fa-floppy-disk"></i> Salvar Aula
+            </button>
+            <button type="button" id="btnExcluirAula" class="btn-danger" style="display: none;">
+              <i class="fa-solid fa-trash-can"></i> Excluir Aula
+            </button>
+            <button type="button" id="btnCancelarEdicao" class="btn-secondary">
+              <i class="fa-solid fa-rotate-left"></i> Limpar Formulário
+            </button>
+          </div>
+        </form>
+
+        <hr class="modal-divider">
+
+        <!-- Busca e Tabela de Registros Cadastrados -->
+        <div class="crud-list-section">
+          <div class="crud-list-header">
+            <h3><i class="fa-solid fa-list-check"></i> Horários Cadastrados</h3>
+            <div class="search-box modal-search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="inputBuscaCrud" placeholder="Buscar turma, disciplina ou professor...">
+            </div>
+          </div>
+
+          <div class="crud-table-wrapper">
+            <table class="crud-table">
+              <thead>
+                <tr>
+                  <th>Dia</th>
+                  <th>Horário</th>
+                  <th>Turma</th>
+                  <th>Disciplina</th>
+                  <th>Professor</th>
+                  <th style="text-align: center;">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyAulasCrud">
+                <tr>
+                  <td colspan="6" style="text-align: center; color: var(--sf-text-muted);">Carregando horários...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Configuração de Professores Auxiliares -->
+  <script src="config_pa.js?v=2"></script>
+  <script src="painel_aulas.js?v=2"></script>
+</body>
+</html>
