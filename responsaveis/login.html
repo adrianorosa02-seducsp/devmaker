@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escola do Futuro - Login</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body.login-page {
+      background-color: var(--sf-bg-canvas);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .login-container { width: 100%; max-width: 440px; }
+    .login-brand { text-align: center; margin-bottom: 24px; }
+    .login-card {
+      background-color: var(--sf-bg-card);
+      border-radius: var(--sf-radius-lg);
+      padding: 32px 28px;
+      box-shadow: var(--sf-shadow-lg);
+      border: 1px solid var(--sf-border-color);
+    }
+    .login-header { margin-bottom: 24px; text-align: center; }
+    .login-header h1 { font-size: 1.4rem; color: var(--sf-brand-blue); margin-bottom: 6px; }
+    .login-header p { color: var(--sf-text-muted); font-size: 0.9rem; }
+    .input-wrapper { position: relative; }
+    .input-wrapper input {
+      width: 100%; padding: 10px 42px 10px 38px; border: 1px solid var(--sf-border-color);
+      border-radius: var(--sf-radius-sm); font-size: 0.92rem; color: var(--sf-text-dark);
+      outline: none; transition: var(--transition-fast);
+    }
+    .input-wrapper input:focus { border-color: var(--sf-border-focus); }
+    .input-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--sf-text-light); }
+    .toggle-pass-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--sf-text-light); cursor: pointer; }
+    .alert { padding: 12px 16px; border-radius: var(--sf-radius-sm); margin-bottom: 20px; font-size: 0.88rem; display: flex; align-items: center; gap: 10px; }
+    .alert-success { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+    .alert-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .btn-submit {
+      width: 100%; padding: 12px; background-color: var(--sf-brand-blue); color: #ffffff;
+      border: none; border-radius: var(--sf-radius-sm); font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-submit:disabled { opacity: 0.7; }
+    .token-debug {
+      margin-top: 16px; padding: 12px; background-color: #f8fafc;
+      border: 1px dashed var(--sf-border-color); border-radius: var(--sf-radius-sm);
+      font-family: monospace; font-size: 0.78rem; word-break: break-all;
+    }
+  </style>
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <div class="login-brand">
+      <div class="logo-text">ESCOLA DO <span style="color: var(--sf-accent-blue);">FUTURO</span></div>
+    </div>
+    <div class="login-card">
+      <div class="login-header">
+        <h1>Autenticação de Usuário</h1>
+        <p>Acesse o painel integrado FastAPI</p>
+      </div>
+      <div id="alertContainer"></div>
+      <form id="formLogin" novalidate>
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label style="display:block; margin-bottom: 6px;">E-mail ou Usuário *</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope input-icon"></i>
+            <input type="text" id="username" required>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label style="display:block; margin-bottom: 6px;">Senha *</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock input-icon"></i>
+            <input type="password" id="password" required>
+            <button type="button" id="togglePasswordBtn" class="toggle-pass-btn"><i class="fa-regular fa-eye"></i></button>
+          </div>
+        </div>
+        <button type="submit" id="btnSubmit" class="btn-submit">
+          <i class="fa-solid fa-right-to-bracket"></i> Entrar
+        </button>
+      </form>
+      <div id="debugArea" style="display: none;"><div class="token-debug" id="tokenDebug"></div></div>
+    </div>
+  </div>
+  <script>
+    const API_URL = 'https://geduc.inetz.com.br/auth/login';
+    const form = document.getElementById('formLogin');
+    const uInput = document.getElementById('username');
+    const pInput = document.getElementById('password');
+    const btn = document.getElementById('btnSubmit');
+    const alerts = document.getElementById('alertContainer');
+    const toggleBtn = document.getElementById('togglePasswordBtn');
+    const debugA = document.getElementById('debugArea');
+    const debugT = document.getElementById('tokenDebug');
+
+    toggleBtn.addEventListener('click', () => {
+      const isP = pInput.type === 'password';
+      pInput.type = isP ? 'text' : 'password';
+      toggleBtn.querySelector('i').className = isP ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye';
+    });
+
+    function showMsg(type, text) {
+      alerts.innerHTML = `<div class="alert alert-${type}"><i class="fa-solid ${type==='success'?'fa-circle-check':'fa-circle-exclamation'}"></i><div>${text}</div></div>`;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alerts.innerHTML = '';
+      debugA.style.display = 'none';
+      if (!uInput.value.trim() || !pInput.value) {
+        showMsg('error', 'Preencha todos os campos.');
+        return;
+      }
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Autenticando...';
+      try {
+        const fData = new URLSearchParams();
+        fData.append('username', uInput.value.trim());
+        fData.append('password', pInput.value);
+        let res = await fetch(API_URL, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'},
+          body: fData.toString()
+        });
+        if (res.status === 422 || res.status === 415) {
+          res = await fetch(API_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+            body: JSON.stringify({username: uInput.value.trim(), password: pInput.value})
+          });
+        }
+        const data = await res.json().catch(() => null);
+        if (!res.ok) throw new Error(data?.detail || 'Erro na autenticação.');
+        localStorage.setItem('auth_token', data.access_token);
+        showMsg('success', 'Login realizado com sucesso!');
+        debugT.textContent = JSON.stringify(data, null, 2);
+        debugA.style.display = 'block';
+      } catch (err) {
+        showMsg('error', err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Entrar';
+      }
+    });
+  </script>
+</body>
+</html>
