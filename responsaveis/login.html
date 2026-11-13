@@ -1,151 +1,756 @@
+
+login2.html
+100%
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Escola do Futuro - Login</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body.login-page {
-      background-color: var(--sf-bg-canvas);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-    .login-container { width: 100%; max-width: 440px; }
-    .login-brand { text-align: center; margin-bottom: 24px; }
-    .login-card {
-      background-color: var(--sf-bg-card);
-      border-radius: var(--sf-radius-lg);
-      padding: 32px 28px;
-      box-shadow: var(--sf-shadow-lg);
-      border: 1px solid var(--sf-border-color);
-    }
-    .login-header { margin-bottom: 24px; text-align: center; }
-    .login-header h1 { font-size: 1.4rem; color: var(--sf-brand-blue); margin-bottom: 6px; }
-    .login-header p { color: var(--sf-text-muted); font-size: 0.9rem; }
-    .input-wrapper { position: relative; }
-    .input-wrapper input {
-      width: 100%; padding: 10px 42px 10px 38px; border: 1px solid var(--sf-border-color);
-      border-radius: var(--sf-radius-sm); font-size: 0.92rem; color: var(--sf-text-dark);
-      outline: none; transition: var(--transition-fast);
-    }
-    .input-wrapper input:focus { border-color: var(--sf-border-focus); }
-    .input-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--sf-text-light); }
-    .toggle-pass-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--sf-text-light); cursor: pointer; }
-    .alert { padding: 12px 16px; border-radius: var(--sf-radius-sm); margin-bottom: 20px; font-size: 0.88rem; display: flex; align-items: center; gap: 10px; }
-    .alert-success { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
-    .alert-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-    .btn-submit {
-      width: 100%; padding: 12px; background-color: var(--sf-brand-blue); color: #ffffff;
-      border: none; border-radius: var(--sf-radius-sm); font-weight: 600; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    .btn-submit:disabled { opacity: 0.7; }
-    .token-debug {
-      margin-top: 16px; padding: 12px; background-color: #f8fafc;
-      border: 1px dashed var(--sf-border-color); border-radius: var(--sf-radius-sm);
-      font-family: monospace; font-size: 0.78rem; word-break: break-all;
-    }
-  </style>
-</head>
-<body class="login-page">
-  <div class="login-container">
-    <div class="login-brand">
-      <div class="logo-text">ESCOLA DO <span style="color: var(--sf-accent-blue);">FUTURO</span></div>
-    </div>
-    <div class="login-card">
-      <div class="login-header">
-        <h1>Autenticação de Usuário</h1>
-        <p>Acesse o painel integrado FastAPI</p>
-      </div>
-      <div id="alertContainer"></div>
-      <form id="formLogin" novalidate>
-        <div class="form-group" style="margin-bottom: 16px;">
-          <label style="display:block; margin-bottom: 6px;">E-mail ou Usuário *</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-envelope input-icon"></i>
-            <input type="text" id="username" required>
-          </div>
-        </div>
-        <div class="form-group" style="margin-bottom: 20px;">
-          <label style="display:block; margin-bottom: 6px;">Senha *</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-lock input-icon"></i>
-            <input type="password" id="password" required>
-            <button type="button" id="togglePasswordBtn" class="toggle-pass-btn"><i class="fa-regular fa-eye"></i></button>
-          </div>
-        </div>
-        <button type="submit" id="btnSubmit" class="btn-submit">
-          <i class="fa-solid fa-right-to-bracket"></i> Entrar
-        </button>
-      </form>
-      <div id="debugArea" style="display: none;"><div class="token-debug" id="tokenDebug"></div></div>
-    </div>
-  </div>
-  <script>
-    const API_URL = 'https://geduc.inetz.com.br/auth/login';
-    const form = document.getElementById('formLogin');
-    const uInput = document.getElementById('username');
-    const pInput = document.getElementById('password');
-    const btn = document.getElementById('btnSubmit');
-    const alerts = document.getElementById('alertContainer');
-    const toggleBtn = document.getElementById('togglePasswordBtn');
-    const debugA = document.getElementById('debugArea');
-    const debugT = document.getElementById('tokenDebug');
-
-    toggleBtn.addEventListener('click', () => {
-      const isP = pInput.type === 'password';
-      pInput.type = isP ? 'text' : 'password';
-      toggleBtn.querySelector('i').className = isP ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye';
-    });
-
-    function showMsg(type, text) {
-      alerts.innerHTML = `<div class="alert alert-${type}"><i class="fa-solid ${type==='success'?'fa-circle-check':'fa-circle-exclamation'}"></i><div>${text}</div></div>`;
-    }
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      alerts.innerHTML = '';
-      debugA.style.display = 'none';
-      if (!uInput.value.trim() || !pInput.value) {
-        showMsg('error', 'Preencha todos os campos.');
-        return;
-      }
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Autenticando...';
-      try {
-        const fData = new URLSearchParams();
-        fData.append('username', uInput.value.trim());
-        fData.append('password', pInput.value);
-        let res = await fetch(API_URL, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'},
-          body: fData.toString()
-        });
-        if (res.status === 422 || res.status === 415) {
-          res = await fetch(API_URL, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-            body: JSON.stringify({username: uInput.value.trim(), password: pInput.value})
-          });
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Autenticação de Usuário - Escola do Futuro - EE Antonio Reginato - FastAPI Backend">
+    <title>Escola do Futuro — Autenticação de Usuário</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ==========================================================================
+           Design System Oficial - ESCOLA DO FUTURO
+           Projeto: Autenticação FastAPI - EE Antonio Reginato
+           ========================================================================== */
+        :root {
+            --sf-bg-canvas: #f4f6f9;
+            --sf-bg-card: #ffffff;
+            --sf-text-primary: #0b2545;
+            --sf-text-dark: #1e293b;
+            --sf-text-muted: #64748b;
+            --sf-text-light: #94a3b8;
+            --sf-brand-blue: #0f4c81;
+            --sf-brand-blue-hover: #0a3760;
+            --sf-accent-blue: #0284c7;
+            --sf-active-bg: #e0ecfb;
+            --sf-pill-bg: #eef2f6;
+            --sf-accent-red: #cd2b33;
+            --sf-accent-red-bg: #fef2f2;
+            --sf-accent-red-border: #fecaca;
+            --sf-success-green: #10b981;
+            --sf-success-green-bg: #ecfdf5;
+            --sf-success-green-border: #a7f3d0;
+            --sf-warning-yellow: #f59e0b;
+            --sf-border-color: #e2e8f0;
+            --sf-border-focus: #0284c7;
+            --sf-radius-sm: 6px;
+            --sf-radius-md: 10px;
+            --sf-radius-lg: 14px;
+            --sf-radius-pill: 50px;
+            --sf-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --sf-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --sf-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --transition-fast: 0.2s ease;
         }
-        const data = await res.json().catch(() => null);
-        if (!res.ok) throw new Error(data?.detail || 'Erro na autenticação.');
-        localStorage.setItem('auth_token', data.access_token);
-        showMsg('success', 'Login realizado com sucesso!');
-        debugT.textContent = JSON.stringify(data, null, 2);
-        debugA.style.display = 'block';
-      } catch (err) {
-        showMsg('error', err.message);
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Entrar';
-      }
-    });
-  </script>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--sf-bg-canvas);
+            color: var(--sf-text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--sf-bg-card);
+            border-radius: var(--sf-radius-lg);
+            box-shadow: var(--sf-shadow-lg);
+            border: 1px solid var(--sf-border-color);
+            overflow: hidden;
+            transition: var(--transition-fast);
+        }
+
+        .card-top-bar {
+            height: 6px;
+            background: linear-gradient(90deg, var(--sf-brand-blue), var(--sf-accent-blue));
+        }
+
+        .card-header {
+            padding: 28px 32px 20px;
+            text-align: center;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--sf-active-bg);
+            color: var(--sf-brand-blue);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 0.8px;
+            padding: 6px 14px;
+            border-radius: var(--sf-radius-pill);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+        }
+
+        .card-header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--sf-text-primary);
+            margin-bottom: 6px;
+        }
+
+        .card-header p {
+            font-size: 0.9rem;
+            color: var(--sf-text-muted);
+            line-height: 1.4;
+        }
+
+        .card-body {
+            padding: 24px 32px 28px;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 6px;
+            background-color: var(--sf-pill-bg);
+            padding: 4px;
+            border-radius: var(--sf-radius-md);
+            margin-bottom: 20px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 8px 10px;
+            border-radius: var(--sf-radius-sm);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--sf-text-muted);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .mode-btn.active {
+            background-color: var(--sf-bg-card);
+            color: var(--sf-brand-blue);
+            box-shadow: var(--sf-shadow-sm);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--sf-text-dark);
+            margin-bottom: 7px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--sf-text-light);
+            font-size: 0.95rem;
+            pointer-events: none;
+            transition: var(--transition-fast);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 11px 42px 11px 40px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            color: var(--sf-text-dark);
+            background-color: #f8fafc;
+            border: 1px solid var(--sf-border-color);
+            border-radius: var(--sf-radius-md);
+            outline: none;
+            transition: var(--transition-fast);
+        }
+
+        .form-input:focus {
+            background-color: #ffffff;
+            border-color: var(--sf-border-focus);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+        }
+
+        .form-input:focus + .input-icon,
+        .input-wrapper:focus-within .input-icon {
+            color: var(--sf-accent-blue);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--sf-text-muted);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: var(--sf-radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-fast);
+        }
+
+        .toggle-password:hover {
+            color: var(--sf-brand-blue);
+            background-color: var(--sf-pill-bg);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px 18px;
+            background-color: var(--sf-brand-blue);
+            color: #ffffff;
+            border: none;
+            border-radius: var(--sf-radius-md);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: var(--transition-fast);
+            margin-top: 6px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background-color: var(--sf-brand-blue-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--sf-shadow-md);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Feedback Alert Box */
+        .feedback-alert {
+            display: none;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 13px 16px;
+            border-radius: var(--sf-radius-md);
+            font-size: 0.88rem;
+            line-height: 1.45;
+            margin-top: 18px;
+            border: 1px solid transparent;
+        }
+
+        .feedback-alert.show {
+            display: flex;
+        }
+
+        .feedback-alert.success {
+            background-color: var(--sf-success-green-bg);
+            border-color: var(--sf-success-green-border);
+            color: #065f46;
+        }
+
+        .feedback-alert.success i {
+            color: var(--sf-success-green);
+            font-size: 1.1rem;
+            margin-top: 2px;
+        }
+
+        .feedback-alert.error {
+            background-color: var(--sf-accent-red-bg);
+            border-color: var(--sf-accent-red-border);
+            color: #991b1b;
+        }
+
+        .feedback-alert.error i {
+            color: var(--sf-accent-red);
+            font-size: 1.1rem;
+            margin-top: 2px;
+        }
+
+        /* Pedagogical API Inspector */
+        .debug-panel {
+            margin-top: 22px;
+            border-top: 1px solid var(--sf-border-color);
+            padding-top: 16px;
+        }
+
+        .debug-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .debug-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--sf-text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-pill {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: var(--sf-radius-pill);
+            background-color: var(--sf-pill-bg);
+            color: var(--sf-text-muted);
+        }
+
+        .status-pill.ok {
+            background-color: var(--sf-success-green-bg);
+            color: #047857;
+        }
+
+        .status-pill.err {
+            background-color: var(--sf-accent-red-bg);
+            color: var(--sf-accent-red);
+        }
+
+        .debug-box {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.78rem;
+            padding: 12px 14px;
+            border-radius: var(--sf-radius-sm);
+            overflow-x: auto;
+            max-height: 170px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            line-height: 1.45;
+        }
+
+        .session-bar {
+            display: none;
+            margin-top: 12px;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f8fafc;
+            border: 1px solid var(--sf-border-color);
+            padding: 8px 12px;
+            border-radius: var(--sf-radius-sm);
+            font-size: 0.78rem;
+            color: var(--sf-text-muted);
+        }
+
+        .session-bar.active {
+            display: flex;
+        }
+
+        .clear-token-btn {
+            background: none;
+            border: 1px solid var(--sf-border-color);
+            color: var(--sf-accent-red);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: var(--sf-radius-sm);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .clear-token-btn:hover {
+            background-color: var(--sf-accent-red-bg);
+            border-color: var(--sf-accent-red-border);
+        }
+
+        .card-footer {
+            background-color: #f8fafc;
+            border-top: 1px solid var(--sf-border-color);
+            padding: 14px 24px;
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--sf-text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .card-footer a {
+            color: var(--sf-brand-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .card-footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .card-header, .card-body {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="auth-container">
+        <div class="card-top-bar"></div>
+
+        <header class="card-header">
+            <div class="brand-badge">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>ESCOLA DO FUTURO</span>
+            </div>
+            <h1>Autenticação de Usuário</h1>
+            <p>Informe suas credenciais para acessar o sistema integrado</p>
+        </header>
+
+        <section class="card-body">
+            <!-- Seletor de Modo de Payload Pedagógico -->
+            <div class="mode-selector" role="tablist" aria-label="Modo de envio do payload">
+                <button type="button" class="mode-btn active" id="modeAutoBtn" data-mode="auto">
+                    Auto (JSON + OAuth2)
+                </button>
+                <button type="button" class="mode-btn" id="modeJsonBtn" data-mode="json">
+                    JSON (email/senha)
+                </button>
+                <button type="button" class="mode-btn" id="modeFormBtn" data-mode="form">
+                    OAuth2 Form
+                </button>
+            </div>
+
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="emailInput" class="form-label">E-mail / Usuário</label>
+                    <div class="input-wrapper">
+                        <input
+                            type="text"
+                            id="emailInput"
+                            name="email"
+                            class="form-input"
+                            placeholder="seu.email@escola.sp.gov.br"
+                            autocomplete="username"
+                            required
+                        >
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="senhaInput" class="form-label">Senha</label>
+                    <div class="input-wrapper">
+                        <input
+                            type="password"
+                            id="senhaInput"
+                            name="senha"
+                            class="form-input"
+                            placeholder="Digite sua senha"
+                            autocomplete="current-password"
+                            required
+                        >
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <button
+                            type="button"
+                            id="togglePasswordBtn"
+                            class="toggle-password"
+                            title="Mostrar ou ocultar senha"
+                            aria-label="Alternar visibilidade da senha"
+                        >
+                            <i class="fa-regular fa-eye" id="togglePasswordIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="submit-btn">
+                    <i class="fa-solid fa-right-to-bracket" id="submitIcon"></i>
+                    <span id="submitText">Entrar no Sistema</span>
+                </button>
+            </form>
+
+            <!-- Alerta Visual de Sucesso ou Erro -->
+            <div id="feedbackAlert" class="feedback-alert" role="alert" aria-live="polite">
+                <i id="feedbackIcon" class="fa-solid fa-circle-info"></i>
+                <div id="feedbackMessage"></div>
+            </div>
+
+            <!-- Área Pedagógica de Inspeção da Resposta FastAPI -->
+            <div class="debug-panel">
+                <div class="debug-header">
+                    <span class="debug-title">
+                        <i class="fa-solid fa-terminal"></i>
+                        Retorno da API (FastAPI)
+                    </span>
+                    <span id="httpStatusPill" class="status-pill">Aguardando envio</span>
+                </div>
+                <pre id="debugOutput" class="debug-box">// Endpoint: POST https://geduc.inetz.com.br/auth/login
+// Preencha o formulário e clique em "Entrar no Sistema" para inspecionar a resposta JSON e os tokens.</pre>
+
+                <div id="sessionBar" class="session-bar">
+                    <span id="sessionStatusText">
+                        <i class="fa-solid fa-key"></i> Token salvo no localStorage
+                    </span>
+                    <button type="button" id="clearTokenBtn" class="clear-token-btn">
+                        Limpar Sessão
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <footer class="card-footer">
+            <span>Escola Estadual Antonio Reginato • Sistema Integrado • FastAPI Backend</span>
+            <span>Documentação Swagger: <a href="https://geduc.inetz.com.br/docs" target="_blank" rel="noopener noreferrer">geduc.inetz.com.br/docs</a></span>
+        </footer>
+    </main>
+
+    <script>
+        (function () {
+            const API_URL = 'https://geduc.inetz.com.br/auth/login';
+
+            const loginForm = document.getElementById('loginForm');
+            const emailInput = document.getElementById('emailInput');
+            const senhaInput = document.getElementById('senhaInput');
+            const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+            const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+            const submitBtn = document.getElementById('submitBtn');
+            const submitIcon = document.getElementById('submitIcon');
+            const submitText = document.getElementById('submitText');
+            const feedbackAlert = document.getElementById('feedbackAlert');
+            const feedbackIcon = document.getElementById('feedbackIcon');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+            const debugOutput = document.getElementById('debugOutput');
+            const httpStatusPill = document.getElementById('httpStatusPill');
+            const sessionBar = document.getElementById('sessionBar');
+            const sessionStatusText = document.getElementById('sessionStatusText');
+            const clearTokenBtn = document.getElementById('clearTokenBtn');
+            const modeButtons = document.querySelectorAll('.mode-btn');
+
+            let currentMode = 'auto';
+
+            // Seleção de modo de envio
+            modeButtons.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    modeButtons.forEach((b) => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentMode = btn.getAttribute('data-mode') || 'auto';
+                });
+            });
+
+            // Alternar visualização da senha
+            togglePasswordBtn.addEventListener('click', () => {
+                const isPassword = senhaInput.getAttribute('type') === 'password';
+                senhaInput.setAttribute('type', isPassword ? 'text' : 'password');
+                togglePasswordIcon.className = isPassword
+                    ? 'fa-regular fa-eye-slash'
+                    : 'fa-regular fa-eye';
+            });
+
+            // Funções seguras para localStorage (compatível com iframe sandbox)
+            function saveTokens(data) {
+                try {
+                    if (data && data.access_token) {
+                        localStorage.setItem('access_token', data.access_token);
+                        localStorage.setItem('token_type', data.token_type || 'bearer');
+                        updateSessionUI();
+                    }
+                } catch (err) {
+                    // Ignora bloqueio de storage em sandbox restrito
+                }
+            }
+
+            function clearTokens() {
+                try {
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('token_type');
+                } catch (err) {
+                    // Ignora erro
+                }
+                sessionBar.classList.remove('active');
+            }
+
+            function updateSessionUI() {
+                try {
+                    const token = localStorage.getItem('access_token');
+                    const type = localStorage.getItem('token_type') || 'bearer';
+                    if (token) {
+                        const preview = token.length > 20 ? token.substring(0, 20) + '...' : token;
+                        sessionStatusText.innerHTML = '<i class="fa-solid fa-key"></i> Sessão ativa (' + type + '): <code>' + preview + '</code>';
+                        sessionBar.classList.add('active');
+                    } else {
+                        sessionBar.classList.remove('active');
+                    }
+                } catch (err) {
+                    sessionBar.classList.remove('active');
+                }
+            }
+
+            clearTokenBtn.addEventListener('click', () => {
+                clearTokens();
+                showFeedback('success', 'Sessão local limpa com sucesso.');
+            });
+
+            function showFeedback(type, message) {
+                feedbackAlert.className = 'feedback-alert show ' + type;
+                feedbackIcon.className = type === 'success'
+                    ? 'fa-solid fa-circle-check'
+                    : 'fa-solid fa-triangle-exclamation';
+                feedbackMessage.textContent = message;
+            }
+
+            function setLoading(isLoading) {
+                submitBtn.disabled = isLoading;
+                if (isLoading) {
+                    submitIcon.className = 'fa-solid fa-spinner fa-spin';
+                    submitText.textContent = 'Autenticando...';
+                } else {
+                    submitIcon.className = 'fa-solid fa-right-to-bracket';
+                    submitText.textContent = 'Entrar no Sistema';
+                }
+            }
+
+            function extractErrorMessage(data, status) {
+                if (!data) return 'Falha na autenticação (HTTP ' + status + ').';
+                if (typeof data.detail === 'string') return data.detail;
+                if (Array.isArray(data.detail)) {
+                    return data.detail
+                        .map((item) => (item.msg ? item.msg + (item.loc ? ' (' + item.loc.join('.') + ')' : '') : JSON.stringify(item)))
+                        .join(' | ');
+                }
+                if (data.message) return data.message;
+                return 'Credenciais inválidas ou erro na requisição (HTTP ' + status + ').';
+            }
+
+            async function sendJsonRequest(email, senha) {
+                return fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        senha: senha,
+                        username: email,
+                        password: senha
+                    })
+                });
+            }
+
+            async function sendFormRequest(email, senha) {
+                const formBody = new URLSearchParams();
+                formBody.append('username', email);
+                formBody.append('password', senha);
+                formBody.append('email', email);
+                formBody.append('senha', senha);
+
+                return fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/json'
+                    },
+                    body: formBody.toString()
+                });
+            }
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const email = emailInput.value.trim();
+                const senha = senhaInput.value;
+
+                if (!email || !senha) {
+                    showFeedback('error', 'Por favor, preencha os campos de e-mail e senha.');
+                    return;
+                }
+
+                setLoading(true);
+                feedbackAlert.className = 'feedback-alert';
+                httpStatusPill.className = 'status-pill';
+                httpStatusPill.textContent = 'Enviando...';
+
+                try {
+                    let response;
+                    let usedFormat = '';
+
+                    if (currentMode === 'json') {
+                        usedFormat = 'application/json';
+                        response = await sendJsonRequest(email, senha);
+                    } else if (currentMode === 'form') {
+                        usedFormat = 'application/x-www-form-urlencoded';
+                        response = await sendFormRequest(email, senha);
+                    } else {
+                        // Modo Auto: envia JSON primeiro ({ email, senha }) e faz fallback para OAuth2 form se 422/415
+                        usedFormat = 'application/json';
+                        response = await sendJsonRequest(email, senha);
+                        if (response.status === 422 || response.status === 415) {
+                            const fallbackResponse = await sendFormRequest(email, senha);
+                            if (fallbackResponse.ok || (fallbackResponse.status !== 422 && fallbackResponse.status !== 415)) {
+                                response = fallbackResponse;
+                                usedFormat = 'application/x-www-form-urlencoded (fallback)';
+                            }
+                        }
+                    }
+
+                    let data = null;
+                    const rawText = await response.text();
+                    try {
+                        data = rawText ? JSON.parse(rawText) : {};
+                    } catch (parseErr) {
+                        data = { raw_response: rawText };
+                    }
+
+                    httpStatusPill.textContent = 'HTTP ' + response.status + ' • ' + usedFormat;
+                    httpStatusPill.className = 'status-pill ' + (response.ok ? 'ok' : 'err');
+
+                    debugOutput.textContent = JSON.stringify(data, null, 2);
+
+                    if (response.ok) {
+                        saveTokens(data);
+                        showFeedback('success', 'Login bem-sucedido! Autenticação realizada com sucesso.');
+                    } else {
+                        const errMsg = extractErrorMessage(data, response.status);
+                        showFeedback('error', 'Erro: ' + errMsg);
+                    }
+                } catch (error) {
+                    httpStatusPill.textContent = 'Erro de Rede / CORS';
+                    httpStatusPill.className = 'status-pill err';
+                    debugOutput.textContent = JSON.stringify({
+                        erro: 'Falha ao conectar com ' + API_URL,
+                        detalhe: error && error.message ? error.message : String(error)
+                    }, null, 2);
+                    showFeedback('error', 'Erro de conexão com o servidor. Verifique sua rede ou a configuração de CORS da API.');
+                } finally {
+                    setLoading(false);
+                }
+            });
+
+            // Verifica se já há token salvo ao carregar
+            updateSessionUI();
+        })();
+    </script>
 </body>
 </html>
